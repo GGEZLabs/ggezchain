@@ -112,13 +112,13 @@ import (
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	appparams "github.com/ggezone/ggezchain/app/params"
-	"github.com/ggezone/ggezchain/docs"
+	appparams "github.com/GGEZLabs/testchain/app/params"
+	"github.com/GGEZLabs/testchain/docs"
 )
 
 const (
 	AccountAddressPrefix = "cosmos"
-	Name                 = "ggezchain"
+	Name                 = "testchain"
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals

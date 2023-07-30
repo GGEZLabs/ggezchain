@@ -1,4 +1,4 @@
-module github.com/ggezone/ggezchain
+module github.com/GGEZLabs/testchain
 
 go 1.19
 
