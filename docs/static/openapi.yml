@@ -18760,14 +18760,9 @@ paths:
                       description: admin is the account address of the group admin.
                     metadata:
                       type: string
-                      title: >-
+                      description: >-
                         metadata is any arbitrary metadata attached to the group
                         policy.
-
-                        the recommended format of the metadata is to be found
-                        here:
-
-                        https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
                     version:
                       type: string
                       format: uint64
@@ -19151,14 +19146,9 @@ paths:
                       description: admin is the account address of the group admin.
                     metadata:
                       type: string
-                      title: >-
+                      description: >-
                         metadata is any arbitrary metadata attached to the group
                         policy.
-
-                        the recommended format of the metadata is to be found
-                        here:
-
-                        https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
                     version:
                       type: string
                       format: uint64
@@ -19544,14 +19534,9 @@ paths:
                     description: admin is the account address of the group admin.
                   metadata:
                     type: string
-                    title: >-
+                    description: >-
                       metadata is any arbitrary metadata attached to the group
                       policy.
-
-                      the recommended format of the metadata is to be found
-                      here:
-
-                      https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
                   version:
                     type: string
                     format: uint64
@@ -20827,14 +20812,9 @@ paths:
                       policy.
                   metadata:
                     type: string
-                    title: >-
+                    description: >-
                       metadata is any arbitrary metadata attached to the
                       proposal.
-
-                      the recommended format of the metadata is to be found
-                      here:
-
-                      https://docs.cosmos.network/v0.47/modules/group#proposal-4
                   proposers:
                     type: array
                     items:
@@ -21576,14 +21556,9 @@ paths:
                         policy.
                     metadata:
                       type: string
-                      title: >-
+                      description: >-
                         metadata is any arbitrary metadata attached to the
                         proposal.
-
-                        the recommended format of the metadata is to be found
-                        here:
-
-                        https://docs.cosmos.network/v0.47/modules/group#proposal-4
                     proposers:
                       type: array
                       items:
@@ -46437,6 +46412,42 @@ paths:
                         }
       tags:
         - Query
+  /GGEZLabs/testchain/trade/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: TestchainTradeParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
 definitions:
   cosmos.auth.v1beta1.AddressBytesToStringResponse:
     type: object
@@ -59870,10 +59881,7 @@ definitions:
         description: admin is the account address of the group admin.
       metadata:
         type: string
-        title: |-
-          metadata is any arbitrary metadata attached to the group policy.
-          the recommended format of the metadata is to be found here:
-          https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
+        description: metadata is any arbitrary metadata attached to the group policy.
       version:
         type: string
         format: uint64
@@ -60079,10 +60087,7 @@ definitions:
         description: group_policy_address is the account address of group policy.
       metadata:
         type: string
-        title: |-
-          metadata is any arbitrary metadata attached to the proposal.
-          the recommended format of the metadata is to be found here:
-          https://docs.cosmos.network/v0.47/modules/group#proposal-4
+        description: metadata is any arbitrary metadata attached to the proposal.
       proposers:
         type: array
         items:
@@ -60509,12 +60514,7 @@ definitions:
               description: admin is the account address of the group admin.
             metadata:
               type: string
-              title: >-
-                metadata is any arbitrary metadata attached to the group policy.
-
-                the recommended format of the metadata is to be found here:
-
-                https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
+              description: metadata is any arbitrary metadata attached to the group policy.
             version:
               type: string
               format: uint64
@@ -60637,12 +60637,7 @@ definitions:
               description: admin is the account address of the group admin.
             metadata:
               type: string
-              title: >-
-                metadata is any arbitrary metadata attached to the group policy.
-
-                the recommended format of the metadata is to be found here:
-
-                https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
+              description: metadata is any arbitrary metadata attached to the group policy.
             version:
               type: string
               format: uint64
@@ -60766,10 +60761,7 @@ definitions:
             description: admin is the account address of the group admin.
           metadata:
             type: string
-            title: |-
-              metadata is any arbitrary metadata attached to the group policy.
-              the recommended format of the metadata is to be found here:
-              https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
+            description: metadata is any arbitrary metadata attached to the group policy.
           version:
             type: string
             format: uint64
@@ -61055,10 +61047,7 @@ definitions:
             description: group_policy_address is the account address of group policy.
           metadata:
             type: string
-            title: |-
-              metadata is any arbitrary metadata attached to the proposal.
-              the recommended format of the metadata is to be found here:
-              https://docs.cosmos.network/v0.47/modules/group#proposal-4
+            description: metadata is any arbitrary metadata attached to the proposal.
           proposers:
             type: array
             items:
@@ -61355,10 +61344,7 @@ definitions:
               description: group_policy_address is the account address of group policy.
             metadata:
               type: string
-              title: |-
-                metadata is any arbitrary metadata attached to the proposal.
-                the recommended format of the metadata is to be found here:
-                https://docs.cosmos.network/v0.47/modules/group#proposal-4
+              description: metadata is any arbitrary metadata attached to the proposal.
             proposers:
               type: array
               items:
@@ -75176,3 +75162,13 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  testchain.trade.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  testchain.trade.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.

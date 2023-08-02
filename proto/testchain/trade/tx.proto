@@ -1,0 +1,7 @@
+syntax = "proto3";
+package testchain.trade;
+
+option go_package = "github.com/GGEZLabs/testchain/x/trade/types";
+
+// Msg defines the Msg service.
+service Msg {}
