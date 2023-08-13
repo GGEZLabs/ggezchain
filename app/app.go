@@ -521,12 +521,14 @@ func New(
 	)
 
 	app.TradeKeeper = *trademodulekeeper.NewKeeper(
+		app.BankKeeper,
 		appCodec,
 		keys[trademoduletypes.StoreKey],
 		keys[trademoduletypes.MemStoreKey],
 		app.GetSubspace(trademoduletypes.ModuleName),
 
 		app.BankKeeper,
+		app.StakingKeeper,
 	)
 	tradeModule := trademodule.NewAppModule(appCodec, app.TradeKeeper, app.AccountKeeper, app.BankKeeper)
 

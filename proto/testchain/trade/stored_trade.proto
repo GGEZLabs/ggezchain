@@ -1,0 +1,22 @@
+syntax = "proto3";
+package testchain.trade;
+
+option go_package = "github.com/GGEZLabs/testchain/x/trade/types";
+
+message StoredTrade {
+  string tradeIndex = 1; 
+  string tradeType = 2; 
+  string coin = 3; 
+  string price = 4; 
+  string quantity = 5; 
+  string receiverAddress = 6; 
+  string status = 7; 
+  string maker = 8; 
+  string checker = 9; 
+  string createDate = 10; 
+  string updateDate = 11; 
+  string processDate = 12; 
+  string tradeData = 13; 
+  string result = 14 ;
+}
+

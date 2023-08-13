@@ -23,7 +23,15 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgCreateTrade = "op_weight_msg_create_trade"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateTrade int = 100
+
+	opWeightMsgProcessTrade = "op_weight_msg_process_trade"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgProcessTrade int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module.
@@ -51,6 +59,28 @@ func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedP
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
+	var weightMsgCreateTrade int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateTrade, &weightMsgCreateTrade, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateTrade = defaultWeightMsgCreateTrade
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateTrade,
+		tradesimulation.SimulateMsgCreateTrade(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgProcessTrade int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgProcessTrade, &weightMsgProcessTrade, nil,
+		func(_ *rand.Rand) {
+			weightMsgProcessTrade = defaultWeightMsgProcessTrade
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgProcessTrade,
+		tradesimulation.SimulateMsgProcessTrade(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -59,6 +89,22 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 // ProposalMsgs returns msgs used for governance proposals for simulations.
 func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.WeightedProposalMsg {
 	return []simtypes.WeightedProposalMsg{
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgCreateTrade,
+			defaultWeightMsgCreateTrade,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				tradesimulation.SimulateMsgCreateTrade(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgProcessTrade,
+			defaultWeightMsgProcessTrade,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				tradesimulation.SimulateMsgProcessTrade(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
 		// this line is used by starport scaffolding # simapp/module/OpMsg
 	}
 }

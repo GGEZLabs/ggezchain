@@ -1,7 +1,43 @@
 syntax = "proto3";
+
 package testchain.trade;
 
 option go_package = "github.com/GGEZLabs/testchain/x/trade/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc CreateTrade  (MsgCreateTrade ) returns (MsgCreateTradeResponse );
+  rpc ProcessTrade (MsgProcessTrade) returns (MsgProcessTradeResponse);
+}
+message MsgCreateTrade {
+  string creator         = 1;
+  string tradeType       = 2;
+  string coin            = 3;
+  string price           = 4;
+  string quantity        = 5;
+  string receiverAddress = 6;
+  string tradeData       = 7;
+}
+
+message MsgCreateTradeResponse {
+  string tradeIndex = 1;
+  string status     = 2;
+}
+
+message MsgProcessTrade {
+  string creator     = 1;
+  string processType = 2;
+  string tradeIndex  = 3;
+}
+
+message MsgProcessTradeResponse {
+  string tradeIndex  = 1;
+  string status      = 2;
+  string checker     = 3;
+  string maker       = 4;
+  string tradeData   = 5;
+  string createDate  = 6;
+  string updateDate  = 7;
+  string processDate = 8;
+}
+

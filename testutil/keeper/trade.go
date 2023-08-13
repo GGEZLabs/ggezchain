@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"cosmossdk.io/simapp"
 	"testing"
 
 	"github.com/GGEZLabs/testchain/x/trade/keeper"
@@ -17,15 +18,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TradeKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+func TradeKeeper(t *testing.T) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
+	app := simapp.Setup(t, false)
 
 	db := tmdb.NewMemDB()
 	stateStore := store.NewCommitMultiStore(db)
 	stateStore.MountStoreWithDB(storeKey, storetypes.StoreTypeIAVL, db)
 	stateStore.MountStoreWithDB(memStoreKey, storetypes.StoreTypeMemory, nil)
 	require.NoError(t, stateStore.LoadLatestVersion())
+
+	stakingKeeper := app.StakingKeeper
+	bankKeeperTest := app.BankKeeper
+	bankTest := app.BankKeeper
 
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
@@ -37,11 +43,13 @@ func TradeKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		"TradeParams",
 	)
 	k := keeper.NewKeeper(
+		bankTest,
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-		nil,
+		bankKeeperTest,
+		stakingKeeper,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
