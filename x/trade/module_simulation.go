@@ -97,6 +97,7 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 				return nil
 			},
 		),
+
 		simulation.NewWeightedProposalMsg(
 			opWeightMsgProcessTrade,
 			defaultWeightMsgProcessTrade,

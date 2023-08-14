@@ -4,7 +4,7 @@ package testchain.trade;
 option go_package = "github.com/GGEZLabs/testchain/x/trade/types";
 
 message StoredTrade {
-  string tradeIndex = 1; 
+  uint64 tradeIndex = 1; 
   string tradeType = 2; 
   string coin = 3; 
   string price = 4; 
@@ -17,6 +17,7 @@ message StoredTrade {
   string updateDate = 11; 
   string processDate = 12; 
   string tradeData = 13; 
-  string result = 14 ;
+  string result = 14; 
+  
 }
 

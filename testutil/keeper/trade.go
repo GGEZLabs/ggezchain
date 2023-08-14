@@ -1,9 +1,8 @@
 package keeper
 
 import (
-	"cosmossdk.io/simapp"
 	"testing"
-
+	"cosmossdk.io/simapp"
 	"github.com/GGEZLabs/testchain/x/trade/keeper"
 	"github.com/GGEZLabs/testchain/x/trade/types"
 	tmdb "github.com/cometbft/cometbft-db"
@@ -22,17 +21,14 @@ func TradeKeeper(t *testing.T) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 	app := simapp.Setup(t, false)
-
 	db := tmdb.NewMemDB()
 	stateStore := store.NewCommitMultiStore(db)
 	stateStore.MountStoreWithDB(storeKey, storetypes.StoreTypeIAVL, db)
 	stateStore.MountStoreWithDB(memStoreKey, storetypes.StoreTypeMemory, nil)
 	require.NoError(t, stateStore.LoadLatestVersion())
-
 	stakingKeeper := app.StakingKeeper
 	bankKeeperTest := app.BankKeeper
 	bankTest := app.BankKeeper
-
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 

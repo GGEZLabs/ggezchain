@@ -20,8 +20,8 @@ type (
 		memKey     storetypes.StoreKey
 		paramstore paramtypes.Subspace
 
-		bankKeeper types.BankKeeper
-		stakingKeeper types.StakingKeeper
+		bankKeeper   types.BankKeeper
+		stakingKeepr types.StakingKeeper
 	}
 )
 
@@ -47,8 +47,8 @@ func NewKeeper(
 		memKey:     memKey,
 		paramstore: ps,
 
-		bankKeeper: bankKeeper,
-		stakingKeeper: stakingKeeper,
+		bankKeeper:   bankKeeper,
+		stakingKeepr: stakingKeeper,
 	}
 }
 

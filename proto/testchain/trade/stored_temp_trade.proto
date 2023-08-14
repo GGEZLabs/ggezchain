@@ -1,0 +1,12 @@
+syntax = "proto3";
+package testchain.trade;
+
+option go_package = "github.com/GGEZLabs/testchain/x/trade/types";
+
+message StoredTempTrade {
+  uint64 tradeIndex = 1; 
+  uint64 tempTradeIndex = 2; 
+  string createDate = 3; 
+  
+}
+

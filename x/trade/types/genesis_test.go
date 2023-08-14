@@ -23,14 +23,22 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 
 				TradeIndex: types.TradeIndex{
-					NextId: 25,
+					NextId: 34,
 				},
 				StoredTradeList: []types.StoredTrade{
 					{
-						TradeIndex: "0",
+						TradeIndex: 0,
 					},
 					{
-						TradeIndex: "1",
+						TradeIndex: 1,
+					},
+				},
+				StoredTempTradeList: []types.StoredTempTrade{
+					{
+						TradeIndex: 0,
+					},
+					{
+						TradeIndex: 1,
 					},
 				},
 				// this line is used by starport scaffolding # types/genesis/validField
@@ -42,10 +50,24 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 				StoredTradeList: []types.StoredTrade{
 					{
-						TradeIndex: "0",
+						TradeIndex: 0,
 					},
 					{
-						TradeIndex: "0",
+						TradeIndex: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated storedTempTrade",
+			genState: &types.GenesisState{
+				StoredTempTradeList: []types.StoredTempTrade{
+					{
+						TradeIndex: 0,
+					},
+					{
+						TradeIndex: 0,
 					},
 				},
 			},
@@ -64,7 +86,6 @@ func TestGenesisState_Validate(t *testing.T) {
 		})
 	}
 }
-
 func TestDefaultGenesisState_ExpectedInitialNextId(t *testing.T) {
 	require.EqualValues(t,
 		&types.GenesisState{

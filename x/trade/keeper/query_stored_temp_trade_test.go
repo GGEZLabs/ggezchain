@@ -18,33 +18,33 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestStoredTradeQuerySingle(t *testing.T) {
+func TestStoredTempTradeQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.TradeKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNStoredTrade(keeper, ctx, 2)
+	msgs := createNStoredTempTrade(keeper, ctx, 2)
 	tests := []struct {
 		desc     string
-		request  *types.QueryGetStoredTradeRequest
-		response *types.QueryGetStoredTradeResponse
+		request  *types.QueryGetStoredTempTradeRequest
+		response *types.QueryGetStoredTempTradeResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetStoredTradeRequest{
+			request: &types.QueryGetStoredTempTradeRequest{
 				TradeIndex: msgs[0].TradeIndex,
 			},
-			response: &types.QueryGetStoredTradeResponse{StoredTrade: msgs[0]},
+			response: &types.QueryGetStoredTempTradeResponse{StoredTempTrade: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetStoredTradeRequest{
+			request: &types.QueryGetStoredTempTradeRequest{
 				TradeIndex: msgs[1].TradeIndex,
 			},
-			response: &types.QueryGetStoredTradeResponse{StoredTrade: msgs[1]},
+			response: &types.QueryGetStoredTempTradeResponse{StoredTempTrade: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.QueryGetStoredTradeRequest{
+			request: &types.QueryGetStoredTempTradeRequest{
 				TradeIndex: uint64(100000),
 			},
 			err: status.Error(codes.NotFound, "not found"),
@@ -56,7 +56,7 @@ func TestStoredTradeQuerySingle(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.StoredTrade(wctx, tc.request)
+			response, err := keeper.StoredTempTrade(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -70,13 +70,13 @@ func TestStoredTradeQuerySingle(t *testing.T) {
 	}
 }
 
-func TestStoredTradeQueryPaginated(t *testing.T) {
+func TestStoredTempTradeQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.TradeKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNStoredTrade(keeper, ctx, 5)
+	msgs := createNStoredTempTrade(keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllStoredTradeRequest {
-		return &types.QueryAllStoredTradeRequest{
+	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllStoredTempTradeRequest {
+		return &types.QueryAllStoredTempTradeRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -88,12 +88,12 @@ func TestStoredTradeQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.StoredTradeAll(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.StoredTempTradeAll(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.StoredTrade), step)
+			require.LessOrEqual(t, len(resp.StoredTempTrade), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.StoredTrade),
+				nullify.Fill(resp.StoredTempTrade),
 			)
 		}
 	})
@@ -101,27 +101,27 @@ func TestStoredTradeQueryPaginated(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.StoredTradeAll(wctx, request(next, 0, uint64(step), false))
+			resp, err := keeper.StoredTempTradeAll(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.StoredTrade), step)
+			require.LessOrEqual(t, len(resp.StoredTempTrade), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.StoredTrade),
+				nullify.Fill(resp.StoredTempTrade),
 			)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.StoredTradeAll(wctx, request(nil, 0, 0, true))
+		resp, err := keeper.StoredTempTradeAll(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
-			nullify.Fill(resp.StoredTrade),
+			nullify.Fill(resp.StoredTempTrade),
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.StoredTradeAll(wctx, nil)
+		_, err := keeper.StoredTempTradeAll(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

@@ -21,7 +21,6 @@ func KeyPrefix(p string) []byte {
 const (
 	TradeIndexKey = "TradeIndex/value/"
 )
-
 const (
 	CancelExpiredPendingTradesEventType = "status is changed"
 )

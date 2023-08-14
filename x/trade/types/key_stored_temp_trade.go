@@ -5,12 +5,12 @@ import "encoding/binary"
 var _ binary.ByteOrder
 
 const (
-	// StoredTradeKeyPrefix is the prefix to retrieve all StoredTrade
-	StoredTradeKeyPrefix = "StoredTrade/value/"
+	// StoredTempTradeKeyPrefix is the prefix to retrieve all StoredTempTrade
+	StoredTempTradeKeyPrefix = "StoredTempTrade/value/"
 )
 
-// StoredTradeKey returns the store key to retrieve a StoredTrade from the index fields
-func StoredTradeKey(
+// StoredTempTradeKey returns the store key to retrieve a StoredTempTrade from the index fields
+func StoredTempTradeKey(
 	tradeIndex uint64,
 ) []byte {
 	var key []byte

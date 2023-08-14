@@ -9,6 +9,7 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateTrade{}, "trade/CreateTrade", nil)
+
 	cdc.RegisterConcrete(&MsgProcessTrade{}, "trade/ProcessTrade", nil)
 	// this line is used by starport scaffolding # 2
 }
@@ -17,6 +18,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateTrade{},
 	)
+
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgProcessTrade{},
 	)

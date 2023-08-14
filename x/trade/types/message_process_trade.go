@@ -2,14 +2,14 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	//sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 const TypeMsgProcessTrade = "process_trade"
 
 var _ sdk.Msg = &MsgProcessTrade{}
 
-func NewMsgProcessTrade(creator string, processType string, tradeIndex string) *MsgProcessTrade {
+func NewMsgProcessTrade(creator string, processType string, tradeIndex uint64) *MsgProcessTrade {
 	return &MsgProcessTrade{
 		Creator:     creator,
 		ProcessType: processType,
@@ -41,7 +41,15 @@ func (msg *MsgProcessTrade) GetSignBytes() []byte {
 func (msg *MsgProcessTrade) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+		return ErrInvalidCreatorAddress
+	}
+
+	if msg.ProcessType != Confirm && msg.ProcessType != Reject {
+		return ErrInvalidProcessType
+	}
+
+	if msg.TradeIndex <= 0 {
+		return ErrInvalidTradeIndex
 	}
 	return nil
 }

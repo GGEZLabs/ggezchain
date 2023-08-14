@@ -21,25 +21,25 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func networkWithStoredTradeObjects(t *testing.T, n int) (*network.Network, []types.StoredTrade) {
+func networkWithStoredTempTradeObjects(t *testing.T, n int) (*network.Network, []types.StoredTempTrade) {
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
 	for i := 0; i < n; i++ {
-		storedTrade := types.StoredTrade{
+		storedTempTrade := types.StoredTempTrade{
 			TradeIndex: uint64(i),
 		}
-		nullify.Fill(&storedTrade)
-		state.StoredTradeList = append(state.StoredTradeList, storedTrade)
+		nullify.Fill(&storedTempTrade)
+		state.StoredTempTradeList = append(state.StoredTempTradeList, storedTempTrade)
 	}
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
 	cfg.GenesisState[types.ModuleName] = buf
-	return network.New(t, cfg), state.StoredTradeList
+	return network.New(t, cfg), state.StoredTempTradeList
 }
 
-func TestShowStoredTrade(t *testing.T) {
-	net, objs := networkWithStoredTradeObjects(t, 2)
+func TestShowStoredTempTrade(t *testing.T) {
+	net, objs := networkWithStoredTempTradeObjects(t, 2)
 
 	ctx := net.Validators[0].ClientCtx
 	common := []string{
@@ -51,7 +51,7 @@ func TestShowStoredTrade(t *testing.T) {
 
 		args []string
 		err  error
-		obj  types.StoredTrade
+		obj  types.StoredTempTrade
 	}{
 		{
 			desc:         "found",
@@ -74,27 +74,27 @@ func TestShowStoredTrade(t *testing.T) {
 				strconv.Itoa(int(tc.idTradeIndex)),
 			}
 			args = append(args, tc.args...)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowStoredTrade(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowStoredTempTrade(), args)
 			if tc.err != nil {
 				stat, ok := status.FromError(tc.err)
 				require.True(t, ok)
 				require.ErrorIs(t, stat.Err(), tc.err)
 			} else {
 				require.NoError(t, err)
-				var resp types.QueryGetStoredTradeResponse
+				var resp types.QueryGetStoredTempTradeResponse
 				require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-				require.NotNil(t, resp.StoredTrade)
+				require.NotNil(t, resp.StoredTempTrade)
 				require.Equal(t,
 					nullify.Fill(&tc.obj),
-					nullify.Fill(&resp.StoredTrade),
+					nullify.Fill(&resp.StoredTempTrade),
 				)
 			}
 		})
 	}
 }
 
-func TestListStoredTrade(t *testing.T) {
-	net, objs := networkWithStoredTradeObjects(t, 5)
+func TestListStoredTempTrade(t *testing.T) {
+	net, objs := networkWithStoredTempTradeObjects(t, 5)
 
 	ctx := net.Validators[0].ClientCtx
 	request := func(next []byte, offset, limit uint64, total bool) []string {
@@ -116,14 +116,14 @@ func TestListStoredTrade(t *testing.T) {
 		step := 2
 		for i := 0; i < len(objs); i += step {
 			args := request(nil, uint64(i), uint64(step), false)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListStoredTrade(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListStoredTempTrade(), args)
 			require.NoError(t, err)
-			var resp types.QueryAllStoredTradeResponse
+			var resp types.QueryAllStoredTempTradeResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.StoredTrade), step)
+			require.LessOrEqual(t, len(resp.StoredTempTrade), step)
 			require.Subset(t,
 				nullify.Fill(objs),
-				nullify.Fill(resp.StoredTrade),
+				nullify.Fill(resp.StoredTempTrade),
 			)
 		}
 	})
@@ -132,29 +132,29 @@ func TestListStoredTrade(t *testing.T) {
 		var next []byte
 		for i := 0; i < len(objs); i += step {
 			args := request(next, 0, uint64(step), false)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListStoredTrade(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListStoredTempTrade(), args)
 			require.NoError(t, err)
-			var resp types.QueryAllStoredTradeResponse
+			var resp types.QueryAllStoredTempTradeResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.StoredTrade), step)
+			require.LessOrEqual(t, len(resp.StoredTempTrade), step)
 			require.Subset(t,
 				nullify.Fill(objs),
-				nullify.Fill(resp.StoredTrade),
+				nullify.Fill(resp.StoredTempTrade),
 			)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
 		args := request(nil, 0, uint64(len(objs)), true)
-		out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListStoredTrade(), args)
+		out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListStoredTempTrade(), args)
 		require.NoError(t, err)
-		var resp types.QueryAllStoredTradeResponse
+		var resp types.QueryAllStoredTempTradeResponse
 		require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 		require.NoError(t, err)
 		require.Equal(t, len(objs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(objs),
-			nullify.Fill(resp.StoredTrade),
+			nullify.Fill(resp.StoredTempTrade),
 		)
 	})
 }

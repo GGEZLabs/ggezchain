@@ -8,6 +8,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "testchain/trade/params.proto";
 import "testchain/trade/trade_index.proto";
 import "testchain/trade/stored_trade.proto";
+import "testchain/trade/stored_temp_trade.proto";
 
 option go_package = "github.com/GGEZLabs/testchain/x/trade/types";
 
@@ -35,6 +36,16 @@ service Query {
     option (google.api.http).get = "/GGEZLabs/testchain/trade/stored_trade";
   
   }
+  
+  // Queries a list of StoredTempTrade items.
+  rpc StoredTempTrade    (QueryGetStoredTempTradeRequest) returns (QueryGetStoredTempTradeResponse) {
+    option (google.api.http).get = "/GGEZLabs/testchain/trade/stored_temp_trade/{tradeIndex}";
+  
+  }
+  rpc StoredTempTradeAll (QueryAllStoredTempTradeRequest) returns (QueryAllStoredTempTradeResponse) {
+    option (google.api.http).get = "/GGEZLabs/testchain/trade/stored_temp_trade";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
@@ -53,7 +64,7 @@ message QueryGetTradeIndexResponse {
 }
 
 message QueryGetStoredTradeRequest {
-  string tradeIndex = 1;
+  uint64 tradeIndex = 1;
 }
 
 message QueryGetStoredTradeResponse {
@@ -67,5 +78,22 @@ message QueryAllStoredTradeRequest {
 message QueryAllStoredTradeResponse {
   repeated StoredTrade                            storedTrade = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination  = 2;
+}
+
+message QueryGetStoredTempTradeRequest {
+  uint64 tradeIndex = 1;
+}
+
+message QueryGetStoredTempTradeResponse {
+  StoredTempTrade storedTempTrade = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllStoredTempTradeRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllStoredTempTradeResponse {
+  repeated StoredTempTrade                        storedTempTrade = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination      = 2;
 }
 

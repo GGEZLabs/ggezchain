@@ -18760,9 +18760,14 @@ paths:
                       description: admin is the account address of the group admin.
                     metadata:
                       type: string
-                      description: >-
+                      title: >-
                         metadata is any arbitrary metadata attached to the group
                         policy.
+
+                        the recommended format of the metadata is to be found
+                        here:
+
+                        https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
                     version:
                       type: string
                       format: uint64
@@ -19146,9 +19151,14 @@ paths:
                       description: admin is the account address of the group admin.
                     metadata:
                       type: string
-                      description: >-
+                      title: >-
                         metadata is any arbitrary metadata attached to the group
                         policy.
+
+                        the recommended format of the metadata is to be found
+                        here:
+
+                        https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
                     version:
                       type: string
                       format: uint64
@@ -19534,9 +19544,14 @@ paths:
                     description: admin is the account address of the group admin.
                   metadata:
                     type: string
-                    description: >-
+                    title: >-
                       metadata is any arbitrary metadata attached to the group
                       policy.
+
+                      the recommended format of the metadata is to be found
+                      here:
+
+                      https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
                   version:
                     type: string
                     format: uint64
@@ -20812,9 +20827,14 @@ paths:
                       policy.
                   metadata:
                     type: string
-                    description: >-
+                    title: >-
                       metadata is any arbitrary metadata attached to the
                       proposal.
+
+                      the recommended format of the metadata is to be found
+                      here:
+
+                      https://docs.cosmos.network/v0.47/modules/group#proposal-4
                   proposers:
                     type: array
                     items:
@@ -21556,9 +21576,14 @@ paths:
                         policy.
                     metadata:
                       type: string
-                      description: >-
+                      title: >-
                         metadata is any arbitrary metadata attached to the
                         proposal.
+
+                        the recommended format of the metadata is to be found
+                        here:
+
+                        https://docs.cosmos.network/v0.47/modules/group#proposal-4
                     proposers:
                       type: array
                       items:
@@ -46448,6 +46473,180 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /GGEZLabs/testchain/trade/stored_temp_trade:
+    get:
+      operationId: TestchainTradeStoredTempTradeAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedTempTrade:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tradeIndex:
+                      type: string
+                      format: uint64
+                    tempTradeIndex:
+                      type: string
+                      format: uint64
+                    createDate:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /GGEZLabs/testchain/trade/stored_temp_trade/{tradeIndex}:
+    get:
+      summary: Queries a list of StoredTempTrade items.
+      operationId: TestchainTradeStoredTempTrade
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedTempTrade:
+                type: object
+                properties:
+                  tradeIndex:
+                    type: string
+                    format: uint64
+                  tempTradeIndex:
+                    type: string
+                    format: uint64
+                  createDate:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: tradeIndex
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
   /GGEZLabs/testchain/trade/stored_trade:
     get:
       operationId: TestchainTradeStoredTradeAll
@@ -46464,6 +46663,7 @@ paths:
                   properties:
                     tradeIndex:
                       type: string
+                      format: uint64
                     tradeType:
                       type: string
                     coin:
@@ -46610,6 +46810,7 @@ paths:
                 properties:
                   tradeIndex:
                     type: string
+                    format: uint64
                   tradeType:
                     type: string
                   coin:
@@ -46659,6 +46860,7 @@ paths:
           in: path
           required: true
           type: string
+          format: uint64
       tags:
         - Query
   /GGEZLabs/testchain/trade/trade_index:
@@ -60130,7 +60332,10 @@ definitions:
         description: admin is the account address of the group admin.
       metadata:
         type: string
-        description: metadata is any arbitrary metadata attached to the group policy.
+        title: |-
+          metadata is any arbitrary metadata attached to the group policy.
+          the recommended format of the metadata is to be found here:
+          https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
       version:
         type: string
         format: uint64
@@ -60336,7 +60541,10 @@ definitions:
         description: group_policy_address is the account address of group policy.
       metadata:
         type: string
-        description: metadata is any arbitrary metadata attached to the proposal.
+        title: |-
+          metadata is any arbitrary metadata attached to the proposal.
+          the recommended format of the metadata is to be found here:
+          https://docs.cosmos.network/v0.47/modules/group#proposal-4
       proposers:
         type: array
         items:
@@ -60763,7 +60971,12 @@ definitions:
               description: admin is the account address of the group admin.
             metadata:
               type: string
-              description: metadata is any arbitrary metadata attached to the group policy.
+              title: >-
+                metadata is any arbitrary metadata attached to the group policy.
+
+                the recommended format of the metadata is to be found here:
+
+                https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
             version:
               type: string
               format: uint64
@@ -60886,7 +61099,12 @@ definitions:
               description: admin is the account address of the group admin.
             metadata:
               type: string
-              description: metadata is any arbitrary metadata attached to the group policy.
+              title: >-
+                metadata is any arbitrary metadata attached to the group policy.
+
+                the recommended format of the metadata is to be found here:
+
+                https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
             version:
               type: string
               format: uint64
@@ -61010,7 +61228,10 @@ definitions:
             description: admin is the account address of the group admin.
           metadata:
             type: string
-            description: metadata is any arbitrary metadata attached to the group policy.
+            title: |-
+              metadata is any arbitrary metadata attached to the group policy.
+              the recommended format of the metadata is to be found here:
+              https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
           version:
             type: string
             format: uint64
@@ -61296,7 +61517,10 @@ definitions:
             description: group_policy_address is the account address of group policy.
           metadata:
             type: string
-            description: metadata is any arbitrary metadata attached to the proposal.
+            title: |-
+              metadata is any arbitrary metadata attached to the proposal.
+              the recommended format of the metadata is to be found here:
+              https://docs.cosmos.network/v0.47/modules/group#proposal-4
           proposers:
             type: array
             items:
@@ -61593,7 +61817,10 @@ definitions:
               description: group_policy_address is the account address of group policy.
             metadata:
               type: string
-              description: metadata is any arbitrary metadata attached to the proposal.
+              title: |-
+                metadata is any arbitrary metadata attached to the proposal.
+                the recommended format of the metadata is to be found here:
+                https://docs.cosmos.network/v0.47/modules/group#proposal-4
             proposers:
               type: array
               items:
@@ -75416,6 +75643,7 @@ definitions:
     properties:
       tradeIndex:
         type: string
+        format: uint64
       status:
         type: string
   testchain.trade.MsgProcessTradeResponse:
@@ -75423,6 +75651,7 @@ definitions:
     properties:
       tradeIndex:
         type: string
+        format: uint64
       status:
         type: string
       checker:
@@ -75440,6 +75669,48 @@ definitions:
   testchain.trade.Params:
     type: object
     description: Params defines the parameters for the module.
+  testchain.trade.QueryAllStoredTempTradeResponse:
+    type: object
+    properties:
+      storedTempTrade:
+        type: array
+        items:
+          type: object
+          properties:
+            tradeIndex:
+              type: string
+              format: uint64
+            tempTradeIndex:
+              type: string
+              format: uint64
+            createDate:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            description: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently. It will be empty if
+              there are no more results.
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   testchain.trade.QueryAllStoredTradeResponse:
     type: object
     properties:
@@ -75450,6 +75721,7 @@ definitions:
           properties:
             tradeIndex:
               type: string
+              format: uint64
             tradeType:
               type: string
             coin:
@@ -75502,6 +75774,20 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  testchain.trade.QueryGetStoredTempTradeResponse:
+    type: object
+    properties:
+      storedTempTrade:
+        type: object
+        properties:
+          tradeIndex:
+            type: string
+            format: uint64
+          tempTradeIndex:
+            type: string
+            format: uint64
+          createDate:
+            type: string
   testchain.trade.QueryGetStoredTradeResponse:
     type: object
     properties:
@@ -75510,6 +75796,7 @@ definitions:
         properties:
           tradeIndex:
             type: string
+            format: uint64
           tradeType:
             type: string
           coin:
@@ -75552,11 +75839,23 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  testchain.trade.StoredTempTrade:
+    type: object
+    properties:
+      tradeIndex:
+        type: string
+        format: uint64
+      tempTradeIndex:
+        type: string
+        format: uint64
+      createDate:
+        type: string
   testchain.trade.StoredTrade:
     type: object
     properties:
       tradeIndex:
         type: string
+        format: uint64
       tradeType:
         type: string
       coin:

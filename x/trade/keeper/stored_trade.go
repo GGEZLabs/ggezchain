@@ -18,7 +18,7 @@ func (k Keeper) SetStoredTrade(ctx sdk.Context, storedTrade types.StoredTrade) {
 // GetStoredTrade returns a storedTrade from its index
 func (k Keeper) GetStoredTrade(
 	ctx sdk.Context,
-	tradeIndex string,
+	tradeIndex uint64,
 
 ) (val types.StoredTrade, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.StoredTradeKeyPrefix))
@@ -37,7 +37,7 @@ func (k Keeper) GetStoredTrade(
 // RemoveStoredTrade removes a storedTrade from the store
 func (k Keeper) RemoveStoredTrade(
 	ctx sdk.Context,
-	tradeIndex string,
+	tradeIndex uint64,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.StoredTradeKeyPrefix))

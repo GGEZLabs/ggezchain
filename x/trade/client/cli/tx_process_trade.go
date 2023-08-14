@@ -7,6 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ func CmdProcessTrade() *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argProcessType := args[0]
-			argTradeIndex := args[1]
+			argTradeIndex, err := cast.ToUint64E(args[1])
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

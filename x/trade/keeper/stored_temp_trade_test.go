@@ -15,21 +15,21 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func createNStoredTrade(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.StoredTrade {
-	items := make([]types.StoredTrade, n)
+func createNStoredTempTrade(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.StoredTempTrade {
+	items := make([]types.StoredTempTrade, n)
 	for i := range items {
 		items[i].TradeIndex = uint64(i)
 
-		keeper.SetStoredTrade(ctx, items[i])
+		keeper.SetStoredTempTrade(ctx, items[i])
 	}
 	return items
 }
 
-func TestStoredTradeGet(t *testing.T) {
+func TestStoredTempTradeGet(t *testing.T) {
 	keeper, ctx := keepertest.TradeKeeper(t)
-	items := createNStoredTrade(keeper, ctx, 10)
+	items := createNStoredTempTrade(keeper, ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetStoredTrade(ctx,
+		rst, found := keeper.GetStoredTempTrade(ctx,
 			item.TradeIndex,
 		)
 		require.True(t, found)
@@ -39,25 +39,25 @@ func TestStoredTradeGet(t *testing.T) {
 		)
 	}
 }
-func TestStoredTradeRemove(t *testing.T) {
+func TestStoredTempTradeRemove(t *testing.T) {
 	keeper, ctx := keepertest.TradeKeeper(t)
-	items := createNStoredTrade(keeper, ctx, 10)
+	items := createNStoredTempTrade(keeper, ctx, 10)
 	for _, item := range items {
-		keeper.RemoveStoredTrade(ctx,
+		keeper.RemoveStoredTempTrade(ctx,
 			item.TradeIndex,
 		)
-		_, found := keeper.GetStoredTrade(ctx,
+		_, found := keeper.GetStoredTempTrade(ctx,
 			item.TradeIndex,
 		)
 		require.False(t, found)
 	}
 }
 
-func TestStoredTradeGetAll(t *testing.T) {
+func TestStoredTempTradeGetAll(t *testing.T) {
 	keeper, ctx := keepertest.TradeKeeper(t)
-	items := createNStoredTrade(keeper, ctx, 10)
+	items := createNStoredTempTrade(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllStoredTrade(ctx)),
+		nullify.Fill(keeper.GetAllStoredTempTrade(ctx)),
 	)
 }

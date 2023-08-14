@@ -20,18 +20,18 @@ message MsgCreateTrade {
 }
 
 message MsgCreateTradeResponse {
-  string tradeIndex = 1;
+  uint64 tradeIndex = 1;
   string status     = 2;
 }
 
 message MsgProcessTrade {
   string creator     = 1;
   string processType = 2;
-  string tradeIndex  = 3;
+  uint64 tradeIndex  = 3;
 }
 
 message MsgProcessTradeResponse {
-  string tradeIndex  = 1;
+  uint64 tradeIndex  = 1;
   string status      = 2;
   string checker     = 3;
   string maker       = 4;

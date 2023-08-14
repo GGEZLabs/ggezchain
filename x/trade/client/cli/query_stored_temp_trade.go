@@ -9,10 +9,10 @@ import (
 	"github.com/GGEZLabs/testchain/x/trade/types"
 )
 
-func CmdListStoredTrade() *cobra.Command {
+func CmdListStoredTempTrade() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-stored-trade",
-		Short: "list all storedTrade",
+		Use:   "list-stored-temp-trade",
+		Short: "list all storedTempTrade",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
@@ -26,11 +26,11 @@ func CmdListStoredTrade() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllStoredTradeRequest{
+			params := &types.QueryAllStoredTempTradeRequest{
 				Pagination: pageReq,
 			}
 
-			res, err := queryClient.StoredTradeAll(cmd.Context(), params)
+			res, err := queryClient.StoredTempTradeAll(cmd.Context(), params)
 			if err != nil {
 				return err
 			}
@@ -45,10 +45,10 @@ func CmdListStoredTrade() *cobra.Command {
 	return cmd
 }
 
-func CmdShowStoredTrade() *cobra.Command {
+func CmdShowStoredTempTrade() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-stored-trade [trade-index]",
-		Short: "shows a storedTrade",
+		Use:   "show-stored-temp-trade [trade-index]",
+		Short: "shows a storedTempTrade",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientQueryContext(cmd)
@@ -60,11 +60,11 @@ func CmdShowStoredTrade() *cobra.Command {
 
 			argTradeIndex, err := cast.ToUint64E(args[0])
 
-			params := &types.QueryGetStoredTradeRequest{
+			params := &types.QueryGetStoredTempTradeRequest{
 				TradeIndex: argTradeIndex,
 			}
 
-			res, err := queryClient.StoredTrade(cmd.Context(), params)
+			res, err := queryClient.StoredTempTrade(cmd.Context(), params)
 			if err != nil {
 				return err
 			}
