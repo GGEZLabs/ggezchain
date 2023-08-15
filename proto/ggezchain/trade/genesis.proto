@@ -1,14 +1,14 @@
 syntax = "proto3";
 
-package testchain.trade;
+package ggezchain.trade;
 
 import "gogoproto/gogo.proto";
-import "testchain/trade/params.proto";
-import "testchain/trade/trade_index.proto";
-import "testchain/trade/stored_trade.proto";
-import "testchain/trade/stored_temp_trade.proto";
+import "ggezchain/trade/params.proto";
+import "ggezchain/trade/trade_index.proto";
+import "ggezchain/trade/stored_trade.proto";
+import "ggezchain/trade/stored_temp_trade.proto";
 
-option go_package = "github.com/GGEZLabs/testchain/x/trade/types";
+option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
 
 // GenesisState defines the trade module's genesis state.
 message GenesisState {

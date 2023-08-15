@@ -1,0 +1,24 @@
+{
+    "trade": {
+      "allowed_makers": [
+        {
+          "name": "ahmad",
+          "address": "ggez1r0hpalfc25gkz483ma8gvj3wzs8e8papqakwzp"
+        },
+        {
+          "name": "rami",
+          "address": "ggez1lv35em7d6t0z7tr592aumygj4msldvk4e5rmq5"
+        }
+      ],
+      "allowed_checkers": [
+        {
+          "name": "mutaz",
+          "address": "ggez1r0hpalfc25gkz483ma8gvj3wzs8e8papqakwzp"
+        },
+        {
+          "name": "mohd",
+          "address": "ggez1lv35em7d6t0z7tr592aumygj4msldvk4e5rmq5"
+        }
+      ]
+    }
+  }

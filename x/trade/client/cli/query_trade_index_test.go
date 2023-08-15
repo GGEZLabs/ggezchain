@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/status"
 
-	"github.com/GGEZLabs/testchain/testutil/network"
-	"github.com/GGEZLabs/testchain/testutil/nullify"
-	"github.com/GGEZLabs/testchain/x/trade/client/cli"
-	"github.com/GGEZLabs/testchain/x/trade/types"
+	"github.com/GGEZLabs/ggezchain/testutil/network"
+	"github.com/GGEZLabs/ggezchain/testutil/nullify"
+	"github.com/GGEZLabs/ggezchain/x/trade/client/cli"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 )
 
 func networkWithTradeIndexObjects(t *testing.T) (*network.Network, types.TradeIndex) {

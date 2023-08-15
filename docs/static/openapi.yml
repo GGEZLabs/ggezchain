@@ -34923,6 +34923,468 @@ paths:
           format: int64
       tags:
         - Query
+  /GGEZLabs/ggezchain/trade/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: GgezchainTradeParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /GGEZLabs/ggezchain/trade/stored_temp_trade:
+    get:
+      operationId: GgezchainTradeStoredTempTradeAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedTempTrade:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tradeIndex:
+                      type: string
+                      format: uint64
+                    tempTradeIndex:
+                      type: string
+                      format: uint64
+                    createDate:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /GGEZLabs/ggezchain/trade/stored_temp_trade/{tradeIndex}:
+    get:
+      summary: Queries a list of StoredTempTrade items.
+      operationId: GgezchainTradeStoredTempTrade
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedTempTrade:
+                type: object
+                properties:
+                  tradeIndex:
+                    type: string
+                    format: uint64
+                  tempTradeIndex:
+                    type: string
+                    format: uint64
+                  createDate:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: tradeIndex
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /GGEZLabs/ggezchain/trade/stored_trade:
+    get:
+      operationId: GgezchainTradeStoredTradeAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedTrade:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tradeIndex:
+                      type: string
+                      format: uint64
+                    tradeType:
+                      type: string
+                    coin:
+                      type: string
+                    price:
+                      type: string
+                    quantity:
+                      type: string
+                    receiverAddress:
+                      type: string
+                    status:
+                      type: string
+                    maker:
+                      type: string
+                    checker:
+                      type: string
+                    createDate:
+                      type: string
+                    updateDate:
+                      type: string
+                    processDate:
+                      type: string
+                    tradeData:
+                      type: string
+                    result:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    description: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently. It will be empty if
+                      there are no more results.
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  /GGEZLabs/ggezchain/trade/stored_trade/{tradeIndex}:
+    get:
+      summary: Queries a list of StoredTrade items.
+      operationId: GgezchainTradeStoredTrade
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedTrade:
+                type: object
+                properties:
+                  tradeIndex:
+                    type: string
+                    format: uint64
+                  tradeType:
+                    type: string
+                  coin:
+                    type: string
+                  price:
+                    type: string
+                  quantity:
+                    type: string
+                  receiverAddress:
+                    type: string
+                  status:
+                    type: string
+                  maker:
+                    type: string
+                  checker:
+                    type: string
+                  createDate:
+                    type: string
+                  updateDate:
+                    type: string
+                  processDate:
+                    type: string
+                  tradeData:
+                    type: string
+                  result:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: tradeIndex
+          in: path
+          required: true
+          type: string
+          format: uint64
+      tags:
+        - Query
+  /GGEZLabs/ggezchain/trade/trade_index:
+    get:
+      summary: Queries a TradeIndex by index.
+      operationId: GgezchainTradeTradeIndex
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              TradeIndex:
+                type: object
+                properties:
+                  nextId:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /ibc/apps/interchain_accounts/controller/v1/owners/{owner}/connections/{connection_id}:
     get:
       summary: >-
@@ -46435,468 +46897,6 @@ paths:
                           "@type": "type.googleapis.com/google.protobuf.Duration",
                           "value": "1.212s"
                         }
-      tags:
-        - Query
-  /GGEZLabs/testchain/trade/params:
-    get:
-      summary: Parameters queries the parameters of the module.
-      operationId: TestchainTradeParams
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              params:
-                description: params holds all the parameters of this module.
-                type: object
-            description: >-
-              QueryParamsResponse is response type for the Query/Params RPC
-              method.
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      tags:
-        - Query
-  /GGEZLabs/testchain/trade/stored_temp_trade:
-    get:
-      operationId: TestchainTradeStoredTempTradeAll
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              storedTempTrade:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    tradeIndex:
-                      type: string
-                      format: uint64
-                    tempTradeIndex:
-                      type: string
-                      format: uint64
-                    createDate:
-                      type: string
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                    description: |-
-                      next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently. It will be empty if
-                      there are no more results.
-                  total:
-                    type: string
-                    format: uint64
-                    title: >-
-                      total is total number of results available if
-                      PageRequest.count_total
-
-                      was set, its value is undefined otherwise
-                description: >-
-                  PageResponse is to be embedded in gRPC response messages where
-                  the
-
-                  corresponding request message has used PageRequest.
-
-                   message SomeResponse {
-                           repeated Bar results = 1;
-                           PageResponse page = 2;
-                   }
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: pagination.key
-          description: |-
-            key is a value returned in PageResponse.next_key to begin
-            querying the next page most efficiently. Only one of offset or key
-            should be set.
-          in: query
-          required: false
-          type: string
-          format: byte
-        - name: pagination.offset
-          description: >-
-            offset is a numeric offset that can be used when key is unavailable.
-
-            It is less efficient than using key. Only one of offset or key
-            should
-
-            be set.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.limit
-          description: >-
-            limit is the total number of results to be returned in the result
-            page.
-
-            If left empty it will default to a value to be set by each app.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.count_total
-          description: >-
-            count_total is set to true  to indicate that the result set should
-            include
-
-            a count of the total number of items available for pagination in
-            UIs.
-
-            count_total is only respected when offset is used. It is ignored
-            when key
-
-            is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
-      tags:
-        - Query
-  /GGEZLabs/testchain/trade/stored_temp_trade/{tradeIndex}:
-    get:
-      summary: Queries a list of StoredTempTrade items.
-      operationId: TestchainTradeStoredTempTrade
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              storedTempTrade:
-                type: object
-                properties:
-                  tradeIndex:
-                    type: string
-                    format: uint64
-                  tempTradeIndex:
-                    type: string
-                    format: uint64
-                  createDate:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: tradeIndex
-          in: path
-          required: true
-          type: string
-          format: uint64
-      tags:
-        - Query
-  /GGEZLabs/testchain/trade/stored_trade:
-    get:
-      operationId: TestchainTradeStoredTradeAll
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              storedTrade:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    tradeIndex:
-                      type: string
-                      format: uint64
-                    tradeType:
-                      type: string
-                    coin:
-                      type: string
-                    price:
-                      type: string
-                    quantity:
-                      type: string
-                    receiverAddress:
-                      type: string
-                    status:
-                      type: string
-                    maker:
-                      type: string
-                    checker:
-                      type: string
-                    createDate:
-                      type: string
-                    updateDate:
-                      type: string
-                    processDate:
-                      type: string
-                    tradeData:
-                      type: string
-                    result:
-                      type: string
-              pagination:
-                type: object
-                properties:
-                  next_key:
-                    type: string
-                    format: byte
-                    description: |-
-                      next_key is the key to be passed to PageRequest.key to
-                      query the next page most efficiently. It will be empty if
-                      there are no more results.
-                  total:
-                    type: string
-                    format: uint64
-                    title: >-
-                      total is total number of results available if
-                      PageRequest.count_total
-
-                      was set, its value is undefined otherwise
-                description: >-
-                  PageResponse is to be embedded in gRPC response messages where
-                  the
-
-                  corresponding request message has used PageRequest.
-
-                   message SomeResponse {
-                           repeated Bar results = 1;
-                           PageResponse page = 2;
-                   }
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: pagination.key
-          description: |-
-            key is a value returned in PageResponse.next_key to begin
-            querying the next page most efficiently. Only one of offset or key
-            should be set.
-          in: query
-          required: false
-          type: string
-          format: byte
-        - name: pagination.offset
-          description: >-
-            offset is a numeric offset that can be used when key is unavailable.
-
-            It is less efficient than using key. Only one of offset or key
-            should
-
-            be set.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.limit
-          description: >-
-            limit is the total number of results to be returned in the result
-            page.
-
-            If left empty it will default to a value to be set by each app.
-          in: query
-          required: false
-          type: string
-          format: uint64
-        - name: pagination.count_total
-          description: >-
-            count_total is set to true  to indicate that the result set should
-            include
-
-            a count of the total number of items available for pagination in
-            UIs.
-
-            count_total is only respected when offset is used. It is ignored
-            when key
-
-            is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
-      tags:
-        - Query
-  /GGEZLabs/testchain/trade/stored_trade/{tradeIndex}:
-    get:
-      summary: Queries a list of StoredTrade items.
-      operationId: TestchainTradeStoredTrade
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              storedTrade:
-                type: object
-                properties:
-                  tradeIndex:
-                    type: string
-                    format: uint64
-                  tradeType:
-                    type: string
-                  coin:
-                    type: string
-                  price:
-                    type: string
-                  quantity:
-                    type: string
-                  receiverAddress:
-                    type: string
-                  status:
-                    type: string
-                  maker:
-                    type: string
-                  checker:
-                    type: string
-                  createDate:
-                    type: string
-                  updateDate:
-                    type: string
-                  processDate:
-                    type: string
-                  tradeData:
-                    type: string
-                  result:
-                    type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: tradeIndex
-          in: path
-          required: true
-          type: string
-          format: uint64
-      tags:
-        - Query
-  /GGEZLabs/testchain/trade/trade_index:
-    get:
-      summary: Queries a TradeIndex by index.
-      operationId: TestchainTradeTradeIndex
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              TradeIndex:
-                type: object
-                properties:
-                  nextId:
-                    type: string
-                    format: uint64
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
       tags:
         - Query
 definitions:
@@ -70993,6 +70993,256 @@ definitions:
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
     description: Period defines a length of time and amount of coins that will vest.
+  ggezchain.trade.MsgCreateTradeResponse:
+    type: object
+    properties:
+      tradeIndex:
+        type: string
+        format: uint64
+      status:
+        type: string
+  ggezchain.trade.MsgProcessTradeResponse:
+    type: object
+    properties:
+      tradeIndex:
+        type: string
+        format: uint64
+      status:
+        type: string
+      checker:
+        type: string
+      maker:
+        type: string
+      tradeData:
+        type: string
+      createDate:
+        type: string
+      updateDate:
+        type: string
+      processDate:
+        type: string
+  ggezchain.trade.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  ggezchain.trade.QueryAllStoredTempTradeResponse:
+    type: object
+    properties:
+      storedTempTrade:
+        type: array
+        items:
+          type: object
+          properties:
+            tradeIndex:
+              type: string
+              format: uint64
+            tempTradeIndex:
+              type: string
+              format: uint64
+            createDate:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            description: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently. It will be empty if
+              there are no more results.
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  ggezchain.trade.QueryAllStoredTradeResponse:
+    type: object
+    properties:
+      storedTrade:
+        type: array
+        items:
+          type: object
+          properties:
+            tradeIndex:
+              type: string
+              format: uint64
+            tradeType:
+              type: string
+            coin:
+              type: string
+            price:
+              type: string
+            quantity:
+              type: string
+            receiverAddress:
+              type: string
+            status:
+              type: string
+            maker:
+              type: string
+            checker:
+              type: string
+            createDate:
+              type: string
+            updateDate:
+              type: string
+            processDate:
+              type: string
+            tradeData:
+              type: string
+            result:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            description: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently. It will be empty if
+              there are no more results.
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  ggezchain.trade.QueryGetStoredTempTradeResponse:
+    type: object
+    properties:
+      storedTempTrade:
+        type: object
+        properties:
+          tradeIndex:
+            type: string
+            format: uint64
+          tempTradeIndex:
+            type: string
+            format: uint64
+          createDate:
+            type: string
+  ggezchain.trade.QueryGetStoredTradeResponse:
+    type: object
+    properties:
+      storedTrade:
+        type: object
+        properties:
+          tradeIndex:
+            type: string
+            format: uint64
+          tradeType:
+            type: string
+          coin:
+            type: string
+          price:
+            type: string
+          quantity:
+            type: string
+          receiverAddress:
+            type: string
+          status:
+            type: string
+          maker:
+            type: string
+          checker:
+            type: string
+          createDate:
+            type: string
+          updateDate:
+            type: string
+          processDate:
+            type: string
+          tradeData:
+            type: string
+          result:
+            type: string
+  ggezchain.trade.QueryGetTradeIndexResponse:
+    type: object
+    properties:
+      TradeIndex:
+        type: object
+        properties:
+          nextId:
+            type: string
+            format: uint64
+  ggezchain.trade.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  ggezchain.trade.StoredTempTrade:
+    type: object
+    properties:
+      tradeIndex:
+        type: string
+        format: uint64
+      tempTradeIndex:
+        type: string
+        format: uint64
+      createDate:
+        type: string
+  ggezchain.trade.StoredTrade:
+    type: object
+    properties:
+      tradeIndex:
+        type: string
+        format: uint64
+      tradeType:
+        type: string
+      coin:
+        type: string
+      price:
+        type: string
+      quantity:
+        type: string
+      receiverAddress:
+        type: string
+      status:
+        type: string
+      maker:
+        type: string
+      checker:
+        type: string
+      createDate:
+        type: string
+      updateDate:
+        type: string
+      processDate:
+        type: string
+      tradeData:
+        type: string
+      result:
+        type: string
+  ggezchain.trade.TradeIndex:
+    type: object
+    properties:
+      nextId:
+        type: string
+        format: uint64
   ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccountResponse:
     type: object
     properties:
@@ -75638,253 +75888,3 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
-  testchain.trade.MsgCreateTradeResponse:
-    type: object
-    properties:
-      tradeIndex:
-        type: string
-        format: uint64
-      status:
-        type: string
-  testchain.trade.MsgProcessTradeResponse:
-    type: object
-    properties:
-      tradeIndex:
-        type: string
-        format: uint64
-      status:
-        type: string
-      checker:
-        type: string
-      maker:
-        type: string
-      tradeData:
-        type: string
-      createDate:
-        type: string
-      updateDate:
-        type: string
-      processDate:
-        type: string
-  testchain.trade.Params:
-    type: object
-    description: Params defines the parameters for the module.
-  testchain.trade.QueryAllStoredTempTradeResponse:
-    type: object
-    properties:
-      storedTempTrade:
-        type: array
-        items:
-          type: object
-          properties:
-            tradeIndex:
-              type: string
-              format: uint64
-            tempTradeIndex:
-              type: string
-              format: uint64
-            createDate:
-              type: string
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  testchain.trade.QueryAllStoredTradeResponse:
-    type: object
-    properties:
-      storedTrade:
-        type: array
-        items:
-          type: object
-          properties:
-            tradeIndex:
-              type: string
-              format: uint64
-            tradeType:
-              type: string
-            coin:
-              type: string
-            price:
-              type: string
-            quantity:
-              type: string
-            receiverAddress:
-              type: string
-            status:
-              type: string
-            maker:
-              type: string
-            checker:
-              type: string
-            createDate:
-              type: string
-            updateDate:
-              type: string
-            processDate:
-              type: string
-            tradeData:
-              type: string
-            result:
-              type: string
-      pagination:
-        type: object
-        properties:
-          next_key:
-            type: string
-            format: byte
-            description: |-
-              next_key is the key to be passed to PageRequest.key to
-              query the next page most efficiently. It will be empty if
-              there are no more results.
-          total:
-            type: string
-            format: uint64
-            title: >-
-              total is total number of results available if
-              PageRequest.count_total
-
-              was set, its value is undefined otherwise
-        description: |-
-          PageResponse is to be embedded in gRPC response messages where the
-          corresponding request message has used PageRequest.
-
-           message SomeResponse {
-                   repeated Bar results = 1;
-                   PageResponse page = 2;
-           }
-  testchain.trade.QueryGetStoredTempTradeResponse:
-    type: object
-    properties:
-      storedTempTrade:
-        type: object
-        properties:
-          tradeIndex:
-            type: string
-            format: uint64
-          tempTradeIndex:
-            type: string
-            format: uint64
-          createDate:
-            type: string
-  testchain.trade.QueryGetStoredTradeResponse:
-    type: object
-    properties:
-      storedTrade:
-        type: object
-        properties:
-          tradeIndex:
-            type: string
-            format: uint64
-          tradeType:
-            type: string
-          coin:
-            type: string
-          price:
-            type: string
-          quantity:
-            type: string
-          receiverAddress:
-            type: string
-          status:
-            type: string
-          maker:
-            type: string
-          checker:
-            type: string
-          createDate:
-            type: string
-          updateDate:
-            type: string
-          processDate:
-            type: string
-          tradeData:
-            type: string
-          result:
-            type: string
-  testchain.trade.QueryGetTradeIndexResponse:
-    type: object
-    properties:
-      TradeIndex:
-        type: object
-        properties:
-          nextId:
-            type: string
-            format: uint64
-  testchain.trade.QueryParamsResponse:
-    type: object
-    properties:
-      params:
-        description: params holds all the parameters of this module.
-        type: object
-    description: QueryParamsResponse is response type for the Query/Params RPC method.
-  testchain.trade.StoredTempTrade:
-    type: object
-    properties:
-      tradeIndex:
-        type: string
-        format: uint64
-      tempTradeIndex:
-        type: string
-        format: uint64
-      createDate:
-        type: string
-  testchain.trade.StoredTrade:
-    type: object
-    properties:
-      tradeIndex:
-        type: string
-        format: uint64
-      tradeType:
-        type: string
-      coin:
-        type: string
-      price:
-        type: string
-      quantity:
-        type: string
-      receiverAddress:
-        type: string
-      status:
-        type: string
-      maker:
-        type: string
-      checker:
-        type: string
-      createDate:
-        type: string
-      updateDate:
-        type: string
-      processDate:
-        type: string
-      tradeData:
-        type: string
-      result:
-        type: string
-  testchain.trade.TradeIndex:
-    type: object
-    properties:
-      nextId:
-        type: string
-        format: uint64

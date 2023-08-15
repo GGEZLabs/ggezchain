@@ -1,49 +1,49 @@
 syntax = "proto3";
 
-package testchain.trade;
+package ggezchain.trade;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
-import "testchain/trade/params.proto";
-import "testchain/trade/trade_index.proto";
-import "testchain/trade/stored_trade.proto";
-import "testchain/trade/stored_temp_trade.proto";
+import "ggezchain/trade/params.proto";
+import "ggezchain/trade/trade_index.proto";
+import "ggezchain/trade/stored_trade.proto";
+import "ggezchain/trade/stored_temp_trade.proto";
 
-option go_package = "github.com/GGEZLabs/testchain/x/trade/types";
+option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
 
 // Query defines the gRPC querier service.
 service Query {
   
   // Parameters queries the parameters of the module.
   rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/GGEZLabs/testchain/trade/params";
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/params";
   
   }
   
   // Queries a TradeIndex by index.
   rpc TradeIndex (QueryGetTradeIndexRequest) returns (QueryGetTradeIndexResponse) {
-    option (google.api.http).get = "/GGEZLabs/testchain/trade/trade_index";
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/trade_index";
   
   }
   
   // Queries a list of StoredTrade items.
   rpc StoredTrade    (QueryGetStoredTradeRequest) returns (QueryGetStoredTradeResponse) {
-    option (google.api.http).get = "/GGEZLabs/testchain/trade/stored_trade/{tradeIndex}";
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/stored_trade/{tradeIndex}";
   
   }
   rpc StoredTradeAll (QueryAllStoredTradeRequest) returns (QueryAllStoredTradeResponse) {
-    option (google.api.http).get = "/GGEZLabs/testchain/trade/stored_trade";
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/stored_trade";
   
   }
   
   // Queries a list of StoredTempTrade items.
   rpc StoredTempTrade    (QueryGetStoredTempTradeRequest) returns (QueryGetStoredTempTradeResponse) {
-    option (google.api.http).get = "/GGEZLabs/testchain/trade/stored_temp_trade/{tradeIndex}";
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/stored_temp_trade/{tradeIndex}";
   
   }
   rpc StoredTempTradeAll (QueryAllStoredTempTradeRequest) returns (QueryAllStoredTempTradeResponse) {
-    option (google.api.http).get = "/GGEZLabs/testchain/trade/stored_temp_trade";
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/stored_temp_trade";
   
   }
 }

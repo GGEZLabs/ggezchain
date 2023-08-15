@@ -3,9 +3,9 @@ package trade
 import (
 	"math/rand"
 
-	"github.com/GGEZLabs/testchain/testutil/sample"
-	tradesimulation "github.com/GGEZLabs/testchain/x/trade/simulation"
-	"github.com/GGEZLabs/testchain/x/trade/types"
+	"github.com/GGEZLabs/ggezchain/testutil/sample"
+	tradesimulation "github.com/GGEZLabs/ggezchain/x/trade/simulation"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"

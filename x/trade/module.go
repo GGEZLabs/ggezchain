@@ -11,9 +11,9 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
-	"github.com/GGEZLabs/testchain/x/trade/client/cli"
-	"github.com/GGEZLabs/testchain/x/trade/keeper"
-	"github.com/GGEZLabs/testchain/x/trade/types"
+	"github.com/GGEZLabs/ggezchain/x/trade/client/cli"
+	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"

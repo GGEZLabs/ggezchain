@@ -7,10 +7,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"testing"
 
-	keepertest "github.com/GGEZLabs/testchain/testutil/keeper"
-	"github.com/GGEZLabs/testchain/testutil/sample"
-	"github.com/GGEZLabs/testchain/x/trade/keeper"
-	"github.com/GGEZLabs/testchain/x/trade/types"
+	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
+	"github.com/GGEZLabs/ggezchain/testutil/sample"
+	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 )
 
 func setupMsgServerCreateTrade(t *testing.T) (types.MsgServer, keeper.Keeper, context.Context) {

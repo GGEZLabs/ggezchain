@@ -110,18 +110,18 @@ import (
 	ibctm "github.com/cosmos/ibc-go/v7/modules/light-clients/07-tendermint"
 	"github.com/spf13/cast"
 
-	trademodule "github.com/GGEZLabs/testchain/x/trade"
-	trademodulekeeper "github.com/GGEZLabs/testchain/x/trade/keeper"
-	trademoduletypes "github.com/GGEZLabs/testchain/x/trade/types"
+	trademodule "github.com/GGEZLabs/ggezchain/x/trade"
+	trademodulekeeper "github.com/GGEZLabs/ggezchain/x/trade/keeper"
+	trademoduletypes "github.com/GGEZLabs/ggezchain/x/trade/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	appparams "github.com/GGEZLabs/testchain/app/params"
-	"github.com/GGEZLabs/testchain/docs"
+	appparams "github.com/GGEZLabs/ggezchain/app/params"
+	"github.com/GGEZLabs/ggezchain/docs"
 )
 
 const (
 	AccountAddressPrefix = "ggez"
-	Name                 = "testchain"
+	Name                 = "ggezchain"
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals

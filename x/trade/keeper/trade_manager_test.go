@@ -4,12 +4,12 @@ import (
 	"context"
 	"testing"
 
-	//"github.com/GGEZLabs/testchain/testutil/sample"
-	tradeKeeper "github.com/GGEZLabs/testchain/x/trade/keeper"
+	//"github.com/GGEZLabs/ggezchain/testutil/sample"
+	tradeKeeper "github.com/GGEZLabs/ggezchain/x/trade/keeper"
 	//sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
-	"github.com/GGEZLabs/testchain/x/trade/types"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -54,6 +54,7 @@ func TestCreateTrade(t *testing.T) {
 	}
 
 }
+
 // func TestIsAddressWhiteListed(t *testing.T) {
 // 	_, k, _ := setupMsgServerCreateTrade(t)
 

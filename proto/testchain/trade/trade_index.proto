@@ -1,9 +1,0 @@
-syntax = "proto3";
-package testchain.trade;
-
-option go_package = "github.com/GGEZLabs/testchain/x/trade/types";
-
-message TradeIndex {
-  uint64 nextId = 1; 
-  
-}

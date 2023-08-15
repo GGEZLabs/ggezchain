@@ -6,10 +6,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	keepertest "github.com/GGEZLabs/testchain/testutil/keeper"
-	"github.com/GGEZLabs/testchain/testutil/nullify"
-	"github.com/GGEZLabs/testchain/x/trade/keeper"
-	"github.com/GGEZLabs/testchain/x/trade/types"
+	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
+	"github.com/GGEZLabs/ggezchain/testutil/nullify"
+	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 )
 
 func createTestTradeIndex(keeper *keeper.Keeper, ctx sdk.Context) types.TradeIndex {

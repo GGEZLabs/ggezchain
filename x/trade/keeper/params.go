@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/GGEZLabs/testchain/x/trade/types"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

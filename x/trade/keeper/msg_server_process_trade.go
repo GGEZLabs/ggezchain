@@ -2,9 +2,9 @@ package keeper
 
 import (
 	"context"
-	"time"
-	"github.com/GGEZLabs/testchain/x/trade/types"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"time"
 )
 
 func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrade) (*types.MsgProcessTradeResponse, error) {

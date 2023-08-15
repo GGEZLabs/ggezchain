@@ -36,10 +36,11 @@ import (
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+
 	// this line is used by starport scaffolding # root/moduleImport
 
-	"github.com/GGEZLabs/testchain/app"
-	appparams "github.com/GGEZLabs/testchain/app/params"
+	"github.com/GGEZLabs/ggezchain/app"
+	appparams "github.com/GGEZLabs/ggezchain/app/params"
 )
 
 // NewRootCmd creates a new root command for a Cosmos SDK application
@@ -57,7 +58,7 @@ func NewRootCmd() (*cobra.Command, appparams.EncodingConfig) {
 
 	rootCmd := &cobra.Command{
 		Use:   app.Name + "d",
-		Short: "Start testchain node",
+		Short: "Start ggezchain node",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())
