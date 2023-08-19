@@ -105,27 +105,29 @@ func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade, co
 		if errSendCoinsFromModuleToAccount != nil {
 			errBurnCoins := k.bank.BurnCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
 			if errBurnCoins != nil {
-				return types.Failed, errSendCoinsFromModuleToAccount
+				return types.CoinsStuckOnModule, errSendCoinsFromModuleToAccount
 			}
 
 			return types.Failed, errSendCoinsFromModuleToAccount
 		}
 	} else if tradeData.TradeType == types.Sell {
-
+		// Try to send coins from account to module
 		errSendCoinsFromAccountToModule := k.bank.SendCoinsFromAccountToModule(ctx, receiverAddress, types.ModuleName, sdk.NewCoins(coin))
 		if errSendCoinsFromAccountToModule != nil {
-			errMintCoins := k.bank.MintCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
-			if errMintCoins != nil {
-				return types.Failed, errSendCoinsFromAccountToModule
-			}
-
+			// returns error
 			return types.Failed, errSendCoinsFromAccountToModule
 		}
+
+		// Try to burn coins
 		errBurnCoins := k.bank.BurnCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
 		if errBurnCoins != nil {
-			return types.Failed, errBurnCoins
+			// Try to send coins from module to account
+			errSendCoinsFromModuleToAccount := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddress, sdk.NewCoins(coin))
+			if errSendCoinsFromModuleToAccount != nil {
+				// returns error
+				return types.CoinsStuckOnModule, errSendCoinsFromModuleToAccount
+			}
 		}
-
 	}
 
 	return types.Completed, types.ErrTradeProcessedSuccessfully

@@ -14,7 +14,7 @@ var (
 	ErrInvalidTradeType           = sdkerrors.Register(ModuleName, 1101, "invalid trade type ")
 	ErrInvalidTradeData           = sdkerrors.Register(ModuleName, 1102, "invalid trade data ")
 	ErrInvalidTradePrice          = sdkerrors.Register(ModuleName, 1103, "invalid trade price ")
-	ErrInvalidTradeQuantity       = sdkerrors.Register(ModuleName, 1104, "invalid trade quantity ")
+	ErrInvalidTradeQuantity       = sdkerrors.Register(ModuleName, 1104, "invalid trade quantity, max quantity is 9223372036854775807")
 	ErrBurnCoins                  = sdkerrors.Register(ModuleName, 1105, "failed trade burn coins ")
 	ErrMintCoins                  = sdkerrors.Register(ModuleName, 1106, "failed trade mint coins ")
 	ErrInvalidReceiverAddress     = sdkerrors.Register(ModuleName, 1107, "invalid receiver address ")

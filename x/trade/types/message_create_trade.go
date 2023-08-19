@@ -1,8 +1,9 @@
 package types
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"strconv"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	//sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
@@ -70,7 +71,7 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 		return ErrInvalidTradeQuantity
 	}
 
-	Quantity, err := strconv.Atoi(msg.Quantity)
+	Quantity, err := strconv.ParseInt(msg.Quantity, 10, 64)
 	if err != nil {
 		return ErrInvalidTradeQuantity
 	}
