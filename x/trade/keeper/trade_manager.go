@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 	"encoding/json"
-	"io/ioutil"
+	//"io/ioutil"
 	"os"
 	"time"
 
@@ -47,7 +47,7 @@ func (k Keeper) IsAddressWhitelisted(address string, msgType string) (isAddressW
 	isWhitelisted := false
 	err = nil
 
-	file, err := ioutil.ReadFile(userHomeDir + "/.ggezchain/config/chain_acl.json")
+	file, err := os.ReadFile(userHomeDir + "/.ggezchain/config/chain_acl.json")
 	if err != nil {
 		return isWhitelisted, types.ErrInvalidPath
 	}

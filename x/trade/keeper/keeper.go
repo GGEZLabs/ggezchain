@@ -21,7 +21,7 @@ type (
 		paramstore paramtypes.Subspace
 
 		bankKeeper   types.BankKeeper
-		stakingKeepr types.StakingKeeper
+		stakingKeeper types.StakingKeeper
 	}
 )
 
@@ -48,7 +48,7 @@ func NewKeeper(
 		paramstore: ps,
 
 		bankKeeper:   bankKeeper,
-		stakingKeepr: stakingKeeper,
+		stakingKeeper: stakingKeeper,
 	}
 }
 
