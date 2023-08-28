@@ -3,14 +3,16 @@ package keeper
 import (
 	"context"
 	"encoding/json"
+	"strings"
+
 	//"io/ioutil"
 	"os"
 	"time"
 
+	errors "cosmossdk.io/errors"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkErrors "github.com/cosmos/cosmos-sdk/types/errors"
-	errors "cosmossdk.io/errors"
 )
 
 type TradeDataObject struct {
@@ -271,11 +273,66 @@ func (k Keeper) ValidateTradeData(tradeData string) (valid bool,err error) {
 		var data TradeDataObject
 		err = json.Unmarshal([]byte(tradeData), &data)
 		if err != nil {
-			return false,errors.Wrap(err,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrInvalidTradeDataObject,"Invalid Trade Data Object")
+		}
+		tradeData := data.TradeData
+		if tradeData.AssetHolderID <= 0 {
+			return false,errors.Wrap(types.ErrAssetHolderID,"Invalid Trade Data Object")
+		}
+		if tradeData.AssetID <= 0 {
+			return false,errors.Wrap(types.ErrAssetID,"Invalid Trade Data Object")
+		}
+		if tradeData.TradeRequestID <= 0 {
+			return false,errors.Wrap(types.ErrTradeRequestID,"Invalid Trade Data Object")
+		}
+		if tradeData.TradeValue <= 0 {
+			return false,errors.Wrap(types.ErrTradeValue,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.Currency) == "" {
+			return false,errors.Wrap(types.ErrTradeCurrency,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.Exchange) == "" {
+			return false,errors.Wrap(types.ErrTradeExchange,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.FundName) == "" {
+			return false,errors.Wrap(types.ErrTradeFundName,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.Issuer) == "" {
+			return false,errors.Wrap(types.ErrTradeIssuer,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.NoShares) == "" {
+			return false,errors.Wrap(types.ErrTradeNoShares,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.Price) == "" {
+			return false,errors.Wrap(types.ErrInvalidTradePrice,"Invalid Trade Price")
+		}
+		if strings.TrimSpace(tradeData.Quantity) == "" {
+			return false,errors.Wrap(types.ErrInvalidTradeQuantity,"Invalid Trade Quantity")
+		}
+		if strings.TrimSpace(tradeData.Segment) == "" {
+			return false,errors.Wrap(types.ErrTradeSegment,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.SharePrice) == "" {
+			return false,errors.Wrap(types.ErrTradeSharePrice,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.Ticker) == "" {
+			return false,errors.Wrap(types.ErrTradeTicker,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.TradeFee) == "" {
+			return false,errors.Wrap(types.ErrTradeFee,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.TradeNetPrice) == "" {
+			return false,errors.Wrap(types.ErrTradeNetPrice,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.TradeNetValue) == "" {
+			return false,errors.Wrap(types.ErrTradeNetValue,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(tradeData.TradeType) == "" {
+			return false,errors.Wrap(types.ErrInvalidTradeType,"Invalid Trade Data Object")
 		}
 		return true,err
 	}
-	return false, errors.Wrap(err,"Invalid Trade Data JSON")
+	return false, errors.Wrap(types.ErrInvalidTradeDataJSON,"Invalid Trade Data JSON")
 	
 }
 
