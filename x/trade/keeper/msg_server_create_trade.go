@@ -10,6 +10,10 @@ import (
 func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade) (*types.MsgCreateTradeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	isValid , _ := k.ValidateTradeData(msg.TradeData)
+	if !isValid {
+		return nil, types.ErrInvalidTradeData
+	}
 	isAllowed, _ := k.IsAddressAllowed(k.stakingKeeper, ctx, msg.Creator, types.CreateTrade)
 	if !isAllowed {
 		//panic("you don't have permission to perform this action")

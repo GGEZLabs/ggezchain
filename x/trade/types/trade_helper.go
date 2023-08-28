@@ -3,22 +3,25 @@ package types
 import (
 	_ "github.com/gogo/protobuf/gogoproto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
-
 	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkErrors "github.com/cosmos/cosmos-sdk/types/errors"
+	//sdkErrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	errors "cosmossdk.io/errors"
 )
+
 
 func (msg *MsgCreateTrade) ValidateReceiverAddress() (receiverAddress sdk.AccAddress, err error) {
 	receiver, errReceiver := sdk.AccAddressFromBech32(msg.ReceiverAddress)
-	return receiver, sdkErrors.Wrapf(errReceiver, ErrInvalidReceiverAddress.Error())
+	return receiver, errors.Wrapf(errReceiver, ErrInvalidReceiverAddress.Error())
 }
 
 func (msg *MsgCreateTrade) ValidateCreatorAddress() (creatorAddress sdk.AccAddress, err error) {
 	creator, errCreator := sdk.AccAddressFromBech32(msg.Creator)
-	return creator, sdkErrors.Wrapf(errCreator, ErrInvalidCreator.Error())
+	return creator, errors.Wrapf(errCreator, ErrInvalidCreator.Error())
 }
+
 
 func (msg *MsgCreateTrade) Validate() (err error) {
 	_, err = msg.ValidateReceiverAddress()
@@ -29,7 +32,6 @@ func (msg *MsgCreateTrade) Validate() (err error) {
 	if err != nil {
 		return err
 	}
-
 	return err
 }
 
