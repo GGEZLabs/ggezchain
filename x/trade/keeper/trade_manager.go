@@ -334,13 +334,13 @@ func (k Keeper) ValidateTradeData(tradeData string) (valid bool,err error) {
 
 		brokerage := data.Brokerage
 		if strings.TrimSpace(brokerage.Country) == "" {
-			return false,errors.Wrap(types.ErrTradeDataNetPrice,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrBrokerageCountry,"Invalid Brokerage Country Object")
 		}
 		if strings.TrimSpace(brokerage.Type) == "" {
-			return false,errors.Wrap(types.ErrTradeDataNetValue,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrBrokerageType,"Invalid Brokerage Type Object")
 		}
 		if strings.TrimSpace(brokerage.Name) == "" {
-			return false,errors.Wrap(types.ErrInvalidTradeType,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrBrokerageName,"Invalid Brokerage Name Object")
 		}
 		return true,err
 	}
