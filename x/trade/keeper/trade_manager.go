@@ -277,57 +277,69 @@ func (k Keeper) ValidateTradeData(tradeData string) (valid bool,err error) {
 		}
 		tradeData := data.TradeData
 		if tradeData.AssetHolderID <= 0 {
-			return false,errors.Wrap(types.ErrAssetHolderID,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataAssetHolderID,"Invalid Trade Data Object")
 		}
 		if tradeData.AssetID <= 0 {
-			return false,errors.Wrap(types.ErrAssetID,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataAssetID,"Invalid Trade Data Object")
 		}
 		if tradeData.TradeRequestID <= 0 {
-			return false,errors.Wrap(types.ErrTradeRequestID,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataRequestID,"Invalid Trade Data Object")
 		}
 		if tradeData.TradeValue <= 0 {
-			return false,errors.Wrap(types.ErrTradeValue,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataValue,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Currency) == "" {
-			return false,errors.Wrap(types.ErrTradeCurrency,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataCurrency,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Exchange) == "" {
-			return false,errors.Wrap(types.ErrTradeExchange,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataExchange,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.FundName) == "" {
-			return false,errors.Wrap(types.ErrTradeFundName,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataFundName,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Issuer) == "" {
-			return false,errors.Wrap(types.ErrTradeIssuer,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataIssuer,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.NoShares) == "" {
-			return false,errors.Wrap(types.ErrTradeNoShares,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataNoShares,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Price) == "" {
-			return false,errors.Wrap(types.ErrInvalidTradePrice,"Invalid Trade Price")
+			return false,errors.Wrap(types.ErrTradeDataPrice,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Quantity) == "" {
-			return false,errors.Wrap(types.ErrInvalidTradeQuantity,"Invalid Trade Quantity")
+			return false,errors.Wrap(types.ErrTradeDataQuantity,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Segment) == "" {
-			return false,errors.Wrap(types.ErrTradeSegment,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataSegment,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.SharePrice) == "" {
-			return false,errors.Wrap(types.ErrTradeSharePrice,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataSharePrice,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Ticker) == "" {
-			return false,errors.Wrap(types.ErrTradeTicker,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataTicker,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.TradeFee) == "" {
-			return false,errors.Wrap(types.ErrTradeFee,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataFee,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.TradeNetPrice) == "" {
-			return false,errors.Wrap(types.ErrTradeNetPrice,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataNetPrice,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.TradeNetValue) == "" {
-			return false,errors.Wrap(types.ErrTradeNetValue,"Invalid Trade Data Object")
+			return false,errors.Wrap(types.ErrTradeDataNetValue,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.TradeType) == "" {
+			return false,errors.Wrap(types.ErrInvalidTradeType,"Invalid Trade Data Object")
+		}
+
+
+		brokerage := data.Brokerage
+		if strings.TrimSpace(brokerage.Country) == "" {
+			return false,errors.Wrap(types.ErrTradeDataNetPrice,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(brokerage.Type) == "" {
+			return false,errors.Wrap(types.ErrTradeDataNetValue,"Invalid Trade Data Object")
+		}
+		if strings.TrimSpace(brokerage.Name) == "" {
 			return false,errors.Wrap(types.ErrInvalidTradeType,"Invalid Trade Data Object")
 		}
 		return true,err
