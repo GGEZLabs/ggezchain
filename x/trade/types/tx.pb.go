@@ -398,7 +398,7 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 
 func (c *msgClient) CreateTrade(ctx context.Context, in *MsgCreateTrade, opts ...grpc.CallOption) (*MsgCreateTradeResponse, error) {
 	out := new(MsgCreateTradeResponse)
-	err := c.cc.Invoke(ctx, "/ggezchain.trade.MsgCreateTrade", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ggezchain.trade.Msg/CreateTrade", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -407,7 +407,7 @@ func (c *msgClient) CreateTrade(ctx context.Context, in *MsgCreateTrade, opts ..
 
 func (c *msgClient) ProcessTrade(ctx context.Context, in *MsgProcessTrade, opts ...grpc.CallOption) (*MsgProcessTradeResponse, error) {
 	out := new(MsgProcessTradeResponse)
-	err := c.cc.Invoke(ctx, "/ggezchain.trade.MsgProcessTrade", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ggezchain.trade.Msg/ProcessTrade", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -445,7 +445,7 @@ func _Msg_CreateTrade_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ggezchain.trade.MsgCreateTrade",
+		FullMethod: "/ggezchain.trade.Msg/CreateTrade",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreateTrade(ctx, req.(*MsgCreateTrade))
@@ -463,7 +463,7 @@ func _Msg_ProcessTrade_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ggezchain.trade.MsgProcessTrade",
+		FullMethod: "/ggezchain.trade.Msg/ProcessTrade",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).ProcessTrade(ctx, req.(*MsgProcessTrade))
