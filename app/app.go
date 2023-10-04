@@ -117,6 +117,9 @@ import (
 
 	appparams "github.com/GGEZLabs/ggezchain/app/params"
 	"github.com/GGEZLabs/ggezchain/docs"
+
+	// imports for upgrades version and upgrade handler
+	V2 "github.com/GGEZLabs/ggezchain/app/upgrades/v2"
 )
 
 const (
@@ -314,7 +317,7 @@ func New(
 		tkeys:             tkeys,
 		memKeys:           memKeys,
 	}
-
+	authAddr := authtypes.NewModuleAddress(govtypes.ModuleName).String()
 	app.ParamsKeeper = initParamsKeeper(
 		appCodec,
 		cdc,
@@ -323,7 +326,7 @@ func New(
 	)
 
 	// set the BaseApp's parameter store
-	app.ConsensusParamsKeeper = consensusparamkeeper.NewKeeper(appCodec, keys[upgradetypes.StoreKey], authtypes.NewModuleAddress(govtypes.ModuleName).String())
+	app.ConsensusParamsKeeper = consensusparamkeeper.NewKeeper(appCodec, keys[upgradetypes.StoreKey], authAddr)
 	bApp.SetParamStore(&app.ConsensusParamsKeeper)
 
 	// add capability keeper and ScopeToModule for ibc module
@@ -347,7 +350,7 @@ func New(
 		authtypes.ProtoBaseAccount,
 		maccPerms,
 		sdk.Bech32PrefixAccAddr,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	app.AuthzKeeper = authzkeeper.NewKeeper(
@@ -362,7 +365,7 @@ func New(
 		keys[banktypes.StoreKey],
 		app.AccountKeeper,
 		app.BlockedModuleAccountAddrs(),
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	app.StakingKeeper = stakingkeeper.NewKeeper(
@@ -370,7 +373,7 @@ func New(
 		keys[stakingtypes.StoreKey],
 		app.AccountKeeper,
 		app.BankKeeper,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(
@@ -386,7 +389,7 @@ func New(
 		app.AccountKeeper,
 		app.BankKeeper,
 		authtypes.FeeCollectorName,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	app.DistrKeeper = distrkeeper.NewKeeper(
@@ -396,7 +399,7 @@ func New(
 		app.BankKeeper,
 		app.StakingKeeper,
 		authtypes.FeeCollectorName,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	app.SlashingKeeper = slashingkeeper.NewKeeper(
@@ -404,7 +407,7 @@ func New(
 		cdc,
 		keys[slashingtypes.StoreKey],
 		app.StakingKeeper,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	app.CrisisKeeper = crisiskeeper.NewKeeper(
@@ -413,7 +416,7 @@ func New(
 		invCheckPeriod,
 		app.BankKeeper,
 		authtypes.FeeCollectorName,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	groupConfig := group.DefaultConfig()
@@ -435,7 +438,7 @@ func New(
 		appCodec,
 		homePath,
 		app.BaseApp,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	// ... other modules keepers
@@ -503,7 +506,7 @@ func New(
 		app.StakingKeeper,
 		app.MsgServiceRouter(),
 		govConfig,
-		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
+		authAddr,
 	)
 
 	govRouter := govv1beta1.NewRouter()
@@ -733,7 +736,7 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
-
+	app.setupUpgradeHandlers()
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
 			tmos.Exit(err.Error())
@@ -845,6 +848,52 @@ func (app *App) GetTKey(storeKey string) *storetypes.TransientStoreKey {
 func (app *App) GetMemKey(storeKey string) *storetypes.MemoryStoreKey {
 	return app.memKeys[storeKey]
 }
+
+// upgrade handlers 
+
+
+func (app *App) setupUpgradeHandlers() {
+	// v8 upgrade handler
+	app.UpgradeKeeper.SetUpgradeHandler(
+		V2.UpgradeName,
+		V2.CreateUpgradeHandler(
+			app.mm, app.configurator,*app.StakingKeeper,
+		),
+	)
+
+
+	// When a planned update height is reached, the old binary will panic
+	// writing on disk the height and name of the update that triggered it
+	// This will read that value, and execute the preparations for the upgrade.
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(fmt.Errorf("failed to read upgrade info from disk: %w", err))
+	}
+
+	if app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		return
+	}
+
+	var storeUpgrades *storetypes.StoreUpgrades
+
+	switch upgradeInfo.Name {
+	case V2.UpgradeName:
+		storeUpgrades = &storetypes.StoreUpgrades{
+			Added: []string{"feesplit"},
+		}
+		storeUpgrades = &storetypes.StoreUpgrades{
+			Added: []string{
+				consensusparamtypes.StoreKey,
+				crisistypes.ModuleName,
+			},
+		}
+	}
+
+	if storeUpgrades != nil {
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, storeUpgrades))
+	}
+}
+
 
 // GetSubspace returns a param subspace for a given module name.
 //
