@@ -1,14 +1,14 @@
 package v2
 
 import (
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	// stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-	// stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 )
 
-// CreateUpgradeHandler creates an SDK upgrade handler for v10
+
 func CreateUpgradeHandler(
 	mm *module.Manager,
 	configurator module.Configurator,
