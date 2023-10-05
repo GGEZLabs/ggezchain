@@ -118,8 +118,7 @@ import (
 	appparams "github.com/GGEZLabs/ggezchain/app/params"
 	"github.com/GGEZLabs/ggezchain/docs"
 
-	// imports for upgrades version and upgrade handler
-	V2 "github.com/GGEZLabs/ggezchain/app/upgrades/v2"
+	
 )
 
 const (
@@ -736,7 +735,7 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
-	app.setupUpgradeHandlers()
+	app.setupUpgradeHandlers(app.configurator)
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {
 			tmos.Exit(err.Error())
@@ -852,47 +851,7 @@ func (app *App) GetMemKey(storeKey string) *storetypes.MemoryStoreKey {
 // upgrade handlers 
 
 
-func (app *App) setupUpgradeHandlers() {
-	// v8 upgrade handler
-	app.UpgradeKeeper.SetUpgradeHandler(
-		V2.UpgradeName,
-		V2.CreateUpgradeHandler(
-			app.mm, app.configurator,*app.StakingKeeper,
-		),
-	)
 
-
-	// When a planned update height is reached, the old binary will panic
-	// writing on disk the height and name of the update that triggered it
-	// This will read that value, and execute the preparations for the upgrade.
-	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
-	if err != nil {
-		panic(fmt.Errorf("failed to read upgrade info from disk: %w", err))
-	}
-
-	if app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		return
-	}
-
-	var storeUpgrades *storetypes.StoreUpgrades
-
-	switch upgradeInfo.Name {
-	case V2.UpgradeName:
-		storeUpgrades = &storetypes.StoreUpgrades{
-			Added: []string{"feesplit"},
-		}
-		storeUpgrades = &storetypes.StoreUpgrades{
-			Added: []string{
-				consensusparamtypes.StoreKey,
-				crisistypes.ModuleName,
-			},
-		}
-	}
-
-	if storeUpgrades != nil {
-		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, storeUpgrades))
-	}
-}
 
 
 // GetSubspace returns a param subspace for a given module name.
