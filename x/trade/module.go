@@ -119,6 +119,9 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 	if err := cfg.RegisterMigration(types.ModuleName, 1, migrator.Migrate1to2); err != nil {
         panic(fmt.Errorf("failed to migrate %s to v2: %w", types.ModuleName, err))
     }
+	if err := cfg.RegisterMigration(types.ModuleName, 2, migrator.Migrate2to3); err != nil {
+        panic(fmt.Errorf("failed to migrate %s to v3: %w", types.ModuleName, err))
+    }
 }
 
 // RegisterInvariants registers the invariants of the module. If an invariant deviates from its predicted value, the InvariantRegistry triggers appropriate logic (most often the chain will be halted)
