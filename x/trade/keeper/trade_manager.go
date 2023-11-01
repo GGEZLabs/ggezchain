@@ -285,7 +285,7 @@ func (k Keeper) ValidateTradeData(tradeData string) (valid bool,err error) {
 		if tradeData.TradeRequestID <= 0 {
 			return false,errors.Wrap(types.ErrTradeDataRequestID,"Invalid Trade Data Object")
 		}
-		if tradeData.TradeValue <= 0 {
+		if tradeData.TradeValue == 0 {
 			return false,errors.Wrap(types.ErrTradeDataValue,"Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Currency) == "" {

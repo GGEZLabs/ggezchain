@@ -66,9 +66,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	k.Keeper.SetTradeIndex(ctx, tradeIndex)
 
 	k.Keeper.CancelExpiredPendingTrades(ctx)
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(types.CancelExpiredPendingTradesEventType),
-	)
+	
 	return &types.MsgCreateTradeResponse{
 		TradeIndex: newIndex,
 		Status:     status,
