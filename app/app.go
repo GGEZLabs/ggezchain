@@ -494,7 +494,9 @@ func New(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	govConfig := govtypes.DefaultConfig()
+	govConfig := govtypes.Config{
+		MaxMetadataLen: 500000,
+	}
 	govKeeper := govkeeper.NewKeeper(
 		appCodec,
 		keys[govtypes.StoreKey],
