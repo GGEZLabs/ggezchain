@@ -8,10 +8,9 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	// cdc.RegisterConcrete(&MsgCreateTrade{}, "trade/CreateTrade", nil)
-	// cdc.RegisterConcrete(&MsgProcessTrade{}, "trade/ProcessTrade", nil)
-	cdc.RegisterConcrete(&MsgCreateTrade{}, "trade/MsgCreateTrade", nil)
-	cdc.RegisterConcrete(&MsgProcessTrade{}, "trade/MsgProcessTrade", nil)
+	cdc.RegisterConcrete(&MsgCreateTrade{}, "trade/CreateTrade", nil)
+
+	cdc.RegisterConcrete(&MsgProcessTrade{}, "trade/ProcessTrade", nil)
 	// this line is used by starport scaffolding # 2
 }
 
