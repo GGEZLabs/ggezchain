@@ -56,7 +56,7 @@ type ChainACL struct {
 	} `json:"trade"`
 }
 
-func (k Keeper) IsAddressAllowed(stakingKeeper types.StakingKeeper, goCtx context.Context, address string, msgType string) (isAllowed bool, err error) {
+func (k Keeper) IsAddressAllowed(goCtx context.Context, address string, msgType string) (isAllowed bool, err error) {
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	isAddressWhitelisted, err := k.IsAddressWhitelisted(address, msgType)
@@ -66,7 +66,7 @@ func (k Keeper) IsAddressAllowed(stakingKeeper types.StakingKeeper, goCtx contex
 	}
 
 	if isAddressWhitelisted {
-		isAddressLinkedToValidator := k.IsAddressLinkedToValidator(stakingKeeper, ctx, address)
+		isAddressLinkedToValidator := k.IsAddressLinkedToValidator(ctx, address)
 		return isAddressLinkedToValidator, nil
 	}
 
@@ -112,51 +112,43 @@ func (k Keeper) IsAddressWhitelisted(address string, msgType string) (isAddressW
 	return isWhitelisted, err
 }
 
-/* func (k Keeper) AllStoredTempTrade(goCtx context.Context) (allStoredTempTrade []types.StoredTempTrade,err error){
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	allStoredTrade:= k.GetAllStoredTempTrade(ctx)
-	k.CancelExpiredPendingTrades(ctx,allStoredTrade)
-	return allStoredTrade ,nil
-
-} */
-
 func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade, coin sdk.Coin) (status string, err error) {
-	receiverAddress, errReceiverAddress := sdk.AccAddressFromBech32(tradeData.ReceiverAddress)
-	if errReceiverAddress != nil {
-		return types.Failed, errReceiverAddress
+	receiverAddress, err := sdk.AccAddressFromBech32(tradeData.ReceiverAddress)
+	if err != nil {
+		return types.Failed, err
 	}
 
 	if tradeData.TradeType == types.Buy {
-		errMintCoins := k.bank.MintCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
-		if errMintCoins != nil {
-			return types.Failed, errMintCoins
+		err = k.bank.MintCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
+		if err != nil {
+			return types.Failed, err
 		}
 
-		errSendCoinsFromModuleToAccount := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddress, sdk.NewCoins(coin))
-		if errSendCoinsFromModuleToAccount != nil {
+		err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddress, sdk.NewCoins(coin))
+		if err != nil {
 			errBurnCoins := k.bank.BurnCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
 			if errBurnCoins != nil {
-				return types.CoinsStuckOnModule, errSendCoinsFromModuleToAccount
+				return types.CoinsStuckOnModule, err
 			}
 
-			return types.Failed, errSendCoinsFromModuleToAccount
+			return types.Failed, err
 		}
 	} else if tradeData.TradeType == types.Sell {
 		// Try to send coins from account to module
-		errSendCoinsFromAccountToModule := k.bank.SendCoinsFromAccountToModule(ctx, receiverAddress, types.ModuleName, sdk.NewCoins(coin))
-		if errSendCoinsFromAccountToModule != nil {
+		err = k.bank.SendCoinsFromAccountToModule(ctx, receiverAddress, types.ModuleName, sdk.NewCoins(coin))
+		if err != nil {
 			// returns error
-			return types.Failed, errSendCoinsFromAccountToModule
+			return types.Failed, err
 		}
 
 		// Try to burn coins
-		errBurnCoins := k.bank.BurnCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
-		if errBurnCoins != nil {
+		err := k.bank.BurnCoins(ctx, types.ModuleName, sdk.NewCoins(coin))
+		if err != nil {
 			// Try to send coins from module to account
-			errSendCoinsFromModuleToAccount := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddress, sdk.NewCoins(coin))
-			if errSendCoinsFromModuleToAccount != nil {
+			err := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddress, sdk.NewCoins(coin))
+			if err != nil {
 				// returns error
-				return types.CoinsStuckOnModule, errSendCoinsFromModuleToAccount
+				return types.CoinsStuckOnModule, err
 			}
 		}
 	}
@@ -164,18 +156,18 @@ func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade, co
 	return types.Completed, types.ErrTradeProcessedSuccessfully
 }
 
-func (k Keeper) IsAddressLinkedToValidator(stakingKeeper types.StakingKeeper, goCtx context.Context, address string) (isAddressLinkedToValidator bool) {
+func (k Keeper) IsAddressLinkedToValidator(goCtx context.Context, address string) (isAddressLinkedToValidator bool) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	accAddress, _ := sdk.AccAddressFromBech32(address)
 	isLinked := false
 
-	chainValidators := stakingKeeper.GetAllValidators(ctx)
+	chainValidators := k.stakingKeeper.GetAllValidators(ctx)
 
 	// Loop through the validators
 	for _, validator := range chainValidators {
 		valAddress, _ := sdk.ValAddressFromBech32(validator.OperatorAddress)
 
-		_, isLinked = stakingKeeper.GetDelegation(ctx, accAddress, valAddress)
+		_, isLinked = k.stakingKeeper.GetDelegation(ctx, accAddress, valAddress)
 		if isLinked {
 			break
 		}
@@ -186,169 +178,120 @@ func (k Keeper) IsAddressLinkedToValidator(stakingKeeper types.StakingKeeper, go
 
 func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	allStoredTrade := k.GetAllStoredTempTrade(ctx)
+	allStoredTempTrade := k.GetAllStoredTempTrade(ctx)
 	status := types.Canceled
 
 	currentDate := time.Now()
 
-	if err != nil {
-		return err
-	} else {
-		for i := 0; i < len(allStoredTrade); i++ {
-			createDate := allStoredTrade[i].CreateDate
-			formatedCreateDate, err := time.Parse("2006-01-02 15:04", createDate)
-			differenceTime := currentDate.Sub(formatedCreateDate)
-			totalDays := int(differenceTime.Hours() / 24)
+	for i := 0; i < len(allStoredTempTrade); i++ {
+		createDate := allStoredTempTrade[i].CreateDate
+		formattedCreateDate, err := time.Parse("2006-01-02 15:04", createDate)
+		if err != nil {
+			return sdkErrors.Wrapf(types.ErrInvalidDateFormat, types.ErrInvalidDateFormat.Error())
+		}
+		differenceTime := currentDate.Sub(formattedCreateDate)
+		totalDays := int(differenceTime.Hours() / 24)
 
-			if err != nil {
-				return sdkErrors.Wrapf(types.ErrInvalidDateFormat, types.ErrInvalidDateFormat.Error())
-			} else if totalDays >= 1 {
+		if totalDays >= 1 {
 
-				storedTrade, _ := k.GetStoredTrade(ctx, allStoredTrade[i].TempTradeIndex)
-				storedTrade.Status = status
-				storedTrade.UpdateDate = currentDate.Format("2006-01-02 15:04")
+			storedTrade, _ := k.GetStoredTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
+			storedTrade.Status = status
+			storedTrade.UpdateDate = currentDate.Format("2006-01-02 15:04")
 
-				k.SetStoredTrade(ctx, storedTrade)
-				k.RemoveStoredTempTrade(ctx, allStoredTrade[i].TempTradeIndex)
+			k.SetStoredTrade(ctx, storedTrade)
+			k.RemoveStoredTempTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
 
-				ctx.EventManager().EmitEvent(
-					sdk.NewEvent(types.CancelExpiredPendingTradesEventType),
-				)
-			}
-
+			ctx.EventManager().EmitEvent(
+				sdk.NewEvent(types.CancelExpiredPendingTradesEventType),
+			)
 		}
 	}
-
 	return err
 }
 
-/* func (k Keeper) CalculateTradeValueLast30Days(goCtx context.Context) (err error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	allStoredTrade := k.GetAllStoredTrade(ctx)
-	totalMint := 0
-	totalBurn := 0
-	GGEZMintTotal := 0
-	GGEZBurnTotal := 0
-	currentDate := time.Now()
-
-	if err != nil {
-		return err
-	} else {
-		for i := 0; i < len(allStoredTrade); i++ {
-			createDate := allStoredTrade[i].CreateDate
-			formatedCreateDate, err := time.Parse("2006-01-02 15:04", createDate)
-			differenceTime := currentDate.Sub(formatedCreateDate)
-			totalDays := int(differenceTime.Hours() / 24)
-
-			if err != nil {
-
-				return sdkErrors.Wrapf(types.ErrInvalidDateFormat, types.ErrInvalidDateFormat.Error())
-
-			} else if allStoredTrade[i].TradeType == "buy" && allStoredTrade[i].Status == "Completed" && totalDays >= 30 {
-				intTotalMint, err := strconv.Atoi(allStoredTrade[i].Price)
-
-				if err != nil {
-					return err
-				}
-
-				totalMint = totalMint + intTotalMint
-
-			}
-
-		}
-	}
-
-	return err
-} */
-
-func (k Keeper) GetStakingTest(staking types.StakingKeeper) (stakingKeeper types.StakingKeeper) {
-	return staking
-}
-
-func (k Keeper) ValidateTradeData(tradeData string) (valid bool,err error) {
+func (k Keeper) ValidateTradeData(tradeData string) (err error) {
 
 	isJson := IsJSON(tradeData)
 
-	if isJson == true {
+	if isJson {
 		var data TradeDataObject
 		err = json.Unmarshal([]byte(tradeData), &data)
 		if err != nil {
-			return false,errors.Wrap(types.ErrInvalidTradeDataObject,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrInvalidTradeDataObject, "Invalid Trade Data Object")
 		}
 		tradeData := data.TradeData
 		if tradeData.AssetHolderID <= 0 {
-			return false,errors.Wrap(types.ErrTradeDataAssetHolderID,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataAssetHolderID, "Invalid Trade Data Object")
 		}
 		if tradeData.AssetID <= 0 {
-			return false,errors.Wrap(types.ErrTradeDataAssetID,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataAssetID, "Invalid Trade Data Object")
 		}
 		if tradeData.TradeRequestID <= 0 {
-			return false,errors.Wrap(types.ErrTradeDataRequestID,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataRequestID, "Invalid Trade Data Object")
 		}
 		if tradeData.TradeValue == 0 {
-			return false,errors.Wrap(types.ErrTradeDataValue,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataValue, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Currency) == "" {
-			return false,errors.Wrap(types.ErrTradeDataCurrency,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataCurrency, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Exchange) == "" {
-			return false,errors.Wrap(types.ErrTradeDataExchange,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataExchange, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.FundName) == "" {
-			return false,errors.Wrap(types.ErrTradeDataFundName,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataFundName, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Issuer) == "" {
-			return false,errors.Wrap(types.ErrTradeDataIssuer,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataIssuer, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.NoShares) == "" {
-			return false,errors.Wrap(types.ErrTradeDataNoShares,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataNoShares, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Price) == "" {
-			return false,errors.Wrap(types.ErrTradeDataPrice,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataPrice, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Quantity) == "" {
-			return false,errors.Wrap(types.ErrTradeDataQuantity,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataQuantity, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Segment) == "" {
-			return false,errors.Wrap(types.ErrTradeDataSegment,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataSegment, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.SharePrice) == "" {
-			return false,errors.Wrap(types.ErrTradeDataSharePrice,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataSharePrice, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Ticker) == "" {
-			return false,errors.Wrap(types.ErrTradeDataTicker,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataTicker, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.TradeFee) == "" {
-			return false,errors.Wrap(types.ErrTradeDataFee,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataFee, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.TradeNetPrice) == "" {
-			return false,errors.Wrap(types.ErrTradeDataNetPrice,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataNetPrice, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.TradeNetValue) == "" {
-			return false,errors.Wrap(types.ErrTradeDataNetValue,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrTradeDataNetValue, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.TradeType) == "" {
-			return false,errors.Wrap(types.ErrInvalidTradeType,"Invalid Trade Data Object")
+			return errors.Wrap(types.ErrInvalidTradeType, "Invalid Trade Data Object")
 		}
-
 
 		brokerage := data.Brokerage
 		if strings.TrimSpace(brokerage.Country) == "" {
-			return false,errors.Wrap(types.ErrBrokerageCountry,"Invalid Brokerage Country Object")
+			return errors.Wrap(types.ErrBrokerageCountry, "Invalid Brokerage Country Object")
 		}
 		if strings.TrimSpace(brokerage.Type) == "" {
-			return false,errors.Wrap(types.ErrBrokerageType,"Invalid Brokerage Type Object")
+			return errors.Wrap(types.ErrBrokerageType, "Invalid Brokerage Type Object")
 		}
 		if strings.TrimSpace(brokerage.Name) == "" {
-			return false,errors.Wrap(types.ErrBrokerageName,"Invalid Brokerage Name Object")
+			return errors.Wrap(types.ErrBrokerageName, "Invalid Brokerage Name Object")
 		}
-		return true,err
+		return nil
 	}
-	return false, errors.Wrap(types.ErrInvalidTradeDataJSON,"Invalid Trade Data JSON")
-	
+	return errors.Wrap(types.ErrInvalidTradeDataJSON, "Invalid Trade Data JSON")
+
 }
 
 func IsJSON(str string) bool {
 	var jsonFormat json.RawMessage
-    return json.Unmarshal([]byte(str), &jsonFormat) == nil
+	return json.Unmarshal([]byte(str), &jsonFormat) == nil
 }

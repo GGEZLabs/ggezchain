@@ -10,9 +10,8 @@ import (
 func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrade) (*types.MsgProcessTradeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	isAllowed, _ := k.IsAddressAllowed(k.stakingKeeper, ctx, msg.Creator, types.ProcessTrade)
+	isAllowed, _ := k.IsAddressAllowed(ctx, msg.Creator, types.ProcessTrade)
 	if !isAllowed {
-		//panic("you don't have permission to perform this action")
 		return nil, types.ErrInvalidCheckerPermission
 	}
 
@@ -25,7 +24,6 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 
 	err := msg.ValidateProcess(tradeData.Status, tradeData.Maker, msg.Creator)
 	if err != nil {
-		//panic(err.Error())
 		return nil, err
 	}
 
@@ -59,7 +57,10 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 		k.RemoveStoredTempTrade(ctx, msg.TradeIndex)
 	} else if msg.ProcessType == types.Confirm {
 
-		coin := msg.GetPrepareCoin(tradeData)
+		coin, err := msg.GetPrepareCoin(tradeData)
+		if err != nil {
+			return nil, err
+		}
 		status, errResult = k.MintOrBurnCoins(ctx, tradeData, coin)
 
 		if errResult != nil {

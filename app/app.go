@@ -735,6 +735,7 @@ func New(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 	app.SetEndBlocker(app.EndBlocker)
+	app.setupUpgradeHandlers(app.configurator)
 
 	if loadLatest {
 		if err := app.LoadLatestVersion(); err != nil {

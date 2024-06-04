@@ -10,14 +10,13 @@ import (
 func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade) (*types.MsgCreateTradeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	isValidTradeDataObject , validateTradeDataErr := k.ValidateTradeData(msg.TradeData)
-	if !isValidTradeDataObject {
+	 validateTradeDataErr := k.ValidateTradeData(msg.TradeData)
+	if validateTradeDataErr != nil {
 		return nil, validateTradeDataErr
 	}
 	
-	isAllowed, _ := k.IsAddressAllowed(k.stakingKeeper, ctx, msg.Creator, types.CreateTrade)
+	isAllowed, _ := k.IsAddressAllowed( ctx, msg.Creator, types.CreateTrade)
 	if !isAllowed {
-		//panic("you don't have permission to perform this action")
 		return nil, types.ErrInvalidMakerPermission
 	}
 	currentTime := time.Now()
