@@ -523,7 +523,6 @@ func New(
 	)
 
 	app.TradeKeeper = *trademodulekeeper.NewKeeper(
-		app.BankKeeper,
 		appCodec,
 		keys[trademoduletypes.StoreKey],
 		keys[trademoduletypes.MemStoreKey],

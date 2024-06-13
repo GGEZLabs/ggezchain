@@ -28,7 +28,6 @@ func TradeKeeper(t *testing.T) (*keeper.Keeper, sdk.Context) {
 	require.NoError(t, stateStore.LoadLatestVersion())
 	stakingKeeper := app.StakingKeeper
 	bankKeeperTest := app.BankKeeper
-	bankTest := app.BankKeeper
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 
@@ -39,7 +38,6 @@ func TradeKeeper(t *testing.T) (*keeper.Keeper, sdk.Context) {
 		"TradeParams",
 	)
 	k := keeper.NewKeeper(
-		bankTest,
 		cdc,
 		storeKey,
 		memStoreKey,
