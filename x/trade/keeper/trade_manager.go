@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"strings"
 
-	//"io/ioutil"
 	"os"
 	"time"
 
@@ -59,26 +58,29 @@ type ChainACL struct {
 func (k Keeper) IsAddressAllowed(goCtx context.Context, address string, msgType string) (isAllowed bool, err error) {
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	isAddressWhitelisted, err := k.IsAddressWhitelisted(address, msgType)
+	isAddressWhitelisted, err := k.IsAddressWhitelisted(address, msgType, types.ACLFilePath)
 
 	if err != nil {
 		return false, err
 	}
 
 	if isAddressWhitelisted {
-		isAddressLinkedToValidator := k.IsAddressLinkedToValidator(ctx, address)
+		isAddressLinkedToValidator, err := k.IsAddressLinkedToValidator(ctx, address)
+		if err != nil {
+			return false, err
+		}
 		return isAddressLinkedToValidator, nil
 	}
 
 	return false, nil
 }
 
-func (k Keeper) IsAddressWhitelisted(address string, msgType string) (isAddressWhitelisted bool, err error) {
+func (k Keeper) IsAddressWhitelisted(address string, msgType string, ACLFilePath string) (isAddressWhitelisted bool, err error) {
 	userHomeDir, _ := os.UserHomeDir()
 	isWhitelisted := false
 	err = nil
 
-	file, err := os.ReadFile(userHomeDir + "/.ggezchain/config/chain_acl.json")
+	file, err := os.ReadFile(userHomeDir + ACLFilePath)
 	if err != nil {
 		return isWhitelisted, types.ErrInvalidPath
 	}
@@ -115,7 +117,7 @@ func (k Keeper) IsAddressWhitelisted(address string, msgType string) (isAddressW
 func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade, coin sdk.Coin) (status string, err error) {
 	receiverAddress, err := sdk.AccAddressFromBech32(tradeData.ReceiverAddress)
 	if err != nil {
-		return types.Failed, err
+		return types.Failed, types.ErrInvalidReceiverAddress
 	}
 
 	if tradeData.TradeType == types.Buy {
@@ -156,24 +158,29 @@ func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade, co
 	return types.Completed, types.ErrTradeProcessedSuccessfully
 }
 
-func (k Keeper) IsAddressLinkedToValidator(goCtx context.Context, address string) (isAddressLinkedToValidator bool) {
+func (k Keeper) IsAddressLinkedToValidator(goCtx context.Context, address string) (isAddressLinkedToValidator bool, err error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	accAddress, _ := sdk.AccAddressFromBech32(address)
+	accAddress, err := sdk.AccAddressFromBech32(address)
+	if err != nil {
+		return false, err
+	}
 	isLinked := false
 
 	chainValidators := k.stakingKeeper.GetAllValidators(ctx)
 
 	// Loop through the validators
 	for _, validator := range chainValidators {
-		valAddress, _ := sdk.ValAddressFromBech32(validator.OperatorAddress)
-
+		valAddress, err := sdk.ValAddressFromBech32(validator.OperatorAddress)
+		if err != nil {
+			return false, err
+		}
 		_, isLinked = k.stakingKeeper.GetDelegation(ctx, accAddress, valAddress)
 		if isLinked {
 			break
 		}
 	}
 
-	return isLinked
+	return isLinked, nil
 }
 
 func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
@@ -211,7 +218,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
 
 func (k Keeper) ValidateTradeData(tradeData string) (err error) {
 
-	isJson := IsJSON(tradeData)
+	isJson := k.IsJSON(tradeData)
 
 	if isJson {
 		var data TradeDataObject
@@ -291,7 +298,7 @@ func (k Keeper) ValidateTradeData(tradeData string) (err error) {
 
 }
 
-func IsJSON(str string) bool {
+func (k Keeper) IsJSON(str string) bool {
 	var jsonFormat json.RawMessage
 	return json.Unmarshal([]byte(str), &jsonFormat) == nil
 }

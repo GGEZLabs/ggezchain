@@ -90,7 +90,9 @@ func TestDefaultGenesisState_ExpectedInitialNextId(t *testing.T) {
 	require.EqualValues(t,
 		&types.GenesisState{
 			StoredTradeList: []types.StoredTrade{},
-			TradeIndex:      types.TradeIndex{uint64(1)},
+			TradeIndex:      types.TradeIndex{NextId: 1},
+			Params:          types.Params{},
+			StoredTempTradeList: []types.StoredTempTrade{},
 		},
 		types.DefaultGenesis())
 }

@@ -39,4 +39,5 @@ const (
 	CreateTrade         = "CreateTrade"
 	ProcessTrade        = "ProcessTrade"
 	DefaultCoinDenom    = "uggez"
+	ACLFilePath         = "/.ggezchain/config/chain_acl.json"
 )
