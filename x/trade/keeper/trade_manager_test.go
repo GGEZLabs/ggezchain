@@ -92,7 +92,7 @@ func TestCancelExpiredPendingTrades(t *testing.T) {
 	storedTradeOne := types.StoredTrade{
 		TradeIndex:      1,
 		TradeType:       types.Buy,
-		Coin:            "uggez",
+		Coin:            "ugz",
 		Price:           "10.59",
 		Quantity:        "5026505",
 		ReceiverAddress: sample.AccAddress(),
@@ -108,7 +108,7 @@ func TestCancelExpiredPendingTrades(t *testing.T) {
 	storedTradeTwo := types.StoredTrade{
 		TradeIndex:      1,
 		TradeType:       types.Sell,
-		Coin:            "uggez",
+		Coin:            "ugz",
 		Price:           "10.32",
 		Quantity:        "1000000005",
 		ReceiverAddress: sample.AccAddress(),
@@ -124,7 +124,7 @@ func TestCancelExpiredPendingTrades(t *testing.T) {
 	storedTradeThree := types.StoredTrade{
 		TradeIndex:      1,
 		TradeType:       types.Buy,
-		Coin:            "uggez",
+		Coin:            "ugz",
 		Price:           "15.19",
 		Quantity:        "5000026000",
 		ReceiverAddress: sample.AccAddress(),
@@ -404,7 +404,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Completed,
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
-				Denom:  "uggez",
+				Denom:  "ugz",
 				Amount: sdk.NewInt(9223372036854775807),
 			},
 		},
@@ -419,7 +419,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Completed,
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
-				Denom:  "uggez",
+				Denom:  "ugz",
 				Amount: sdk.NewInt(9223372036844775807),
 			},
 		},
@@ -434,7 +434,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Completed,
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
-				Denom:  "uggez",
+				Denom:  "ugz",
 				Amount: sdk.NewInt(9223372036854775807),
 			},
 		},
@@ -450,7 +450,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Completed,
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
-				Denom:  "uggez",
+				Denom:  "ugz",
 				Amount: sdk.NewInt(0),
 			},
 		},
@@ -465,7 +465,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Failed,
 			err:            types.ErrInvalidReceiverAddress,
 			expectedSupply: sdk.Coin{
-				Denom:  "uggez",
+				Denom:  "ugz",
 				Amount: sdk.NewInt(0),
 			},
 		},
@@ -480,7 +480,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: "",
 			err:            types.ErrInvalidTradeQuantity,
 			expectedSupply: sdk.Coin{
-				Denom:  "uggez",
+				Denom:  "ugz",
 				Amount: sdk.NewInt(0),
 			},
 		},
@@ -495,7 +495,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Completed,
 			err:            types.ErrInvalidTradeQuantity,
 			expectedSupply: sdk.Coin{
-				Denom:  "uggez",
+				Denom:  "ugz",
 				Amount: sdk.NewInt(0),
 			},
 		},
@@ -527,54 +527,53 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 func (suite *IntegrationTestSuite) TestIsAddressAllowed() {
 	suite.SetupTestForProcessTrade()
 	tests := []struct {
-		name string
-		address string
-		msgType string
+		name      string
+		address   string
+		msgType   string
 		isAllowed bool
-		err error
+		err       error
 	}{
 
 		{
-			name: "address allowed to create trade",
-			address: testutil.Mutaz,
-			msgType: types.CreateTrade,
+			name:      "address allowed to create trade",
+			address:   testutil.Mutaz,
+			msgType:   types.CreateTrade,
 			isAllowed: true,
-			err: nil,
-
+			err:       nil,
 		},
 		{
-			name: "address allowed to process trade",
-			address: testutil.Mohd,
-			msgType: types.ProcessTrade,
+			name:      "address allowed to process trade",
+			address:   testutil.Mohd,
+			msgType:   types.ProcessTrade,
 			isAllowed: true,
-			err: nil,
+			err:       nil,
 		},
 		{
-			name: "address Not exist in ACL file",
-			address: testutil.Rami,
-			msgType: types.CreateTrade,
+			name:      "address Not exist in ACL file",
+			address:   testutil.Rami,
+			msgType:   types.CreateTrade,
 			isAllowed: false,
-			err: nil,
+			err:       nil,
 		},
 		{
-			name: "address exist in ACL file but not delegate with any validator",
-			address: testutil.Rami,
-			msgType: types.CreateTrade,
+			name:      "address exist in ACL file but not delegate with any validator",
+			address:   testutil.Rami,
+			msgType:   types.CreateTrade,
 			isAllowed: false,
-			err: nil,
+			err:       nil,
 		},
 	}
 
 	for _, tt := range tests {
 		suite.Run(fmt.Sprintf("Case %s", tt.name), func() {
-			isAllowed, err := suite.app.TradeKeeper.IsAddressAllowed(suite.ctx, tt.address,tt.msgType)
+			isAllowed, err := suite.app.TradeKeeper.IsAddressAllowed(suite.ctx, tt.address, tt.msgType)
 			if err != nil {
-				suite.Equal(isAllowed,tt.isAllowed)
+				suite.Equal(isAllowed, tt.isAllowed)
 				suite.ErrorIs(err, tt.err)
 				return
 			}
 			suite.Nil(err)
-			suite.Equal(isAllowed,tt.isAllowed)
+			suite.Equal(isAllowed, tt.isAllowed)
 		})
 	}
 }
