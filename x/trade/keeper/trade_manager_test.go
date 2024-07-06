@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 	"time"
+	sdkmath "cosmossdk.io/math"
 
 	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
@@ -405,7 +406,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
 				Denom:  "ugz",
-				Amount: sdk.NewInt(9223372036854775807),
+				Amount: sdkmath.NewInt(9223372036854775807),
 			},
 		},
 		{
@@ -420,7 +421,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
 				Denom:  "ugz",
-				Amount: sdk.NewInt(9223372036844775807),
+				Amount: sdkmath.NewInt(9223372036844775807),
 			},
 		},
 		{
@@ -435,7 +436,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
 				Denom:  "ugz",
-				Amount: sdk.NewInt(9223372036854775807),
+				Amount: sdkmath.NewInt(9223372036854775807),
 			},
 		},
 
@@ -451,7 +452,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
 				Denom:  "ugz",
-				Amount: sdk.NewInt(0),
+				Amount: sdkmath.NewInt(0),
 			},
 		},
 		{
@@ -466,7 +467,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			err:            types.ErrInvalidReceiverAddress,
 			expectedSupply: sdk.Coin{
 				Denom:  "ugz",
-				Amount: sdk.NewInt(0),
+				Amount: sdkmath.NewInt(0),
 			},
 		},
 		{
@@ -481,7 +482,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			err:            types.ErrInvalidTradeQuantity,
 			expectedSupply: sdk.Coin{
 				Denom:  "ugz",
-				Amount: sdk.NewInt(0),
+				Amount: sdkmath.NewInt(0),
 			},
 		},
 		{
@@ -496,7 +497,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			err:            types.ErrInvalidTradeQuantity,
 			expectedSupply: sdk.Coin{
 				Denom:  "ugz",
-				Amount: sdk.NewInt(0),
+				Amount: sdkmath.NewInt(0),
 			},
 		},
 	}

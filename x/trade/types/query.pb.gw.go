@@ -558,17 +558,17 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"GGEZLabs", "ggezchain", "trade", "params"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"GGEZLabs", "ggezchain", "trade", "params"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_TradeIndex_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"GGEZLabs", "ggezchain", "trade", "trade_index"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_TradeIndex_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"GGEZLabs", "ggezchain", "trade", "trade_index"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_StoredTrade_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"GGEZLabs", "ggezchain", "trade", "stored_trade", "tradeIndex"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_StoredTrade_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"GGEZLabs", "ggezchain", "trade", "stored_trade", "tradeIndex"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_StoredTradeAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"GGEZLabs", "ggezchain", "trade", "stored_trade"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_StoredTradeAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"GGEZLabs", "ggezchain", "trade", "stored_trade"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_StoredTempTrade_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"GGEZLabs", "ggezchain", "trade", "stored_temp_trade", "tradeIndex"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_StoredTempTrade_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"GGEZLabs", "ggezchain", "trade", "stored_temp_trade", "tradeIndex"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_StoredTempTradeAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"GGEZLabs", "ggezchain", "trade", "stored_temp_trade"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_StoredTempTradeAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"GGEZLabs", "ggezchain", "trade", "stored_temp_trade"}, "", runtime.AssumeColonVerbOpt(false)))
 )
 
 var (

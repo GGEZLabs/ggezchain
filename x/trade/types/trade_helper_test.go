@@ -91,7 +91,7 @@ func TestValidateProcess(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := processTrade.ValidateProcess(tt.status, tt.maker, tt.checker)
-			if tt.err != nil {
+			if err != nil {
 				require.Equal(t, err, tt.err)
 				return
 			}

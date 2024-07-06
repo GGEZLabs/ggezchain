@@ -10,7 +10,6 @@ import (
 var (
 	ErrTradeCreatedSuccessfully   = sdkErrors.Register(ModuleName, 1000, "trade created successfully")
 	ErrTradeProcessedSuccessfully = sdkErrors.Register(ModuleName, 1001, "trade processed successfully")
-	ErrSample                     = sdkErrors.Register(ModuleName, 1100, "sample error ")
 	ErrInvalidTradeType           = sdkErrors.Register(ModuleName, 1101, "invalid trade type ")
 	ErrInvalidTradeData           = sdkErrors.Register(ModuleName, 1102, "invalid trade data ")
 	ErrInvalidTradePrice          = sdkErrors.Register(ModuleName, 1103, "invalid trade price ")
@@ -57,4 +56,5 @@ var (
 	ErrBrokerageCountry           = sdkErrors.Register(ModuleName, 1144, "invalid brokerage country ")
 	ErrBrokerageName              = sdkErrors.Register(ModuleName, 1145, "invalid brokerage name ")
 	ErrBrokerageType              = sdkErrors.Register(ModuleName, 1146, "invalid brokerage type ")
+	ErrInvalidSigner              = sdkErrors.Register(ModuleName, 1147, "expected gov account as only signer for proposal message")
 )

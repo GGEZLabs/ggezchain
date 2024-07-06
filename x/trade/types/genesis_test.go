@@ -23,7 +23,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			genState: &types.GenesisState{
 
 				TradeIndex: types.TradeIndex{
-					NextId: 34,
+					NextId: 82,
 				},
 				StoredTradeList: []types.StoredTrade{
 					{
@@ -86,6 +86,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		})
 	}
 }
+
 func TestDefaultGenesisState_ExpectedInitialNextId(t *testing.T) {
 	require.EqualValues(t,
 		&types.GenesisState{

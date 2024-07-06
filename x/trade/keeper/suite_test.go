@@ -1,11 +1,11 @@
 package keeper_test
 
 import (
+	sdkmath "cosmossdk.io/math"
 	ggezchainapp "github.com/GGEZLabs/ggezchain/app"
 	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	"github.com/cometbft/cometbft/libs/bytes"
-	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	tmtypes "github.com/cometbft/cometbft/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
@@ -15,7 +15,6 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/suite"
 )
@@ -45,6 +44,9 @@ func (suite *IntegrationTestSuite) SetupTestForCreateTrade() {
     privVal := mock.NewPV()
     pubKey, err := privVal.GetPubKey()
     suite.NoError(err)
+	// create validator set with single validator
+	// validator := tmtypes.NewValidator(pubKey, 1)
+	// valSet := tmtypes.NewValidatorSet([]*tmtypes.Validator{validator})
 
     validator := tmtypes.ValidatorSet{
         Proposer: &tmtypes.Validator{
@@ -69,15 +71,13 @@ func (suite *IntegrationTestSuite) SetupTestForCreateTrade() {
     acc := authtypes.NewBaseAccount(pvKey.PubKey().Address().Bytes(), pvKey.PubKey(), 0, 0)
     balance := banktypes.Balance{
         Address: acc.GetAddress().String(),
-        Coins:   sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(100000000000000))),
+        Coins:   sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdkmath.NewInt(100000000000000))),
     }
-
     app := ggezchainapp.SetupWithGenesisValSet(suite.T(), &validator, []authtypes.GenesisAccount{acc}, balance)
-    ctx := app.BaseApp.NewContext(false, tmproto.Header{Time: time.Now()})
+    ctx := app.BaseApp.NewContext(false)
 
-    app.AccountKeeper.SetParams(ctx, authtypes.DefaultParams())
+    // app.AccountKeeper.SetParams(ctx, authtypes.DefaultParams())
     app.BankKeeper.SetParams(ctx, banktypes.DefaultParams())
-
     // tradeModuleAddress := app.AccountKeeper.GetModuleAddress(types.ModuleName).String()
 
     queryHelper := baseapp.NewQueryServerTestHelper(ctx, app.InterfaceRegistry())
@@ -129,18 +129,18 @@ func (suite *IntegrationTestSuite) SetupTestForProcessTrade() {
 	balance := []banktypes.Balance{
 		{
 			Address: acc.GetAddress().String(),
-			Coins:   sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(10000000000))),
+			Coins:   sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdkmath.NewInt(10000000000))),
 		},
 		{
 			Address: del.GetAddress().String(),
-			Coins:   sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(10000000000))),
+			Coins:   sdk.NewCoins(sdk.NewCoin(sdk.DefaultBondDenom, sdkmath.NewInt(10000000000))),
 		},
 	}
 
 	app := ggezchainapp.SetupWithGenesisValSet(suite.T(), &validator, []authtypes.GenesisAccount{acc, del}, balance[0], balance[1])
-	ctx := app.BaseApp.NewContext(false, tmproto.Header{Time: time.Now()})
+	ctx := app.BaseApp.NewContext(false)
 
-	app.AccountKeeper.SetParams(ctx, authtypes.DefaultParams())
+	// app.AccountKeeper.SetParams(ctx, authtypes.DefaultParams())
 	app.BankKeeper.SetParams(ctx, banktypes.DefaultParams())
 	// app.StakingKeeper.SetParams(ctx, stakingtypes.DefaultParams())
 
@@ -149,8 +149,8 @@ func (suite *IntegrationTestSuite) SetupTestForProcessTrade() {
 		panic(err)
 	}
 
-	val := app.StakingKeeper.GetAllValidators(ctx)
-	_, err = app.StakingKeeper.Delegate(ctx, delAdd, sdk.NewInt(10000), 1, val[0], true)
+	val ,_:= app.StakingKeeper.GetAllValidators(ctx)
+	_, err = app.StakingKeeper.Delegate(ctx, delAdd, sdkmath.NewInt(10000), 1, val[0], true)
 	if err != nil {
 		panic(err)
 	}

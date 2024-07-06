@@ -24,6 +24,6 @@ func SimulateMsgCreateTrade(
 
 		// TODO: Handling the CreateTrade simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "CreateTrade simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "CreateTrade simulation not implemented"), nil, nil
 	}
 }

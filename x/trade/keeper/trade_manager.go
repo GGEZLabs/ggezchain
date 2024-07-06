@@ -11,7 +11,7 @@ import (
 	errors "cosmossdk.io/errors"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkErrors "github.com/cosmos/cosmos-sdk/types/errors"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 type TradeDataObject struct {
@@ -158,29 +158,40 @@ func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade, co
 	return types.Completed, types.ErrTradeProcessedSuccessfully
 }
 
-func (k Keeper) IsAddressLinkedToValidator(goCtx context.Context, address string) (isAddressLinkedToValidator bool, err error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-	accAddress, err := sdk.AccAddressFromBech32(address)
-	if err != nil {
-		return false, err
-	}
-	isLinked := false
+func (k Keeper) IsAddressLinkedToValidator(goCtx context.Context, address string) (bool, error) {
+    ctx := sdk.UnwrapSDKContext(goCtx)
+    accAddress, err := sdk.AccAddressFromBech32(address)
+    if err != nil {
+        return false, err
+    }
 
-	chainValidators := k.stakingKeeper.GetAllValidators(ctx)
-
+    validators, err := k.stakingKeeper.GetAllValidators(ctx)
+    if err != nil {
+        return false, err
+    }
 	// Loop through the validators
-	for _, validator := range chainValidators {
-		valAddress, err := sdk.ValAddressFromBech32(validator.OperatorAddress)
-		if err != nil {
-			return false, err
-		}
-		_, isLinked = k.stakingKeeper.GetDelegation(ctx, accAddress, valAddress)
-		if isLinked {
-			break
-		}
-	}
+    for _, validator := range validators {
+        valAddress, err := sdk.ValAddressFromBech32(validator.OperatorAddress)
+        if err != nil {
+            // If validator address has error continue to other validators
+            continue
+        }
 
-	return isLinked, nil
+        delegation, err := k.stakingKeeper.GetDelegation(ctx, accAddress, valAddress)
+        if err != nil {
+            if err == stakingtypes.ErrNoDelegation {
+                // No delegation found, continue to next validator
+                continue
+            }
+            return false, err
+        }
+
+        if delegation.DelegatorAddress != "" {
+            return true, nil
+        }
+    }
+
+    return false, nil
 }
 
 func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
@@ -194,7 +205,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
 		createDate := allStoredTempTrade[i].CreateDate
 		formattedCreateDate, err := time.Parse("2006-01-02 15:04", createDate)
 		if err != nil {
-			return sdkErrors.Wrapf(types.ErrInvalidDateFormat, types.ErrInvalidDateFormat.Error())
+			return errors.Wrapf(types.ErrInvalidDateFormat, types.ErrInvalidDateFormat.Error())
 		}
 		differenceTime := currentDate.Sub(formattedCreateDate)
 		totalDays := int(differenceTime.Hours() / 24)

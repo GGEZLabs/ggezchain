@@ -3,23 +3,22 @@ package keeper
 import (
 	"context"
 
+	"cosmossdk.io/store/prefix"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) StoredTempTradeAll(goCtx context.Context, req *types.QueryAllStoredTempTradeRequest) (*types.QueryAllStoredTempTradeResponse, error) {
+func (k Keeper) StoredTempTradeAll(ctx context.Context, req *types.QueryAllStoredTempTradeRequest) (*types.QueryAllStoredTempTradeResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	var storedTempTrades []types.StoredTempTrade
-	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	store := ctx.KVStore(k.storeKey)
+	store := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	storedTempTradeStore := prefix.NewStore(store, types.KeyPrefix(types.StoredTempTradeKeyPrefix))
 
 	pageRes, err := query.Paginate(storedTempTradeStore, req.Pagination, func(key []byte, value []byte) error {
@@ -39,11 +38,10 @@ func (k Keeper) StoredTempTradeAll(goCtx context.Context, req *types.QueryAllSto
 	return &types.QueryAllStoredTempTradeResponse{StoredTempTrade: storedTempTrades, Pagination: pageRes}, nil
 }
 
-func (k Keeper) StoredTempTrade(goCtx context.Context, req *types.QueryGetStoredTempTradeRequest) (*types.QueryGetStoredTempTradeResponse, error) {
+func (k Keeper) StoredTempTrade(ctx context.Context, req *types.QueryGetStoredTempTradeRequest) (*types.QueryGetStoredTempTradeResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
-	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	val, found := k.GetStoredTempTrade(
 		ctx,

@@ -24,6 +24,6 @@ func SimulateMsgProcessTrade(
 
 		// TODO: Handling the ProcessTrade simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "ProcessTrade simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "ProcessTrade simulation not implemented"), nil, nil
 	}
 }

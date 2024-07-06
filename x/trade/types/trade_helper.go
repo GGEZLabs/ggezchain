@@ -8,7 +8,7 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
+	sdkmath "cosmossdk.io/math"
 	errors "cosmossdk.io/errors"
 )
 
@@ -50,7 +50,7 @@ func (msg *MsgProcessTrade) GetPrepareCoin(storedTrade StoredTrade) (sdk.Coin, e
 	if number > math.MaxInt64 {
 		return sdk.Coin{}, errors.Wrapf(ErrInvalidTradeQuantity, "quantity too large: %v", storedTrade.Quantity)
 	}
-	return sdk.NewCoin(storedTrade.Coin, sdk.NewInt(int64(number))), nil
+	return sdk.NewCoin(storedTrade.Coin, sdkmath.NewInt(int64(number))), nil
 }
 
 

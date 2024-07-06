@@ -2,9 +2,10 @@ package keeper
 
 import (
 	"context"
+	"time"
+
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"time"
 )
 
 func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrade) (*types.MsgProcessTradeResponse, error) {
@@ -88,8 +89,8 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 		k.RemoveStoredTempTrade(ctx, msg.TradeIndex)
 	}
 
+
 	return &types.MsgProcessTradeResponse{
 		TradeIndex: msg.TradeIndex,
 		Status:     status,
-	}, err
-}
+	}, err}

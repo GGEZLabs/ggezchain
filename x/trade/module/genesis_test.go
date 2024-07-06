@@ -5,7 +5,7 @@ import (
 
 	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
 	"github.com/GGEZLabs/ggezchain/testutil/nullify"
-	"github.com/GGEZLabs/ggezchain/x/trade"
+	trade "github.com/GGEZLabs/ggezchain/x/trade/module"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	"github.com/stretchr/testify/require"
 )
@@ -15,7 +15,7 @@ func TestGenesis(t *testing.T) {
 		Params: types.DefaultParams(),
 
 		TradeIndex: types.TradeIndex{
-			NextId: 48,
+			NextId: 33,
 		},
 		StoredTradeList: []types.StoredTrade{
 			{
@@ -37,8 +37,8 @@ func TestGenesis(t *testing.T) {
 	}
 
 	k, ctx := keepertest.TradeKeeper(t)
-	trade.InitGenesis(ctx, *k, genesisState)
-	got := trade.ExportGenesis(ctx, *k)
+	trade.InitGenesis(ctx, k, genesisState)
+	got := trade.ExportGenesis(ctx, k)
 	require.NotNil(t, got)
 
 	nullify.Fill(&genesisState)

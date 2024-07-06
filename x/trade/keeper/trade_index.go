@@ -1,21 +1,25 @@
 package keeper
 
 import (
+	"context"
+
+	"cosmossdk.io/store/prefix"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 )
 
 // SetTradeIndex set tradeIndex in the store
-func (k Keeper) SetTradeIndex(ctx sdk.Context, tradeIndex types.TradeIndex) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TradeIndexKey))
+func (k Keeper) SetTradeIndex(ctx context.Context, tradeIndex types.TradeIndex) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.TradeIndexKey))
 	b := k.cdc.MustMarshal(&tradeIndex)
 	store.Set([]byte{0}, b)
 }
 
 // GetTradeIndex returns tradeIndex
-func (k Keeper) GetTradeIndex(ctx sdk.Context) (val types.TradeIndex, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TradeIndexKey))
+func (k Keeper) GetTradeIndex(ctx context.Context) (val types.TradeIndex, found bool) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.TradeIndexKey))
 
 	b := store.Get([]byte{0})
 	if b == nil {
@@ -27,7 +31,8 @@ func (k Keeper) GetTradeIndex(ctx sdk.Context) (val types.TradeIndex, found bool
 }
 
 // RemoveTradeIndex removes tradeIndex from the store
-func (k Keeper) RemoveTradeIndex(ctx sdk.Context) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.TradeIndexKey))
+func (k Keeper) RemoveTradeIndex(ctx context.Context) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.TradeIndexKey))
 	store.Delete([]byte{0})
 }

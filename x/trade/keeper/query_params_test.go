@@ -3,19 +3,18 @@ package keeper_test
 import (
 	"testing"
 
-	testkeeper "github.com/GGEZLabs/ggezchain/testutil/keeper"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
+
+	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 )
 
 func TestParamsQuery(t *testing.T) {
-	keeper, ctx := testkeeper.TradeKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
+	keeper, ctx := keepertest.TradeKeeper(t)
 	params := types.DefaultParams()
-	keeper.SetParams(ctx, params)
+	require.NoError(t, keeper.SetParams(ctx, params))
 
-	response, err := keeper.Params(wctx, &types.QueryParamsRequest{})
+	response, err := keeper.Params(ctx, &types.QueryParamsRequest{})
 	require.NoError(t, err)
 	require.Equal(t, &types.QueryParamsResponse{Params: params}, response)
 }

@@ -1,9 +1,9 @@
 package keeper_test
 
 import (
+	"context"
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
 	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
@@ -12,7 +12,7 @@ import (
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 )
 
-func createTestTradeIndex(keeper *keeper.Keeper, ctx sdk.Context) types.TradeIndex {
+func createTestTradeIndex(keeper keeper.Keeper, ctx context.Context) types.TradeIndex {
 	item := types.TradeIndex{}
 	keeper.SetTradeIndex(ctx, item)
 	return item

@@ -3,7 +3,6 @@ package keeper_test
 import (
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -15,7 +14,6 @@ import (
 
 func TestTradeIndexQuery(t *testing.T) {
 	keeper, ctx := keepertest.TradeKeeper(t)
-	wctx := sdk.WrapSDKContext(ctx)
 	item := createTestTradeIndex(keeper, ctx)
 	tests := []struct {
 		desc     string
@@ -35,7 +33,7 @@ func TestTradeIndexQuery(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.TradeIndex(wctx, tc.request)
+			response, err := keeper.TradeIndex(ctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {

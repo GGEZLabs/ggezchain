@@ -8,6 +8,14 @@
       {
         "name": "mohd",
         "address": "ggez1qvgz6yfnsu84fz7ezxwt4hl456zzwffmt0q598"
+      },
+      {
+        "name": "rami",
+        "address": "ggez1nwl35395nndu8uq0rnnfs7y44w4wx4eu2gkq5u"
+      },
+      {
+        "name": "ahmad",
+        "address": "ggez15d8r9jzfk3n7tjjqu446p0vr46fgmnh4ajhpd8"
       }
     ],
     "allowed_checkers": [
@@ -18,6 +26,14 @@
       {
         "name": "mohd",
         "address": "ggez1qvgz6yfnsu84fz7ezxwt4hl456zzwffmt0q598"
+      },
+      {
+        "name": "rami",
+        "address": "ggez1nwl35395nndu8uq0rnnfs7y44w4wx4eu2gkq5u"
+      },
+      {
+        "name": "ahmad",
+        "address": "ggez15d8r9jzfk3n7tjjqu446p0vr46fgmnh4ajhpd8"
       }
     ]
   }

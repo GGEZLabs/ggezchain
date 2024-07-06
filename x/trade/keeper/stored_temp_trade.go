@@ -1,14 +1,18 @@
 package keeper
 
 import (
+	"context"
+
+	"cosmossdk.io/store/prefix"
+	storetypes "cosmossdk.io/store/types"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/runtime"
 )
 
 // SetStoredTempTrade set a specific storedTempTrade in the store from its index
-func (k Keeper) SetStoredTempTrade(ctx sdk.Context, storedTempTrade types.StoredTempTrade) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.StoredTempTradeKeyPrefix))
+func (k Keeper) SetStoredTempTrade(ctx context.Context, storedTempTrade types.StoredTempTrade) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.StoredTempTradeKeyPrefix))
 	b := k.cdc.MustMarshal(&storedTempTrade)
 	store.Set(types.StoredTempTradeKey(
 		storedTempTrade.TradeIndex,
@@ -17,11 +21,12 @@ func (k Keeper) SetStoredTempTrade(ctx sdk.Context, storedTempTrade types.Stored
 
 // GetStoredTempTrade returns a storedTempTrade from its index
 func (k Keeper) GetStoredTempTrade(
-	ctx sdk.Context,
+	ctx context.Context,
 	tradeIndex uint64,
 
 ) (val types.StoredTempTrade, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.StoredTempTradeKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.StoredTempTradeKeyPrefix))
 
 	b := store.Get(types.StoredTempTradeKey(
 		tradeIndex,
@@ -36,20 +41,22 @@ func (k Keeper) GetStoredTempTrade(
 
 // RemoveStoredTempTrade removes a storedTempTrade from the store
 func (k Keeper) RemoveStoredTempTrade(
-	ctx sdk.Context,
+	ctx context.Context,
 	tradeIndex uint64,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.StoredTempTradeKeyPrefix))
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.StoredTempTradeKeyPrefix))
 	store.Delete(types.StoredTempTradeKey(
 		tradeIndex,
 	))
 }
 
 // GetAllStoredTempTrade returns all storedTempTrade
-func (k Keeper) GetAllStoredTempTrade(ctx sdk.Context) (list []types.StoredTempTrade) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.StoredTempTradeKeyPrefix))
-	iterator := sdk.KVStorePrefixIterator(store, []byte{})
+func (k Keeper) GetAllStoredTempTrade(ctx context.Context) (list []types.StoredTempTrade) {
+	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
+	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.StoredTempTradeKeyPrefix))
+	iterator := storetypes.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 

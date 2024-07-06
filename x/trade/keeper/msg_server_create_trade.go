@@ -2,20 +2,21 @@ package keeper
 
 import (
 	"context"
+	"time"
+
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"time"
 )
 
 func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade) (*types.MsgCreateTradeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	 validateTradeDataErr := k.ValidateTradeData(msg.TradeData)
+	validateTradeDataErr := k.ValidateTradeData(msg.TradeData)
 	if validateTradeDataErr != nil {
 		return nil, validateTradeDataErr
 	}
-	
-	isAllowed, _ := k.IsAddressAllowed( ctx, msg.Creator, types.CreateTrade)
+
+	isAllowed, _ := k.IsAddressAllowed(ctx, msg.Creator, types.CreateTrade)
 	if !isAllowed {
 		return nil, types.ErrInvalidMakerPermission
 	}
@@ -65,10 +66,8 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	k.Keeper.SetTradeIndex(ctx, tradeIndex)
 
 	k.Keeper.CancelExpiredPendingTrades(ctx)
-	
+
 	return &types.MsgCreateTradeResponse{
 		TradeIndex: newIndex,
 		Status:     status,
-	}, nil
-
-}
+	}, nil}
