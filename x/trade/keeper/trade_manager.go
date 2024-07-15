@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"strings"
+	"time"
 
 	"os"
-	"time"
 
 	errors "cosmossdk.io/errors"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
@@ -159,39 +159,39 @@ func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade, co
 }
 
 func (k Keeper) IsAddressLinkedToValidator(goCtx context.Context, address string) (bool, error) {
-    ctx := sdk.UnwrapSDKContext(goCtx)
-    accAddress, err := sdk.AccAddressFromBech32(address)
-    if err != nil {
-        return false, err
-    }
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	accAddress, err := sdk.AccAddressFromBech32(address)
+	if err != nil {
+		return false, err
+	}
 
-    validators, err := k.stakingKeeper.GetAllValidators(ctx)
-    if err != nil {
-        return false, err
-    }
+	validators, err := k.stakingKeeper.GetAllValidators(ctx)
+	if err != nil {
+		return false, err
+	}
 	// Loop through the validators
-    for _, validator := range validators {
-        valAddress, err := sdk.ValAddressFromBech32(validator.OperatorAddress)
-        if err != nil {
-            // If validator address has error continue to other validators
-            continue
-        }
+	for _, validator := range validators {
+		valAddress, err := sdk.ValAddressFromBech32(validator.OperatorAddress)
+		if err != nil {
+			// If validator address has error continue to other validators
+			continue
+		}
 
-        delegation, err := k.stakingKeeper.GetDelegation(ctx, accAddress, valAddress)
-        if err != nil {
-            if err == stakingtypes.ErrNoDelegation {
-                // No delegation found, continue to next validator
-                continue
-            }
-            return false, err
-        }
+		delegation, err := k.stakingKeeper.GetDelegation(ctx, accAddress, valAddress)
+		if err != nil {
+			if err == stakingtypes.ErrNoDelegation {
+				// No delegation found, continue to next validator
+				continue
+			}
+			return false, err
+		}
 
-        if delegation.DelegatorAddress != "" {
-            return true, nil
-        }
-    }
+		if delegation.DelegatorAddress != "" {
+			return true, nil
+		}
+	}
 
-    return false, nil
+	return false, nil
 }
 
 func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
@@ -199,7 +199,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
 	allStoredTempTrade := k.GetAllStoredTempTrade(ctx)
 	status := types.Canceled
 
-	currentDate := time.Now()
+	currentDate := ctx.BlockTime().UTC()
 
 	for i := 0; i < len(allStoredTempTrade); i++ {
 		createDate := allStoredTempTrade[i].CreateDate

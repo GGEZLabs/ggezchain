@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"time"
 
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -20,7 +19,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	if !isAllowed {
 		return nil, types.ErrInvalidMakerPermission
 	}
-	currentTime := time.Now()
+	currentTime := ctx.BlockTime().UTC()
 	formattedDate := currentTime.Format("2006-01-02 03:04")
 
 	err := msg.Validate()
@@ -70,4 +69,5 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	return &types.MsgCreateTradeResponse{
 		TradeIndex: newIndex,
 		Status:     status,
-	}, nil}
+	}, nil
+}

@@ -3,7 +3,7 @@ package keeper_test
 import (
 	"fmt"
 	"testing"
-	"time"
+
 	sdkmath "cosmossdk.io/math"
 
 	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
@@ -87,7 +87,7 @@ func TestIsAddressWhiteListed(t *testing.T) {
 
 func TestCancelExpiredPendingTrades(t *testing.T) {
 	keeper, ctx := keepertest.TradeKeeper(t)
-	now := time.Now()
+	now := ctx.BlockTime().UTC()
 	formattedCurrentDate := now.Format("2006-01-02 15:04")
 
 	storedTradeOne := types.StoredTrade{

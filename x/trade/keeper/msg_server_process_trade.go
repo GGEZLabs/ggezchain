@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"time"
 
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,7 +15,7 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 		return nil, types.ErrInvalidCheckerPermission
 	}
 
-	currentTime := time.Now()
+	currentTime := ctx.BlockTime().UTC()
 	formattedDate := currentTime.Format("2006-01-02 03:04")
 	tradeData, found := k.Keeper.GetStoredTrade(ctx, msg.TradeIndex)
 	if !found {
@@ -89,8 +88,8 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 		k.RemoveStoredTempTrade(ctx, msg.TradeIndex)
 	}
 
-
 	return &types.MsgProcessTradeResponse{
 		TradeIndex: msg.TradeIndex,
 		Status:     status,
-	}, err}
+	}, err
+}
