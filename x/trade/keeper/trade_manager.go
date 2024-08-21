@@ -16,24 +16,24 @@ import (
 
 type TradeDataObject struct {
 	TradeData struct {
-		TradeRequestID int     `json:"tradeRequestID"`
-		AssetHolderID  int     `json:"assetHolderID"`
-		AssetID        int     `json:"assetID"`
+		TradeRequestID uint64  `json:"tradeRequestID"`
+		AssetHolderID  uint64  `json:"assetHolderID"`
+		AssetID        uint64  `json:"assetID"`
 		TradeType      string  `json:"tradeType"`
 		TradeValue     float64 `json:"tradeValue"`
 		Currency       string  `json:"currency"`
 		Exchange       string  `json:"exchange"`
 		FundName       string  `json:"fundName"`
 		Issuer         string  `json:"issuer"`
-		NoShares       string  `json:"noShares"`
-		Price          string  `json:"price"`
-		Quantity       string  `json:"quantity"`
+		NoShares       uint64  `json:"noShares"`
+		Price          float64 `json:"price"`
+		Quantity       uint64  `json:"quantity"`
 		Segment        string  `json:"segment"`
-		SharePrice     string  `json:"sharePrice"`
+		SharePrice     float64  `json:"sharePrice"`
 		Ticker         string  `json:"ticker"`
-		TradeFee       string  `json:"tradeFee"`
-		TradeNetPrice  string  `json:"tradeNetPrice"`
-		TradeNetValue  string  `json:"tradeNetValue"`
+		TradeFee       float64 `json:"tradeFee"`
+		TradeNetPrice  float64 `json:"tradeNetPrice"`
+		TradeNetValue  float64 `json:"tradeNetValue"`
 	} `json:"TradeData"`
 	Brokerage struct {
 		Name    string `json:"name"`
@@ -262,31 +262,31 @@ func (k Keeper) ValidateTradeData(tradeData string) (err error) {
 		if strings.TrimSpace(tradeData.Issuer) == "" {
 			return errors.Wrap(types.ErrTradeDataIssuer, "Invalid Trade Data Object")
 		}
-		if strings.TrimSpace(tradeData.NoShares) == "" {
+		if tradeData.NoShares == 0{
 			return errors.Wrap(types.ErrTradeDataNoShares, "Invalid Trade Data Object")
 		}
-		if strings.TrimSpace(tradeData.Price) == "" {
+		if tradeData.Price == 0 {
 			return errors.Wrap(types.ErrTradeDataPrice, "Invalid Trade Data Object")
 		}
-		if strings.TrimSpace(tradeData.Quantity) == "" {
+		if tradeData.Quantity == 0 {
 			return errors.Wrap(types.ErrTradeDataQuantity, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Segment) == "" {
 			return errors.Wrap(types.ErrTradeDataSegment, "Invalid Trade Data Object")
 		}
-		if strings.TrimSpace(tradeData.SharePrice) == "" {
+		if tradeData.SharePrice == 0 {
 			return errors.Wrap(types.ErrTradeDataSharePrice, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.Ticker) == "" {
 			return errors.Wrap(types.ErrTradeDataTicker, "Invalid Trade Data Object")
 		}
-		if strings.TrimSpace(tradeData.TradeFee) == "" {
+		if tradeData.TradeFee < 0 {
 			return errors.Wrap(types.ErrTradeDataFee, "Invalid Trade Data Object")
 		}
-		if strings.TrimSpace(tradeData.TradeNetPrice) == "" {
+		if tradeData.TradeNetPrice == 0 {
 			return errors.Wrap(types.ErrTradeDataNetPrice, "Invalid Trade Data Object")
 		}
-		if strings.TrimSpace(tradeData.TradeNetValue) == "" {
+		if tradeData.TradeNetValue == 0 {
 			return errors.Wrap(types.ErrTradeDataNetValue, "Invalid Trade Data Object")
 		}
 		if strings.TrimSpace(tradeData.TradeType) == "" {
