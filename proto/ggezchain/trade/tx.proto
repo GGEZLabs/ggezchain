@@ -47,6 +47,9 @@ message MsgCreateTrade {
   string quantity        = 5;
   string receiverAddress = 6;
   string tradeData       = 7;
+  string bankingSystemData = 8; 
+  string coinMintingPriceJSON = 9; 
+  string exchangeRateJSON = 10; 
 }
 
 message MsgCreateTradeResponse {

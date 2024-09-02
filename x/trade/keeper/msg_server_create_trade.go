@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"context"
+	"strconv"
+	"time"
 
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -20,7 +22,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		return nil, types.ErrInvalidMakerPermission
 	}
 	currentTime := ctx.BlockTime().UTC()
-	formattedDate := currentTime.Format("2006-01-02 03:04")
+	formattedDate := currentTime.Format(time.RFC3339)
 
 	err := msg.Validate()
 	if err != nil {
@@ -36,19 +38,24 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	status := types.Pending
 
 	storedTrade := types.StoredTrade{
-		TradeIndex:      newIndex,
-		Status:          status,
-		CreateDate:      formattedDate,
-		TradeType:       msg.TradeType,
-		Coin:            msg.Coin,
-		Price:           msg.Price,
-		Quantity:        msg.Quantity,
-		ReceiverAddress: msg.ReceiverAddress,
-		Maker:           msg.Creator,
-		Checker:         "",
-		ProcessDate:     formattedDate,
-		TradeData:       msg.TradeData,
-		Result:          types.ErrTradeCreatedSuccessfully.Error(),
+		TradeIndex:           newIndex,
+		Status:               status,
+		CreateDate:           formattedDate,
+		UpdateDate:           formattedDate,
+		TradeType:            msg.TradeType,
+		Coin:                 msg.Coin,
+		Price:                msg.Price,
+		Quantity:             msg.Quantity,
+		ReceiverAddress:      msg.ReceiverAddress,
+		Maker:                msg.Creator,
+		Checker:              "",
+		ProcessDate:          formattedDate,
+		TradeData:            msg.TradeData,
+		BankingSystemData:    msg.BankingSystemData,
+		CoinMintingPriceJSON: msg.CoinMintingPriceJSON,
+		ExchangeRateJSON:     msg.ExchangeRateJSON,
+
+		Result: types.ErrTradeCreatedSuccessfully.Error(),
 	}
 
 	storedTempTrade := types.StoredTempTrade{
@@ -65,6 +72,14 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	k.Keeper.SetTradeIndex(ctx, tradeIndex)
 
 	k.Keeper.CancelExpiredPendingTrades(ctx)
+	// check necessary data in callisto that should be returned in create and process trade TX
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeCreateTrade,
+			sdk.NewAttribute(types.AttributeKeyTradeIndex, strconv.FormatUint(newIndex, 10)),
+			sdk.NewAttribute(types.AttributeKeyStatus, status),
+		),
+	)
 
 	return &types.MsgCreateTradeResponse{
 		TradeIndex: newIndex,

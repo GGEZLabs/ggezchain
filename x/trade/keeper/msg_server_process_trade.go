@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"context"
+	"strconv"
+	"time"
 
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -16,7 +18,7 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 	}
 
 	currentTime := ctx.BlockTime().UTC()
-	formattedDate := currentTime.Format("2006-01-02 03:04")
+	formattedDate := currentTime.Format(time.RFC3339)
 	tradeData, found := k.Keeper.GetStoredTrade(ctx, msg.TradeIndex)
 	if !found {
 		panic("Trade Index not found")
@@ -87,6 +89,21 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 		k.Keeper.SetStoredTrade(ctx, storedTrade)
 		k.RemoveStoredTempTrade(ctx, msg.TradeIndex)
 	}
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeProcessTrade,
+			sdk.NewAttribute(types.AttributeKeyTradeIndex, strconv.FormatUint(msg.TradeIndex, 10)),
+			sdk.NewAttribute(types.AttributeKeyStatus, status),
+			sdk.NewAttribute(types.AttributeKeyChecker, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyMaker, tradeData.Maker),
+			sdk.NewAttribute(types.AttributeKeyTradeData, tradeData.TradeData),
+			sdk.NewAttribute(types.AttributeKeyCreateDate, tradeData.CreateDate),
+			sdk.NewAttribute(types.AttributeKeyUpdateDate, formattedDate),
+			sdk.NewAttribute(types.AttributeKeyProcessDate, formattedDate),
+			sdk.NewAttribute(types.AttributeKeyResult, result),
+		),
+	)
 
 	return &types.MsgProcessTradeResponse{
 		TradeIndex: msg.TradeIndex,

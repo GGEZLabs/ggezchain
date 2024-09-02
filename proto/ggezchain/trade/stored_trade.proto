@@ -17,7 +17,10 @@ message StoredTrade {
   string updateDate = 11; 
   string processDate = 12; 
   string tradeData = 13; 
-  string result = 14; 
+  string coinMintingPriceJSON = 14; 
+  string exchangeRateJSON = 15; 
+  string bankingSystemData = 16; 
+  string result = 17; 
   
 }
 
