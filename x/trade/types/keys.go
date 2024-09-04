@@ -24,9 +24,6 @@ const (
 )
 
 const (
-	CancelExpiredPendingTradesEventType = "status is changed"
-)
-const (
 	Pending             = "Pending"
 	Failed              = "Failed"
 	Rejected            = "Rejected"

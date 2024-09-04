@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"encoding/json"
+	"strconv"
 	"strings"
 	"time"
 
@@ -16,7 +17,6 @@ import (
 
 type TradeDataObject struct {
 	TradeData struct {
-		TradeRequestID uint64  `json:"tradeRequestID"`
 		AssetHolderID  uint64  `json:"assetHolderID"`
 		AssetID        uint64  `json:"assetID"`
 		TradeType      string  `json:"tradeType"`
@@ -220,7 +220,11 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
 			k.RemoveStoredTempTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
 
 			ctx.EventManager().EmitEvent(
-				sdk.NewEvent(types.CancelExpiredPendingTradesEventType),
+				sdk.NewEvent(
+					types.EventTypeCancelExpiredPendingTrades,
+					sdk.NewAttribute(types.AttributeKeyTradeIndex, strconv.FormatUint(storedTrade.TradeIndex, 10)),
+					sdk.NewAttribute(types.AttributeKeyStatus, storedTrade.Status),
+				),
 			)
 		}
 	}
@@ -243,9 +247,6 @@ func (k Keeper) ValidateTradeData(tradeData string) (err error) {
 		}
 		if tradeData.AssetID <= 0 {
 			return errors.Wrap(types.ErrTradeDataAssetID, "Invalid Trade Data Object")
-		}
-		if tradeData.TradeRequestID <= 0 {
-			return errors.Wrap(types.ErrTradeDataRequestID, "Invalid Trade Data Object")
 		}
 		if tradeData.TradeValue == 0 {
 			return errors.Wrap(types.ErrTradeDataValue, "Invalid Trade Data Object")
