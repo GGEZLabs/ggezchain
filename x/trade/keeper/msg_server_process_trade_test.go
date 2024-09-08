@@ -16,7 +16,8 @@ func (suite *IntegrationTestSuite) TestProcessTradeConfirm() {
 		Price:           "0.001",
 		Quantity:        "100000",
 		ReceiverAddress: testutil.Mutaz,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		BankingSystemData: "{}",
 	})
 	processResponse, err := suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
@@ -46,7 +47,8 @@ func (suite *IntegrationTestSuite) TestProcessTradeReject() {
 		Price:           "0.001",
 		Quantity:        "100000",
 		ReceiverAddress: testutil.Mutaz,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		BankingSystemData: "{}",
 	})
 	processResponse, err := suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
@@ -76,7 +78,8 @@ func (suite *IntegrationTestSuite) TestProcessTradeWithInvalidCheckerPermission(
 		Price:           "0.001",
 		Quantity:        "100000",
 		ReceiverAddress: testutil.Mutaz,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		BankingSystemData: "{}",
 	})
 	_, err := suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
 		Creator:     testutil.Rami,
@@ -98,7 +101,8 @@ func (suite *IntegrationTestSuite) TestStoredTradeAfterConfirmTrade() {
 		Price:           "0.001",
 		Quantity:        "100000",
 		ReceiverAddress: testutil.Mutaz,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		BankingSystemData: "{}",
 	})
 	suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
@@ -128,7 +132,7 @@ func (suite *IntegrationTestSuite) TestStoredTradeAfterConfirmTrade() {
 		Maker:           testutil.Mutaz,
 		Checker:         testutil.Mohd,
 		ProcessDate:     trade.CreateDate,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
 		Result:          types.ErrTradeProcessedSuccessfully.Error(),
 		UpdateDate:      trade.UpdateDate,
 	}, trade)
@@ -146,7 +150,8 @@ func (suite *IntegrationTestSuite) TestTempTradeAfterConfirmTrade() {
 		Price:           "0.001",
 		Quantity:        "100000",
 		ReceiverAddress: testutil.Mutaz,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		BankingSystemData: "{}",
 	})
 	suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
@@ -184,7 +189,8 @@ func (suite *IntegrationTestSuite) TestStoredTradeAfterRejectTrade() {
 		Price:           "0.001",
 		Quantity:        "100000",
 		ReceiverAddress: testutil.Mutaz,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		BankingSystemData: "{}",
 	})
 	suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
@@ -214,7 +220,7 @@ func (suite *IntegrationTestSuite) TestStoredTradeAfterRejectTrade() {
 		Maker:           testutil.Mutaz,
 		Checker:         testutil.Mohd,
 		ProcessDate:     trade.CreateDate,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
 		Result:          types.ErrTradeProcessedSuccessfully.Error(),
 		UpdateDate:      trade.UpdateDate,
 	}, trade)
@@ -232,7 +238,8 @@ func (suite *IntegrationTestSuite) TestTempTradeAfterRejectTrade() {
 		Price:           "0.001",
 		Quantity:        "100000",
 		ReceiverAddress: testutil.Mutaz,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		BankingSystemData: "{}",
 	})
 	suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
@@ -270,7 +277,8 @@ func (suite *IntegrationTestSuite) TestProcessTwoTrade() {
 		Price:           "0.001",
 		Quantity:        "100000",
 		ReceiverAddress: testutil.Mutaz,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		BankingSystemData: "{}",
 	})
 
 	suite.msgServer.CreateTrade(goCtx, &types.MsgCreateTrade{
@@ -280,7 +288,8 @@ func (suite *IntegrationTestSuite) TestProcessTwoTrade() {
 		Price:           "0.001",
 		Quantity:        "100000",
 		ReceiverAddress: testutil.Mohd,
-		TradeData:       "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		BankingSystemData: "{}",
 	})
 
 
