@@ -54,7 +54,6 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		BankingSystemData:    msg.BankingSystemData,
 		CoinMintingPriceJSON: msg.CoinMintingPriceJSON,
 		ExchangeRateJSON:     msg.ExchangeRateJSON,
-
 		Result: types.ErrTradeCreatedSuccessfully.Error(),
 	}
 
@@ -72,7 +71,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	k.Keeper.SetTradeIndex(ctx, tradeIndex)
 
 	k.Keeper.CancelExpiredPendingTrades(ctx)
-	// check necessary data in callisto that should be returned in create and process trade TX
+
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeCreateTrade,

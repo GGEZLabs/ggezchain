@@ -203,7 +203,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
 
 	for i := 0; i < len(allStoredTempTrade); i++ {
 		createDate := allStoredTempTrade[i].CreateDate
-		formattedCreateDate, err := time.Parse("2006-01-02 15:04", createDate)
+		formattedCreateDate, err := time.Parse(time.RFC3339, createDate)
 		if err != nil {
 			return errors.Wrapf(types.ErrInvalidDateFormat, types.ErrInvalidDateFormat.Error())
 		}
@@ -214,7 +214,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
 
 			storedTrade, _ := k.GetStoredTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
 			storedTrade.Status = status
-			storedTrade.UpdateDate = currentDate.Format("2006-01-02 15:04")
+			storedTrade.UpdateDate = currentDate.Format(time.RFC3339)
 
 			k.SetStoredTrade(ctx, storedTrade)
 			k.RemoveStoredTempTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
