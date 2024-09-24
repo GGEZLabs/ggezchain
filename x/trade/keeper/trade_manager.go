@@ -17,23 +17,23 @@ import (
 
 type TradeDataObject struct {
 	TradeData struct {
-		AssetHolderID  uint64  `json:"assetHolderID"`
-		AssetID        uint64  `json:"assetID"`
-		TradeType      string  `json:"tradeType"`
-		TradeValue     float64 `json:"tradeValue"`
-		Currency       string  `json:"currency"`
-		Exchange       string  `json:"exchange"`
-		FundName       string  `json:"fundName"`
-		Issuer         string  `json:"issuer"`
-		NoShares       uint64  `json:"noShares"`
-		Price          float64 `json:"price"`
-		Quantity       uint64  `json:"quantity"`
-		Segment        string  `json:"segment"`
-		SharePrice     float64  `json:"sharePrice"`
-		Ticker         string  `json:"ticker"`
-		TradeFee       float64 `json:"tradeFee"`
-		TradeNetPrice  float64 `json:"tradeNetPrice"`
-		TradeNetValue  float64 `json:"tradeNetValue"`
+		AssetHolderID uint64  `json:"assetHolderID"`
+		AssetID       uint64  `json:"assetID"`
+		TradeType     string  `json:"tradeType"`
+		TradeValue    float64 `json:"tradeValue"`
+		Currency      string  `json:"currency"`
+		Exchange      string  `json:"exchange"`
+		FundName      string  `json:"fundName"`
+		Issuer        string  `json:"issuer"`
+		NoShares      uint64  `json:"noShares"`
+		Price         float64 `json:"price"`
+		Quantity      uint64  `json:"quantity"`
+		Segment       string  `json:"segment"`
+		SharePrice    float64 `json:"sharePrice"`
+		Ticker        string  `json:"ticker"`
+		TradeFee      float64 `json:"tradeFee"`
+		TradeNetPrice float64 `json:"tradeNetPrice"`
+		TradeNetValue float64 `json:"tradeNetValue"`
 	} `json:"TradeData"`
 	Brokerage struct {
 		Name    string `json:"name"`
@@ -198,6 +198,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	allStoredTempTrade := k.GetAllStoredTempTrade(ctx)
 	status := types.Canceled
+	var canceledIds []uint64
 
 	currentDate := ctx.BlockTime().UTC()
 
@@ -219,14 +220,26 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) (err error) {
 			k.SetStoredTrade(ctx, storedTrade)
 			k.RemoveStoredTempTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
 
-			ctx.EventManager().EmitEvent(
-				sdk.NewEvent(
-					types.EventTypeCancelExpiredPendingTrades,
-					sdk.NewAttribute(types.AttributeKeyTradeIndex, strconv.FormatUint(storedTrade.TradeIndex, 10)),
-					sdk.NewAttribute(types.AttributeKeyStatus, storedTrade.Status),
-				),
-			)
+			canceledIds = append(canceledIds, allStoredTempTrade[i].TempTradeIndex)
 		}
+
+	}
+
+	if len(canceledIds) > 0 {
+		attributes := []sdk.Attribute{
+			sdk.NewAttribute(types.AttributeKeyStatus, status),
+		}
+
+		for _, id := range canceledIds {
+			attributes = append(attributes, sdk.NewAttribute(types.AttributeKeyTradeIndex, strconv.FormatUint(id, 10)))
+		}
+
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeCancelExpiredPendingTrades,
+				attributes...,
+			),
+		)
 	}
 	return err
 }
@@ -263,7 +276,7 @@ func (k Keeper) ValidateTradeData(tradeData string) (err error) {
 		if strings.TrimSpace(tradeData.Issuer) == "" {
 			return errors.Wrap(types.ErrTradeDataIssuer, "Invalid Trade Data Object")
 		}
-		if tradeData.NoShares == 0{
+		if tradeData.NoShares == 0 {
 			return errors.Wrap(types.ErrTradeDataNoShares, "Invalid Trade Data Object")
 		}
 		if tradeData.Price == 0 {
