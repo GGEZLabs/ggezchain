@@ -54,7 +54,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		BankingSystemData:    msg.BankingSystemData,
 		CoinMintingPriceJSON: msg.CoinMintingPriceJSON,
 		ExchangeRateJSON:     msg.ExchangeRateJSON,
-		Result: types.ErrTradeCreatedSuccessfully.Error(),
+		Result:               types.ErrTradeCreatedSuccessfully.Error(),
 	}
 
 	storedTempTrade := types.StoredTempTrade{
@@ -70,7 +70,16 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 
 	k.Keeper.SetTradeIndex(ctx, tradeIndex)
 
-	k.Keeper.CancelExpiredPendingTrades(ctx)
+	err = k.Keeper.CancelExpiredPendingTrades(ctx)
+
+	if err != nil {
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeCancelExpiredPendingTradesError,
+				sdk.NewAttribute(types.AttributeKeyError, err.Error()),
+			),
+		)
+	}
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
