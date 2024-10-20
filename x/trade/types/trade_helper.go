@@ -62,13 +62,13 @@ func (msg *MsgProcessTrade) checkerAndMakerNotTheSame(maker string, checker stri
 }
 
 func (msg *MsgProcessTrade) ValidateStatus(status string) (err error) {
-	if status == "Completed" {
+	if status == Completed {
 		return ErrTradeStatusCompleted
-	} else if status == "Rejected" {
+	} else if status == Rejected {
 		return ErrTradeStatusRejected
-	} else if status == "Canceled" {
+	} else if status == Canceled {
 		return ErrTradeStatusCanceled
-	} else if status == "Pending" {
+	} else if status == Pending {
 		return nil
 	}
 
