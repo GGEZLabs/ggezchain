@@ -31,6 +31,7 @@ import (
 	"cosmossdk.io/x/feegrant"
 	"cosmossdk.io/x/nft"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	trademodulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/trade/module"
 	_ "github.com/GGEZLabs/ggezchain/x/trade/module" // import for side-effects
 	trademoduletypes "github.com/GGEZLabs/ggezchain/x/trade/types"
@@ -93,6 +94,7 @@ var (
 		circuittypes.ModuleName,
 		// chain modules
 		trademoduletypes.ModuleName,
+		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -118,6 +120,7 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		trademoduletypes.ModuleName,
+		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -137,6 +140,7 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		trademoduletypes.ModuleName,
+		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -158,6 +162,7 @@ var (
 		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
 		{Account: trademoduletypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner, authtypes.Staking}},
+		{Account: wasmtypes.ModuleName, Permissions: []string{authtypes.Burner}},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 

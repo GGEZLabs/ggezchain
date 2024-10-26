@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"testing"
 	"time"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/server"
+
 	cmttypes "github.com/cometbft/cometbft/types"
-	"github.com/cosmos/cosmos-sdk/testutil/mock"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	"github.com/cosmos/cosmos-sdk/server"
+	"github.com/cosmos/cosmos-sdk/testutil/mock"
 
 	"cosmossdk.io/log"
 	sdkmath "cosmossdk.io/math"
@@ -50,13 +51,12 @@ func setup(withGenesis bool, invCheckPeriod uint) (*App, GenesisState) {
 	appOptions[flags.FlagHome] = DefaultNodeHome
 	appOptions[server.FlagInvCheckPeriod] = invCheckPeriod
 
-	app ,_:= New(log.NewNopLogger(), db, nil, true, appOptions)
+	app, _ := New(log.NewNopLogger(), db, nil, true, appOptions)
 	if withGenesis {
 		return app, app.DefaultGenesis()
 	}
 	return app, GenesisState{}
 }
-
 
 func Setup(t *testing.T, isCheckTx bool) *App {
 	t.Helper()
@@ -89,7 +89,7 @@ func SetupWithGenesisValSet(t *testing.T, valSet *cmttypes.ValidatorSet, genAccs
 	genesisState, err := simtestutil.GenesisStateWithValSet(app.AppCodec(), genesisState, valSet, genAccs, balances...)
 	require.NoError(t, err)
 	tradeGenesis := types.DefaultGenesis()
- 	genesisState[types.ModuleName] = app.AppCodec().MustMarshalJSON(tradeGenesis)
+	genesisState[types.ModuleName] = app.AppCodec().MustMarshalJSON(tradeGenesis)
 	stateBytes, err := json.MarshalIndent(genesisState, "", " ")
 	require.NoError(t, err)
 
@@ -116,7 +116,7 @@ func SetupWithGenesisValSet(t *testing.T, valSet *cmttypes.ValidatorSet, genAccs
 // SetupWithGenesisAccounts initializes a new App with the provided genesis
 // accounts and possible balances.
 func SetupWithGenesisAccounts(genAccs []authtypes.GenesisAccount, balances ...banktypes.Balance) *App {
-	app, genesisState := setup(true,5)
+	app, genesisState := setup(true, 5)
 	authGenesis := authtypes.NewGenesisState(authtypes.DefaultParams(), genAccs)
 	genesisState[authtypes.ModuleName] = app.AppCodec().MustMarshalJSON(authGenesis)
 
@@ -125,7 +125,7 @@ func SetupWithGenesisAccounts(genAccs []authtypes.GenesisAccount, balances ...ba
 		totalSupply = totalSupply.Add(b.Coins...)
 	}
 
-	bankGenesis := banktypes.NewGenesisState(banktypes.DefaultGenesisState().Params, balances, totalSupply, []banktypes.Metadata{},[]banktypes.SendEnabled{})
+	bankGenesis := banktypes.NewGenesisState(banktypes.DefaultGenesisState().Params, balances, totalSupply, []banktypes.Metadata{}, []banktypes.SendEnabled{})
 	genesisState[banktypes.ModuleName] = app.AppCodec().MustMarshalJSON(bankGenesis)
 
 	stateBytes, err := json.MarshalIndent(genesisState, "", " ")

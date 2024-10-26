@@ -8,18 +8,18 @@ import (
 
 var _ sdk.Msg = &MsgCreateTrade{}
 
-func NewMsgCreateTrade(creator string, tradeType string, coin string, price string, quantity string, receiverAddress string, tradeData string,bankingSystemData string,coinMintingPriceJSON string,exchangeRateJSON string) *MsgCreateTrade {
+func NewMsgCreateTrade(creator string, tradeType string, coin string, price string, quantity string, receiverAddress string, tradeData string, bankingSystemData string, coinMintingPriceJSON string, exchangeRateJSON string) *MsgCreateTrade {
 	return &MsgCreateTrade{
-		Creator:         creator,
-		TradeType:       tradeType,
-		Coin:            coin,
-		Price:           price,
-		Quantity:        quantity,
-		ReceiverAddress: receiverAddress,
-		TradeData:       tradeData,
-		BankingSystemData: bankingSystemData,
+		Creator:              creator,
+		TradeType:            tradeType,
+		Coin:                 coin,
+		Price:                price,
+		Quantity:             quantity,
+		ReceiverAddress:      receiverAddress,
+		TradeData:            tradeData,
+		BankingSystemData:    bankingSystemData,
 		CoinMintingPriceJSON: coinMintingPriceJSON,
-		ExchangeRateJSON: exchangeRateJSON,
+		ExchangeRateJSON:     exchangeRateJSON,
 	}
 }
 
@@ -72,7 +72,7 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 		return ErrInvalidTradePrice
 	}
 
-	// to check data should be send 
+	// to check data should be send
 	// if msg.CoinMintingPriceJSON == "" {
 	// 	return ErrInvalidCoinMintingPriceJSON
 	// }

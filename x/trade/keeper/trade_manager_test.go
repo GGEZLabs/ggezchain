@@ -91,7 +91,7 @@ func TestCancelExpiredPendingTrades(t *testing.T) {
 	blockHeight := int64(1)
 	blockTime := time.Now().UTC()
 	ctx = ctx.WithBlockHeight(blockHeight).WithBlockTime(blockTime)
-	
+
 	now := ctx.BlockTime().UTC()
 	formattedCurrentDate := now.Format(time.RFC3339)
 	storedTradeOne := types.StoredTrade{
@@ -309,7 +309,7 @@ func TestValidateTradeData(t *testing.T) {
 			name:         "Invalid fee",
 			tradeDataObj: "{\"TradeData\":{\"assetHolderID\":10,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"Tech Fund\",\"issuer\":\"Company A\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":0,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZ Brokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
 			err:          types.ErrTradeDataFee,
-		}, 
+		},
 		{
 			name:         "Invalid netPrice",
 			tradeDataObj: "{\"TradeData\":{\"assetHolderID\":10,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"Tech Fund\",\"issuer\":\"Company A\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":0,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZ Brokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
