@@ -97,7 +97,7 @@ func TestCancelExpiredPendingTrades(t *testing.T) {
 	storedTradeOne := types.StoredTrade{
 		TradeIndex:      1,
 		TradeType:       types.Buy,
-		Coin:            "ugz",
+		Coin:            types.DefaultCoinDenom,
 		Price:           "10.59",
 		Quantity:        "5026505",
 		ReceiverAddress: sample.AccAddress(),
@@ -113,7 +113,7 @@ func TestCancelExpiredPendingTrades(t *testing.T) {
 	storedTradeTwo := types.StoredTrade{
 		TradeIndex:      1,
 		TradeType:       types.Sell,
-		Coin:            "ugz",
+		Coin:            types.DefaultCoinDenom,
 		Price:           "10.32",
 		Quantity:        "1000000005",
 		ReceiverAddress: sample.AccAddress(),
@@ -129,7 +129,7 @@ func TestCancelExpiredPendingTrades(t *testing.T) {
 	storedTradeThree := types.StoredTrade{
 		TradeIndex:      1,
 		TradeType:       types.Buy,
-		Coin:            "ugz",
+		Coin:            types.DefaultCoinDenom,
 		Price:           "15.19",
 		Quantity:        "5000026000",
 		ReceiverAddress: sample.AccAddress(),
@@ -404,7 +404,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Completed,
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
-				Denom:  "ugz",
+				Denom:  types.DefaultCoinDenom,
 				Amount: sdkmath.NewInt(9223372036854775807),
 			},
 		},
@@ -419,7 +419,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Completed,
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
-				Denom:  "ugz",
+				Denom:  types.DefaultCoinDenom,
 				Amount: sdkmath.NewInt(9223372036844775807),
 			},
 		},
@@ -434,7 +434,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Completed,
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
-				Denom:  "ugz",
+				Denom:  types.DefaultCoinDenom,
 				Amount: sdkmath.NewInt(9223372036854775807),
 			},
 		},
@@ -450,7 +450,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Completed,
 			err:            types.ErrTradeProcessedSuccessfully,
 			expectedSupply: sdk.Coin{
-				Denom:  "ugz",
+				Denom:  types.DefaultCoinDenom,
 				Amount: sdkmath.NewInt(0),
 			},
 		},
@@ -465,7 +465,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Failed,
 			err:            types.ErrInvalidReceiverAddress,
 			expectedSupply: sdk.Coin{
-				Denom:  "ugz",
+				Denom:  types.DefaultCoinDenom,
 				Amount: sdkmath.NewInt(0),
 			},
 		},
@@ -480,7 +480,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: "",
 			err:            types.ErrInvalidTradeQuantity,
 			expectedSupply: sdk.Coin{
-				Denom:  "ugz",
+				Denom:  types.DefaultCoinDenom,
 				Amount: sdkmath.NewInt(0),
 			},
 		},
@@ -495,7 +495,7 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			expectedStatus: types.Completed,
 			err:            types.ErrInvalidTradeQuantity,
 			expectedSupply: sdk.Coin{
-				Denom:  "ugz",
+				Denom:  types.DefaultCoinDenom,
 				Amount: sdkmath.NewInt(0),
 			},
 		},

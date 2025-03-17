@@ -34,7 +34,7 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 		return ErrInvalidReceiverAddress
 	}
 
-	if msg.Coin != "ugz" {
+	if msg.Coin != DefaultCoinDenom {
 		return ErrInvalidCoinDenom
 	}
 

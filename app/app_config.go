@@ -284,7 +284,7 @@ var (
 			},
 			{
 				Name:   govtypes.ModuleName,
-				Config: appconfig.WrapAny(&govmodulev1.Module{MaxMetadataLen: 500000}),
+				Config: appconfig.WrapAny(&govmodulev1.Module{MaxMetadataLen: 10200}),
 			},
 			{
 				Name:   crisistypes.ModuleName,

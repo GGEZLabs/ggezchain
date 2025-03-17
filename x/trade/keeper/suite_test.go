@@ -37,10 +37,6 @@ func TestTradeKeeperTestSuite(t *testing.T) {
 }
 
 func (suite *IntegrationTestSuite) SetupTestForCreateTrade() {
-	sdk.GetConfig().SetBech32PrefixForAccount("ggez", "ggez")
-	sdk.GetConfig().SetBech32PrefixForValidator("ggezvaloper", "ggezvaloper")
-	sdk.GetConfig().SetBech32PrefixForConsensusNode("ggezvalcons", "ggezvalcons")
-
 	privVal := mock.NewPV()
 	pubKey, err := privVal.GetPubKey()
 	suite.NoError(err)
@@ -91,10 +87,6 @@ func (suite *IntegrationTestSuite) SetupTestForCreateTrade() {
 }
 
 func (suite *IntegrationTestSuite) SetupTestForProcessTrade() {
-	sdk.GetConfig().SetBech32PrefixForAccount("ggez", "ggez")
-	sdk.GetConfig().SetBech32PrefixForValidator("ggezvaloper", "ggezvaloper")
-	sdk.GetConfig().SetBech32PrefixForConsensusNode("ggezvalcons", "ggezvalcons")
-
 	privVal := mock.NewPV()
 	pubKey, err := privVal.GetPubKey()
 	suite.NoError(err)
