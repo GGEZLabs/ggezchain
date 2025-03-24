@@ -3,10 +3,12 @@ package app
 import (
 	"fmt"
 
+	"github.com/cosmos/gogoproto/proto"
+	ibcfee "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
+	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
+
 	storetypes "cosmossdk.io/store/types"
-	"github.com/CosmWasm/wasmd/x/wasm"
-	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
@@ -16,9 +18,10 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	"github.com/cosmos/gogoproto/proto"
-	ibcfee "github.com/cosmos/ibc-go/v8/modules/apps/29-fee"
-	porttypes "github.com/cosmos/ibc-go/v8/modules/core/05-port/types"
+
+	"github.com/CosmWasm/wasmd/x/wasm"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 )
 
 // registerWasmModules register CosmWasm keepers and non dependency inject modules.

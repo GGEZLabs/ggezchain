@@ -4,12 +4,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
 	"github.com/GGEZLabs/ggezchain/testutil/nullify"
 	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	"github.com/stretchr/testify/require"
 )
 
 func createTestTradeIndex(keeper keeper.Keeper, ctx context.Context) types.TradeIndex {

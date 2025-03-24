@@ -19,12 +19,14 @@ import (
 	"github.com/spf13/pflag"
 
 	"cosmossdk.io/math"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	runtime "github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/server"
 	srvconfig "github.com/cosmos/cosmos-sdk/server/config"
 	"github.com/cosmos/cosmos-sdk/testutil"
@@ -35,8 +37,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-
-	runtime "github.com/cosmos/cosmos-sdk/runtime"
 )
 
 var (
@@ -111,7 +111,6 @@ Example:
 					args.validatorsStakesAmount[top] = sdk.NewCoin(sdk.DefaultBondDenom, a)
 					top += 1
 				}
-
 			}
 			top = 0
 			if s, err := cmd.Flags().GetString(flagPorts); err == nil {

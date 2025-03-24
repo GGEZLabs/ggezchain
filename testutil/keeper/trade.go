@@ -3,22 +3,23 @@ package keeper
 import (
 	"testing"
 
+	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
+	dbm "github.com/cosmos/cosmos-db"
+	"github.com/stretchr/testify/require"
+
 	"cosmossdk.io/log"
 	"cosmossdk.io/store"
 	"cosmossdk.io/store/metrics"
 	storetypes "cosmossdk.io/store/types"
-	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	dbm "github.com/cosmos/cosmos-db"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	"github.com/stretchr/testify/require"
-
-	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
 )
 
 func TradeKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {

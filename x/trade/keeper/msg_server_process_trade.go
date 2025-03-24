@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

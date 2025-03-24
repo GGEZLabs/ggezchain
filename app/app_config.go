@@ -3,6 +3,16 @@ package app
 import (
 	"time"
 
+	trademodulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/trade/module"
+	_ "github.com/GGEZLabs/ggezchain/x/trade/module" // import for side-effects
+	trademoduletypes "github.com/GGEZLabs/ggezchain/x/trade/types"
+	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
+	icatypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/types"
+	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
+	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
+	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
+	"google.golang.org/protobuf/types/known/durationpb"
+
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
 	appv1alpha1 "cosmossdk.io/api/cosmos/app/v1alpha1"
 	authmodulev1 "cosmossdk.io/api/cosmos/auth/module/v1"
@@ -31,10 +41,7 @@ import (
 	"cosmossdk.io/x/feegrant"
 	"cosmossdk.io/x/nft"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	trademodulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/trade/module"
-	_ "github.com/GGEZLabs/ggezchain/x/trade/module" // import for side-effects
-	trademoduletypes "github.com/GGEZLabs/ggezchain/x/trade/types"
+
 	"github.com/cosmos/cosmos-sdk/runtime"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
@@ -50,13 +57,8 @@ import (
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
-	icatypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/types"
-	ibcfeetypes "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/types"
-	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
-	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
-	"google.golang.org/protobuf/types/known/durationpb"
-	// this line is used by starport scaffolding # stargate/app/moduleImport
+
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 )
 
 var (

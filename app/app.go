@@ -3,6 +3,21 @@ package app
 import (
 	"io"
 
+	"github.com/GGEZLabs/ggezchain/docs"
+	trademodulekeeper "github.com/GGEZLabs/ggezchain/x/trade/keeper"
+	abci "github.com/cometbft/cometbft/abci/types"
+	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
+	dbm "github.com/cosmos/cosmos-db"
+	_ "github.com/cosmos/ibc-go/modules/capability" // import for side-effects
+	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
+	_ "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts" // import for side-effects
+	icacontrollerkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/controller/keeper"
+	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
+	_ "github.com/cosmos/ibc-go/v8/modules/apps/29-fee" // import for side-effects
+	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
+	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
+	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
+
 	_ "cosmossdk.io/api/cosmos/tx/config/v1" // import for side-effects
 	clienthelpers "cosmossdk.io/client/v2/helpers"
 	"cosmossdk.io/depinject"
@@ -18,8 +33,7 @@ import (
 	_ "cosmossdk.io/x/nft/module" // import for side-effects
 	_ "cosmossdk.io/x/upgrade"    // import for side-effects
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
-	abci "github.com/cometbft/cometbft/abci/types"
-	dbm "github.com/cosmos/cosmos-db"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -65,22 +79,8 @@ import (
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-	_ "github.com/cosmos/ibc-go/modules/capability" // import for side-effects
-	capabilitykeeper "github.com/cosmos/ibc-go/modules/capability/keeper"
-	_ "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts" // import for side-effects
-	icacontrollerkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/controller/keeper"
-	icahostkeeper "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/host/keeper"
-	_ "github.com/cosmos/ibc-go/v8/modules/apps/29-fee" // import for side-effects
-	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
-	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
-	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
-
-	trademodulekeeper "github.com/GGEZLabs/ggezchain/x/trade/keeper"
-	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	"github.com/GGEZLabs/ggezchain/docs"
-	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 )
 
 const (
@@ -88,10 +88,8 @@ const (
 	Name                 = "ggezchain"
 )
 
-var (
-	// DefaultNodeHome default home directories for the application daemon
-	DefaultNodeHome string
-)
+// DefaultNodeHome default home directories for the application daemon
+var DefaultNodeHome string
 
 var (
 	_ runtime.AppI            = (*App)(nil)
@@ -303,7 +301,6 @@ func New(
 	}
 
 	return app, app.WasmKeeper.InitializePinnedCodes(app.NewUncachedContext(true, tmproto.Header{}))
-
 }
 
 // LegacyAmino returns App's amino codec.

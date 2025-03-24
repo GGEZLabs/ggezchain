@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/cosmos/cosmos-sdk/testutil/network"
+	"github.com/GGEZLabs/ggezchain/app"
 	"github.com/stretchr/testify/require"
 
-	"github.com/GGEZLabs/ggezchain/app"
+	"github.com/cosmos/cosmos-sdk/testutil/network"
 )
 
 type (

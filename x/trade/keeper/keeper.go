@@ -3,12 +3,13 @@ package keeper
 import (
 	"fmt"
 
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
+
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
 )
 
 type (
@@ -34,7 +35,6 @@ func NewKeeper(
 
 	bankKeeper types.BankKeeper,
 	stakingKeeper types.StakingKeeper,
-
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))

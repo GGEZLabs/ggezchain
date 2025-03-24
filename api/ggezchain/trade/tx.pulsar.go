@@ -2,18 +2,20 @@
 package trade
 
 import (
+	fmt "fmt"
+	io "io"
+	reflect "reflect"
+	sync "sync"
+
 	_ "cosmossdk.io/api/amino"
 	_ "cosmossdk.io/api/cosmos/msg/v1"
-	fmt "fmt"
+
 	_ "github.com/cosmos/cosmos-proto"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	io "io"
-	reflect "reflect"
-	sync "sync"
 )
 
 var (
@@ -49,17 +51,21 @@ func (x *MsgUpdateParams) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgUpdateParams_messageType fastReflection_MsgUpdateParams_messageType
-var _ protoreflect.MessageType = fastReflection_MsgUpdateParams_messageType{}
+var (
+	_fastReflection_MsgUpdateParams_messageType fastReflection_MsgUpdateParams_messageType
+	_                                           protoreflect.MessageType = fastReflection_MsgUpdateParams_messageType{}
+)
 
 type fastReflection_MsgUpdateParams_messageType struct{}
 
 func (x fastReflection_MsgUpdateParams_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgUpdateParams)(nil)
 }
+
 func (x fastReflection_MsgUpdateParams_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgUpdateParams)
 }
+
 func (x fastReflection_MsgUpdateParams_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgUpdateParams
 }
@@ -515,9 +521,7 @@ func (x *fastReflection_MsgUpdateParams) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var (
-	md_MsgUpdateParamsResponse protoreflect.MessageDescriptor
-)
+var md_MsgUpdateParamsResponse protoreflect.MessageDescriptor
 
 func init() {
 	file_ggezchain_trade_tx_proto_init()
@@ -544,17 +548,21 @@ func (x *MsgUpdateParamsResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgUpdateParamsResponse_messageType fastReflection_MsgUpdateParamsResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgUpdateParamsResponse_messageType{}
+var (
+	_fastReflection_MsgUpdateParamsResponse_messageType fastReflection_MsgUpdateParamsResponse_messageType
+	_                                                   protoreflect.MessageType = fastReflection_MsgUpdateParamsResponse_messageType{}
+)
 
 type fastReflection_MsgUpdateParamsResponse_messageType struct{}
 
 func (x fastReflection_MsgUpdateParamsResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgUpdateParamsResponse)(nil)
 }
+
 func (x fastReflection_MsgUpdateParamsResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgUpdateParamsResponse)
 }
+
 func (x fastReflection_MsgUpdateParamsResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgUpdateParamsResponse
 }
@@ -920,17 +928,21 @@ func (x *MsgCreateTrade) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgCreateTrade_messageType fastReflection_MsgCreateTrade_messageType
-var _ protoreflect.MessageType = fastReflection_MsgCreateTrade_messageType{}
+var (
+	_fastReflection_MsgCreateTrade_messageType fastReflection_MsgCreateTrade_messageType
+	_                                          protoreflect.MessageType = fastReflection_MsgCreateTrade_messageType{}
+)
 
 type fastReflection_MsgCreateTrade_messageType struct{}
 
 func (x fastReflection_MsgCreateTrade_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgCreateTrade)(nil)
 }
+
 func (x fastReflection_MsgCreateTrade_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgCreateTrade)
 }
+
 func (x fastReflection_MsgCreateTrade_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgCreateTrade
 }
@@ -1900,17 +1912,21 @@ func (x *MsgCreateTradeResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgCreateTradeResponse_messageType fastReflection_MsgCreateTradeResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgCreateTradeResponse_messageType{}
+var (
+	_fastReflection_MsgCreateTradeResponse_messageType fastReflection_MsgCreateTradeResponse_messageType
+	_                                                  protoreflect.MessageType = fastReflection_MsgCreateTradeResponse_messageType{}
+)
 
 type fastReflection_MsgCreateTradeResponse_messageType struct{}
 
 func (x fastReflection_MsgCreateTradeResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgCreateTradeResponse)(nil)
 }
+
 func (x fastReflection_MsgCreateTradeResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgCreateTradeResponse)
 }
+
 func (x fastReflection_MsgCreateTradeResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgCreateTradeResponse
 }
@@ -2370,17 +2386,21 @@ func (x *MsgProcessTrade) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgProcessTrade_messageType fastReflection_MsgProcessTrade_messageType
-var _ protoreflect.MessageType = fastReflection_MsgProcessTrade_messageType{}
+var (
+	_fastReflection_MsgProcessTrade_messageType fastReflection_MsgProcessTrade_messageType
+	_                                           protoreflect.MessageType = fastReflection_MsgProcessTrade_messageType{}
+)
 
 type fastReflection_MsgProcessTrade_messageType struct{}
 
 func (x fastReflection_MsgProcessTrade_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgProcessTrade)(nil)
 }
+
 func (x fastReflection_MsgProcessTrade_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgProcessTrade)
 }
+
 func (x fastReflection_MsgProcessTrade_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgProcessTrade
 }
@@ -2912,17 +2932,21 @@ func (x *MsgProcessTradeResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgProcessTradeResponse_messageType fastReflection_MsgProcessTradeResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgProcessTradeResponse_messageType{}
+var (
+	_fastReflection_MsgProcessTradeResponse_messageType fastReflection_MsgProcessTradeResponse_messageType
+	_                                                   protoreflect.MessageType = fastReflection_MsgProcessTradeResponse_messageType{}
+)
 
 type fastReflection_MsgProcessTradeResponse_messageType struct{}
 
 func (x fastReflection_MsgProcessTradeResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgProcessTradeResponse)(nil)
 }
+
 func (x fastReflection_MsgProcessTradeResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgProcessTradeResponse)
 }
+
 func (x fastReflection_MsgProcessTradeResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgProcessTradeResponse
 }
@@ -4221,16 +4245,19 @@ func file_ggezchain_trade_tx_proto_rawDescGZIP() []byte {
 	return file_ggezchain_trade_tx_proto_rawDescData
 }
 
-var file_ggezchain_trade_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
-var file_ggezchain_trade_tx_proto_goTypes = []interface{}{
-	(*MsgUpdateParams)(nil),         // 0: ggezchain.trade.MsgUpdateParams
-	(*MsgUpdateParamsResponse)(nil), // 1: ggezchain.trade.MsgUpdateParamsResponse
-	(*MsgCreateTrade)(nil),          // 2: ggezchain.trade.MsgCreateTrade
-	(*MsgCreateTradeResponse)(nil),  // 3: ggezchain.trade.MsgCreateTradeResponse
-	(*MsgProcessTrade)(nil),         // 4: ggezchain.trade.MsgProcessTrade
-	(*MsgProcessTradeResponse)(nil), // 5: ggezchain.trade.MsgProcessTradeResponse
-	(*Params)(nil),                  // 6: ggezchain.trade.Params
-}
+var (
+	file_ggezchain_trade_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+	file_ggezchain_trade_tx_proto_goTypes  = []interface{}{
+		(*MsgUpdateParams)(nil),         // 0: ggezchain.trade.MsgUpdateParams
+		(*MsgUpdateParamsResponse)(nil), // 1: ggezchain.trade.MsgUpdateParamsResponse
+		(*MsgCreateTrade)(nil),          // 2: ggezchain.trade.MsgCreateTrade
+		(*MsgCreateTradeResponse)(nil),  // 3: ggezchain.trade.MsgCreateTradeResponse
+		(*MsgProcessTrade)(nil),         // 4: ggezchain.trade.MsgProcessTrade
+		(*MsgProcessTradeResponse)(nil), // 5: ggezchain.trade.MsgProcessTradeResponse
+		(*Params)(nil),                  // 6: ggezchain.trade.Params
+	}
+)
+
 var file_ggezchain_trade_tx_proto_depIdxs = []int32{
 	6, // 0: ggezchain.trade.MsgUpdateParams.params:type_name -> ggezchain.trade.Params
 	0, // 1: ggezchain.trade.Msg.UpdateParams:input_type -> ggezchain.trade.MsgUpdateParams

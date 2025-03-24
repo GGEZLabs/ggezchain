@@ -62,7 +62,8 @@ func (suite *IntegrationTestSuite) TestIfTradeSaved() {
 		Result:               types.ErrTradeCreatedSuccessfully.Error(),
 		BankingSystemData:    "{}",
 		CoinMintingPriceJSON: "",
-		ExchangeRateJSON:     ""}, trade)
+		ExchangeRateJSON:     "",
+	}, trade)
 }
 
 func (suite *IntegrationTestSuite) TestIfTempTradeSaved() {
@@ -130,7 +131,8 @@ func (suite *IntegrationTestSuite) TestGetAllStoredTrade() {
 		Result:               types.ErrTradeCreatedSuccessfully.Error(),
 		BankingSystemData:    "{}",
 		CoinMintingPriceJSON: "",
-		ExchangeRateJSON:     ""}, allTrades[0])
+		ExchangeRateJSON:     "",
+	}, allTrades[0])
 }
 
 func (suite *IntegrationTestSuite) TestGetAllStoredTempTrade() {
@@ -270,7 +272,8 @@ func (suite *IntegrationTestSuite) TestCreate2Trades() {
 		Result:               types.ErrTradeCreatedSuccessfully.Error(),
 		BankingSystemData:    "{}",
 		CoinMintingPriceJSON: "",
-		ExchangeRateJSON:     ""}, trade)
+		ExchangeRateJSON:     "",
+	}, trade)
 
 	tempTrade, found = keeper.GetStoredTempTrade(suite.ctx, 2)
 	suite.True(found)

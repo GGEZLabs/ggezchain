@@ -3,8 +3,10 @@ package keeper
 import (
 	"context"
 
-	"cosmossdk.io/store/prefix"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
+
+	"cosmossdk.io/store/prefix"
+
 	"github.com/cosmos/cosmos-sdk/runtime"
 )
 

@@ -5,14 +5,15 @@ import (
 	"testing"
 	"time"
 
-	sdkmath "cosmossdk.io/math"
-
 	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
+
+	sdkmath "cosmossdk.io/math"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func TestIsAddressWhiteListed(t *testing.T) {
@@ -41,7 +42,8 @@ func TestIsAddressWhiteListed(t *testing.T) {
 			err:                  nil,
 			isAddressWhitelisted: false,
 			ACLfilePath:          "/.ggezchain/config/chain_acl.json",
-		}, {
+		},
+		{
 			name:                 "address white listed with type process trade",
 			address:              testutil.Mutaz,
 			msgType:              types.ProcessTrade,
@@ -149,13 +151,13 @@ func TestCancelExpiredPendingTrades(t *testing.T) {
 		TempTradeIndex: 1,
 		CreateDate:     "2023-05-11T08:44:00Z",
 	}
-	//trade not expired
+	// trade not expired
 	storedTempTradeTwo := types.StoredTempTrade{
 		TradeIndex:     1,
 		TempTradeIndex: 1,
 		CreateDate:     formattedCurrentDate,
 	}
-	//invalid date
+	// invalid date
 	storedTempTradeThree := types.StoredTempTrade{
 		TradeIndex:     1,
 		TempTradeIndex: 1,
@@ -202,7 +204,7 @@ func TestCancelExpiredPendingTrades(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		//remove old temp trade
+		// remove old temp trade
 		allStoredTempTrade := keeper.GetAllStoredTempTrade(ctx)
 		if len(allStoredTempTrade) > 1 {
 			keeper.RemoveStoredTempTrade(ctx, 1)
@@ -519,7 +521,6 @@ func (suite *IntegrationTestSuite) TestMintOrBurnCoins() {
 			supply = bankKeeper.GetSupply(suite.ctx, types.DefaultCoinDenom)
 			// check supply
 			suite.Equal(supply, tt.expectedSupply)
-
 		})
 	}
 }
@@ -533,7 +534,6 @@ func (suite *IntegrationTestSuite) TestIsAddressAllowed() {
 		isAllowed bool
 		err       error
 	}{
-
 		{
 			name:      "address allowed to create trade",
 			address:   testutil.Mutaz,

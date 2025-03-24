@@ -3,22 +3,21 @@ package app
 import (
 	"fmt"
 
+	v1_0_1 "github.com/GGEZLabs/ggezchain/app/upgrade/v1_0_1"
+
 	storetypes "cosmossdk.io/store/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	v1_0_1 "github.com/GGEZLabs/ggezchain/app/upgrade/v1_0_1"
 
 	"github.com/cosmos/cosmos-sdk/types/module"
 )
 
 func (app *App) setupUpgradeHandlers(configurator module.Configurator) {
-
 	app.UpgradeKeeper.SetUpgradeHandler(
 		v1_0_1.UpgradeName,
 		v1_0_1.CreateUpgradeHandler(app.ModuleManager, configurator),
 	)
 
 	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
-
 	if err != nil {
 		panic(fmt.Errorf("failed to read upgrade info from disk: %w", err))
 	}
@@ -36,7 +35,6 @@ func (app *App) setupUpgradeHandlers(configurator module.Configurator) {
 		// storeUpgrades = &storetypes.StoreUpgrades{
 		// 	Added: []string{"testmodule"},
 		// }
-
 	}
 
 	if storeUpgrades != nil {

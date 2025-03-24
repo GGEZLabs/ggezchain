@@ -5,14 +5,19 @@ import (
 	"io"
 	"strings"
 
-	"cosmossdk.io/log"
-	"cosmossdk.io/math"
-	storetypes "cosmossdk.io/store/types"
+	"github.com/GGEZLabs/ggezchain/app"
 	"github.com/cometbft/cometbft/crypto"
 	"github.com/cometbft/cometbft/libs/bytes"
 	tmos "github.com/cometbft/cometbft/libs/os"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	dbm "github.com/cosmos/cosmos-db"
+	"github.com/spf13/cast"
+	"github.com/spf13/cobra"
+
+	"cosmossdk.io/log"
+	"cosmossdk.io/math"
+	storetypes "cosmossdk.io/store/types"
+
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
@@ -23,19 +28,13 @@ import (
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/spf13/cast"
-	"github.com/spf13/cobra"
-
-	"github.com/GGEZLabs/ggezchain/app"
 )
 
 const (
 	valVotingPower int64 = 900000000000000
 )
 
-var (
-	flagAccountsToFund = "accounts-to-fund"
-)
+var flagAccountsToFund = "accounts-to-fund"
 
 type valArgs struct {
 	newValAddr         bytes.HexBytes

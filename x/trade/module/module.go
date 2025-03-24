@@ -5,10 +5,16 @@ import (
 	"encoding/json"
 	"fmt"
 
+	modulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/trade/module"
+	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -16,13 +22,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-
-	// this line is used by starport scaffolding # 1
-
-	modulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/trade/module"
-	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
 )
 
 var (

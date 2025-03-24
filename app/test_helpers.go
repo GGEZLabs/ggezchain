@@ -5,24 +5,24 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	abci "github.com/cometbft/cometbft/abci/types"
+	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttypes "github.com/cometbft/cometbft/types"
+	dbm "github.com/cosmos/cosmos-db"
+	"github.com/stretchr/testify/require"
+
+	"cosmossdk.io/log"
+	sdkmath "cosmossdk.io/math"
+
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/server"
 	"github.com/cosmos/cosmos-sdk/testutil/mock"
-
-	"cosmossdk.io/log"
-	sdkmath "cosmossdk.io/math"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	abci "github.com/cometbft/cometbft/abci/types"
-	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	dbm "github.com/cosmos/cosmos-db"
+	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/stretchr/testify/require"
-
-	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 )
 
 // DefaultConsensusParams defines the default Tendermint consensus params used in

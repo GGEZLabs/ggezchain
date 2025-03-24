@@ -3,9 +3,11 @@ package keeper
 import (
 	"context"
 
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
+
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
+
 	"github.com/cosmos/cosmos-sdk/runtime"
 )
 
@@ -23,7 +25,6 @@ func (k Keeper) SetStoredTrade(ctx context.Context, storedTrade types.StoredTrad
 func (k Keeper) GetStoredTrade(
 	ctx context.Context,
 	tradeIndex uint64,
-
 ) (val types.StoredTrade, found bool) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.StoredTradeKeyPrefix))
@@ -43,7 +44,6 @@ func (k Keeper) GetStoredTrade(
 func (k Keeper) RemoveStoredTrade(
 	ctx context.Context,
 	tradeIndex uint64,
-
 ) {
 	storeAdapter := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
 	store := prefix.NewStore(storeAdapter, types.KeyPrefix(types.StoredTradeKeyPrefix))

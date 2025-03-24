@@ -1,22 +1,23 @@
 package keeper_test
 
 import (
-	sdkmath "cosmossdk.io/math"
+	"testing"
+
 	ggezchainapp "github.com/GGEZLabs/ggezchain/app"
 	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	"github.com/cometbft/cometbft/libs/bytes"
 	tmtypes "github.com/cometbft/cometbft/types"
+	"github.com/stretchr/testify/suite"
+
+	sdkmath "cosmossdk.io/math"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	"github.com/cosmos/cosmos-sdk/testutil/mock"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-
-	"testing"
-
-	"github.com/stretchr/testify/suite"
 )
 
 type IntegrationTestSuite struct {
@@ -28,9 +29,7 @@ type IntegrationTestSuite struct {
 	queryClient types.QueryClient
 }
 
-var (
-	tradeModuleAddress string
-)
+var tradeModuleAddress string
 
 func TestTradeKeeperTestSuite(t *testing.T) {
 	suite.Run(t, new(IntegrationTestSuite))
@@ -103,7 +102,8 @@ func (suite *IntegrationTestSuite) SetupTestForProcessTrade() {
 			ProposerPriority: 0,
 		},
 		Validators: []*tmtypes.Validator{
-			{Address: bytes.HexBytes("CF56A1EAC1DB0D0FC12BA4DD1584A6EABB8F907F"),
+			{
+				Address:          bytes.HexBytes("CF56A1EAC1DB0D0FC12BA4DD1584A6EABB8F907F"),
 				PubKey:           pubKey,
 				VotingPower:      1,
 				ProposerPriority: 0,
