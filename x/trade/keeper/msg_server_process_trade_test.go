@@ -3,13 +3,11 @@ package keeper_test
 import (
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (suite *IntegrationTestSuite) TestProcessTradeConfirm() {
 	suite.SetupTestForProcessTrade()
-	goCtx := sdk.WrapSDKContext(suite.ctx)
-	suite.msgServer.CreateTrade(goCtx, &types.MsgCreateTrade{
+	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:           testutil.Mutaz,
 		TradeType:         types.Buy,
 		Coin:              types.DefaultCoinDenom,
@@ -19,7 +17,7 @@ func (suite *IntegrationTestSuite) TestProcessTradeConfirm() {
 		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
 		BankingSystemData: "{}",
 	})
-	processResponse, err := suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
+	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
 		ProcessType: types.Confirm,
 		TradeIndex:  1,
@@ -39,8 +37,8 @@ func (suite *IntegrationTestSuite) TestProcessTradeConfirm() {
 
 func (suite *IntegrationTestSuite) TestProcessTradeReject() {
 	suite.SetupTestForProcessTrade()
-	goCtx := sdk.WrapSDKContext(suite.ctx)
-	suite.msgServer.CreateTrade(goCtx, &types.MsgCreateTrade{
+
+	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:           testutil.Mutaz,
 		TradeType:         types.Buy,
 		Coin:              types.DefaultCoinDenom,
@@ -50,7 +48,7 @@ func (suite *IntegrationTestSuite) TestProcessTradeReject() {
 		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
 		BankingSystemData: "{}",
 	})
-	processResponse, err := suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
+	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
 		ProcessType: types.Reject,
 		TradeIndex:  1,
@@ -70,8 +68,8 @@ func (suite *IntegrationTestSuite) TestProcessTradeReject() {
 
 func (suite *IntegrationTestSuite) TestProcessTradeWithInvalidCheckerPermission() {
 	suite.SetupTestForProcessTrade()
-	goCtx := sdk.WrapSDKContext(suite.ctx)
-	suite.msgServer.CreateTrade(goCtx, &types.MsgCreateTrade{
+
+	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:           testutil.Mutaz,
 		TradeType:         types.Buy,
 		Coin:              types.DefaultCoinDenom,
@@ -81,7 +79,7 @@ func (suite *IntegrationTestSuite) TestProcessTradeWithInvalidCheckerPermission(
 		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
 		BankingSystemData: "{}",
 	})
-	_, err := suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
+	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Rami,
 		ProcessType: types.Confirm,
 		TradeIndex:  1,
@@ -91,10 +89,9 @@ func (suite *IntegrationTestSuite) TestProcessTradeWithInvalidCheckerPermission(
 
 func (suite *IntegrationTestSuite) TestStoredTradeAfterConfirmTrade() {
 	suite.SetupTestForProcessTrade()
-	goCtx := sdk.WrapSDKContext(suite.ctx)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(goCtx, &types.MsgCreateTrade{
+	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:           testutil.Mutaz,
 		TradeType:         types.Buy,
 		Coin:              types.DefaultCoinDenom,
@@ -104,7 +101,7 @@ func (suite *IntegrationTestSuite) TestStoredTradeAfterConfirmTrade() {
 		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
 		BankingSystemData: "{}",
 	})
-	suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
+	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
 		ProcessType: types.Confirm,
 		TradeIndex:  1,
@@ -143,10 +140,9 @@ func (suite *IntegrationTestSuite) TestStoredTradeAfterConfirmTrade() {
 
 func (suite *IntegrationTestSuite) TestTempTradeAfterConfirmTrade() {
 	suite.SetupTestForProcessTrade()
-	goCtx := sdk.WrapSDKContext(suite.ctx)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(goCtx, &types.MsgCreateTrade{
+	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:           testutil.Mutaz,
 		TradeType:         types.Buy,
 		Coin:              types.DefaultCoinDenom,
@@ -156,7 +152,7 @@ func (suite *IntegrationTestSuite) TestTempTradeAfterConfirmTrade() {
 		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
 		BankingSystemData: "{}",
 	})
-	suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
+	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
 		ProcessType: types.Confirm,
 		TradeIndex:  1,
@@ -181,10 +177,9 @@ func (suite *IntegrationTestSuite) TestTempTradeAfterConfirmTrade() {
 
 func (suite *IntegrationTestSuite) TestStoredTradeAfterRejectTrade() {
 	suite.SetupTestForProcessTrade()
-	goCtx := sdk.WrapSDKContext(suite.ctx)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(goCtx, &types.MsgCreateTrade{
+	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:           testutil.Mutaz,
 		TradeType:         types.Buy,
 		Coin:              types.DefaultCoinDenom,
@@ -194,7 +189,7 @@ func (suite *IntegrationTestSuite) TestStoredTradeAfterRejectTrade() {
 		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
 		BankingSystemData: "{}",
 	})
-	suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
+	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
 		ProcessType: types.Reject,
 		TradeIndex:  1,
@@ -233,10 +228,9 @@ func (suite *IntegrationTestSuite) TestStoredTradeAfterRejectTrade() {
 
 func (suite *IntegrationTestSuite) TestTempTradeAfterRejectTrade() {
 	suite.SetupTestForProcessTrade()
-	goCtx := sdk.WrapSDKContext(suite.ctx)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(goCtx, &types.MsgCreateTrade{
+	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:           testutil.Mutaz,
 		TradeType:         types.Buy,
 		Coin:              types.DefaultCoinDenom,
@@ -246,7 +240,7 @@ func (suite *IntegrationTestSuite) TestTempTradeAfterRejectTrade() {
 		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
 		BankingSystemData: "{}",
 	})
-	suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
+	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
 		ProcessType: types.Reject,
 		TradeIndex:  1,
@@ -271,10 +265,9 @@ func (suite *IntegrationTestSuite) TestTempTradeAfterRejectTrade() {
 
 func (suite *IntegrationTestSuite) TestProcessTwoTrade() {
 	suite.SetupTestForProcessTrade()
-	goCtx := sdk.WrapSDKContext(suite.ctx)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(goCtx, &types.MsgCreateTrade{
+	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:           testutil.Mutaz,
 		TradeType:         types.Buy,
 		Coin:              types.DefaultCoinDenom,
@@ -285,7 +278,7 @@ func (suite *IntegrationTestSuite) TestProcessTwoTrade() {
 		BankingSystemData: "{}",
 	})
 
-	suite.msgServer.CreateTrade(goCtx, &types.MsgCreateTrade{
+	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:           testutil.Mohd,
 		TradeType:         types.Buy,
 		Coin:              types.DefaultCoinDenom,
@@ -308,13 +301,13 @@ func (suite *IntegrationTestSuite) TestProcessTwoTrade() {
 	suite.EqualValues(len(tempTrades), 2)
 	suite.EqualValues(len(trades), 2)
 
-	suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
+	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Mohd,
 		ProcessType: types.Confirm,
 		TradeIndex:  1,
 	})
 
-	suite.msgServer.ProcessTrade(goCtx, &types.MsgProcessTrade{
+	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Mutaz,
 		ProcessType: types.Reject,
 		TradeIndex:  2,
