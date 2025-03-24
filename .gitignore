@@ -2,9 +2,11 @@ vue/node_modules
 scripts/node_modules
 vue/dist
 release/
+build/
 .idea/
 .vscode/
 .DS_Store
 *.dot
 *.log
 *.ign
+coverage.txt
