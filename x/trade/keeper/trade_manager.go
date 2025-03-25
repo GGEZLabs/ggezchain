@@ -75,9 +75,12 @@ func (k Keeper) IsAddressAllowed(goCtx context.Context, address string, msgType 
 }
 
 func (k Keeper) IsAddressWhitelisted(address string, msgType string, ACLFilePath string) (isAddressWhitelisted bool, err error) {
-	userHomeDir, _ := os.UserHomeDir()
+	userHomeDir, err := os.UserHomeDir()
 	isWhitelisted := false
-	err = nil
+
+	if err != nil {
+		return isWhitelisted, err
+	}
 
 	file, err := os.ReadFile(userHomeDir + ACLFilePath)
 	if err != nil {

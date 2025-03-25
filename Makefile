@@ -58,8 +58,6 @@ empty = $(whitespace) $(whitespace)
 comma := ,
 build_tags_comma_sep := $(subst $(empty),$(comma),$(build_tags))
 
-# process linker flags
-
 # flags '-s -w' resolves an issue with xcode 16 and signing of go binaries
 # ref: https://github.com/golang/go/issues/63997
 ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=ggezchain \
@@ -142,8 +140,7 @@ clean:
 ### Testing
 ########################################
 
-test: test-unit
-test-all: test-race test-cover
+test-all: test-race test-cover test-unit
 
 test-unit:
 	@VERSION=$(VERSION) go test -mod=readonly -tags='ledger test_ledger_mock' ./...
@@ -160,6 +157,7 @@ benchmark:
 .PHONY: test test-all \
 	test-unit test-race \
 	test-cover benchmark
+
 ###############################################################################
 ###                                Linting                                  ###
 ###############################################################################
@@ -207,6 +205,7 @@ proto-format:
 	@$(protoImage) find ./ -name "*.proto" -exec clang-format -i {} \;
 
 .PHONY: proto-gen proto-format
+
 ###############################################################################
 ###                                    testnet                              ###
 ###############################################################################
