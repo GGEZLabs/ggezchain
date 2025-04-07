@@ -140,9 +140,9 @@ clean:
 ### Testing
 ########################################
 
-test-all: test-race test-cover test-unit
+test-all: test-race test-cover test
 
-test-unit:
+test:
 	@VERSION=$(VERSION) go test -mod=readonly -tags='ledger test_ledger_mock' ./...
 
 test-race:
@@ -155,7 +155,7 @@ benchmark:
 	@go test -mod=readonly -bench=. ./...
 
 .PHONY: test test-all \
-	test-unit test-race \
+	test test-race \
 	test-cover benchmark
 
 ###############################################################################
