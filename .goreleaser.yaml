@@ -169,7 +169,7 @@ changelog:
 # Docs: https://goreleaser.com/customization/release/
 release:
   github:
-    owner: ramiqadoumi
+    owner: GGEZLabs
     name: ggezchain
   replace_existing_draft: true
   header: |

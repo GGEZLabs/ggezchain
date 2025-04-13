@@ -13,26 +13,20 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (msg *MsgCreateTrade) ValidateReceiverAddress() (receiverAddress sdk.AccAddress, err error) {
-	receiver, err := sdk.AccAddressFromBech32(msg.ReceiverAddress)
-	return receiver, errors.Wrapf(err, ErrInvalidReceiverAddress.Error())
-}
+func (msg *MsgCreateTrade) ValidateReceiverAndCreatorAddress() (err error) {
+	// validate receiver address
+	_, err = sdk.AccAddressFromBech32(msg.ReceiverAddress)
 
-func (msg *MsgCreateTrade) ValidateCreatorAddress() (creatorAddress sdk.AccAddress, err error) {
-	creator, err := sdk.AccAddressFromBech32(msg.Creator)
-	return creator, errors.Wrapf(err, ErrInvalidCreator.Error())
-}
+	if err != nil {
+		return errors.Wrapf(err, ErrInvalidReceiverAddress.Error())
+	}
+	// validate creator address
+	_, err = sdk.AccAddressFromBech32(msg.Creator)
 
-func (msg *MsgCreateTrade) Validate() (err error) {
-	_, err = msg.ValidateReceiverAddress()
 	if err != nil {
-		return err
+		return errors.Wrapf(err, ErrInvalidCreator.Error())
 	}
-	_, err = msg.ValidateCreatorAddress()
-	if err != nil {
-		return err
-	}
-	return err
+	return nil
 }
 
 func (msg *MsgProcessTrade) ValidateCheckerAddress(checker string) (err error) {
@@ -54,7 +48,7 @@ func (msg *MsgProcessTrade) GetPrepareCoin(storedTrade StoredTrade) (sdk.Coin, e
 	return sdk.NewCoin(storedTrade.Coin, sdkmath.NewInt(int64(number))), nil
 }
 
-func (msg *MsgProcessTrade) checkerAndMakerNotTheSame(maker string, checker string) (err error) {
+func (msg *MsgProcessTrade) CheckerAndMakerNotTheSame(maker string, checker string) (err error) {
 	if maker == checker {
 		return ErrCheckerMustBeDifferent
 	}
@@ -80,7 +74,7 @@ func (msg *MsgProcessTrade) ValidateProcess(status string, maker string, checker
 	if err != nil {
 		return err
 	}
-	err = msg.checkerAndMakerNotTheSame(maker, checker)
+	err = msg.CheckerAndMakerNotTheSame(maker, checker)
 	if err != nil {
 		return err
 	}

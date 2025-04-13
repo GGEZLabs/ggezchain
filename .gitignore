@@ -10,3 +10,4 @@ build/
 *.log
 *.ign
 coverage.txt
+dist

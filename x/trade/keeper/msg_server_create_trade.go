@@ -25,7 +25,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	currentTime := ctx.BlockTime().UTC()
 	formattedDate := currentTime.Format(time.RFC3339)
 
-	err := msg.Validate()
+	err := msg.ValidateReceiverAndCreatorAddress()
 	if err != nil {
 		return nil, err
 	}

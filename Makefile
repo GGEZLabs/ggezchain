@@ -5,7 +5,6 @@ COMMIT := $(shell git log -1 --format='%H')
 LEDGER_ENABLED ?= true
 # for dockerized protobuf tools
 DOCKER := $(shell which docker)
-# rami
 OUTPUT_DIR := build
 PLATFORMS = linux/amd64 darwin/amd64 darwin/arm64
 APPNAME := ggezchain
