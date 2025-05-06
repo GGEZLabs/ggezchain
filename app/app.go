@@ -4,6 +4,7 @@ import (
 	"io"
 
 	"github.com/GGEZLabs/ggezchain/docs"
+	aclmodulekeeper "github.com/GGEZLabs/ggezchain/x/acl/keeper"
 	trademodulekeeper "github.com/GGEZLabs/ggezchain/x/trade/keeper"
 	abci "github.com/cometbft/cometbft/abci/types"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
@@ -146,6 +147,7 @@ type App struct {
 	ScopedWasmKeeper capabilitykeeper.ScopedKeeper
 
 	TradeKeeper trademodulekeeper.Keeper
+	ACLKeeper   aclmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -250,6 +252,7 @@ func New(
 		&app.GroupKeeper,
 		&app.CircuitBreakerKeeper,
 		&app.TradeKeeper,
+		&app.ACLKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

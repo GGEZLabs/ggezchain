@@ -3,7 +3,10 @@ package app
 import (
 	"time"
 
+	aclmodulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/acl/module"
 	trademodulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/trade/module"
+	_ "github.com/GGEZLabs/ggezchain/x/acl/module" // import for side-effects
+	aclmoduletypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	_ "github.com/GGEZLabs/ggezchain/x/trade/module" // import for side-effects
 	trademoduletypes "github.com/GGEZLabs/ggezchain/x/trade/types"
 	capabilitytypes "github.com/cosmos/ibc-go/modules/capability/types"
@@ -96,6 +99,7 @@ var (
 		circuittypes.ModuleName,
 		// chain modules
 		trademoduletypes.ModuleName,
+		aclmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
@@ -122,6 +126,7 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		trademoduletypes.ModuleName,
+		aclmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
@@ -142,6 +147,7 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		trademoduletypes.ModuleName,
+		aclmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
@@ -303,6 +309,10 @@ var (
 			{
 				Name:   trademoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&trademodulev1.Module{}),
+			},
+			{
+				Name:   aclmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&aclmodulev1.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},
