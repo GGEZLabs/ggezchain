@@ -3,12 +3,14 @@ package keeper
 import (
 	"context"
 
-	"cosmossdk.io/store/prefix"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
-	"github.com/cosmos/cosmos-sdk/runtime"
-	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"cosmossdk.io/store/prefix"
+
+	"github.com/cosmos/cosmos-sdk/runtime"
+	"github.com/cosmos/cosmos-sdk/types/query"
 )
 
 func (k Keeper) AclAuthorityAll(ctx context.Context, req *types.QueryAllAclAuthorityRequest) (*types.QueryAllAclAuthorityResponse, error) {
@@ -30,7 +32,6 @@ func (k Keeper) AclAuthorityAll(ctx context.Context, req *types.QueryAllAclAutho
 		aclAuthoritys = append(aclAuthoritys, aclAuthority)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

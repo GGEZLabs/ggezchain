@@ -3,13 +3,14 @@ package acl
 
 import (
 	fmt "fmt"
+	io "io"
+	reflect "reflect"
+	sync "sync"
+
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	io "io"
-	reflect "reflect"
-	sync "sync"
 )
 
 var (
@@ -47,17 +48,21 @@ func (x *AccessDefinition) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_AccessDefinition_messageType fastReflection_AccessDefinition_messageType
-var _ protoreflect.MessageType = fastReflection_AccessDefinition_messageType{}
+var (
+	_fastReflection_AccessDefinition_messageType fastReflection_AccessDefinition_messageType
+	_                                            protoreflect.MessageType = fastReflection_AccessDefinition_messageType{}
+)
 
 type fastReflection_AccessDefinition_messageType struct{}
 
 func (x fastReflection_AccessDefinition_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_AccessDefinition)(nil)
 }
+
 func (x fastReflection_AccessDefinition_messageType) New() protoreflect.Message {
 	return new(fastReflection_AccessDefinition)
 }
+
 func (x fastReflection_AccessDefinition_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_AccessDefinition
 }
@@ -643,10 +648,12 @@ func file_ggezchain_acl_access_definition_proto_rawDescGZIP() []byte {
 	return file_ggezchain_acl_access_definition_proto_rawDescData
 }
 
-var file_ggezchain_acl_access_definition_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_ggezchain_acl_access_definition_proto_goTypes = []interface{}{
-	(*AccessDefinition)(nil), // 0: ggezchain.acl.AccessDefinition
-}
+var (
+	file_ggezchain_acl_access_definition_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+	file_ggezchain_acl_access_definition_proto_goTypes  = []interface{}{
+		(*AccessDefinition)(nil), // 0: ggezchain.acl.AccessDefinition
+	}
+)
 var file_ggezchain_acl_access_definition_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type

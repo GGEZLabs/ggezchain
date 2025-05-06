@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 )
 
@@ -67,6 +66,6 @@ func validateAdmin(v interface{}) error {
 	if err != nil {
 		return fmt.Errorf("invalid admin address: %w", err)
 	}
-	
+
 	return nil
 }

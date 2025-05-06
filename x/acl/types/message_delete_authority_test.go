@@ -4,8 +4,9 @@ import (
 	"testing"
 
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
+
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func TestMsgDeleteAuthority_ValidateBasic(t *testing.T) {

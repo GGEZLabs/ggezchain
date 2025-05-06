@@ -3,11 +3,10 @@ package keeper_test
 import (
 	"testing"
 
-	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	"github.com/stretchr/testify/require"
-
 	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
+	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestUpdateAclAuthorityName(t *testing.T) {
@@ -488,7 +487,6 @@ func TestClearAllAccessDefinitions(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			aclAuthority := keeper.ClearAllAccessDefinitions(tc.inputAclAuthority)
 			require.Equal(t, tc.expectedLen, len(aclAuthority.AccessDefinitions))
-
 		})
 	}
 }

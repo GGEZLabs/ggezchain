@@ -79,7 +79,6 @@ func GetUpdatedAccessDefinitionList(currentList []*AccessDefinition, update *Acc
 
 // GetAuthorityModules retrieves the module names from a list of AccessDefinition.
 func GetAuthorityModules(accessDefinitionList []*AccessDefinition) []string {
-
 	if len(accessDefinitionList) == 0 {
 		return nil
 	}

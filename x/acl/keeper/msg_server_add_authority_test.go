@@ -4,10 +4,10 @@ import (
 	"testing"
 
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/stretchr/testify/require"
 
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func TestMsgAddAuthority(t *testing.T) {

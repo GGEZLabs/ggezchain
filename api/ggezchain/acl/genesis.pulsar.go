@@ -2,16 +2,18 @@
 package acl
 
 import (
-	_ "cosmossdk.io/api/amino"
 	fmt "fmt"
+	io "io"
+	reflect "reflect"
+	sync "sync"
+
+	_ "cosmossdk.io/api/amino"
+
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	io "io"
-	reflect "reflect"
-	sync "sync"
 )
 
 var _ protoreflect.List = (*_GenesisState_2_list)(nil)
@@ -98,17 +100,21 @@ func (x *GenesisState) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_GenesisState_messageType fastReflection_GenesisState_messageType
-var _ protoreflect.MessageType = fastReflection_GenesisState_messageType{}
+var (
+	_fastReflection_GenesisState_messageType fastReflection_GenesisState_messageType
+	_                                        protoreflect.MessageType = fastReflection_GenesisState_messageType{}
+)
 
 type fastReflection_GenesisState_messageType struct{}
 
 func (x fastReflection_GenesisState_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_GenesisState)(nil)
 }
+
 func (x fastReflection_GenesisState_messageType) New() protoreflect.Message {
 	return new(fastReflection_GenesisState)
 }
+
 func (x fastReflection_GenesisState_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_GenesisState
 }
@@ -693,12 +699,14 @@ func file_ggezchain_acl_genesis_proto_rawDescGZIP() []byte {
 	return file_ggezchain_acl_genesis_proto_rawDescData
 }
 
-var file_ggezchain_acl_genesis_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_ggezchain_acl_genesis_proto_goTypes = []interface{}{
-	(*GenesisState)(nil), // 0: ggezchain.acl.GenesisState
-	(*Params)(nil),       // 1: ggezchain.acl.Params
-	(*AclAuthority)(nil), // 2: ggezchain.acl.AclAuthority
-}
+var (
+	file_ggezchain_acl_genesis_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+	file_ggezchain_acl_genesis_proto_goTypes  = []interface{}{
+		(*GenesisState)(nil), // 0: ggezchain.acl.GenesisState
+		(*Params)(nil),       // 1: ggezchain.acl.Params
+		(*AclAuthority)(nil), // 2: ggezchain.acl.AclAuthority
+	}
+)
 var file_ggezchain_acl_genesis_proto_depIdxs = []int32{
 	1, // 0: ggezchain.acl.GenesisState.params:type_name -> ggezchain.acl.Params
 	2, // 1: ggezchain.acl.GenesisState.acl_authority_list:type_name -> ggezchain.acl.AclAuthority

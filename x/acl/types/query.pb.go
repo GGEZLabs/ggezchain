@@ -6,6 +6,10 @@ package types
 import (
 	context "context"
 	fmt "fmt"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+
 	query "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -15,15 +19,14 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	io "io"
-	math "math"
-	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ = proto.Marshal
-var _ = fmt.Errorf
-var _ = math.Inf
+var (
+	_ = proto.Marshal
+	_ = fmt.Errorf
+	_ = math.Inf
+)
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -32,8 +35,7 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
-type QueryParamsRequest struct {
-}
+type QueryParamsRequest struct{}
 
 func (m *QueryParamsRequest) Reset()         { *m = QueryParamsRequest{} }
 func (m *QueryParamsRequest) String() string { return proto.CompactTextString(m) }
@@ -41,9 +43,11 @@ func (*QueryParamsRequest) ProtoMessage()    {}
 func (*QueryParamsRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2ed5381aadbc4354, []int{0}
 }
+
 func (m *QueryParamsRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *QueryParamsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_QueryParamsRequest.Marshal(b, m, deterministic)
@@ -56,12 +60,15 @@ func (m *QueryParamsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
+
 func (m *QueryParamsRequest) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_QueryParamsRequest.Merge(m, src)
 }
+
 func (m *QueryParamsRequest) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *QueryParamsRequest) XXX_DiscardUnknown() {
 	xxx_messageInfo_QueryParamsRequest.DiscardUnknown(m)
 }
@@ -80,9 +87,11 @@ func (*QueryParamsResponse) ProtoMessage()    {}
 func (*QueryParamsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2ed5381aadbc4354, []int{1}
 }
+
 func (m *QueryParamsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *QueryParamsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_QueryParamsResponse.Marshal(b, m, deterministic)
@@ -95,12 +104,15 @@ func (m *QueryParamsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
+
 func (m *QueryParamsResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_QueryParamsResponse.Merge(m, src)
 }
+
 func (m *QueryParamsResponse) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *QueryParamsResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_QueryParamsResponse.DiscardUnknown(m)
 }
@@ -124,9 +136,11 @@ func (*QueryGetAclAuthorityRequest) ProtoMessage()    {}
 func (*QueryGetAclAuthorityRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2ed5381aadbc4354, []int{2}
 }
+
 func (m *QueryGetAclAuthorityRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *QueryGetAclAuthorityRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_QueryGetAclAuthorityRequest.Marshal(b, m, deterministic)
@@ -139,12 +153,15 @@ func (m *QueryGetAclAuthorityRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
+
 func (m *QueryGetAclAuthorityRequest) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_QueryGetAclAuthorityRequest.Merge(m, src)
 }
+
 func (m *QueryGetAclAuthorityRequest) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *QueryGetAclAuthorityRequest) XXX_DiscardUnknown() {
 	xxx_messageInfo_QueryGetAclAuthorityRequest.DiscardUnknown(m)
 }
@@ -168,9 +185,11 @@ func (*QueryGetAclAuthorityResponse) ProtoMessage()    {}
 func (*QueryGetAclAuthorityResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2ed5381aadbc4354, []int{3}
 }
+
 func (m *QueryGetAclAuthorityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *QueryGetAclAuthorityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_QueryGetAclAuthorityResponse.Marshal(b, m, deterministic)
@@ -183,12 +202,15 @@ func (m *QueryGetAclAuthorityResponse) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
+
 func (m *QueryGetAclAuthorityResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_QueryGetAclAuthorityResponse.Merge(m, src)
 }
+
 func (m *QueryGetAclAuthorityResponse) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *QueryGetAclAuthorityResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_QueryGetAclAuthorityResponse.DiscardUnknown(m)
 }
@@ -212,9 +234,11 @@ func (*QueryAllAclAuthorityRequest) ProtoMessage()    {}
 func (*QueryAllAclAuthorityRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2ed5381aadbc4354, []int{4}
 }
+
 func (m *QueryAllAclAuthorityRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *QueryAllAclAuthorityRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_QueryAllAclAuthorityRequest.Marshal(b, m, deterministic)
@@ -227,12 +251,15 @@ func (m *QueryAllAclAuthorityRequest) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
+
 func (m *QueryAllAclAuthorityRequest) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_QueryAllAclAuthorityRequest.Merge(m, src)
 }
+
 func (m *QueryAllAclAuthorityRequest) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *QueryAllAclAuthorityRequest) XXX_DiscardUnknown() {
 	xxx_messageInfo_QueryAllAclAuthorityRequest.DiscardUnknown(m)
 }
@@ -257,9 +284,11 @@ func (*QueryAllAclAuthorityResponse) ProtoMessage()    {}
 func (*QueryAllAclAuthorityResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_2ed5381aadbc4354, []int{5}
 }
+
 func (m *QueryAllAclAuthorityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *QueryAllAclAuthorityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_QueryAllAclAuthorityResponse.Marshal(b, m, deterministic)
@@ -272,12 +301,15 @@ func (m *QueryAllAclAuthorityResponse) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
+
 func (m *QueryAllAclAuthorityResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_QueryAllAclAuthorityResponse.Merge(m, src)
 }
+
 func (m *QueryAllAclAuthorityResponse) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *QueryAllAclAuthorityResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_QueryAllAclAuthorityResponse.DiscardUnknown(m)
 }
@@ -348,8 +380,10 @@ var fileDescriptor_2ed5381aadbc4354 = []byte{
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConn
+var (
+	_ context.Context
+	_ grpc.ClientConn
+)
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
@@ -411,15 +445,16 @@ type QueryServer interface {
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
-type UnimplementedQueryServer struct {
-}
+type UnimplementedQueryServer struct{}
 
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
+
 func (*UnimplementedQueryServer) AclAuthority(ctx context.Context, req *QueryGetAclAuthorityRequest) (*QueryGetAclAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AclAuthority not implemented")
 }
+
 func (*UnimplementedQueryServer) AclAuthorityAll(ctx context.Context, req *QueryAllAclAuthorityRequest) (*QueryAllAclAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AclAuthorityAll not implemented")
 }
@@ -482,27 +517,29 @@ func _Query_AclAuthorityAll_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-var Query_serviceDesc = _Query_serviceDesc
-var _Query_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "ggezchain.acl.Query",
-	HandlerType: (*QueryServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Params",
-			Handler:    _Query_Params_Handler,
+var (
+	Query_serviceDesc  = _Query_serviceDesc
+	_Query_serviceDesc = grpc.ServiceDesc{
+		ServiceName: "ggezchain.acl.Query",
+		HandlerType: (*QueryServer)(nil),
+		Methods: []grpc.MethodDesc{
+			{
+				MethodName: "Params",
+				Handler:    _Query_Params_Handler,
+			},
+			{
+				MethodName: "AclAuthority",
+				Handler:    _Query_AclAuthority_Handler,
+			},
+			{
+				MethodName: "AclAuthorityAll",
+				Handler:    _Query_AclAuthorityAll_Handler,
+			},
 		},
-		{
-			MethodName: "AclAuthority",
-			Handler:    _Query_AclAuthority_Handler,
-		},
-		{
-			MethodName: "AclAuthorityAll",
-			Handler:    _Query_AclAuthorityAll_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "ggezchain/acl/query.proto",
-}
+		Streams:  []grpc.StreamDesc{},
+		Metadata: "ggezchain/acl/query.proto",
+	}
+)
 
 func (m *QueryParamsRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
@@ -718,6 +755,7 @@ func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+
 func (m *QueryParamsRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -797,9 +835,11 @@ func (m *QueryAllAclAuthorityResponse) Size() (n int) {
 func sovQuery(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
+
 func sozQuery(x uint64) (n int) {
 	return sovQuery(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
+
 func (m *QueryParamsRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -850,6 +890,7 @@ func (m *QueryParamsRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -933,6 +974,7 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *QueryGetAclAuthorityRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1015,6 +1057,7 @@ func (m *QueryGetAclAuthorityRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *QueryGetAclAuthorityResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1098,6 +1141,7 @@ func (m *QueryGetAclAuthorityResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *QueryAllAclAuthorityRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1184,6 +1228,7 @@ func (m *QueryAllAclAuthorityRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *QueryAllAclAuthorityResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1304,6 +1349,7 @@ func (m *QueryAllAclAuthorityResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func skipQuery(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

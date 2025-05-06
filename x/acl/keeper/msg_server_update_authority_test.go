@@ -4,9 +4,10 @@ import (
 	"testing"
 
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/stretchr/testify/require"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func TestMsgUpdateAuthority(t *testing.T) {
@@ -19,7 +20,8 @@ func TestMsgUpdateAuthority(t *testing.T) {
 		Name:    "alice",
 		AccessDefinitions: []*types.AccessDefinition{
 			{Module: "module1", IsMaker: true, IsChecker: false},
-			{Module: "module2", IsMaker: true, IsChecker: false}},
+			{Module: "module2", IsMaker: true, IsChecker: false},
+		},
 	}
 	k.SetAclAuthority(ctx, aclAuthority)
 	require.NoError(t, k.SetParams(ctx, types.Params{Admin: admin}))

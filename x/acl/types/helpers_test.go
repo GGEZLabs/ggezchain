@@ -59,7 +59,6 @@ func TestValidateAccessDefinitionList(t *testing.T) {
 			require.NoError(t, err)
 			require.Equal(t, tt.expectedLen, len(accessDefinitions))
 			require.Equal(t, tt.expectedOutput, accessDefinitions)
-
 		})
 	}
 }
@@ -101,7 +100,6 @@ func TestValidateSingleAccessDefinition(t *testing.T) {
 			}
 			require.NoError(t, err)
 			require.Equal(t, tt.expectedOutput, accessDefinition)
-
 		})
 	}
 }
@@ -154,7 +152,6 @@ func TestGetUpdatedAccessDefinitionList(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			accessDefinitionList := GetUpdatedAccessDefinitionList(tt.currentList, tt.update)
 			require.Equal(t, tt.expectedOutput, accessDefinitionList)
-
 		})
 	}
 }
@@ -208,7 +205,6 @@ func TestGetAuthorityModules(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			accessDefinitionList := GetAuthorityModules(tt.accessDefinitionList)
 			require.Equal(t, tt.expectedOutput, accessDefinitionList)
-
 		})
 	}
 }

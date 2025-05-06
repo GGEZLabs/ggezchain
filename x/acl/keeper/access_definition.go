@@ -65,7 +65,6 @@ func (k Keeper) AddAccessDefinitions(aclAuthority types.AclAuthority, accessDefi
 
 // DeleteAccessDefinitions remove one or more access definition
 func (k Keeper) DeleteAccessDefinitions(aclAuthority types.AclAuthority, moduleNames []string) (types.AclAuthority, error) {
-
 	newAccessDefinitionsList, err := types.ValidateDeleteAccessDefinition(moduleNames, aclAuthority.AccessDefinitions)
 	if err != nil {
 		return types.AclAuthority{}, err
@@ -82,4 +81,3 @@ func (k Keeper) ClearAllAccessDefinitions(aclAuthority types.AclAuthority) types
 
 	return aclAuthority
 }
-

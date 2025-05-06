@@ -39,6 +39,7 @@ func TestAclAuthorityGet(t *testing.T) {
 		)
 	}
 }
+
 func TestAclAuthorityRemove(t *testing.T) {
 	keeper, ctx := keepertest.AclKeeper(t)
 	items := createNAclAuthority(keeper, ctx, 10)

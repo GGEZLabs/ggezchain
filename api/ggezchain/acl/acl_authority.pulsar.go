@@ -3,13 +3,14 @@ package acl
 
 import (
 	fmt "fmt"
+	io "io"
+	reflect "reflect"
+	sync "sync"
+
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	io "io"
-	reflect "reflect"
-	sync "sync"
 )
 
 var _ protoreflect.List = (*_AclAuthority_3_list)(nil)
@@ -98,17 +99,21 @@ func (x *AclAuthority) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_AclAuthority_messageType fastReflection_AclAuthority_messageType
-var _ protoreflect.MessageType = fastReflection_AclAuthority_messageType{}
+var (
+	_fastReflection_AclAuthority_messageType fastReflection_AclAuthority_messageType
+	_                                        protoreflect.MessageType = fastReflection_AclAuthority_messageType{}
+)
 
 type fastReflection_AclAuthority_messageType struct{}
 
 func (x fastReflection_AclAuthority_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_AclAuthority)(nil)
 }
+
 func (x fastReflection_AclAuthority_messageType) New() protoreflect.Message {
 	return new(fastReflection_AclAuthority)
 }
+
 func (x fastReflection_AclAuthority_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_AclAuthority
 }
@@ -741,11 +746,13 @@ func file_ggezchain_acl_acl_authority_proto_rawDescGZIP() []byte {
 	return file_ggezchain_acl_acl_authority_proto_rawDescData
 }
 
-var file_ggezchain_acl_acl_authority_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_ggezchain_acl_acl_authority_proto_goTypes = []interface{}{
-	(*AclAuthority)(nil),     // 0: ggezchain.acl.AclAuthority
-	(*AccessDefinition)(nil), // 1: ggezchain.acl.AccessDefinition
-}
+var (
+	file_ggezchain_acl_acl_authority_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+	file_ggezchain_acl_acl_authority_proto_goTypes  = []interface{}{
+		(*AclAuthority)(nil),     // 0: ggezchain.acl.AclAuthority
+		(*AccessDefinition)(nil), // 1: ggezchain.acl.AccessDefinition
+	}
+)
 var file_ggezchain_acl_acl_authority_proto_depIdxs = []int32{
 	1, // 0: ggezchain.acl.AclAuthority.access_definitions:type_name -> ggezchain.acl.AccessDefinition
 	1, // [1:1] is the sub-list for method output_type

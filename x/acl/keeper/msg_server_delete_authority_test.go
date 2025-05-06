@@ -4,9 +4,10 @@ import (
 	"testing"
 
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/stretchr/testify/require"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func TestMsgDeleteAuthority(t *testing.T) {
@@ -32,8 +33,8 @@ func TestMsgDeleteAuthority(t *testing.T) {
 		{
 			name: "unauthorized account",
 			input: &types.MsgDeleteAuthority{
-				Creator:           sample.AccAddress(),
-				AuthAddress:       alice,
+				Creator:     sample.AccAddress(),
+				AuthAddress: alice,
 			},
 			expErr:    true,
 			expErrMsg: "unauthorized account",
@@ -41,8 +42,8 @@ func TestMsgDeleteAuthority(t *testing.T) {
 		{
 			name: "authority not found",
 			input: &types.MsgDeleteAuthority{
-				Creator:           admin,
-				AuthAddress:       bob,
+				Creator:     admin,
+				AuthAddress: bob,
 			},
 			expErr:    true,
 			expErrMsg: "authority address not exist",
@@ -50,8 +51,8 @@ func TestMsgDeleteAuthority(t *testing.T) {
 		{
 			name: "all good",
 			input: &types.MsgDeleteAuthority{
-				Creator:           admin,
-				AuthAddress:       alice,
+				Creator:     admin,
+				AuthAddress: alice,
 			},
 			expErr:    false,
 			expErrMsg: "",

@@ -3,10 +3,9 @@ package keeper_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParamsQuery(t *testing.T) {

@@ -3,12 +3,13 @@ package keeper
 import (
 	"fmt"
 
+	"github.com/GGEZLabs/ggezchain/x/acl/types"
+
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
 )
 
 type (
@@ -28,7 +29,6 @@ func NewKeeper(
 	storeService store.KVStoreService,
 	logger log.Logger,
 	authority string,
-
 ) Keeper {
 	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
 		panic(fmt.Sprintf("invalid authority address: %s", authority))
