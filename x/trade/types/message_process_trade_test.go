@@ -6,11 +6,12 @@ import (
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/stretchr/testify/require"
 
-	sdkTypes "github.com/cosmos/cosmos-sdk/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
-	sdkTypes.GetConfig().SetBech32PrefixForAccount("ggez", "ggez")
+	sdk.GetConfig().SetBech32PrefixForAccount("ggez", "ggez")
 
 	tests := []struct {
 		name string
@@ -24,7 +25,6 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 				ProcessType: ProcessTypeConfirm,
 				TradeIndex:  1,
 			},
-			err: nil,
 		},
 		{
 			name: "process trade with valid data (reject)",
@@ -33,7 +33,6 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 				ProcessType: ProcessTypeReject,
 				TradeIndex:  1,
 			},
-			err: nil,
 		},
 		{
 			name: "process trade with invalid address",
@@ -42,7 +41,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 				ProcessType: ProcessTypeConfirm,
 				TradeIndex:  1,
 			},
-			err: ErrInvalidCreatorAddress,
+			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
 			name: "process trade with invalid address (empty)",
@@ -51,7 +50,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 				ProcessType: ProcessTypeConfirm,
 				TradeIndex:  1,
 			},
-			err: ErrInvalidCreatorAddress,
+			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
 			name: "process trade with invalid process type",
@@ -63,34 +62,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			err: ErrInvalidProcessType,
 		},
 		{
-			name: "process trade with invalid trade index (not number)",
-			msg: MsgProcessTrade{
-				Creator:     sample.AccAddress(),
-				ProcessType: ProcessTypeConfirm,
-				TradeIndex:  0,
-			},
-			err: ErrInvalidTradeIndex,
-		},
-		{
-			name: "process trade with invalid trade index (negative)",
-			msg: MsgProcessTrade{
-				Creator:     sample.AccAddress(),
-				ProcessType: ProcessTypeReject,
-				TradeIndex:  0,
-			},
-			err: ErrInvalidTradeIndex,
-		},
-		{
 			name: "process trade with invalid trade index (zero)",
-			msg: MsgProcessTrade{
-				Creator:     sample.AccAddress(),
-				ProcessType: ProcessTypeReject,
-				TradeIndex:  0,
-			},
-			err: ErrInvalidTradeIndex,
-		},
-		{
-			name: "process trade with invalid trade index (empty)",
 			msg: MsgProcessTrade{
 				Creator:     sample.AccAddress(),
 				ProcessType: ProcessTypeReject,

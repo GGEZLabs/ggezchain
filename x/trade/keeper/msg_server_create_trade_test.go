@@ -162,7 +162,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithInvalidTradeData() {
 	})
 
 	suite.Nil(createResponse)
-	suite.ErrorIs(err, types.ErrInvalidTradeDataObject)
+	suite.ErrorIs(err, types.ErrInvalidTradeInfo)
 }
 
 func (suite *KeeperTestSuite) TestCreateTrades() {

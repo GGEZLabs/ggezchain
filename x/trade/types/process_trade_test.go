@@ -12,7 +12,7 @@ func TestCheckerAndMakerNotTheSame(t *testing.T) {
 		name  string
 		msg   MsgProcessTrade
 		maker string
-		err   string
+		err   error
 	}{
 		{
 			name:  "maker and checker are not equals",
@@ -23,7 +23,7 @@ func TestCheckerAndMakerNotTheSame(t *testing.T) {
 			name:  "qual maker and checker",
 			msg:   MsgProcessTrade{Creator: "ggez1sameaddress"},
 			maker: "ggez1sameaddress",
-			err:   ErrCheckerMustBeDifferent.Error(),
+			err:   ErrCheckerMustBeDifferent,
 		},
 	}
 
@@ -31,9 +31,8 @@ func TestCheckerAndMakerNotTheSame(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			err := tt.msg.validateCheckerIsNotMaker(tt.maker)
 
-			if err != nil {
-				require.Error(t, err)
-				require.Contains(t, err.Error(), tt.err)
+			if tt.err != nil {
+				require.ErrorIs(t, err, tt.err)
 			} else {
 				require.NoError(t, err)
 			}
@@ -45,22 +44,22 @@ func TestValidateStatus(t *testing.T) {
 	tests := []struct {
 		name   string
 		status TradeStatus
-		err    string
+		err    error
 	}{
 		{
 			name:   "processed status",
 			status: StatusProcessed,
-			err:    ErrTradeStatusCompleted.Error(),
+			err:    ErrTradeStatusCompleted,
 		},
 		{
 			name:   "rejected status",
 			status: StatusRejected,
-			err:    ErrTradeStatusRejected.Error(),
+			err:    ErrTradeStatusRejected,
 		},
 		{
 			name:   "canceled status",
 			status: StatusCanceled,
-			err:    ErrTradeStatusCanceled.Error(),
+			err:    ErrTradeStatusCanceled,
 		},
 		{
 			name:   "pending status",
@@ -74,9 +73,8 @@ func TestValidateStatus(t *testing.T) {
 
 			err := msg.validateStatus(tt.status)
 
-			if err != nil {
-				require.Error(t, err)
-				require.Contains(t, err.Error(), tt.err)
+			if tt.err != nil {
+				require.ErrorIs(t, err, tt.err)
 			} else {
 				require.NoError(t, err)
 			}
@@ -96,25 +94,10 @@ func TestValidate(t *testing.T) {
 		err    error
 	}{
 		{
-			name:   "process trade with invalid checker address",
-			msg:    MsgProcessTrade{Creator: "invalid_address"},
-			maker:  makerAdd,
-			status: StatusPending,
-			err:    ErrInvalidChecker,
-		},
-		{
-			name:   "process trade with invalid checker address (empty)",
-			msg:    MsgProcessTrade{Creator: ""},
-			maker:  makerAdd,
-			status: StatusPending,
-			err:    ErrInvalidChecker,
-		},
-		{
 			name:   "process trade with valid checker address",
 			msg:    MsgProcessTrade{Creator: checkerAdd},
 			maker:  makerAdd,
 			status: StatusPending,
-			err:    nil,
 		},
 		{
 			name:   "process trade with unspecified status",
@@ -168,8 +151,8 @@ func TestValidate(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := tt.msg.Validate(tt.status, tt.maker)
-			if err != nil {
-				require.Equal(t, err, tt.err)
+			if tt.err != nil {
+				require.ErrorIs(t, err, tt.err)
 				return
 			}
 			require.NoError(t, err)

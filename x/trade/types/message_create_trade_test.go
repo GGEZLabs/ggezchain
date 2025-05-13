@@ -104,7 +104,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 				CoinMintingPriceJson: "{}",
 				ExchangeRateJson:     "{}",
 			},
-			err: ErrInvalidDenom,
+			err: sdkerrors.ErrInvalidRequest,
 		},
 		{
 			name: "create trade with invalid coin denom (empty)",
@@ -119,7 +119,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 				CoinMintingPriceJson: "{}",
 				ExchangeRateJson:     "{}",
 			},
-			err: ErrInvalidDenom,
+			err: sdkerrors.ErrInvalidRequest,
 		},
 		{
 			name: "create trade with invalid trade price (not number)",
@@ -182,56 +182,11 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			err: ErrInvalidTradePrice,
 		},
 		{
-			name: "create trade with invalid quantity (not number)",
-			msg: MsgCreateTrade{
-				Creator:              sample.AccAddress(),
-				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
-				Price:                "0.001",
-				ReceiverAddress:      sample.AccAddress(),
-				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-				BankingSystemData:    "{}",
-				CoinMintingPriceJson: "{}",
-				ExchangeRateJson:     "{}",
-			},
-			err: ErrInvalidTradeQuantity,
-		},
-		{
-			name: "create trade with invalid quantity (negative)",
-			msg: MsgCreateTrade{
-				Creator:              sample.AccAddress(),
-				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
-				Price:                "0.001",
-				ReceiverAddress:      sample.AccAddress(),
-				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-				BankingSystemData:    "{}",
-				CoinMintingPriceJson: "{}",
-				ExchangeRateJson:     "{}",
-			},
-			err: ErrInvalidTradeQuantity,
-		},
-		{
 			name: "create trade with invalid quantity (zero)",
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
-				Price:                "0.001",
-				ReceiverAddress:      sample.AccAddress(),
-				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-				BankingSystemData:    "{}",
-				CoinMintingPriceJson: "{}",
-				ExchangeRateJson:     "{}",
-			},
-			err: ErrInvalidTradeQuantity,
-		},
-		{
-			name: "create trade with invalid quantity (empty)",
-			msg: MsgCreateTrade{
-				Creator:              sample.AccAddress(),
-				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(0)},
 				Price:                "0.001",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -279,7 +234,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
 				Price:                "10",
 				ReceiverAddress:      sample.AccAddress(),
-				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+				TradeData:            `"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 				BankingSystemData:    "{}",
 				CoinMintingPriceJson: "{}",
 				ExchangeRateJson:     "{}",
@@ -305,7 +260,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := tt.msg.ValidateBasic()
-			if err != nil {
+			if tt.err != nil {
 				require.ErrorIs(t, err, tt.err)
 				return
 			}

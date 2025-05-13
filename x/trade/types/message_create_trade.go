@@ -5,7 +5,6 @@ import (
 	"strconv"
 	"strings"
 
-	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/math"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -31,16 +30,16 @@ func NewMsgCreateTrade(creator string, tradeType TradeType, amount *sdk.Coin, pr
 func (msg *MsgCreateTrade) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+		return sdkerrors.ErrInvalidAddress.Wrapf("invalid creator address (%s)", err)
 	}
 
 	_, err = sdk.AccAddressFromBech32(msg.ReceiverAddress)
 	if err != nil {
-		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid receiver address (%s)", err)
+		return sdkerrors.ErrInvalidAddress.Wrapf("invalid receiver address (%s)", err)
 	}
 
 	if msg.Amount.Denom != DefaultCoinDenom {
-		return ErrInvalidDenom
+		return sdkerrors.ErrInvalidRequest.Wrapf("invalid denom expected: %s, got: %s ", DefaultCoinDenom, msg.Amount.Denom)
 	}
 
 	// todo: check to large quantity
@@ -54,7 +53,7 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 	}
 
 	if !json.Valid([]byte(msg.TradeData)) {
-		return ErrInvalidTradeData.Wrapf("invalid JSON format for trade-data")
+		return ErrInvalidTradeData
 	}
 
 	if strings.TrimSpace(msg.Price) == "" {

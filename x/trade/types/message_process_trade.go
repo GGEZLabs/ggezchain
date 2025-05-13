@@ -2,6 +2,7 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 var _ sdk.Msg = &MsgProcessTrade{}
@@ -17,7 +18,7 @@ func NewMsgProcessTrade(creator string, processType ProcessType, tradeIndex uint
 func (msg *MsgProcessTrade) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return ErrInvalidCreatorAddress
+		return sdkerrors.ErrInvalidAddress.Wrapf("invalid creator address (%s)", err)
 	}
 
 	if msg.TradeIndex <= 0 {
