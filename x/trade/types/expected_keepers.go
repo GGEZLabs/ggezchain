@@ -3,8 +3,8 @@ package types
 import (
 	"context"
 
+	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	stakingTypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 // AccountKeeper defines the expected interface for the Account module.
@@ -22,12 +22,9 @@ type BankKeeper interface {
 	// Methods imported from bank should be defined here
 }
 
-// StakingKeeper defines the expected interface.
-type StakingKeeper interface {
-	GetAllValidators(ctx context.Context) (validators []stakingTypes.Validator, err error)
-	GetAllDelegations(ctx context.Context) (delegations []stakingTypes.Delegation, err error)
-	GetDelegation(ctx context.Context, delAddr sdk.AccAddress, valAddr sdk.ValAddress) (stakingTypes.Delegation, error)
-	ValidatorByConsAddr(ctx context.Context, addr sdk.ConsAddress) (stakingTypes.ValidatorI, error)
+
+type AclKeeper interface {
+	GetAclAuthority(ctx context.Context, address string) (val acltypes.AclAuthority, found bool)
 }
 
 // ParamSubspace defines the expected Subspace interface for parameters.

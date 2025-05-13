@@ -6,11 +6,8 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	io "io"
-	math "math"
-	math_bits "math/bits"
-
 	_ "github.com/cosmos/cosmos-proto"
+	types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/cosmos/cosmos-sdk/types/msgservice"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
 	_ "github.com/cosmos/gogoproto/gogoproto"
@@ -19,14 +16,15 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	io "io"
+	math "math"
+	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
-var (
-	_ = proto.Marshal
-	_ = fmt.Errorf
-	_ = math.Inf
-)
+var _ = proto.Marshal
+var _ = fmt.Errorf
+var _ = math.Inf
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -48,11 +46,9 @@ func (*MsgUpdateParams) ProtoMessage()    {}
 func (*MsgUpdateParams) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e7e8cb396d16e26c, []int{0}
 }
-
 func (m *MsgUpdateParams) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MsgUpdateParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgUpdateParams.Marshal(b, m, deterministic)
@@ -65,15 +61,12 @@ func (m *MsgUpdateParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
-
 func (m *MsgUpdateParams) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgUpdateParams.Merge(m, src)
 }
-
 func (m *MsgUpdateParams) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MsgUpdateParams) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgUpdateParams.DiscardUnknown(m)
 }
@@ -96,7 +89,8 @@ func (m *MsgUpdateParams) GetParams() Params {
 
 // MsgUpdateParamsResponse defines the response structure for executing a
 // MsgUpdateParams message.
-type MsgUpdateParamsResponse struct{}
+type MsgUpdateParamsResponse struct {
+}
 
 func (m *MsgUpdateParamsResponse) Reset()         { *m = MsgUpdateParamsResponse{} }
 func (m *MsgUpdateParamsResponse) String() string { return proto.CompactTextString(m) }
@@ -104,11 +98,9 @@ func (*MsgUpdateParamsResponse) ProtoMessage()    {}
 func (*MsgUpdateParamsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e7e8cb396d16e26c, []int{1}
 }
-
 func (m *MsgUpdateParamsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MsgUpdateParamsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgUpdateParamsResponse.Marshal(b, m, deterministic)
@@ -121,15 +113,12 @@ func (m *MsgUpdateParamsResponse) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-
 func (m *MsgUpdateParamsResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgUpdateParamsResponse.Merge(m, src)
 }
-
 func (m *MsgUpdateParamsResponse) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MsgUpdateParamsResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgUpdateParamsResponse.DiscardUnknown(m)
 }
@@ -137,16 +126,15 @@ func (m *MsgUpdateParamsResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgUpdateParamsResponse proto.InternalMessageInfo
 
 type MsgCreateTrade struct {
-	Creator              string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	TradeType            string `protobuf:"bytes,2,opt,name=tradeType,proto3" json:"tradeType,omitempty"`
-	Coin                 string `protobuf:"bytes,3,opt,name=coin,proto3" json:"coin,omitempty"`
-	Price                string `protobuf:"bytes,4,opt,name=price,proto3" json:"price,omitempty"`
-	Quantity             string `protobuf:"bytes,5,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	ReceiverAddress      string `protobuf:"bytes,6,opt,name=receiverAddress,proto3" json:"receiverAddress,omitempty"`
-	TradeData            string `protobuf:"bytes,7,opt,name=tradeData,proto3" json:"tradeData,omitempty"`
-	BankingSystemData    string `protobuf:"bytes,8,opt,name=bankingSystemData,proto3" json:"bankingSystemData,omitempty"`
-	CoinMintingPriceJSON string `protobuf:"bytes,9,opt,name=coinMintingPriceJSON,proto3" json:"coinMintingPriceJSON,omitempty"`
-	ExchangeRateJSON     string `protobuf:"bytes,10,opt,name=exchangeRateJSON,proto3" json:"exchangeRateJSON,omitempty"`
+	Creator              string      `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	TradeType            TradeType   `protobuf:"varint,2,opt,name=trade_type,json=tradeType,proto3,enum=ggezchain.trade.TradeType" json:"trade_type,omitempty"`
+	Amount               *types.Coin `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	Price                string      `protobuf:"bytes,4,opt,name=price,proto3" json:"price,omitempty"`
+	ReceiverAddress      string      `protobuf:"bytes,5,opt,name=receiver_address,json=receiverAddress,proto3" json:"receiver_address,omitempty"`
+	TradeData            string      `protobuf:"bytes,6,opt,name=trade_data,json=tradeData,proto3" json:"trade_data,omitempty"`
+	BankingSystemData    string      `protobuf:"bytes,7,opt,name=banking_system_data,json=bankingSystemData,proto3" json:"banking_system_data,omitempty"`
+	CoinMintingPriceJson string      `protobuf:"bytes,8,opt,name=coin_minting_price_json,json=coinMintingPriceJson,proto3" json:"coin_minting_price_json,omitempty"`
+	ExchangeRateJson     string      `protobuf:"bytes,9,opt,name=exchange_rate_json,json=exchangeRateJson,proto3" json:"exchange_rate_json,omitempty"`
 }
 
 func (m *MsgCreateTrade) Reset()         { *m = MsgCreateTrade{} }
@@ -155,11 +143,9 @@ func (*MsgCreateTrade) ProtoMessage()    {}
 func (*MsgCreateTrade) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e7e8cb396d16e26c, []int{2}
 }
-
 func (m *MsgCreateTrade) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MsgCreateTrade) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgCreateTrade.Marshal(b, m, deterministic)
@@ -172,15 +158,12 @@ func (m *MsgCreateTrade) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return b[:n], nil
 	}
 }
-
 func (m *MsgCreateTrade) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgCreateTrade.Merge(m, src)
 }
-
 func (m *MsgCreateTrade) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MsgCreateTrade) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgCreateTrade.DiscardUnknown(m)
 }
@@ -194,30 +177,23 @@ func (m *MsgCreateTrade) GetCreator() string {
 	return ""
 }
 
-func (m *MsgCreateTrade) GetTradeType() string {
+func (m *MsgCreateTrade) GetTradeType() TradeType {
 	if m != nil {
 		return m.TradeType
 	}
-	return ""
+	return TradeType_TRADE_TYPE_UNSPECIFIED
 }
 
-func (m *MsgCreateTrade) GetCoin() string {
+func (m *MsgCreateTrade) GetAmount() *types.Coin {
 	if m != nil {
-		return m.Coin
+		return m.Amount
 	}
-	return ""
+	return nil
 }
 
 func (m *MsgCreateTrade) GetPrice() string {
 	if m != nil {
 		return m.Price
-	}
-	return ""
-}
-
-func (m *MsgCreateTrade) GetQuantity() string {
-	if m != nil {
-		return m.Quantity
 	}
 	return ""
 }
@@ -243,23 +219,23 @@ func (m *MsgCreateTrade) GetBankingSystemData() string {
 	return ""
 }
 
-func (m *MsgCreateTrade) GetCoinMintingPriceJSON() string {
+func (m *MsgCreateTrade) GetCoinMintingPriceJson() string {
 	if m != nil {
-		return m.CoinMintingPriceJSON
+		return m.CoinMintingPriceJson
 	}
 	return ""
 }
 
-func (m *MsgCreateTrade) GetExchangeRateJSON() string {
+func (m *MsgCreateTrade) GetExchangeRateJson() string {
 	if m != nil {
-		return m.ExchangeRateJSON
+		return m.ExchangeRateJson
 	}
 	return ""
 }
 
 type MsgCreateTradeResponse struct {
-	TradeIndex uint64 `protobuf:"varint,1,opt,name=tradeIndex,proto3" json:"tradeIndex,omitempty"`
-	Status     string `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	TradeIndex uint64      `protobuf:"varint,1,opt,name=trade_index,json=tradeIndex,proto3" json:"trade_index,omitempty"`
+	Status     TradeStatus `protobuf:"varint,2,opt,name=status,proto3,enum=ggezchain.trade.TradeStatus" json:"status,omitempty"`
 }
 
 func (m *MsgCreateTradeResponse) Reset()         { *m = MsgCreateTradeResponse{} }
@@ -268,11 +244,9 @@ func (*MsgCreateTradeResponse) ProtoMessage()    {}
 func (*MsgCreateTradeResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e7e8cb396d16e26c, []int{3}
 }
-
 func (m *MsgCreateTradeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MsgCreateTradeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgCreateTradeResponse.Marshal(b, m, deterministic)
@@ -285,15 +259,12 @@ func (m *MsgCreateTradeResponse) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-
 func (m *MsgCreateTradeResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgCreateTradeResponse.Merge(m, src)
 }
-
 func (m *MsgCreateTradeResponse) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MsgCreateTradeResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgCreateTradeResponse.DiscardUnknown(m)
 }
@@ -307,17 +278,17 @@ func (m *MsgCreateTradeResponse) GetTradeIndex() uint64 {
 	return 0
 }
 
-func (m *MsgCreateTradeResponse) GetStatus() string {
+func (m *MsgCreateTradeResponse) GetStatus() TradeStatus {
 	if m != nil {
 		return m.Status
 	}
-	return ""
+	return TradeStatus_TRADE_STATUS_UNSPECIFIED
 }
 
 type MsgProcessTrade struct {
-	Creator     string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	ProcessType string `protobuf:"bytes,2,opt,name=processType,proto3" json:"processType,omitempty"`
-	TradeIndex  uint64 `protobuf:"varint,3,opt,name=tradeIndex,proto3" json:"tradeIndex,omitempty"`
+	Creator     string      `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ProcessType ProcessType `protobuf:"varint,2,opt,name=process_type,json=processType,proto3,enum=ggezchain.trade.ProcessType" json:"process_type,omitempty"`
+	TradeIndex  uint64      `protobuf:"varint,3,opt,name=trade_index,json=tradeIndex,proto3" json:"trade_index,omitempty"`
 }
 
 func (m *MsgProcessTrade) Reset()         { *m = MsgProcessTrade{} }
@@ -326,11 +297,9 @@ func (*MsgProcessTrade) ProtoMessage()    {}
 func (*MsgProcessTrade) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e7e8cb396d16e26c, []int{4}
 }
-
 func (m *MsgProcessTrade) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MsgProcessTrade) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgProcessTrade.Marshal(b, m, deterministic)
@@ -343,15 +312,12 @@ func (m *MsgProcessTrade) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
-
 func (m *MsgProcessTrade) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgProcessTrade.Merge(m, src)
 }
-
 func (m *MsgProcessTrade) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MsgProcessTrade) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgProcessTrade.DiscardUnknown(m)
 }
@@ -365,11 +331,11 @@ func (m *MsgProcessTrade) GetCreator() string {
 	return ""
 }
 
-func (m *MsgProcessTrade) GetProcessType() string {
+func (m *MsgProcessTrade) GetProcessType() ProcessType {
 	if m != nil {
 		return m.ProcessType
 	}
-	return ""
+	return ProcessType_PROCESS_TYPE_UNSPECIFIED
 }
 
 func (m *MsgProcessTrade) GetTradeIndex() uint64 {
@@ -380,14 +346,8 @@ func (m *MsgProcessTrade) GetTradeIndex() uint64 {
 }
 
 type MsgProcessTradeResponse struct {
-	TradeIndex  uint64 `protobuf:"varint,1,opt,name=tradeIndex,proto3" json:"tradeIndex,omitempty"`
-	Status      string `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
-	Checker     string `protobuf:"bytes,3,opt,name=checker,proto3" json:"checker,omitempty"`
-	Maker       string `protobuf:"bytes,4,opt,name=maker,proto3" json:"maker,omitempty"`
-	TradeData   string `protobuf:"bytes,5,opt,name=tradeData,proto3" json:"tradeData,omitempty"`
-	CreateDate  string `protobuf:"bytes,6,opt,name=createDate,proto3" json:"createDate,omitempty"`
-	UpdateDate  string `protobuf:"bytes,7,opt,name=updateDate,proto3" json:"updateDate,omitempty"`
-	ProcessDate string `protobuf:"bytes,8,opt,name=processDate,proto3" json:"processDate,omitempty"`
+	TradeIndex uint64      `protobuf:"varint,1,opt,name=trade_index,json=tradeIndex,proto3" json:"trade_index,omitempty"`
+	Status     TradeStatus `protobuf:"varint,2,opt,name=status,proto3,enum=ggezchain.trade.TradeStatus" json:"status,omitempty"`
 }
 
 func (m *MsgProcessTradeResponse) Reset()         { *m = MsgProcessTradeResponse{} }
@@ -396,11 +356,9 @@ func (*MsgProcessTradeResponse) ProtoMessage()    {}
 func (*MsgProcessTradeResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e7e8cb396d16e26c, []int{5}
 }
-
 func (m *MsgProcessTradeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MsgProcessTradeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgProcessTradeResponse.Marshal(b, m, deterministic)
@@ -413,15 +371,12 @@ func (m *MsgProcessTradeResponse) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-
 func (m *MsgProcessTradeResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgProcessTradeResponse.Merge(m, src)
 }
-
 func (m *MsgProcessTradeResponse) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MsgProcessTradeResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgProcessTradeResponse.DiscardUnknown(m)
 }
@@ -435,53 +390,11 @@ func (m *MsgProcessTradeResponse) GetTradeIndex() uint64 {
 	return 0
 }
 
-func (m *MsgProcessTradeResponse) GetStatus() string {
+func (m *MsgProcessTradeResponse) GetStatus() TradeStatus {
 	if m != nil {
 		return m.Status
 	}
-	return ""
-}
-
-func (m *MsgProcessTradeResponse) GetChecker() string {
-	if m != nil {
-		return m.Checker
-	}
-	return ""
-}
-
-func (m *MsgProcessTradeResponse) GetMaker() string {
-	if m != nil {
-		return m.Maker
-	}
-	return ""
-}
-
-func (m *MsgProcessTradeResponse) GetTradeData() string {
-	if m != nil {
-		return m.TradeData
-	}
-	return ""
-}
-
-func (m *MsgProcessTradeResponse) GetCreateDate() string {
-	if m != nil {
-		return m.CreateDate
-	}
-	return ""
-}
-
-func (m *MsgProcessTradeResponse) GetUpdateDate() string {
-	if m != nil {
-		return m.UpdateDate
-	}
-	return ""
-}
-
-func (m *MsgProcessTradeResponse) GetProcessDate() string {
-	if m != nil {
-		return m.ProcessDate
-	}
-	return ""
+	return TradeStatus_TRADE_STATUS_UNSPECIFIED
 }
 
 func init() {
@@ -496,58 +409,57 @@ func init() {
 func init() { proto.RegisterFile("ggezchain/trade/tx.proto", fileDescriptor_e7e8cb396d16e26c) }
 
 var fileDescriptor_e7e8cb396d16e26c = []byte{
-	// 690 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x54, 0xbd, 0x6e, 0x13, 0x4d,
-	0x14, 0xf5, 0x3a, 0xb1, 0x13, 0xdf, 0x44, 0x5f, 0xbe, 0x8c, 0xac, 0x64, 0x63, 0x45, 0x1b, 0xe3,
-	0x06, 0xcb, 0x80, 0x57, 0x04, 0x44, 0x91, 0x8e, 0x40, 0x14, 0x81, 0x30, 0x58, 0x9b, 0x20, 0x24,
-	0x37, 0x68, 0xbc, 0x1e, 0xad, 0x57, 0xd1, 0xfe, 0xb0, 0x33, 0x8e, 0x6c, 0x68, 0x80, 0x92, 0x8a,
-	0x17, 0xa0, 0xa7, 0x4c, 0x41, 0xc7, 0x0b, 0xa4, 0x8c, 0xa8, 0xa8, 0x10, 0x4a, 0x8a, 0xf4, 0x3c,
-	0x01, 0x9a, 0xbb, 0x63, 0x7b, 0xbd, 0xb6, 0xe4, 0x82, 0xc6, 0xde, 0x7b, 0xce, 0x99, 0x99, 0x33,
-	0x77, 0xce, 0x0c, 0xe8, 0x8e, 0xc3, 0xde, 0xda, 0x5d, 0xea, 0xfa, 0xa6, 0x88, 0x68, 0x87, 0x99,
-	0xa2, 0x5f, 0x0f, 0xa3, 0x40, 0x04, 0x64, 0x6d, 0xc4, 0xd4, 0x91, 0x29, 0xad, 0x53, 0xcf, 0xf5,
-	0x03, 0x13, 0x7f, 0x63, 0x4d, 0x69, 0xd3, 0x0e, 0xb8, 0x17, 0x70, 0xd3, 0xe3, 0x8e, 0x79, 0x7a,
-	0x57, 0xfe, 0x29, 0x62, 0x2b, 0x26, 0x5e, 0x63, 0x65, 0xc6, 0x85, 0xa2, 0x8a, 0x4e, 0xe0, 0x04,
-	0x31, 0x2e, 0xbf, 0x14, 0xba, 0x9d, 0xf6, 0x11, 0xd2, 0x88, 0x7a, 0x6a, 0x4c, 0xe5, 0xbb, 0x06,
-	0x6b, 0x0d, 0xee, 0xbc, 0x0c, 0x3b, 0x54, 0xb0, 0x26, 0x32, 0xe4, 0x01, 0x14, 0x68, 0x4f, 0x74,
-	0x83, 0xc8, 0x15, 0x03, 0x5d, 0x2b, 0x6b, 0xd5, 0xc2, 0xbe, 0xfe, 0xe3, 0xdb, 0x9d, 0xa2, 0x5a,
-	0xec, 0x61, 0xa7, 0x13, 0x31, 0xce, 0x8f, 0x44, 0xe4, 0xfa, 0x8e, 0x35, 0x96, 0x92, 0x3d, 0xc8,
-	0xc7, 0x73, 0xeb, 0xd9, 0xb2, 0x56, 0x5d, 0xd9, 0xdd, 0xac, 0xa7, 0x36, 0x5a, 0x8f, 0x17, 0xd8,
-	0x2f, 0x9c, 0xff, 0xda, 0xc9, 0x7c, 0xbd, 0x3e, 0xab, 0x69, 0x96, 0x1a, 0xb1, 0x77, 0xff, 0xe3,
-	0xf5, 0x59, 0x6d, 0x3c, 0xd7, 0xa7, 0xeb, 0xb3, 0xda, 0x8d, 0xb1, 0xf1, 0xbe, 0xb2, 0x9e, 0x72,
-	0x5a, 0xd9, 0x82, 0xcd, 0x14, 0x64, 0x31, 0x1e, 0x06, 0x3e, 0x67, 0x95, 0x3f, 0x59, 0xf8, 0xaf,
-	0xc1, 0x9d, 0x47, 0x11, 0xa3, 0x82, 0x1d, 0xcb, 0xd1, 0x44, 0x87, 0x25, 0x5b, 0x96, 0x41, 0x14,
-	0xef, 0xca, 0x1a, 0x96, 0x64, 0x1b, 0x0a, 0xb8, 0xc0, 0xf1, 0x20, 0x64, 0x68, 0xbe, 0x60, 0x8d,
-	0x01, 0x42, 0x60, 0xd1, 0x0e, 0x5c, 0x5f, 0x5f, 0x40, 0x02, 0xbf, 0x49, 0x11, 0x72, 0x61, 0xe4,
-	0xda, 0x4c, 0x5f, 0x44, 0x30, 0x2e, 0x48, 0x09, 0x96, 0xdf, 0xf4, 0xa8, 0x2f, 0x64, 0xe3, 0x72,
-	0x48, 0x8c, 0x6a, 0x52, 0x85, 0xb5, 0x88, 0xd9, 0xcc, 0x3d, 0x65, 0x91, 0xea, 0xa0, 0x9e, 0x47,
-	0x49, 0x1a, 0x1e, 0xb9, 0x79, 0x4c, 0x05, 0xd5, 0x97, 0x12, 0x6e, 0x24, 0x40, 0x6e, 0xc3, 0x7a,
-	0x9b, 0xfa, 0x27, 0xae, 0xef, 0x1c, 0x0d, 0xb8, 0x60, 0x1e, 0xaa, 0x96, 0x51, 0x35, 0x4d, 0x90,
-	0x5d, 0x28, 0x4a, 0xbf, 0x0d, 0xd7, 0x17, 0xae, 0xef, 0x34, 0xa5, 0xcb, 0xa7, 0x47, 0x2f, 0x9e,
-	0xeb, 0x05, 0x1c, 0x30, 0x93, 0x23, 0x35, 0xf8, 0x9f, 0xf5, 0xed, 0x2e, 0xf5, 0x1d, 0x66, 0x51,
-	0x11, 0xeb, 0x01, 0xf5, 0x53, 0xf8, 0xde, 0xaa, 0x3c, 0xb7, 0x61, 0x1f, 0x2b, 0x4d, 0xd8, 0x98,
-	0xec, 0xf9, 0xf0, 0x38, 0x88, 0x01, 0x80, 0x5b, 0x78, 0xe2, 0x77, 0x58, 0x1f, 0xdb, 0xbf, 0x68,
-	0x25, 0x10, 0xb2, 0x01, 0x79, 0x2e, 0xa8, 0xe8, 0x71, 0xd5, 0x7e, 0x55, 0x55, 0xde, 0x61, 0x3c,
-	0x9b, 0x51, 0x60, 0x33, 0xce, 0xe7, 0x1d, 0x63, 0x19, 0x56, 0x42, 0xa5, 0x1c, 0x1f, 0x64, 0x12,
-	0x4a, 0xd9, 0x58, 0x48, 0xdb, 0x48, 0x6d, 0xe7, 0x43, 0x16, 0xf3, 0x95, 0x5c, 0xfd, 0x5f, 0x37,
-	0x84, 0xee, 0xbb, 0xcc, 0x3e, 0x61, 0x91, 0xca, 0xd3, 0xb0, 0x94, 0x91, 0xf2, 0xa8, 0xc4, 0x55,
-	0xa4, 0xb0, 0x98, 0x0c, 0x43, 0x2e, 0x1d, 0x06, 0x03, 0x00, 0xcd, 0xca, 0x8a, 0xa9, 0x3c, 0x25,
-	0x10, 0xc9, 0xf7, 0xf0, 0x76, 0x20, 0x1f, 0x67, 0x29, 0x81, 0x24, 0x3a, 0x86, 0x82, 0xe5, 0x89,
-	0x8e, 0x49, 0x68, 0xf7, 0x4b, 0x16, 0x16, 0x1a, 0xdc, 0x21, 0x2d, 0x58, 0x9d, 0x78, 0x24, 0xca,
-	0x53, 0x97, 0x3b, 0x75, 0x13, 0x4b, 0xd5, 0x79, 0x8a, 0x51, 0x2f, 0x5f, 0xc1, 0x4a, 0xf2, 0x9e,
-	0xee, 0xcc, 0x1a, 0x98, 0x10, 0x94, 0x6e, 0xce, 0x11, 0x8c, 0x26, 0x6e, 0xc1, 0xea, 0x44, 0x74,
-	0x66, 0x9a, 0x4e, 0x2a, 0x66, 0x9b, 0x9e, 0x15, 0x80, 0x52, 0xee, 0xbd, 0x7c, 0xc0, 0xf6, 0x0f,
-	0xce, 0x2f, 0x0d, 0xed, 0xe2, 0xd2, 0xd0, 0x7e, 0x5f, 0x1a, 0xda, 0xe7, 0x2b, 0x23, 0x73, 0x71,
-	0x65, 0x64, 0x7e, 0x5e, 0x19, 0x99, 0xd6, 0x2d, 0xc7, 0x15, 0xdd, 0x5e, 0xbb, 0x6e, 0x07, 0x9e,
-	0x79, 0x78, 0x78, 0xd0, 0x7a, 0x46, 0xdb, 0xdc, 0x9c, 0x7e, 0xd3, 0xc4, 0x20, 0x64, 0xbc, 0x9d,
-	0xc7, 0xe7, 0xf8, 0xde, 0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0xc0, 0x50, 0x5f, 0xc9, 0x36, 0x06,
-	0x00, 0x00,
+	// 718 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x54, 0x3b, 0x6f, 0x13, 0x4b,
+	0x14, 0xf6, 0xc6, 0x89, 0x73, 0x3d, 0xb6, 0xf2, 0x98, 0x6b, 0x5d, 0x6f, 0x7c, 0xc3, 0x26, 0xb8,
+	0x21, 0x04, 0xd8, 0x95, 0x43, 0x40, 0x22, 0x0d, 0x22, 0x21, 0x8a, 0x40, 0x58, 0x8a, 0x36, 0x41,
+	0x48, 0x6e, 0x56, 0xe3, 0xf5, 0x68, 0xbd, 0xa0, 0x9d, 0x59, 0xed, 0x8c, 0x23, 0x9b, 0x0a, 0x51,
+	0x52, 0xd1, 0x47, 0xf4, 0x94, 0x29, 0xe8, 0xf8, 0x03, 0x29, 0x23, 0x2a, 0x2a, 0x84, 0x92, 0x22,
+	0x7f, 0x03, 0xcd, 0x63, 0x63, 0x67, 0x6d, 0x29, 0x15, 0x8d, 0xbd, 0xe7, 0x7c, 0xdf, 0x39, 0xf3,
+	0x9d, 0xc7, 0x0c, 0x30, 0x83, 0x00, 0xbf, 0xf7, 0xbb, 0x28, 0x24, 0x0e, 0x4f, 0x50, 0x07, 0x3b,
+	0xbc, 0x6f, 0xc7, 0x09, 0xe5, 0x14, 0xce, 0x5f, 0x21, 0xb6, 0x44, 0x6a, 0x8b, 0x28, 0x0a, 0x09,
+	0x75, 0xe4, 0xaf, 0xe2, 0xd4, 0xaa, 0x3e, 0x65, 0x11, 0x65, 0x4e, 0xc4, 0x02, 0xe7, 0xa8, 0x21,
+	0xfe, 0x34, 0xb0, 0xa4, 0x00, 0x4f, 0x5a, 0x8e, 0x32, 0x34, 0x54, 0x09, 0x68, 0x40, 0x95, 0x5f,
+	0x7c, 0x69, 0xef, 0x72, 0x56, 0x47, 0x8c, 0x12, 0x14, 0xa5, 0x31, 0x96, 0x3e, 0xa7, 0x8d, 0x18,
+	0x76, 0x8e, 0x1a, 0x6d, 0xcc, 0x51, 0xc3, 0xf1, 0x69, 0x48, 0x34, 0xfe, 0xff, 0x58, 0x15, 0xe2,
+	0x57, 0x81, 0xf5, 0xef, 0x06, 0x98, 0x6f, 0xb2, 0xe0, 0x75, 0xdc, 0x41, 0x1c, 0xef, 0xcb, 0xb4,
+	0xf0, 0x31, 0x28, 0xa2, 0x1e, 0xef, 0xd2, 0x24, 0xe4, 0x03, 0xd3, 0x58, 0x35, 0xd6, 0x8a, 0xdb,
+	0xe6, 0x8f, 0x6f, 0x0f, 0x2a, 0x5a, 0xe9, 0xb3, 0x4e, 0x27, 0xc1, 0x8c, 0x1d, 0xf0, 0x24, 0x24,
+	0x81, 0x3b, 0xa4, 0xc2, 0x2d, 0x50, 0x50, 0xc2, 0xcc, 0xa9, 0x55, 0x63, 0xad, 0xb4, 0x51, 0xb5,
+	0x33, 0x5d, 0xb2, 0xd5, 0x01, 0xdb, 0xc5, 0xd3, 0x5f, 0x2b, 0xb9, 0xaf, 0x97, 0x27, 0xeb, 0x86,
+	0xab, 0x23, 0xb6, 0x36, 0x3f, 0x5e, 0x9e, 0xac, 0x0f, 0x73, 0x7d, 0xba, 0x3c, 0x59, 0xbf, 0x3d,
+	0xd4, 0xdd, 0xd7, 0xca, 0x33, 0x4a, 0xeb, 0x4b, 0xa0, 0x9a, 0x71, 0xb9, 0x98, 0xc5, 0x94, 0x30,
+	0x5c, 0x3f, 0xce, 0x83, 0xb9, 0x26, 0x0b, 0x76, 0x12, 0x8c, 0x38, 0x3e, 0x14, 0xd1, 0xd0, 0x04,
+	0xb3, 0xbe, 0x30, 0x69, 0xa2, 0xaa, 0x72, 0x53, 0x13, 0x3e, 0x01, 0x40, 0x1e, 0xe0, 0xf1, 0x41,
+	0x8c, 0xa5, 0xfa, 0xb9, 0x8d, 0xda, 0x98, 0x7a, 0x99, 0xe5, 0x70, 0x10, 0x63, 0xb7, 0xc8, 0xd3,
+	0x4f, 0xd8, 0x00, 0x05, 0x14, 0xd1, 0x1e, 0xe1, 0x66, 0x5e, 0x16, 0xbd, 0x64, 0xeb, 0x36, 0x89,
+	0x71, 0xd8, 0x7a, 0x1c, 0xf6, 0x0e, 0x0d, 0x89, 0xab, 0x89, 0xb0, 0x02, 0x66, 0xe2, 0x24, 0xf4,
+	0xb1, 0x39, 0x2d, 0x55, 0x28, 0x03, 0xde, 0x05, 0x0b, 0x09, 0xf6, 0x71, 0x78, 0x84, 0x13, 0x0f,
+	0xa9, 0x16, 0x9b, 0x33, 0x92, 0x30, 0x9f, 0xfa, 0x75, 0xe7, 0xe1, 0xad, 0x54, 0x6e, 0x07, 0x71,
+	0x64, 0x16, 0x24, 0x49, 0x49, 0x7a, 0x8e, 0x38, 0x82, 0x36, 0xf8, 0xb7, 0x8d, 0xc8, 0xbb, 0x90,
+	0x04, 0x1e, 0x1b, 0x30, 0x8e, 0x23, 0xc5, 0x9b, 0x95, 0xbc, 0x45, 0x0d, 0x1d, 0x48, 0x44, 0xf2,
+	0x1f, 0x81, 0xaa, 0x58, 0x17, 0x2f, 0x0a, 0x09, 0x17, 0x41, 0x52, 0x8f, 0xf7, 0x96, 0x51, 0x62,
+	0xfe, 0x23, 0x63, 0x2a, 0x02, 0x6e, 0x2a, 0x74, 0x5f, 0x80, 0x2f, 0x19, 0x25, 0xf0, 0x3e, 0x80,
+	0xb8, 0xef, 0x77, 0x11, 0x09, 0xb0, 0x97, 0x20, 0xae, 0x23, 0x8a, 0x32, 0x62, 0x21, 0x45, 0x5c,
+	0xc4, 0x25, 0x7b, 0xab, 0x2c, 0x06, 0x9c, 0x36, 0xbc, 0x4e, 0xc1, 0x7f, 0xd7, 0x87, 0x93, 0xce,
+	0x0d, 0xae, 0x80, 0x92, 0xaa, 0x2d, 0x24, 0x1d, 0xdc, 0x97, 0x83, 0x9a, 0x76, 0x55, 0xb9, 0x2f,
+	0x84, 0x07, 0x6e, 0x82, 0x02, 0xe3, 0x88, 0xf7, 0x98, 0x9e, 0xd3, 0xf2, 0xe4, 0x39, 0x1d, 0x48,
+	0x8e, 0xab, 0xb9, 0xf5, 0x63, 0xb5, 0xe7, 0xfb, 0x09, 0xf5, 0x31, 0x63, 0x37, 0xed, 0xc3, 0x53,
+	0x50, 0x8e, 0x15, 0x73, 0x74, 0x23, 0xc6, 0x4f, 0x4a, 0xd3, 0x89, 0x9d, 0x28, 0xc5, 0x43, 0x23,
+	0x5b, 0x45, 0x3e, 0x5b, 0x45, 0xa6, 0x1d, 0xb1, 0xdc, 0xe3, 0x51, 0x71, 0x7f, 0xb9, 0x1f, 0x1b,
+	0x5f, 0xa6, 0x40, 0xbe, 0xc9, 0x02, 0xd8, 0x02, 0xe5, 0x6b, 0x77, 0x7f, 0x75, 0x2c, 0x3a, 0x73,
+	0xc1, 0x6a, 0x6b, 0x37, 0x31, 0xae, 0xa4, 0xbf, 0x01, 0xa5, 0xd1, 0xeb, 0xb7, 0x32, 0x29, 0x70,
+	0x84, 0x50, 0xbb, 0x73, 0x03, 0xe1, 0x2a, 0x71, 0x0b, 0x94, 0xaf, 0x0d, 0x72, 0xa2, 0xe8, 0x51,
+	0xc6, 0x64, 0xd1, 0x93, 0xfa, 0x5d, 0x9b, 0xf9, 0x20, 0xde, 0xa5, 0xed, 0xdd, 0xd3, 0x73, 0xcb,
+	0x38, 0x3b, 0xb7, 0x8c, 0xdf, 0xe7, 0x96, 0xf1, 0xf9, 0xc2, 0xca, 0x9d, 0x5d, 0x58, 0xb9, 0x9f,
+	0x17, 0x56, 0xae, 0x75, 0x2f, 0x08, 0x79, 0xb7, 0xd7, 0xb6, 0x7d, 0x1a, 0x39, 0x7b, 0x7b, 0xbb,
+	0xad, 0x57, 0xa8, 0xcd, 0x9c, 0xf1, 0xa7, 0x4a, 0xec, 0x0d, 0x6b, 0x17, 0xe4, 0x2b, 0xfb, 0xf0,
+	0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x2c, 0x84, 0xb0, 0xd2, 0x4a, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
-var (
-	_ context.Context
-	_ grpc.ClientConn
-)
+var _ context.Context
+var _ grpc.ClientConn
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
@@ -609,16 +521,15 @@ type MsgServer interface {
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
-type UnimplementedMsgServer struct{}
+type UnimplementedMsgServer struct {
+}
 
 func (*UnimplementedMsgServer) UpdateParams(ctx context.Context, req *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
 }
-
 func (*UnimplementedMsgServer) CreateTrade(ctx context.Context, req *MsgCreateTrade) (*MsgCreateTradeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTrade not implemented")
 }
-
 func (*UnimplementedMsgServer) ProcessTrade(ctx context.Context, req *MsgProcessTrade) (*MsgProcessTradeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProcessTrade not implemented")
 }
@@ -681,29 +592,27 @@ func _Msg_ProcessTrade_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-var (
-	Msg_serviceDesc  = _Msg_serviceDesc
-	_Msg_serviceDesc = grpc.ServiceDesc{
-		ServiceName: "ggezchain.trade.Msg",
-		HandlerType: (*MsgServer)(nil),
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "UpdateParams",
-				Handler:    _Msg_UpdateParams_Handler,
-			},
-			{
-				MethodName: "CreateTrade",
-				Handler:    _Msg_CreateTrade_Handler,
-			},
-			{
-				MethodName: "ProcessTrade",
-				Handler:    _Msg_ProcessTrade_Handler,
-			},
+var Msg_serviceDesc = _Msg_serviceDesc
+var _Msg_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "ggezchain.trade.Msg",
+	HandlerType: (*MsgServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "UpdateParams",
+			Handler:    _Msg_UpdateParams_Handler,
 		},
-		Streams:  []grpc.StreamDesc{},
-		Metadata: "ggezchain/trade/tx.proto",
-	}
-)
+		{
+			MethodName: "CreateTrade",
+			Handler:    _Msg_CreateTrade_Handler,
+		},
+		{
+			MethodName: "ProcessTrade",
+			Handler:    _Msg_ProcessTrade_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "ggezchain/trade/tx.proto",
+}
 
 func (m *MsgUpdateParams) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
@@ -788,45 +697,38 @@ func (m *MsgCreateTrade) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.ExchangeRateJSON) > 0 {
-		i -= len(m.ExchangeRateJSON)
-		copy(dAtA[i:], m.ExchangeRateJSON)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.ExchangeRateJSON)))
-		i--
-		dAtA[i] = 0x52
-	}
-	if len(m.CoinMintingPriceJSON) > 0 {
-		i -= len(m.CoinMintingPriceJSON)
-		copy(dAtA[i:], m.CoinMintingPriceJSON)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.CoinMintingPriceJSON)))
+	if len(m.ExchangeRateJson) > 0 {
+		i -= len(m.ExchangeRateJson)
+		copy(dAtA[i:], m.ExchangeRateJson)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ExchangeRateJson)))
 		i--
 		dAtA[i] = 0x4a
+	}
+	if len(m.CoinMintingPriceJson) > 0 {
+		i -= len(m.CoinMintingPriceJson)
+		copy(dAtA[i:], m.CoinMintingPriceJson)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.CoinMintingPriceJson)))
+		i--
+		dAtA[i] = 0x42
 	}
 	if len(m.BankingSystemData) > 0 {
 		i -= len(m.BankingSystemData)
 		copy(dAtA[i:], m.BankingSystemData)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.BankingSystemData)))
 		i--
-		dAtA[i] = 0x42
+		dAtA[i] = 0x3a
 	}
 	if len(m.TradeData) > 0 {
 		i -= len(m.TradeData)
 		copy(dAtA[i:], m.TradeData)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.TradeData)))
 		i--
-		dAtA[i] = 0x3a
+		dAtA[i] = 0x32
 	}
 	if len(m.ReceiverAddress) > 0 {
 		i -= len(m.ReceiverAddress)
 		copy(dAtA[i:], m.ReceiverAddress)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.ReceiverAddress)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.Quantity) > 0 {
-		i -= len(m.Quantity)
-		copy(dAtA[i:], m.Quantity)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Quantity)))
 		i--
 		dAtA[i] = 0x2a
 	}
@@ -837,19 +739,22 @@ func (m *MsgCreateTrade) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(m.Coin) > 0 {
-		i -= len(m.Coin)
-		copy(dAtA[i:], m.Coin)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Coin)))
+	if m.Amount != nil {
+		{
+			size, err := m.Amount.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintTx(dAtA, i, uint64(size))
+		}
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.TradeType) > 0 {
-		i -= len(m.TradeType)
-		copy(dAtA[i:], m.TradeType)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.TradeType)))
+	if m.TradeType != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.TradeType))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
@@ -881,12 +786,10 @@ func (m *MsgCreateTradeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	_ = i
 	var l int
 	_ = l
-	if len(m.Status) > 0 {
-		i -= len(m.Status)
-		copy(dAtA[i:], m.Status)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Status)))
+	if m.Status != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Status))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if m.TradeIndex != 0 {
 		i = encodeVarintTx(dAtA, i, uint64(m.TradeIndex))
@@ -921,12 +824,10 @@ func (m *MsgProcessTrade) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x18
 	}
-	if len(m.ProcessType) > 0 {
-		i -= len(m.ProcessType)
-		copy(dAtA[i:], m.ProcessType)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.ProcessType)))
+	if m.ProcessType != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.ProcessType))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
@@ -958,54 +859,10 @@ func (m *MsgProcessTradeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	_ = i
 	var l int
 	_ = l
-	if len(m.ProcessDate) > 0 {
-		i -= len(m.ProcessDate)
-		copy(dAtA[i:], m.ProcessDate)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.ProcessDate)))
+	if m.Status != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Status))
 		i--
-		dAtA[i] = 0x42
-	}
-	if len(m.UpdateDate) > 0 {
-		i -= len(m.UpdateDate)
-		copy(dAtA[i:], m.UpdateDate)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.UpdateDate)))
-		i--
-		dAtA[i] = 0x3a
-	}
-	if len(m.CreateDate) > 0 {
-		i -= len(m.CreateDate)
-		copy(dAtA[i:], m.CreateDate)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.CreateDate)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.TradeData) > 0 {
-		i -= len(m.TradeData)
-		copy(dAtA[i:], m.TradeData)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.TradeData)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Maker) > 0 {
-		i -= len(m.Maker)
-		copy(dAtA[i:], m.Maker)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Maker)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Checker) > 0 {
-		i -= len(m.Checker)
-		copy(dAtA[i:], m.Checker)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Checker)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Status) > 0 {
-		i -= len(m.Status)
-		copy(dAtA[i:], m.Status)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Status)))
-		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if m.TradeIndex != 0 {
 		i = encodeVarintTx(dAtA, i, uint64(m.TradeIndex))
@@ -1026,7 +883,6 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-
 func (m *MsgUpdateParams) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1061,19 +917,14 @@ func (m *MsgCreateTrade) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.TradeType)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
+	if m.TradeType != 0 {
+		n += 1 + sovTx(uint64(m.TradeType))
 	}
-	l = len(m.Coin)
-	if l > 0 {
+	if m.Amount != nil {
+		l = m.Amount.Size()
 		n += 1 + l + sovTx(uint64(l))
 	}
 	l = len(m.Price)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Quantity)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -1089,11 +940,11 @@ func (m *MsgCreateTrade) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.CoinMintingPriceJSON)
+	l = len(m.CoinMintingPriceJson)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.ExchangeRateJSON)
+	l = len(m.ExchangeRateJson)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
@@ -1109,9 +960,8 @@ func (m *MsgCreateTradeResponse) Size() (n int) {
 	if m.TradeIndex != 0 {
 		n += 1 + sovTx(uint64(m.TradeIndex))
 	}
-	l = len(m.Status)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
+	if m.Status != 0 {
+		n += 1 + sovTx(uint64(m.Status))
 	}
 	return n
 }
@@ -1126,9 +976,8 @@ func (m *MsgProcessTrade) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.ProcessType)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
+	if m.ProcessType != 0 {
+		n += 1 + sovTx(uint64(m.ProcessType))
 	}
 	if m.TradeIndex != 0 {
 		n += 1 + sovTx(uint64(m.TradeIndex))
@@ -1145,33 +994,8 @@ func (m *MsgProcessTradeResponse) Size() (n int) {
 	if m.TradeIndex != 0 {
 		n += 1 + sovTx(uint64(m.TradeIndex))
 	}
-	l = len(m.Status)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Checker)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.Maker)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.TradeData)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.CreateDate)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.UpdateDate)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.ProcessDate)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
+	if m.Status != 0 {
+		n += 1 + sovTx(uint64(m.Status))
 	}
 	return n
 }
@@ -1179,11 +1003,9 @@ func (m *MsgProcessTradeResponse) Size() (n int) {
 func sovTx(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
-
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-
 func (m *MsgUpdateParams) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1299,7 +1121,6 @@ func (m *MsgUpdateParams) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MsgUpdateParamsResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1350,7 +1171,6 @@ func (m *MsgUpdateParamsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MsgCreateTrade) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1413,10 +1233,10 @@ func (m *MsgCreateTrade) Unmarshal(dAtA []byte) error {
 			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TradeType", wireType)
 			}
-			var stringLen uint64
+			m.TradeType = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1426,29 +1246,16 @@ func (m *MsgCreateTrade) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.TradeType |= TradeType(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TradeType = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Coin", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1458,23 +1265,27 @@ func (m *MsgCreateTrade) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Coin = string(dAtA[iNdEx:postIndex])
+			if m.Amount == nil {
+				m.Amount = &types.Coin{}
+			}
+			if err := m.Amount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
@@ -1510,38 +1321,6 @@ func (m *MsgCreateTrade) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Quantity", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Quantity = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ReceiverAddress", wireType)
 			}
 			var stringLen uint64
@@ -1572,7 +1351,7 @@ func (m *MsgCreateTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.ReceiverAddress = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 7:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TradeData", wireType)
 			}
@@ -1604,7 +1383,7 @@ func (m *MsgCreateTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.TradeData = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 8:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field BankingSystemData", wireType)
 			}
@@ -1636,9 +1415,41 @@ func (m *MsgCreateTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.BankingSystemData = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CoinMintingPriceJson", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CoinMintingPriceJson = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 9:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CoinMintingPriceJSON", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ExchangeRateJson", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1666,39 +1477,7 @@ func (m *MsgCreateTrade) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CoinMintingPriceJSON = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 10:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ExchangeRateJSON", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ExchangeRateJSON = string(dAtA[iNdEx:postIndex])
+			m.ExchangeRateJson = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1721,7 +1500,6 @@ func (m *MsgCreateTrade) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MsgCreateTradeResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1771,10 +1549,10 @@ func (m *MsgCreateTradeResponse) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 2:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}
-			var stringLen uint64
+			m.Status = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1784,24 +1562,11 @@ func (m *MsgCreateTradeResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.Status |= TradeStatus(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Status = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -1823,7 +1588,6 @@ func (m *MsgCreateTradeResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MsgProcessTrade) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1886,10 +1650,10 @@ func (m *MsgProcessTrade) Unmarshal(dAtA []byte) error {
 			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ProcessType", wireType)
 			}
-			var stringLen uint64
+			m.ProcessType = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1899,24 +1663,11 @@ func (m *MsgProcessTrade) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.ProcessType |= ProcessType(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ProcessType = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 3:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TradeIndex", wireType)
@@ -1957,7 +1708,6 @@ func (m *MsgProcessTrade) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MsgProcessTradeResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2007,10 +1757,10 @@ func (m *MsgProcessTradeResponse) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 2:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}
-			var stringLen uint64
+			m.Status = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -2020,216 +1770,11 @@ func (m *MsgProcessTradeResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.Status |= TradeStatus(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Status = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Checker", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Checker = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Maker", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Maker = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TradeData", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TradeData = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CreateDate", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.CreateDate = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 7:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field UpdateDate", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.UpdateDate = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 8:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ProcessDate", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ProcessDate = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -2251,7 +1796,6 @@ func (m *MsgProcessTradeResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func skipTx(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

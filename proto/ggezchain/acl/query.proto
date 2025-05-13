@@ -45,7 +45,7 @@ message QueryGetAclAuthorityRequest {
 }
 
 message QueryGetAclAuthorityResponse {
-  AclAuthority aclAuthority = 1 [(gogoproto.nullable) = false];
+  AclAuthority acl_authority = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllAclAuthorityRequest {

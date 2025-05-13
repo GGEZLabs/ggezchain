@@ -21,7 +21,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			name: "process trade with valid data (confirm)",
 			msg: MsgProcessTrade{
 				Creator:     sample.AccAddress(),
-				ProcessType: Confirm,
+				ProcessType: ProcessTypeConfirm,
 				TradeIndex:  1,
 			},
 			err: nil,
@@ -30,7 +30,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			name: "process trade with valid data (reject)",
 			msg: MsgProcessTrade{
 				Creator:     sample.AccAddress(),
-				ProcessType: Reject,
+				ProcessType: ProcessTypeReject,
 				TradeIndex:  1,
 			},
 			err: nil,
@@ -39,7 +39,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			name: "process trade with invalid address",
 			msg: MsgProcessTrade{
 				Creator:     "xxxx1uuyxga4x50h43yucgtn8ddxd5au5nvh0dlf3fl",
-				ProcessType: Confirm,
+				ProcessType: ProcessTypeConfirm,
 				TradeIndex:  1,
 			},
 			err: ErrInvalidCreatorAddress,
@@ -48,7 +48,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			name: "process trade with invalid address (empty)",
 			msg: MsgProcessTrade{
 				Creator:     "",
-				ProcessType: Confirm,
+				ProcessType: ProcessTypeConfirm,
 				TradeIndex:  1,
 			},
 			err: ErrInvalidCreatorAddress,
@@ -57,16 +57,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			name: "process trade with invalid process type",
 			msg: MsgProcessTrade{
 				Creator:     sample.AccAddress(),
-				ProcessType: "XXXX",
-				TradeIndex:  1,
-			},
-			err: ErrInvalidProcessType,
-		},
-		{
-			name: "process trade with invalid process type (empty)",
-			msg: MsgProcessTrade{
-				Creator:     sample.AccAddress(),
-				ProcessType: "",
+				ProcessType: ProcessTypeUnspecified,
 				TradeIndex:  1,
 			},
 			err: ErrInvalidProcessType,
@@ -75,7 +66,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			name: "process trade with invalid trade index (not number)",
 			msg: MsgProcessTrade{
 				Creator:     sample.AccAddress(),
-				ProcessType: Confirm,
+				ProcessType: ProcessTypeConfirm,
 				TradeIndex:  0,
 			},
 			err: ErrInvalidTradeIndex,
@@ -84,7 +75,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			name: "process trade with invalid trade index (negative)",
 			msg: MsgProcessTrade{
 				Creator:     sample.AccAddress(),
-				ProcessType: Reject,
+				ProcessType: ProcessTypeReject,
 				TradeIndex:  0,
 			},
 			err: ErrInvalidTradeIndex,
@@ -93,7 +84,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			name: "process trade with invalid trade index (zero)",
 			msg: MsgProcessTrade{
 				Creator:     sample.AccAddress(),
-				ProcessType: Reject,
+				ProcessType: ProcessTypeReject,
 				TradeIndex:  0,
 			},
 			err: ErrInvalidTradeIndex,
@@ -102,7 +93,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			name: "process trade with invalid trade index (empty)",
 			msg: MsgProcessTrade{
 				Creator:     sample.AccAddress(),
-				ProcessType: Reject,
+				ProcessType: ProcessTypeReject,
 				TradeIndex:  0,
 			},
 			err: ErrInvalidTradeIndex,

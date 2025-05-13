@@ -5,19 +5,17 @@ package types
 
 import (
 	fmt "fmt"
+	types "github.com/cosmos/cosmos-sdk/types"
+	proto "github.com/cosmos/gogoproto/proto"
 	io "io"
 	math "math"
 	math_bits "math/bits"
-
-	proto "github.com/cosmos/gogoproto/proto"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
-var (
-	_ = proto.Marshal
-	_ = fmt.Errorf
-	_ = math.Inf
-)
+var _ = proto.Marshal
+var _ = fmt.Errorf
+var _ = math.Inf
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -26,23 +24,22 @@ var (
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type StoredTrade struct {
-	TradeIndex           uint64 `protobuf:"varint,1,opt,name=tradeIndex,proto3" json:"tradeIndex,omitempty"`
-	TradeType            string `protobuf:"bytes,2,opt,name=tradeType,proto3" json:"tradeType,omitempty"`
-	Coin                 string `protobuf:"bytes,3,opt,name=coin,proto3" json:"coin,omitempty"`
-	Price                string `protobuf:"bytes,4,opt,name=price,proto3" json:"price,omitempty"`
-	Quantity             string `protobuf:"bytes,5,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	ReceiverAddress      string `protobuf:"bytes,6,opt,name=receiverAddress,proto3" json:"receiverAddress,omitempty"`
-	Status               string `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
-	Maker                string `protobuf:"bytes,8,opt,name=maker,proto3" json:"maker,omitempty"`
-	Checker              string `protobuf:"bytes,9,opt,name=checker,proto3" json:"checker,omitempty"`
-	CreateDate           string `protobuf:"bytes,10,opt,name=createDate,proto3" json:"createDate,omitempty"`
-	UpdateDate           string `protobuf:"bytes,11,opt,name=updateDate,proto3" json:"updateDate,omitempty"`
-	ProcessDate          string `protobuf:"bytes,12,opt,name=processDate,proto3" json:"processDate,omitempty"`
-	TradeData            string `protobuf:"bytes,13,opt,name=tradeData,proto3" json:"tradeData,omitempty"`
-	CoinMintingPriceJSON string `protobuf:"bytes,14,opt,name=coinMintingPriceJSON,proto3" json:"coinMintingPriceJSON,omitempty"`
-	ExchangeRateJSON     string `protobuf:"bytes,15,opt,name=exchangeRateJSON,proto3" json:"exchangeRateJSON,omitempty"`
-	BankingSystemData    string `protobuf:"bytes,16,opt,name=bankingSystemData,proto3" json:"bankingSystemData,omitempty"`
-	Result               string `protobuf:"bytes,17,opt,name=result,proto3" json:"result,omitempty"`
+	TradeIndex           uint64      `protobuf:"varint,1,opt,name=trade_index,json=tradeIndex,proto3" json:"trade_index,omitempty"`
+	TradeType            TradeType   `protobuf:"varint,2,opt,name=trade_type,json=tradeType,proto3,enum=ggezchain.trade.TradeType" json:"trade_type,omitempty"`
+	Amount               *types.Coin `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	Price                string      `protobuf:"bytes,4,opt,name=price,proto3" json:"price,omitempty"`
+	ReceiverAddress      string      `protobuf:"bytes,5,opt,name=receiver_address,json=receiverAddress,proto3" json:"receiver_address,omitempty"`
+	Status               TradeStatus `protobuf:"varint,6,opt,name=status,proto3,enum=ggezchain.trade.TradeStatus" json:"status,omitempty"`
+	Maker                string      `protobuf:"bytes,7,opt,name=maker,proto3" json:"maker,omitempty"`
+	Checker              string      `protobuf:"bytes,8,opt,name=checker,proto3" json:"checker,omitempty"`
+	CreateDate           string      `protobuf:"bytes,9,opt,name=create_date,json=createDate,proto3" json:"create_date,omitempty"`
+	UpdateDate           string      `protobuf:"bytes,10,opt,name=update_date,json=updateDate,proto3" json:"update_date,omitempty"`
+	ProcessDate          string      `protobuf:"bytes,11,opt,name=process_date,json=processDate,proto3" json:"process_date,omitempty"`
+	TradeData            string      `protobuf:"bytes,12,opt,name=trade_data,json=tradeData,proto3" json:"trade_data,omitempty"`
+	CoinMintingPriceJson string      `protobuf:"bytes,13,opt,name=coin_minting_price_json,json=coinMintingPriceJson,proto3" json:"coin_minting_price_json,omitempty"`
+	ExchangeRateJson     string      `protobuf:"bytes,14,opt,name=exchange_rate_json,json=exchangeRateJson,proto3" json:"exchange_rate_json,omitempty"`
+	BankingSystemData    string      `protobuf:"bytes,15,opt,name=banking_system_data,json=bankingSystemData,proto3" json:"banking_system_data,omitempty"`
+	Result               string      `protobuf:"bytes,16,opt,name=result,proto3" json:"result,omitempty"`
 }
 
 func (m *StoredTrade) Reset()         { *m = StoredTrade{} }
@@ -51,11 +48,9 @@ func (*StoredTrade) ProtoMessage()    {}
 func (*StoredTrade) Descriptor() ([]byte, []int) {
 	return fileDescriptor_4cbf8bf5cc0260cd, []int{0}
 }
-
 func (m *StoredTrade) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *StoredTrade) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_StoredTrade.Marshal(b, m, deterministic)
@@ -68,15 +63,12 @@ func (m *StoredTrade) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return b[:n], nil
 	}
 }
-
 func (m *StoredTrade) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_StoredTrade.Merge(m, src)
 }
-
 func (m *StoredTrade) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *StoredTrade) XXX_DiscardUnknown() {
 	xxx_messageInfo_StoredTrade.DiscardUnknown(m)
 }
@@ -90,30 +82,23 @@ func (m *StoredTrade) GetTradeIndex() uint64 {
 	return 0
 }
 
-func (m *StoredTrade) GetTradeType() string {
+func (m *StoredTrade) GetTradeType() TradeType {
 	if m != nil {
 		return m.TradeType
 	}
-	return ""
+	return TradeType_TRADE_TYPE_UNSPECIFIED
 }
 
-func (m *StoredTrade) GetCoin() string {
+func (m *StoredTrade) GetAmount() *types.Coin {
 	if m != nil {
-		return m.Coin
+		return m.Amount
 	}
-	return ""
+	return nil
 }
 
 func (m *StoredTrade) GetPrice() string {
 	if m != nil {
 		return m.Price
-	}
-	return ""
-}
-
-func (m *StoredTrade) GetQuantity() string {
-	if m != nil {
-		return m.Quantity
 	}
 	return ""
 }
@@ -125,11 +110,11 @@ func (m *StoredTrade) GetReceiverAddress() string {
 	return ""
 }
 
-func (m *StoredTrade) GetStatus() string {
+func (m *StoredTrade) GetStatus() TradeStatus {
 	if m != nil {
 		return m.Status
 	}
-	return ""
+	return TradeStatus_TRADE_STATUS_UNSPECIFIED
 }
 
 func (m *StoredTrade) GetMaker() string {
@@ -174,16 +159,16 @@ func (m *StoredTrade) GetTradeData() string {
 	return ""
 }
 
-func (m *StoredTrade) GetCoinMintingPriceJSON() string {
+func (m *StoredTrade) GetCoinMintingPriceJson() string {
 	if m != nil {
-		return m.CoinMintingPriceJSON
+		return m.CoinMintingPriceJson
 	}
 	return ""
 }
 
-func (m *StoredTrade) GetExchangeRateJSON() string {
+func (m *StoredTrade) GetExchangeRateJson() string {
 	if m != nil {
-		return m.ExchangeRateJSON
+		return m.ExchangeRateJson
 	}
 	return ""
 }
@@ -211,33 +196,39 @@ func init() {
 }
 
 var fileDescriptor_4cbf8bf5cc0260cd = []byte{
-	// 410 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x92, 0xdf, 0x6a, 0x13, 0x41,
-	0x14, 0xc6, 0xb3, 0x9a, 0xa6, 0xcd, 0x89, 0x9a, 0x76, 0x28, 0x32, 0x88, 0x2c, 0xa1, 0x57, 0x41,
-	0x25, 0x01, 0x7d, 0x02, 0xa5, 0xa5, 0x28, 0xfe, 0x23, 0xe9, 0x55, 0x6f, 0x64, 0x76, 0xf6, 0xb0,
-	0x3b, 0xd4, 0xcc, 0xae, 0x33, 0x67, 0x25, 0xeb, 0x53, 0xf8, 0x1a, 0xbe, 0x89, 0x97, 0xbd, 0xf4,
-	0x52, 0x92, 0x17, 0x91, 0x39, 0xdb, 0x26, 0x8b, 0xe9, 0x5d, 0xbe, 0xdf, 0xf7, 0x83, 0xc9, 0x7e,
-	0x1c, 0x38, 0xc9, 0x32, 0xfc, 0xa1, 0x73, 0x65, 0xec, 0x94, 0x9c, 0x4a, 0x71, 0xea, 0xa9, 0x70,
-	0x98, 0x7e, 0xe1, 0x30, 0x29, 0x5d, 0x41, 0x85, 0x18, 0x6e, 0x9c, 0x09, 0xe3, 0x93, 0x5f, 0x5d,
-	0x18, 0xcc, 0xd9, 0xbb, 0x08, 0x59, 0xc4, 0x00, 0x5c, 0xbc, 0xb5, 0x29, 0x2e, 0x65, 0x34, 0x8a,
-	0xc6, 0xdd, 0x59, 0x8b, 0x88, 0xa7, 0xd0, 0xe7, 0x74, 0x51, 0x97, 0x28, 0xef, 0x8d, 0xa2, 0x71,
-	0x7f, 0xb6, 0x05, 0x42, 0x40, 0x57, 0x17, 0xc6, 0xca, 0xfb, 0x5c, 0xf0, 0x6f, 0x71, 0x0c, 0x7b,
-	0xa5, 0x33, 0x1a, 0x65, 0x97, 0x61, 0x13, 0xc4, 0x13, 0x38, 0xf8, 0x56, 0x29, 0x4b, 0x86, 0x6a,
-	0xb9, 0xc7, 0xc5, 0x26, 0x8b, 0x31, 0x0c, 0x1d, 0x6a, 0x34, 0xdf, 0xd1, 0xbd, 0x4e, 0x53, 0x87,
-	0xde, 0xcb, 0x1e, 0x2b, 0xff, 0x63, 0xf1, 0x18, 0x7a, 0x9e, 0x14, 0x55, 0x5e, 0xee, 0xb3, 0x70,
-	0x93, 0xc2, 0x9b, 0x0b, 0x75, 0x85, 0x4e, 0x1e, 0x34, 0x6f, 0x72, 0x10, 0x12, 0xf6, 0x75, 0x8e,
-	0x3a, 0xf0, 0x3e, 0xf3, 0xdb, 0x18, 0xbe, 0x5a, 0x3b, 0x54, 0x84, 0xa7, 0x8a, 0x50, 0x02, 0x97,
-	0x2d, 0x12, 0xfa, 0xaa, 0x4c, 0x6f, 0xfb, 0x41, 0xd3, 0x6f, 0x89, 0x18, 0xc1, 0xa0, 0x74, 0x85,
-	0x46, 0xef, 0x59, 0x78, 0xc0, 0x42, 0x1b, 0x6d, 0x76, 0x3b, 0x55, 0xa4, 0xe4, 0xc3, 0xd6, 0x6e,
-	0x01, 0x88, 0x97, 0x70, 0x1c, 0xb6, 0xfa, 0x60, 0x2c, 0x19, 0x9b, 0x7d, 0x0e, 0x0b, 0xbd, 0x9b,
-	0x7f, 0xfa, 0x28, 0x1f, 0xb1, 0x78, 0x67, 0x27, 0x9e, 0xc1, 0x21, 0x2e, 0x75, 0xae, 0x6c, 0x86,
-	0x33, 0x45, 0x8d, 0x3f, 0x64, 0x7f, 0x87, 0x8b, 0x17, 0x70, 0x94, 0x28, 0x7b, 0x65, 0x6c, 0x36,
-	0xaf, 0x3d, 0xe1, 0x82, 0xff, 0xc5, 0x21, 0xcb, 0xbb, 0x45, 0x58, 0xd5, 0xa1, 0xaf, 0xbe, 0x92,
-	0x3c, 0x6a, 0x56, 0x6d, 0xd2, 0x9b, 0xb3, 0xdf, 0xab, 0x38, 0xba, 0x5e, 0xc5, 0xd1, 0xdf, 0x55,
-	0x1c, 0xfd, 0x5c, 0xc7, 0x9d, 0xeb, 0x75, 0xdc, 0xf9, 0xb3, 0x8e, 0x3b, 0x97, 0xcf, 0x33, 0x43,
-	0x79, 0x95, 0x4c, 0x74, 0xb1, 0x98, 0x9e, 0x9f, 0x9f, 0x5d, 0xbe, 0x57, 0x89, 0x9f, 0x6e, 0xcf,
-	0x71, 0x79, 0x73, 0x90, 0x54, 0x97, 0xe8, 0x93, 0x1e, 0x9f, 0xe2, 0xab, 0x7f, 0x01, 0x00, 0x00,
-	0xff, 0xff, 0x99, 0xb7, 0x27, 0x26, 0xb0, 0x02, 0x00, 0x00,
+	// 501 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x92, 0x41, 0x6f, 0xd3, 0x30,
+	0x18, 0x86, 0x1b, 0xe8, 0x3a, 0xea, 0x8e, 0xb5, 0x98, 0x09, 0x4c, 0x81, 0x50, 0x76, 0x2a, 0x02,
+	0x25, 0xea, 0x80, 0x03, 0x47, 0x60, 0xd3, 0x04, 0x02, 0x09, 0xa5, 0x3b, 0xed, 0x12, 0x39, 0xce,
+	0xa7, 0x36, 0x8c, 0xd8, 0x91, 0xed, 0x4e, 0x2d, 0xbf, 0x82, 0x9f, 0xc5, 0x71, 0x47, 0x8e, 0xa8,
+	0xfd, 0x0b, 0xfc, 0x00, 0xe4, 0xcf, 0xc9, 0x40, 0xd3, 0x6e, 0x79, 0xdf, 0xf7, 0xf1, 0xe7, 0x57,
+	0x5f, 0x4c, 0xf6, 0x67, 0x33, 0xf8, 0x2e, 0xe6, 0xbc, 0x90, 0xb1, 0xd5, 0x3c, 0x87, 0xd8, 0x58,
+	0xa5, 0x21, 0x4f, 0x51, 0x44, 0x95, 0x56, 0x56, 0xd1, 0xfe, 0x25, 0x13, 0xa1, 0x3d, 0x0c, 0x85,
+	0x32, 0xa5, 0x32, 0x71, 0xc6, 0x0d, 0xc4, 0xe7, 0x93, 0x0c, 0x2c, 0x9f, 0xc4, 0x42, 0x15, 0xd2,
+	0x1f, 0x18, 0x3e, 0xbc, 0x3a, 0xf4, 0xbf, 0x69, 0xfb, 0x7f, 0xda, 0xa4, 0x37, 0xc5, 0x4b, 0x4e,
+	0x9c, 0x4b, 0x9f, 0x90, 0x1e, 0xc6, 0x69, 0x21, 0x73, 0x58, 0xb2, 0x60, 0x14, 0x8c, 0xdb, 0x09,
+	0x41, 0xeb, 0x83, 0x73, 0xe8, 0x1b, 0xe2, 0x55, 0x6a, 0x57, 0x15, 0xb0, 0x1b, 0xa3, 0x60, 0xbc,
+	0x7b, 0x30, 0x8c, 0xae, 0x74, 0x8a, 0x70, 0xd8, 0xc9, 0xaa, 0x82, 0xa4, 0x6b, 0x9b, 0x4f, 0x3a,
+	0x21, 0x1d, 0x5e, 0xaa, 0x85, 0xb4, 0xec, 0xe6, 0x28, 0x18, 0xf7, 0x0e, 0x1e, 0x44, 0xbe, 0x79,
+	0xe4, 0x9a, 0x47, 0x75, 0xf3, 0xe8, 0xbd, 0x2a, 0x64, 0x52, 0x83, 0x74, 0x8f, 0x6c, 0x55, 0xba,
+	0x10, 0xc0, 0xda, 0xa3, 0x60, 0xdc, 0x4d, 0xbc, 0xa0, 0xcf, 0xc8, 0x40, 0x83, 0x80, 0xe2, 0x1c,
+	0x74, 0xca, 0xf3, 0x5c, 0x83, 0x31, 0x6c, 0x0b, 0x81, 0x7e, 0xe3, 0xbf, 0xf5, 0x36, 0x7d, 0x45,
+	0x3a, 0xc6, 0x72, 0xbb, 0x30, 0xac, 0x83, 0x55, 0x1f, 0x5d, 0x5f, 0x75, 0x8a, 0x4c, 0x52, 0xb3,
+	0xee, 0xda, 0x92, 0x9f, 0x81, 0x66, 0xdb, 0xfe, 0x5a, 0x14, 0x94, 0x91, 0x6d, 0x31, 0x07, 0xe1,
+	0xfc, 0x5b, 0xe8, 0x37, 0xd2, 0x6d, 0x4d, 0x68, 0xe0, 0x16, 0xd2, 0x9c, 0x5b, 0x60, 0x5d, 0x4c,
+	0x89, 0xb7, 0x0e, 0xb9, 0xc5, 0xb5, 0x2e, 0xaa, 0xfc, 0x12, 0x20, 0x1e, 0xf0, 0x16, 0x02, 0x4f,
+	0xc9, 0x4e, 0xa5, 0x95, 0x00, 0x63, 0x3c, 0xd1, 0x43, 0xa2, 0x57, 0x7b, 0x88, 0x3c, 0x6e, 0x36,
+	0x9f, 0x73, 0xcb, 0xd9, 0x0e, 0x02, 0x7e, 0xbb, 0x87, 0xdc, 0x72, 0xfa, 0x9a, 0xdc, 0x77, 0x3f,
+	0x3d, 0x2d, 0x0b, 0x69, 0x0b, 0x39, 0x4b, 0x71, 0x55, 0xe9, 0x57, 0xa3, 0x24, 0xbb, 0x8d, 0xec,
+	0x9e, 0x8b, 0x3f, 0xfb, 0xf4, 0x8b, 0x0b, 0x3f, 0x1a, 0x25, 0xe9, 0x0b, 0x42, 0x61, 0x29, 0xe6,
+	0x5c, 0xce, 0x20, 0xd5, 0xae, 0x20, 0x9e, 0xd8, 0xc5, 0x13, 0x83, 0x26, 0x49, 0xb8, 0xf5, 0x74,
+	0x44, 0xee, 0x66, 0x5c, 0x9e, 0xb9, 0xf9, 0x66, 0x65, 0x2c, 0x94, 0xbe, 0x4c, 0x1f, 0xf1, 0x3b,
+	0x75, 0x34, 0xc5, 0x04, 0x4b, 0xdd, 0x23, 0x1d, 0x0d, 0x66, 0xf1, 0xcd, 0xb2, 0x01, 0x22, 0xb5,
+	0x7a, 0x77, 0xf4, 0x73, 0x1d, 0x06, 0x17, 0xeb, 0x30, 0xf8, 0xbd, 0x0e, 0x83, 0x1f, 0x9b, 0xb0,
+	0x75, 0xb1, 0x09, 0x5b, 0xbf, 0x36, 0x61, 0xeb, 0xf4, 0xf9, 0xac, 0xb0, 0xf3, 0x45, 0x16, 0x09,
+	0x55, 0xc6, 0xc7, 0xc7, 0x47, 0xa7, 0x9f, 0x78, 0x66, 0xe2, 0x7f, 0x2f, 0x78, 0xd9, 0xbc, 0xe1,
+	0x55, 0x05, 0x26, 0xeb, 0xe0, 0x23, 0x7e, 0xf9, 0x37, 0x00, 0x00, 0xff, 0xff, 0x37, 0xbc, 0x26,
+	0xba, 0x38, 0x03, 0x00, 0x00,
 }
 
 func (m *StoredTrade) Marshal() (dAtA []byte, err error) {
@@ -267,91 +258,80 @@ func (m *StoredTrade) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x1
 		i--
-		dAtA[i] = 0x8a
+		dAtA[i] = 0x82
 	}
 	if len(m.BankingSystemData) > 0 {
 		i -= len(m.BankingSystemData)
 		copy(dAtA[i:], m.BankingSystemData)
 		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.BankingSystemData)))
 		i--
-		dAtA[i] = 0x1
-		i--
-		dAtA[i] = 0x82
-	}
-	if len(m.ExchangeRateJSON) > 0 {
-		i -= len(m.ExchangeRateJSON)
-		copy(dAtA[i:], m.ExchangeRateJSON)
-		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.ExchangeRateJSON)))
-		i--
 		dAtA[i] = 0x7a
 	}
-	if len(m.CoinMintingPriceJSON) > 0 {
-		i -= len(m.CoinMintingPriceJSON)
-		copy(dAtA[i:], m.CoinMintingPriceJSON)
-		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.CoinMintingPriceJSON)))
+	if len(m.ExchangeRateJson) > 0 {
+		i -= len(m.ExchangeRateJson)
+		copy(dAtA[i:], m.ExchangeRateJson)
+		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.ExchangeRateJson)))
 		i--
 		dAtA[i] = 0x72
+	}
+	if len(m.CoinMintingPriceJson) > 0 {
+		i -= len(m.CoinMintingPriceJson)
+		copy(dAtA[i:], m.CoinMintingPriceJson)
+		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.CoinMintingPriceJson)))
+		i--
+		dAtA[i] = 0x6a
 	}
 	if len(m.TradeData) > 0 {
 		i -= len(m.TradeData)
 		copy(dAtA[i:], m.TradeData)
 		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.TradeData)))
 		i--
-		dAtA[i] = 0x6a
+		dAtA[i] = 0x62
 	}
 	if len(m.ProcessDate) > 0 {
 		i -= len(m.ProcessDate)
 		copy(dAtA[i:], m.ProcessDate)
 		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.ProcessDate)))
 		i--
-		dAtA[i] = 0x62
+		dAtA[i] = 0x5a
 	}
 	if len(m.UpdateDate) > 0 {
 		i -= len(m.UpdateDate)
 		copy(dAtA[i:], m.UpdateDate)
 		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.UpdateDate)))
 		i--
-		dAtA[i] = 0x5a
+		dAtA[i] = 0x52
 	}
 	if len(m.CreateDate) > 0 {
 		i -= len(m.CreateDate)
 		copy(dAtA[i:], m.CreateDate)
 		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.CreateDate)))
 		i--
-		dAtA[i] = 0x52
+		dAtA[i] = 0x4a
 	}
 	if len(m.Checker) > 0 {
 		i -= len(m.Checker)
 		copy(dAtA[i:], m.Checker)
 		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.Checker)))
 		i--
-		dAtA[i] = 0x4a
+		dAtA[i] = 0x42
 	}
 	if len(m.Maker) > 0 {
 		i -= len(m.Maker)
 		copy(dAtA[i:], m.Maker)
 		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.Maker)))
 		i--
-		dAtA[i] = 0x42
-	}
-	if len(m.Status) > 0 {
-		i -= len(m.Status)
-		copy(dAtA[i:], m.Status)
-		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.Status)))
-		i--
 		dAtA[i] = 0x3a
+	}
+	if m.Status != 0 {
+		i = encodeVarintStoredTrade(dAtA, i, uint64(m.Status))
+		i--
+		dAtA[i] = 0x30
 	}
 	if len(m.ReceiverAddress) > 0 {
 		i -= len(m.ReceiverAddress)
 		copy(dAtA[i:], m.ReceiverAddress)
 		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.ReceiverAddress)))
-		i--
-		dAtA[i] = 0x32
-	}
-	if len(m.Quantity) > 0 {
-		i -= len(m.Quantity)
-		copy(dAtA[i:], m.Quantity)
-		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.Quantity)))
 		i--
 		dAtA[i] = 0x2a
 	}
@@ -362,19 +342,22 @@ func (m *StoredTrade) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(m.Coin) > 0 {
-		i -= len(m.Coin)
-		copy(dAtA[i:], m.Coin)
-		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.Coin)))
+	if m.Amount != nil {
+		{
+			size, err := m.Amount.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintStoredTrade(dAtA, i, uint64(size))
+		}
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.TradeType) > 0 {
-		i -= len(m.TradeType)
-		copy(dAtA[i:], m.TradeType)
-		i = encodeVarintStoredTrade(dAtA, i, uint64(len(m.TradeType)))
+	if m.TradeType != 0 {
+		i = encodeVarintStoredTrade(dAtA, i, uint64(m.TradeType))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0x10
 	}
 	if m.TradeIndex != 0 {
 		i = encodeVarintStoredTrade(dAtA, i, uint64(m.TradeIndex))
@@ -395,7 +378,6 @@ func encodeVarintStoredTrade(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-
 func (m *StoredTrade) Size() (n int) {
 	if m == nil {
 		return 0
@@ -405,19 +387,14 @@ func (m *StoredTrade) Size() (n int) {
 	if m.TradeIndex != 0 {
 		n += 1 + sovStoredTrade(uint64(m.TradeIndex))
 	}
-	l = len(m.TradeType)
-	if l > 0 {
-		n += 1 + l + sovStoredTrade(uint64(l))
+	if m.TradeType != 0 {
+		n += 1 + sovStoredTrade(uint64(m.TradeType))
 	}
-	l = len(m.Coin)
-	if l > 0 {
+	if m.Amount != nil {
+		l = m.Amount.Size()
 		n += 1 + l + sovStoredTrade(uint64(l))
 	}
 	l = len(m.Price)
-	if l > 0 {
-		n += 1 + l + sovStoredTrade(uint64(l))
-	}
-	l = len(m.Quantity)
 	if l > 0 {
 		n += 1 + l + sovStoredTrade(uint64(l))
 	}
@@ -425,9 +402,8 @@ func (m *StoredTrade) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovStoredTrade(uint64(l))
 	}
-	l = len(m.Status)
-	if l > 0 {
-		n += 1 + l + sovStoredTrade(uint64(l))
+	if m.Status != 0 {
+		n += 1 + sovStoredTrade(uint64(m.Status))
 	}
 	l = len(m.Maker)
 	if l > 0 {
@@ -453,17 +429,17 @@ func (m *StoredTrade) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovStoredTrade(uint64(l))
 	}
-	l = len(m.CoinMintingPriceJSON)
+	l = len(m.CoinMintingPriceJson)
 	if l > 0 {
 		n += 1 + l + sovStoredTrade(uint64(l))
 	}
-	l = len(m.ExchangeRateJSON)
+	l = len(m.ExchangeRateJson)
 	if l > 0 {
 		n += 1 + l + sovStoredTrade(uint64(l))
 	}
 	l = len(m.BankingSystemData)
 	if l > 0 {
-		n += 2 + l + sovStoredTrade(uint64(l))
+		n += 1 + l + sovStoredTrade(uint64(l))
 	}
 	l = len(m.Result)
 	if l > 0 {
@@ -475,11 +451,9 @@ func (m *StoredTrade) Size() (n int) {
 func sovStoredTrade(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
-
 func sozStoredTrade(x uint64) (n int) {
 	return sovStoredTrade(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-
 func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -529,10 +503,10 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 2:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TradeType", wireType)
 			}
-			var stringLen uint64
+			m.TradeType = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowStoredTrade
@@ -542,29 +516,16 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.TradeType |= TradeType(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthStoredTrade
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthStoredTrade
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.TradeType = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Coin", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowStoredTrade
@@ -574,23 +535,27 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthStoredTrade
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthStoredTrade
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Coin = string(dAtA[iNdEx:postIndex])
+			if m.Amount == nil {
+				m.Amount = &types.Coin{}
+			}
+			if err := m.Amount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
@@ -626,38 +591,6 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Quantity", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowStoredTrade
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthStoredTrade
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthStoredTrade
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Quantity = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ReceiverAddress", wireType)
 			}
 			var stringLen uint64
@@ -688,11 +621,11 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.ReceiverAddress = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 7:
-			if wireType != 2 {
+		case 6:
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 			}
-			var stringLen uint64
+			m.Status = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowStoredTrade
@@ -702,25 +635,12 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.Status |= TradeStatus(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthStoredTrade
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthStoredTrade
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Status = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 8:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Maker", wireType)
 			}
@@ -752,7 +672,7 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.Maker = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 9:
+		case 8:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Checker", wireType)
 			}
@@ -784,7 +704,7 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.Checker = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 10:
+		case 9:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field CreateDate", wireType)
 			}
@@ -816,7 +736,7 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.CreateDate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 11:
+		case 10:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field UpdateDate", wireType)
 			}
@@ -848,7 +768,7 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.UpdateDate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 12:
+		case 11:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ProcessDate", wireType)
 			}
@@ -880,7 +800,7 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.ProcessDate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 13:
+		case 12:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field TradeData", wireType)
 			}
@@ -912,9 +832,41 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.TradeData = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 13:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CoinMintingPriceJson", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowStoredTrade
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthStoredTrade
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthStoredTrade
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CoinMintingPriceJson = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 14:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CoinMintingPriceJSON", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ExchangeRateJson", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -942,41 +894,9 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CoinMintingPriceJSON = string(dAtA[iNdEx:postIndex])
+			m.ExchangeRateJson = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 15:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ExchangeRateJSON", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowStoredTrade
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthStoredTrade
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthStoredTrade
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ExchangeRateJSON = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 16:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field BankingSystemData", wireType)
 			}
@@ -1008,7 +928,7 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 			}
 			m.BankingSystemData = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 17:
+		case 16:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Result", wireType)
 			}
@@ -1061,7 +981,6 @@ func (m *StoredTrade) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func skipStoredTrade(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

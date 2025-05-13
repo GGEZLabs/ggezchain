@@ -147,7 +147,7 @@ type App struct {
 	ScopedWasmKeeper capabilitykeeper.ScopedKeeper
 
 	TradeKeeper trademodulekeeper.Keeper
-	ACLKeeper   aclmodulekeeper.Keeper
+	AclKeeper   aclmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -252,7 +252,7 @@ func New(
 		&app.GroupKeeper,
 		&app.CircuitBreakerKeeper,
 		&app.TradeKeeper,
-		&app.ACLKeeper,
+		&app.AclKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

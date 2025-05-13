@@ -6,7 +6,7 @@ import (
 
 var _ sdk.Msg = &MsgProcessTrade{}
 
-func NewMsgProcessTrade(creator string, processType string, tradeIndex uint64) *MsgProcessTrade {
+func NewMsgProcessTrade(creator string, processType ProcessType, tradeIndex uint64) *MsgProcessTrade {
 	return &MsgProcessTrade{
 		Creator:     creator,
 		ProcessType: processType,
@@ -20,12 +20,14 @@ func (msg *MsgProcessTrade) ValidateBasic() error {
 		return ErrInvalidCreatorAddress
 	}
 
-	if msg.ProcessType != Confirm && msg.ProcessType != Reject {
-		return ErrInvalidProcessType
-	}
-
 	if msg.TradeIndex <= 0 {
 		return ErrInvalidTradeIndex
 	}
+
+	if msg.ProcessType != ProcessTypeConfirm &&
+		msg.ProcessType != ProcessTypeReject {
+		return ErrInvalidProcessType
+	}
+
 	return nil
 }

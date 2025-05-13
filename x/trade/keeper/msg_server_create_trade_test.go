@@ -1,178 +1,99 @@
 package keeper_test
 
 import (
+	sdkmath "cosmossdk.io/math"
+	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (suite *IntegrationTestSuite) TestCreateTrade() {
-	suite.SetupTestForCreateTrade()
-	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
-	suite.Nil(err)
-	suite.EqualValues(types.MsgCreateTradeResponse{
-		TradeIndex: 1,
-		Status:     types.Pending,
-	}, *createResponse)
+func (suite *KeeperTestSuite) TestCreateTrade() {
+	indexes := suite.createTrade(1)
+	suite.EqualValues(1, len(indexes))
+	suite.EqualValues(1, indexes[0])
 }
 
-func (suite *IntegrationTestSuite) TestIfTradeSaved() {
-	suite.SetupTestForCreateTrade()
+func (suite *KeeperTestSuite) TestIfTradeSaved() {
+	indexes := suite.createTrade(1)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 	suite.True(found)
 	suite.EqualValues(types.TradeIndex{
-		NextId: 2,
+		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
-	trade, found := keeper.GetStoredTrade(suite.ctx, 1)
+
+	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
 	suite.True(found)
-	suite.EqualValues(types.StoredTrade{
-		TradeIndex:           1,
-		Status:               types.Pending,
-		CreateDate:           trade.CreateDate,
-		TradeType:            types.Buy,
-		Coin:                 types.DefaultCoinDenom,
-		Price:                "0.001",
-		Quantity:             "100000",
-		ReceiverAddress:      testutil.Mutaz,
-		Maker:                testutil.Mutaz,
-		Checker:              "",
-		ProcessDate:          trade.CreateDate,
-		UpdateDate:           trade.CreateDate,
-		TradeData:            "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		Result:               types.ErrTradeCreatedSuccessfully.Error(),
-		BankingSystemData:    "{}",
-		CoinMintingPriceJSON: "",
-		ExchangeRateJSON:     "",
-	}, trade)
+	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
 }
 
-func (suite *IntegrationTestSuite) TestIfTempTradeSaved() {
-	suite.SetupTestForCreateTrade()
+func (suite *KeeperTestSuite) TestIfTempTradeSaved() {
+	indexes := suite.createTrade(1)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 	suite.True(found)
 	suite.EqualValues(types.TradeIndex{
-		NextId: 2,
+		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
-	tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, 1)
+
+	tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, indexes[0])
 	suite.True(found)
 	suite.EqualValues(types.StoredTempTrade{
-		TradeIndex:     1,
-		CreateDate:     tempTrade.CreateDate,
-		TempTradeIndex: 1,
+		TradeIndex:     indexes[0],
+		CreateDate:    types.GetSampleStoredTrade(indexes[0]).CreateDate,
+		TempTradeIndex: indexes[0],
 	}, tempTrade)
 }
 
-func (suite *IntegrationTestSuite) TestGetAllStoredTrade() {
-	suite.SetupTestForCreateTrade()
+func (suite *KeeperTestSuite) TestGetAllStoredTrade() {
+	indexes := suite.createTrade(3)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 	suite.True(found)
 	suite.EqualValues(types.TradeIndex{
-		NextId: 2,
+		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
+
 	allTrades := keeper.GetAllStoredTrade(suite.ctx)
-	suite.EqualValues(types.StoredTrade{
-		TradeIndex:           1,
-		Status:               types.Pending,
-		CreateDate:           allTrades[0].CreateDate,
-		TradeType:            types.Buy,
-		Coin:                 types.DefaultCoinDenom,
-		Price:                "0.001",
-		Quantity:             "100000",
-		ReceiverAddress:      testutil.Mutaz,
-		Maker:                testutil.Mutaz,
-		Checker:              "",
-		ProcessDate:          allTrades[0].CreateDate,
-		UpdateDate:           allTrades[0].CreateDate,
-		TradeData:            "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		Result:               types.ErrTradeCreatedSuccessfully.Error(),
-		BankingSystemData:    "{}",
-		CoinMintingPriceJSON: "",
-		ExchangeRateJSON:     "",
-	}, allTrades[0])
+	suite.EqualValues(len(allTrades), len(indexes))
+	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), allTrades[0])
 }
 
-func (suite *IntegrationTestSuite) TestGetAllStoredTempTrade() {
-	suite.SetupTestForCreateTrade()
+func (suite *KeeperTestSuite) TestGetAllStoredTempTrade() {
+	indexes := suite.createTrade(5)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 	suite.True(found)
 	suite.EqualValues(types.TradeIndex{
-		NextId: 2,
+		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
+
 	allTempTrades := keeper.GetAllStoredTempTrade(suite.ctx)
 	suite.EqualValues(types.StoredTempTrade{
-		TradeIndex:     1,
-		CreateDate:     allTempTrades[0].CreateDate,
-		TempTradeIndex: 1,
+		TradeIndex:     indexes[0],
+		CreateDate:     types.GetSampleStoredTrade(indexes[0]).CreateDate,
+		TempTradeIndex: indexes[0],
 	}, allTempTrades[0])
 }
 
-func (suite *IntegrationTestSuite) TestCreateTradeWithInvalidMakerPermission() {
-	suite.SetupTestForCreateTrade()
+func (suite *KeeperTestSuite) TestCreateTradeWithInvalidMakerPermission() {
+	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mohd,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
+		Creator:   testutil.Bob,
+		TradeType: types.TradeTypeBuy,
+		Amount: &sdk.Coin{
+			Denom:  types.DefaultCoinDenom,
+			Amount: sdkmath.NewInt(100000),
+		},
 		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		ReceiverAddress:   testutil.Alice,
+		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 		BankingSystemData: "{}",
 	})
 
@@ -180,17 +101,61 @@ func (suite *IntegrationTestSuite) TestCreateTradeWithInvalidMakerPermission() {
 	suite.ErrorIs(err, types.ErrInvalidMakerPermission)
 }
 
-func (suite *IntegrationTestSuite) TestCreateTradeWithInvalidTradeData() {
-	suite.SetupTestForCreateTrade()
+func (suite *KeeperTestSuite) TestCreateTradeAuthorityAddressNotExist() {
+	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
+		Creator:   testutil.Eve,
+		TradeType: types.TradeTypeBuy,
+		Amount: &sdk.Coin{
+			Denom:  types.DefaultCoinDenom,
+			Amount: sdkmath.NewInt(100000),
+		},
 		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":0,\"assetHolderID\":456,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":\"1000\",\"price\":\"50.25\",\"quantity\":\"10\",\"segment\":\"Technology\",\"sharePrice\":\"49.50\",\"ticker\":\"TECH\",\"tradeFee\":\"5.00\",\"tradeNetPrice\":\"500.00\",\"tradeNetValue\":\"495.00\"},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
+		ReceiverAddress:   testutil.Alice,
+		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		BankingSystemData: "{}",
+	})
+
+	suite.Nil(createResponse)
+	suite.ErrorIs(err, acltypes.ErrAuthorityAddressNotExist)
+	suite.Contains(err.Error(), "no ACL record found for address ggez1wq5p4zauc7e5xt3j63s2dp9dtms64mqrvuwzmv")
+}
+
+func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
+	suite.setupTest()
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:   testutil.Carol,
+		TradeType: types.TradeTypeBuy,
+		Amount: &sdk.Coin{
+			Denom:  types.DefaultCoinDenom,
+			Amount: sdkmath.NewInt(100000),
+		},
+		Price:             "0.001",
+		ReceiverAddress:   testutil.Alice,
+		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		BankingSystemData: "{}",
+	})
+
+	suite.Nil(createResponse)
+	suite.ErrorIs(err, types.ErrModuleNotFound)
+	suite.Contains(err.Error(), "no permission for module trade")
+}
+
+func (suite *KeeperTestSuite) TestCreateTradeWithInvalidTradeData() {
+	suite.setupTest()
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:   testutil.Alice,
+		TradeType: types.TradeTypeBuy,
+		Amount: &sdk.Coin{
+			Denom:  types.DefaultCoinDenom,
+			Amount: sdkmath.NewInt(100000),
+		},
+		Price:             "0.001",
+		ReceiverAddress:   testutil.Alice,
+		TradeData:         `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":0,"trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 		BankingSystemData: "{}",
 	})
 
@@ -198,100 +163,33 @@ func (suite *IntegrationTestSuite) TestCreateTradeWithInvalidTradeData() {
 	suite.ErrorIs(err, types.ErrInvalidTradeDataObject)
 }
 
-func (suite *IntegrationTestSuite) TestCreate2Trades() {
-	suite.SetupTestForCreateTrade()
+func (suite *KeeperTestSuite) TestCreateTrades() {
+	indexes := suite.createTrade(1000)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
-	trade, found := keeper.GetStoredTrade(suite.ctx, 1)
-	suite.True(found)
-	suite.EqualValues(types.StoredTrade{
-		TradeIndex:           1,
-		Status:               types.Pending,
-		CreateDate:           trade.CreateDate,
-		TradeType:            types.Buy,
-		Coin:                 types.DefaultCoinDenom,
-		Price:                "0.001",
-		Quantity:             "100000",
-		ReceiverAddress:      testutil.Mutaz,
-		Maker:                testutil.Mutaz,
-		Checker:              "",
-		ProcessDate:          trade.CreateDate,
-		UpdateDate:           trade.CreateDate,
-		TradeData:            "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		Result:               types.ErrTradeCreatedSuccessfully.Error(),
-		BankingSystemData:    "{}",
-		CoinMintingPriceJSON: "",
-		ExchangeRateJSON:     "",
-	}, trade)
+	for _, tradeIndex := range indexes {
+		trade, found := keeper.GetStoredTrade(suite.ctx, tradeIndex)
+		suite.True(found)
+		suite.EqualValues(types.GetSampleStoredTrade(tradeIndex), trade)
 
-	tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, 1)
-	suite.True(found)
-	suite.EqualValues(types.StoredTempTrade{
-		TradeIndex:     1,
-		CreateDate:     tempTrade.CreateDate,
-		TempTradeIndex: 1,
-	}, tempTrade)
-
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
-
-	trade, found = keeper.GetStoredTrade(suite.ctx, 2)
-	suite.True(found)
-	suite.EqualValues(types.StoredTrade{
-		TradeIndex:           2,
-		Status:               types.Pending,
-		CreateDate:           trade.CreateDate,
-		TradeType:            types.Buy,
-		Coin:                 types.DefaultCoinDenom,
-		Price:                "0.001",
-		Quantity:             "100000",
-		ReceiverAddress:      testutil.Mutaz,
-		Maker:                testutil.Mutaz,
-		Checker:              "",
-		ProcessDate:          trade.CreateDate,
-		UpdateDate:           trade.CreateDate,
-		TradeData:            "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		Result:               types.ErrTradeCreatedSuccessfully.Error(),
-		BankingSystemData:    "{}",
-		CoinMintingPriceJSON: "",
-		ExchangeRateJSON:     "",
-	}, trade)
-
-	tempTrade, found = keeper.GetStoredTempTrade(suite.ctx, 2)
-	suite.True(found)
-	suite.EqualValues(types.StoredTempTrade{
-		TradeIndex:     2,
-		CreateDate:     tempTrade.CreateDate,
-		TempTradeIndex: 2,
-	}, tempTrade)
+		tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, tradeIndex)
+		suite.True(found)
+		suite.EqualValues(types.StoredTempTrade{
+			TradeIndex:     tradeIndex,
+			CreateDate:     tempTrade.CreateDate,
+			TempTradeIndex: tradeIndex,
+		}, tempTrade)
+	}
 
 	// check get all trades and temp trades and next trade index
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 	suite.True(found)
 	suite.EqualValues(types.TradeIndex{
-		NextId: 3,
+		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 	AllTrades := keeper.GetAllStoredTrade(suite.ctx)
-	suite.EqualValues(len(AllTrades), 2)
+	suite.EqualValues(len(AllTrades), uint64(len(indexes)))
 
 	AllTempTrades := keeper.GetAllStoredTempTrade(suite.ctx)
-	suite.EqualValues(len(AllTempTrades), 2)
+	suite.EqualValues(len(AllTempTrades), uint64(len(indexes)))
 }

@@ -7,6 +7,8 @@ import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "ggezchain/trade/params.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "ggezchain/trade/trade.proto";
 
 option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
 
@@ -40,38 +42,31 @@ message MsgUpdateParamsResponse {}
 
 message MsgCreateTrade {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator         = 1;
-  string tradeType       = 2;
-  string coin            = 3;
-  string price           = 4;
-  string quantity        = 5;
-  string receiverAddress = 6;
-  string tradeData       = 7;
-  string bankingSystemData = 8; 
-  string coinMintingPriceJSON = 9; 
-  string exchangeRateJSON = 10; 
+  string creator                 = 1;
+  TradeType trade_type              = 2;
+  cosmos.base.v1beta1.Coin amount = 3;
+  string price                   = 4;
+  string receiver_address        = 5;
+  string trade_data              = 6;
+  string banking_system_data     = 7; 
+  string coin_minting_price_json = 8; 
+  string exchange_rate_json      = 9; 
 }
 
 message MsgCreateTradeResponse {
-  uint64 tradeIndex = 1;
-  string status     = 2;
+  uint64 trade_index = 1;
+  TradeStatus status      = 2;
 }
 
 message MsgProcessTrade {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator     = 1;
-  string processType = 2;
-  uint64 tradeIndex  = 3;
+  string creator      = 1;
+  ProcessType process_type = 2;
+  uint64 trade_index  = 3;
 }
 
 message MsgProcessTradeResponse {
-  uint64 tradeIndex  = 1;
-  string status      = 2;
-  string checker     = 3;
-  string maker       = 4;
-  string tradeData   = 5;
-  string createDate  = 6;
-  string updateDate  = 7;
-  string processDate = 8;
+  uint64 trade_index  = 1;
+  TradeStatus status       = 2;
 }
 

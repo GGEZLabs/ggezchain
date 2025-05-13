@@ -1,168 +1,158 @@
 package keeper_test
 
 import (
+	sdkmath "cosmossdk.io/math"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (suite *IntegrationTestSuite) TestProcessTradeConfirm() {
-	suite.SetupTestForProcessTrade()
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
+func (suite *KeeperTestSuite) TestProcessTradeConfirm() {
+	indexes := suite.createTrade(1)
+
 	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
-		Creator:     testutil.Mohd,
-		ProcessType: types.Confirm,
-		TradeIndex:  1,
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  indexes[0],
 	})
 	suite.Nil(err)
 	suite.EqualValues(types.MsgProcessTradeResponse{
-		TradeIndex:  1,
-		Status:      types.Completed,
-		Checker:     "",
-		Maker:       "",
-		TradeData:   "",
-		CreateDate:  "",
-		UpdateDate:  "",
-		ProcessDate: "",
+		TradeIndex: indexes[0],
+		Status:     types.StatusProcessed,
 	}, *processResponse)
 }
 
-func (suite *IntegrationTestSuite) TestProcessTradeReject() {
-	suite.SetupTestForProcessTrade()
+func (suite *KeeperTestSuite) TestProcessTradeReject() {
+	indexes := suite.createTrade(1)
 
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
 	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
-		Creator:     testutil.Mohd,
-		ProcessType: types.Reject,
-		TradeIndex:  1,
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeReject,
+		TradeIndex:  indexes[0],
 	})
 	suite.Nil(err)
 	suite.EqualValues(types.MsgProcessTradeResponse{
-		TradeIndex:  1,
-		Status:      types.Rejected,
-		Checker:     "",
-		Maker:       "",
-		TradeData:   "",
-		CreateDate:  "",
-		UpdateDate:  "",
-		ProcessDate: "",
+		TradeIndex: indexes[0],
+		Status:     types.StatusRejected,
 	}, *processResponse)
 }
 
-func (suite *IntegrationTestSuite) TestProcessTradeWithInvalidCheckerPermission() {
-	suite.SetupTestForProcessTrade()
+func (suite *KeeperTestSuite) TestProcessTradeWithInvalidCheckerPermission() {
+	indexes := suite.createTrade(1)
 
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
 	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
-		Creator:     testutil.Rami,
-		ProcessType: types.Confirm,
-		TradeIndex:  1,
+		Creator:     testutil.Alice,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  indexes[0],
 	})
 	suite.ErrorIs(err, types.ErrInvalidCheckerPermission)
 }
 
-func (suite *IntegrationTestSuite) TestStoredTradeAfterConfirmTrade() {
-	suite.SetupTestForProcessTrade()
+func (suite *KeeperTestSuite) TestStoredTradeAfterConfirmTrade() {
+	indexes := suite.createTrade(1)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
+	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
+	suite.True(found)
+	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+
+	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  indexes[0],
 	})
-	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
-		Creator:     testutil.Mohd,
-		ProcessType: types.Confirm,
-		TradeIndex:  1,
-	})
+	suite.Nil(err)
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-
 	suite.True(found)
 	suite.EqualValues(types.TradeIndex{
-		NextId: 2,
+		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
-	trade, found := keeper.GetStoredTrade(suite.ctx, 1)
-
+	trade, found = keeper.GetStoredTrade(suite.ctx, indexes[0])
 	suite.True(found)
-	suite.EqualValues(types.StoredTrade{
-		TradeIndex:           1,
-		Status:               types.Completed,
-		CreateDate:           trade.CreateDate,
-		TradeType:            types.Buy,
-		Coin:                 types.DefaultCoinDenom,
-		Price:                "0.001",
-		Quantity:             "100000",
-		ReceiverAddress:      testutil.Mutaz,
-		Maker:                testutil.Mutaz,
-		Checker:              testutil.Mohd,
-		ProcessDate:          trade.CreateDate,
-		TradeData:            "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		Result:               types.ErrTradeProcessedSuccessfully.Error(),
-		UpdateDate:           trade.UpdateDate,
-		BankingSystemData:    "{}",
-		CoinMintingPriceJSON: "",
-		ExchangeRateJSON:     "",
-	}, trade)
+	suite.EqualValues(types.GetSampleStoredTradeConfirmed(indexes[0]), trade)
 }
 
-func (suite *IntegrationTestSuite) TestTempTradeAfterConfirmTrade() {
-	suite.SetupTestForProcessTrade()
+func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
+	indexes := suite.createTrade(1)
 	keeper := suite.app.TradeKeeper
 
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
+	tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, indexes[0])
+	suite.True(found)
+	suite.EqualValues(types.StoredTempTrade{
+		TradeIndex:     1,
+		CreateDate:     types.GetSampleStoredTrade(indexes[0]).CreateDate,
+		TempTradeIndex: 1,
+	}, tempTrade)
+
+	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  indexes[0],
 	})
-	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
-		Creator:     testutil.Mohd,
-		ProcessType: types.Confirm,
-		TradeIndex:  1,
-	})
+	suite.Nil(err)
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 
 	suite.True(found)
 	suite.EqualValues(types.TradeIndex{
-		NextId: 2,
+		NextId: uint64(len(indexes) + 1),
+	}, tradeIndex)
+
+	// should remove temp trade after process
+	tempTrade, found = keeper.GetStoredTempTrade(suite.ctx, indexes[0])
+	suite.False(found)
+	suite.EqualValues(types.StoredTempTrade{
+		TradeIndex:     0,
+		CreateDate:     "",
+		TempTradeIndex: 0,
+	}, tempTrade)
+}
+
+func (suite *KeeperTestSuite) TestStoredTradeAfterRejectTrade() {
+	indexes := suite.createTrade(1)
+	keeper := suite.app.TradeKeeper
+
+	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
+	suite.True(found)
+	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+
+	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeReject,
+		TradeIndex:  indexes[0],
+	})
+	suite.Nil(err)
+
+	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
+
+	suite.True(found)
+	suite.EqualValues(types.TradeIndex{
+		NextId: uint64(len(indexes) + 1),
+	}, tradeIndex)
+
+	trade, found = keeper.GetStoredTrade(suite.ctx, indexes[0])
+	suite.True(found)
+	suite.EqualValues(types.GetSampleStoredTradeRejected(indexes[0]), trade)
+}
+
+func (suite *KeeperTestSuite) TestTempTradeAfterRejectTrade() {
+	indexes := suite.createTrade(1)
+	keeper := suite.app.TradeKeeper
+
+	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeReject,
+		TradeIndex:  indexes[0],
+	})
+	suite.Nil(err)
+
+	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
+
+	suite.True(found)
+	suite.EqualValues(types.TradeIndex{
+		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, 1)
@@ -175,146 +165,232 @@ func (suite *IntegrationTestSuite) TestTempTradeAfterConfirmTrade() {
 	}, tempTrade)
 }
 
-func (suite *IntegrationTestSuite) TestStoredTradeAfterRejectTrade() {
-	suite.SetupTestForProcessTrade()
+func (suite *KeeperTestSuite) TestProcessTwoTrade() {
+	indexes := suite.createTrade(2)
 	keeper := suite.app.TradeKeeper
-
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
-	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
-		Creator:     testutil.Mohd,
-		ProcessType: types.Reject,
-		TradeIndex:  1,
-	})
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 
 	suite.True(found)
 	suite.EqualValues(types.TradeIndex{
-		NextId: 2,
-	}, tradeIndex)
-
-	trade, found := keeper.GetStoredTrade(suite.ctx, 1)
-
-	suite.True(found)
-	suite.EqualValues(types.StoredTrade{
-		TradeIndex:           1,
-		Status:               types.Rejected,
-		CreateDate:           trade.CreateDate,
-		TradeType:            types.Buy,
-		Coin:                 types.DefaultCoinDenom,
-		Price:                "0.001",
-		Quantity:             "100000",
-		ReceiverAddress:      testutil.Mutaz,
-		Maker:                testutil.Mutaz,
-		Checker:              testutil.Mohd,
-		ProcessDate:          trade.CreateDate,
-		TradeData:            "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		Result:               types.ErrTradeProcessedSuccessfully.Error(),
-		UpdateDate:           trade.UpdateDate,
-		BankingSystemData:    "{}",
-		CoinMintingPriceJSON: "",
-		ExchangeRateJSON:     "",
-	}, trade)
-}
-
-func (suite *IntegrationTestSuite) TestTempTradeAfterRejectTrade() {
-	suite.SetupTestForProcessTrade()
-	keeper := suite.app.TradeKeeper
-
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
-	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
-		Creator:     testutil.Mohd,
-		ProcessType: types.Reject,
-		TradeIndex:  1,
-	})
-
-	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
-		NextId: 2,
-	}, tradeIndex)
-
-	tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, 1)
-
-	suite.False(found)
-	suite.EqualValues(types.StoredTempTrade{
-		TradeIndex:     0,
-		CreateDate:     "",
-		TempTradeIndex: 0,
-	}, tempTrade)
-}
-
-func (suite *IntegrationTestSuite) TestProcessTwoTrade() {
-	suite.SetupTestForProcessTrade()
-	keeper := suite.app.TradeKeeper
-
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mutaz,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mutaz,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
-
-	suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Mohd,
-		TradeType:         types.Buy,
-		Coin:              types.DefaultCoinDenom,
-		Price:             "0.001",
-		Quantity:          "100000",
-		ReceiverAddress:   testutil.Mohd,
-		TradeData:         "{\"TradeData\":{\"tradeRequestID\":123,\"assetHolderID\":2,\"assetID\":789,\"tradeType\":\"Buy\",\"tradeValue\":100.50,\"currency\":\"USD\",\"exchange\":\"NYSE\",\"fundName\":\"TechFund\",\"issuer\":\"CompanyA\",\"noShares\":1000,\"price\":50.25,\"quantity\":10,\"segment\":\"Technology\",\"sharePrice\":49.50,\"ticker\":\"TECH\",\"tradeFee\":5.00,\"tradeNetPrice\":500.00,\"tradeNetValue\":495.00},\"Brokerage\":{\"name\":\"XYZBrokerage\",\"type\":\"Online\",\"country\":\"USA\"}}",
-		BankingSystemData: "{}",
-	})
-
-	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
-		NextId: 3,
+		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	tempTrades := keeper.GetAllStoredTempTrade(suite.ctx)
 	trades := keeper.GetAllStoredTrade(suite.ctx)
-	suite.EqualValues(len(tempTrades), 2)
-	suite.EqualValues(len(trades), 2)
+	suite.EqualValues(len(tempTrades), len(indexes))
+	suite.EqualValues(len(trades), len(indexes))
 
-	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
-		Creator:     testutil.Mohd,
-		ProcessType: types.Confirm,
-		TradeIndex:  1,
-	})
+	for _, tradeIndex := range indexes {
 
-	suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
-		Creator:     testutil.Mutaz,
-		ProcessType: types.Reject,
-		TradeIndex:  2,
-	})
+		_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+			Creator:     testutil.Bob,
+			ProcessType: types.ProcessTypeConfirm,
+			TradeIndex:  tradeIndex,
+		})
+		suite.Nil(err)
+	}
 
 	tempTrades = keeper.GetAllStoredTempTrade(suite.ctx)
 	trades = keeper.GetAllStoredTrade(suite.ctx)
 	suite.EqualValues(len(tempTrades), 0)
-	suite.EqualValues(len(trades), 2)
+	suite.EqualValues(len(trades), len(indexes))
+}
+
+func (suite *KeeperTestSuite) TestProcessTradeInsufficientFund() {
+	suite.setupTest()
+	keeper := suite.app.TradeKeeper
+
+	msgCreateTradeBuy := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeBuy, 5000000000000)
+	msgCreateTradeSell := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeSell, 7000000000000)
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeBuy)
+	suite.Require().NoError(err)
+
+	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  createResponse.TradeIndex,
+	})
+	suite.Require().NoError(err)
+
+	createResponse, err = suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeSell)
+	suite.Require().NoError(err)
+
+	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  createResponse.TradeIndex,
+	})
+	suite.Require().NoError(err)
+
+	trade, found := keeper.GetStoredTrade(suite.ctx, 2)
+	suite.True(found)
+	suite.EqualValues(types.StatusFailed, trade.Status)
+}
+
+func (suite *KeeperTestSuite) TestProcessTradeAlreadyConfirmed() {
+	indexes := suite.createTrade(1)
+	keeper := suite.app.TradeKeeper
+
+	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
+	suite.True(found)
+	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+
+	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  indexes[0],
+	})
+	suite.Nil(err)
+
+	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
+	suite.True(found)
+	suite.EqualValues(types.TradeIndex{
+		NextId: uint64(len(indexes) + 1),
+	}, tradeIndex)
+
+	trade, found = keeper.GetStoredTrade(suite.ctx, indexes[0])
+	suite.True(found)
+	suite.EqualValues(types.GetSampleStoredTradeConfirmed(indexes[0]), trade)
+
+	// process confirmed trade
+	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  indexes[0],
+	})
+	suite.ErrorIs(err, types.ErrTradeStatusCompleted)
+}
+
+func (suite *KeeperTestSuite) TestProcessTradeAlreadyRejected() {
+	indexes := suite.createTrade(1)
+	keeper := suite.app.TradeKeeper
+
+	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
+	suite.True(found)
+	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+
+	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeReject,
+		TradeIndex:  indexes[0],
+	})
+	suite.Nil(err)
+
+	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
+	suite.True(found)
+	suite.EqualValues(types.TradeIndex{
+		NextId: uint64(len(indexes) + 1),
+	}, tradeIndex)
+
+	trade, found = keeper.GetStoredTrade(suite.ctx, indexes[0])
+	suite.True(found)
+	suite.EqualValues(types.GetSampleStoredTradeRejected(indexes[0]), trade)
+
+	// process confirmed trade
+	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeReject,
+		TradeIndex:  indexes[0],
+	})
+	suite.ErrorIs(err, types.ErrTradeStatusRejected)
+}
+
+func (suite *KeeperTestSuite) TestProcessTradeCheckerIsNotMaker() {
+	suite.setupTest()
+	msg := types.GetSampleMsgCreateTrade()
+	msg.Creator = testutil.Trent
+	_, err := suite.msgServer.CreateTrade(suite.ctx, msg)
+	suite.Nil(err)
+
+	keeper := suite.app.TradeKeeper
+
+	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Trent,
+		ProcessType: types.ProcessTypeReject,
+		TradeIndex:  1,
+	})
+	suite.ErrorIs(err, types.ErrCheckerMustBeDifferent)
+
+	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
+	suite.True(found)
+	suite.EqualValues(types.TradeIndex{
+		NextId: 2,
+	}, tradeIndex)
+
+	trade, found := keeper.GetStoredTrade(suite.ctx, 1)
+	suite.True(found)
+	suite.EqualValues(types.StatusPending, trade.Status)
+}
+
+func (suite *KeeperTestSuite) TestSupplyAfterProcessTrade() {
+	suite.setupTest()
+	msgCreateTradeBuy := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeBuy, 5000000000000)
+	msgCreateTradeSell := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeSell, 3000000000000)
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeBuy)
+	suite.Require().NoError(err)
+
+	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  createResponse.TradeIndex,
+	})
+	suite.Require().NoError(err)
+
+	supply := suite.app.BankKeeper.GetSupply(suite.ctx, types.DefaultCoinDenom)
+	suite.Require().Equal(sdkmath.NewInt(5000000000000), supply.Amount)
+
+	createResponse, err = suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeSell)
+	suite.Require().NoError(err)
+
+	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  createResponse.TradeIndex,
+	})
+	suite.Require().NoError(err)
+
+	supply = suite.app.BankKeeper.GetSupply(suite.ctx, types.DefaultCoinDenom)
+	suite.Require().Equal(sdkmath.NewInt(2000000000000), supply.Amount)
+
+}
+
+func (suite *KeeperTestSuite) TestBalancesAfterProcessTrade() {
+
+	suite.setupTest()
+	msgCreateTradeBuy := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeBuy, 5000000000000)
+	msgCreateTradeSell := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeSell, 3000000000000)
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeBuy)
+	suite.Require().NoError(err)
+
+	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  createResponse.TradeIndex,
+	})
+	suite.Require().NoError(err)
+
+	receiverAddress, err := sdk.AccAddressFromBech32(msgCreateTradeBuy.ReceiverAddress)
+	suite.Require().NoError(err)
+
+	initialBalance := suite.app.BankKeeper.GetBalance(suite.ctx, receiverAddress, types.DefaultCoinDenom)
+	suite.Require().Equal(sdkmath.NewInt(5000000000000), initialBalance.Amount)
+
+	createResponse, err = suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeSell)
+	suite.Require().NoError(err)
+
+	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  createResponse.TradeIndex,
+	})
+	suite.Require().NoError(err)
+
+	finalBalance := suite.app.BankKeeper.GetBalance(suite.ctx, receiverAddress, types.DefaultCoinDenom)
+
+	suite.Require().Equal(sdkmath.NewInt(2000000000000), finalBalance.Amount)
+
 }

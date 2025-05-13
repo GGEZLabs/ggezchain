@@ -8,7 +8,6 @@ package acl
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -84,16 +83,15 @@ type QueryServer interface {
 }
 
 // UnimplementedQueryServer must be embedded to have forward compatible implementations.
-type UnimplementedQueryServer struct{}
+type UnimplementedQueryServer struct {
+}
 
 func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
-
 func (UnimplementedQueryServer) AclAuthority(context.Context, *QueryGetAclAuthorityRequest) (*QueryGetAclAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AclAuthority not implemented")
 }
-
 func (UnimplementedQueryServer) AclAuthorityAll(context.Context, *QueryAllAclAuthorityRequest) (*QueryAllAclAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AclAuthorityAll not implemented")
 }

@@ -29,9 +29,9 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod:      "StoredTrade",
-					Use:            "show-stored-trade [id]",
+					Use:            "show-stored-trade [trade-index]",
 					Short:          "Shows a storedTrade",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "tradeIndex"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_index"}},
 				},
 				{
 					RpcMethod: "StoredTempTradeAll",
@@ -40,9 +40,9 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod:      "StoredTempTrade",
-					Use:            "show-stored-temp-trade [id]",
+					Use:            "show-stored-temp-trade [trade-index]",
 					Short:          "Shows a storedTempTrade",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "tradeIndex"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_index"}},
 				},
 				// this line is used by ignite scaffolding # autocli/query
 			},
@@ -57,15 +57,15 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod:      "CreateTrade",
-					Use:            "create-trade [trade-type] [coin] [price] [quantity] [receiver-address] [trade-data] [banking-system-data] [coin-minting-price-json] [exchange-rate-json]",
+					Use:            "create-trade [trade-type] [amount] [price] [receiver-address] [trade-data] [banking-system-data] [coin-minting-price-json] [exchange-rate-json]",
 					Short:          "Send a createTrade tx",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "tradeType"}, {ProtoField: "coin"}, {ProtoField: "price"}, {ProtoField: "quantity"}, {ProtoField: "receiverAddress"}, {ProtoField: "tradeData"}, {ProtoField: "bankingSystemData"}, {ProtoField: "coinMintingPriceJSON"}, {ProtoField: "exchangeRateJSON"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_type"}, {ProtoField: "amount"}, {ProtoField: "price"}, {ProtoField: "receiver_address"}, {ProtoField: "trade_data"}, {ProtoField: "banking_system_data"}, {ProtoField: "coin_minting_price_json"}, {ProtoField: "exchange_rate_json"}},
 				},
 				{
 					RpcMethod:      "ProcessTrade",
-					Use:            "process-trade [process-type] [trade-index]",
+					Use:            "process-trade [trade-index] [process-type]",
 					Short:          "Send a processTrade tx",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "processType"}, {ProtoField: "tradeIndex"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_index"}, {ProtoField: "process_type"}},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
