@@ -3,11 +3,13 @@ package types_test
 import (
 	"testing"
 
-	"cosmossdk.io/math"
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
+
+	"cosmossdk.io/math"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func TestGenesisState_Validate(t *testing.T) {
@@ -64,7 +66,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Amount:            &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
 						Price:             "0.01",
 						ReceiverAddress:   sample.AccAddress(),
-						Status:             types.StatusPending,
+						Status:            types.StatusPending,
 						Maker:             sample.AccAddress(),
 						Checker:           sample.AccAddress(),
 						CreateDate:        "2023-05-11T08:44:00Z",
@@ -79,7 +81,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Amount:            &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
 						Price:             "0.01",
 						ReceiverAddress:   sample.AccAddress(),
-						Status:             types.StatusPending,
+						Status:            types.StatusPending,
 						Maker:             sample.AccAddress(),
 						Checker:           sample.AccAddress(),
 						CreateDate:        "2023-05-11T08:44:00Z",
@@ -238,7 +240,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Amount:          &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
 						Price:           "0.01",
 						ReceiverAddress: sample.AccAddress(),
-						Status:           types.StatusPending,
+						Status:          types.StatusPending,
 						Maker:           "invalid_address",
 					},
 				},
@@ -258,7 +260,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Amount:          &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
 						Price:           "0.01",
 						ReceiverAddress: sample.AccAddress(),
-						Status:           types.StatusPending,
+						Status:          types.StatusPending,
 						Maker:           sample.AccAddress(),
 						Checker:         "invalid_address",
 					},
@@ -279,7 +281,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Amount:          &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
 						Price:           "0.01",
 						ReceiverAddress: sample.AccAddress(),
-						Status:           types.StatusPending,
+						Status:          types.StatusPending,
 						Maker:           sample.AccAddress(),
 						Checker:         sample.AccAddress(),
 						CreateDate:      "2023-05-1108:44:00Z",
@@ -301,7 +303,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Amount:          &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
 						Price:           "0.01",
 						ReceiverAddress: sample.AccAddress(),
-						Status:           types.StatusPending,
+						Status:          types.StatusPending,
 						Maker:           sample.AccAddress(),
 						Checker:         sample.AccAddress(),
 						CreateDate:      "2023-05-11T08:44:00Z",
@@ -324,7 +326,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Amount:          &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
 						Price:           "0.01",
 						ReceiverAddress: sample.AccAddress(),
-						Status:           types.StatusPending,
+						Status:          types.StatusPending,
 						Maker:           sample.AccAddress(),
 						Checker:         sample.AccAddress(),
 						CreateDate:      "2023-05-11T08:44:00Z",
@@ -348,7 +350,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Amount:          &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
 						Price:           "0.01",
 						ReceiverAddress: sample.AccAddress(),
-						Status:           types.StatusPending,
+						Status:          types.StatusPending,
 						Maker:           sample.AccAddress(),
 						Checker:         sample.AccAddress(),
 						CreateDate:      "2023-05-11T08:44:00Z",
@@ -373,7 +375,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Amount:            &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
 						Price:             "0.01",
 						ReceiverAddress:   sample.AccAddress(),
-						Status:             types.StatusPending,
+						Status:            types.StatusPending,
 						Maker:             sample.AccAddress(),
 						Checker:           sample.AccAddress(),
 						CreateDate:        "2023-05-11T08:44:00Z",

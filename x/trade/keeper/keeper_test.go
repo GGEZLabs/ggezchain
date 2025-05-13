@@ -4,17 +4,17 @@ import (
 	"testing"
 
 	ggezchainapp "github.com/GGEZLabs/ggezchain/app"
+	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
+	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	tmtypes "github.com/cometbft/cometbft/types"
 	"github.com/stretchr/testify/suite"
 
 	sdkmath "cosmossdk.io/math"
-	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 
-	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
-	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/cosmos/cosmos-sdk/baseapp"
+	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/testutil/mock"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -63,7 +63,6 @@ func (suite *KeeperTestSuite) setupTest() {
 }
 
 func (suite *KeeperTestSuite) setAclAuthority(app *ggezchainapp.App) {
-
 	authorities := []acltypes.AclAuthority{
 		{
 			Address: testutil.Alice,
@@ -118,7 +117,6 @@ func (suite *KeeperTestSuite) setAclAuthority(app *ggezchainapp.App) {
 			AccessDefinitions: auth.AccessDefinitions,
 		})
 	}
-
 }
 
 func (suite *KeeperTestSuite) createTrade(numberOfTrades uint64) (tradeIndex []uint64) {

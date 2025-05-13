@@ -4,14 +4,15 @@ package trade
 import (
 	binary "encoding/binary"
 	fmt "fmt"
-	runtime "github.com/cosmos/cosmos-proto/runtime"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoiface "google.golang.org/protobuf/runtime/protoiface"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
 	math "math"
 	reflect "reflect"
 	sync "sync"
+
+	runtime "github.com/cosmos/cosmos-proto/runtime"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoiface "google.golang.org/protobuf/runtime/protoiface"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 var (
@@ -77,17 +78,21 @@ func (x *TradeInfo) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_TradeInfo_messageType fastReflection_TradeInfo_messageType
-var _ protoreflect.MessageType = fastReflection_TradeInfo_messageType{}
+var (
+	_fastReflection_TradeInfo_messageType fastReflection_TradeInfo_messageType
+	_                                     protoreflect.MessageType = fastReflection_TradeInfo_messageType{}
+)
 
 type fastReflection_TradeInfo_messageType struct{}
 
 func (x fastReflection_TradeInfo_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_TradeInfo)(nil)
 }
+
 func (x fastReflection_TradeInfo_messageType) New() protoreflect.Message {
 	return new(fastReflection_TradeInfo)
 }
+
 func (x fastReflection_TradeInfo_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_TradeInfo
 }
@@ -1279,17 +1284,21 @@ func (x *Brokerage) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_Brokerage_messageType fastReflection_Brokerage_messageType
-var _ protoreflect.MessageType = fastReflection_Brokerage_messageType{}
+var (
+	_fastReflection_Brokerage_messageType fastReflection_Brokerage_messageType
+	_                                     protoreflect.MessageType = fastReflection_Brokerage_messageType{}
+)
 
 type fastReflection_Brokerage_messageType struct{}
 
 func (x fastReflection_Brokerage_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_Brokerage)(nil)
 }
+
 func (x fastReflection_Brokerage_messageType) New() protoreflect.Message {
 	return new(fastReflection_Brokerage)
 }
+
 func (x fastReflection_Brokerage_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_Brokerage
 }
@@ -1825,17 +1834,21 @@ func (x *TradeData) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_TradeData_messageType fastReflection_TradeData_messageType
-var _ protoreflect.MessageType = fastReflection_TradeData_messageType{}
+var (
+	_fastReflection_TradeData_messageType fastReflection_TradeData_messageType
+	_                                     protoreflect.MessageType = fastReflection_TradeData_messageType{}
+)
 
 type fastReflection_TradeData_messageType struct{}
 
 func (x fastReflection_TradeData_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_TradeData)(nil)
 }
+
 func (x fastReflection_TradeData_messageType) New() protoreflect.Message {
 	return new(fastReflection_TradeData)
 }
+
 func (x fastReflection_TradeData_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_TradeData
 }
@@ -2658,13 +2671,16 @@ func file_ggezchain_trade_trade_data_proto_rawDescGZIP() []byte {
 	return file_ggezchain_trade_trade_data_proto_rawDescData
 }
 
-var file_ggezchain_trade_trade_data_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_ggezchain_trade_trade_data_proto_goTypes = []interface{}{
-	(*TradeInfo)(nil), // 0: ggezchain.trade.TradeInfo
-	(*Brokerage)(nil), // 1: ggezchain.trade.Brokerage
-	(*TradeData)(nil), // 2: ggezchain.trade.TradeData
-	(TradeType)(0),    // 3: ggezchain.trade.TradeType
-}
+var (
+	file_ggezchain_trade_trade_data_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+	file_ggezchain_trade_trade_data_proto_goTypes  = []interface{}{
+		(*TradeInfo)(nil), // 0: ggezchain.trade.TradeInfo
+		(*Brokerage)(nil), // 1: ggezchain.trade.Brokerage
+		(*TradeData)(nil), // 2: ggezchain.trade.TradeData
+		(TradeType)(0),    // 3: ggezchain.trade.TradeType
+	}
+)
+
 var file_ggezchain_trade_trade_data_proto_depIdxs = []int32{
 	3, // 0: ggezchain.trade.TradeInfo.trade_type:type_name -> ggezchain.trade.TradeType
 	0, // 1: ggezchain.trade.TradeData.trade_info:type_name -> ggezchain.trade.TradeInfo

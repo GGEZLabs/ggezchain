@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"cosmossdk.io/math"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -30,7 +31,6 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-
 	if gs.TradeIndex.NextId <= 0 {
 		return fmt.Errorf("next_id must be more than 0")
 	}
@@ -142,7 +142,6 @@ func (gs GenesisState) Validate() error {
 		}
 
 		_, err := time.Parse(time.RFC3339, elem.CreateDate)
-
 		if err != nil {
 			return fmt.Errorf("invalid create_date format, trade_index: %d", elem.TradeIndex)
 		}

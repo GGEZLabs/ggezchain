@@ -149,7 +149,8 @@ func TestValidate(t *testing.T) {
 			msg:    MsgProcessTrade{Creator: checkerAdd},
 			maker:  makerAdd,
 			status: StatusPending,
-		}, {
+		},
+		{
 			name:   "process trade with maker equal checker ",
 			msg:    MsgProcessTrade{Creator: checkerAdd},
 			maker:  checkerAdd,

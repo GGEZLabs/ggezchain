@@ -22,9 +22,9 @@ type (
 		// should be the x/gov module account.
 		authority string
 
-		bankKeeper    types.BankKeeper
-		aclKeeper     types.AclKeeper
-		}
+		bankKeeper types.BankKeeper
+		aclKeeper  types.AclKeeper
+	}
 )
 
 func NewKeeper(
@@ -46,7 +46,7 @@ func NewKeeper(
 		authority:    authority,
 		logger:       logger,
 
-		bankKeeper:    bankKeeper,
+		bankKeeper: bankKeeper,
 		aclKeeper:  aclKeeper,
 	}
 }

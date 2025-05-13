@@ -8,6 +8,7 @@ package trade
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -123,24 +124,28 @@ type QueryServer interface {
 }
 
 // UnimplementedQueryServer must be embedded to have forward compatible implementations.
-type UnimplementedQueryServer struct {
-}
+type UnimplementedQueryServer struct{}
 
 func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
 }
+
 func (UnimplementedQueryServer) TradeIndex(context.Context, *QueryGetTradeIndexRequest) (*QueryGetTradeIndexResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TradeIndex not implemented")
 }
+
 func (UnimplementedQueryServer) StoredTrade(context.Context, *QueryGetStoredTradeRequest) (*QueryGetStoredTradeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StoredTrade not implemented")
 }
+
 func (UnimplementedQueryServer) StoredTradeAll(context.Context, *QueryAllStoredTradeRequest) (*QueryAllStoredTradeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StoredTradeAll not implemented")
 }
+
 func (UnimplementedQueryServer) StoredTempTrade(context.Context, *QueryGetStoredTempTradeRequest) (*QueryGetStoredTempTradeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StoredTempTrade not implemented")
 }
+
 func (UnimplementedQueryServer) StoredTempTradeAll(context.Context, *QueryAllStoredTempTradeRequest) (*QueryAllStoredTempTradeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StoredTempTradeAll not implemented")
 }

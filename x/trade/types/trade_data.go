@@ -73,5 +73,4 @@ func ValidateTradeData(tradeData string) (err error) {
 		return ErrInvalidTradeDataObject.Wrapf("brokerage name must not be empty or whitespace")
 	}
 	return nil
-
 }

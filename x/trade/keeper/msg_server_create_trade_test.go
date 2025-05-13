@@ -1,10 +1,12 @@
 package keeper_test
 
 import (
-	sdkmath "cosmossdk.io/math"
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
+
+	sdkmath "cosmossdk.io/math"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -43,7 +45,7 @@ func (suite *KeeperTestSuite) TestIfTempTradeSaved() {
 	suite.True(found)
 	suite.EqualValues(types.StoredTempTrade{
 		TradeIndex:     indexes[0],
-		CreateDate:    types.GetSampleStoredTrade(indexes[0]).CreateDate,
+		CreateDate:     types.GetSampleStoredTrade(indexes[0]).CreateDate,
 		TempTradeIndex: indexes[0],
 	}, tempTrade)
 }

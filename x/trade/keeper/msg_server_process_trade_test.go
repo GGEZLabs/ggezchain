@@ -1,9 +1,11 @@
 package keeper_test
 
 import (
-	sdkmath "cosmossdk.io/math"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
+
+	sdkmath "cosmossdk.io/math"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -354,11 +356,9 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTrade() {
 
 	supply = suite.app.BankKeeper.GetSupply(suite.ctx, types.DefaultCoinDenom)
 	suite.Require().Equal(sdkmath.NewInt(2000000000000), supply.Amount)
-
 }
 
 func (suite *KeeperTestSuite) TestBalancesAfterProcessTrade() {
-
 	suite.setupTest()
 	msgCreateTradeBuy := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeBuy, 5000000000000)
 	msgCreateTradeSell := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeSell, 3000000000000)
@@ -392,5 +392,4 @@ func (suite *KeeperTestSuite) TestBalancesAfterProcessTrade() {
 	finalBalance := suite.app.BankKeeper.GetBalance(suite.ctx, receiverAddress, types.DefaultCoinDenom)
 
 	suite.Require().Equal(sdkmath.NewInt(2000000000000), finalBalance.Amount)
-
 }

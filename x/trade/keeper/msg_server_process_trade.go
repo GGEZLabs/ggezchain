@@ -89,7 +89,7 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 			Result:               result,
 		}
 	}
-	
+
 	k.Keeper.SetStoredTrade(ctx, storedTrade)
 	k.RemoveStoredTempTrade(ctx, msg.TradeIndex)
 

@@ -8,6 +8,7 @@ package acl
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -95,18 +96,20 @@ type MsgServer interface {
 }
 
 // UnimplementedMsgServer must be embedded to have forward compatible implementations.
-type UnimplementedMsgServer struct {
-}
+type UnimplementedMsgServer struct{}
 
 func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
 }
+
 func (UnimplementedMsgServer) AddAuthority(context.Context, *MsgAddAuthority) (*MsgAddAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAuthority not implemented")
 }
+
 func (UnimplementedMsgServer) DeleteAuthority(context.Context, *MsgDeleteAuthority) (*MsgDeleteAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAuthority not implemented")
 }
+
 func (UnimplementedMsgServer) UpdateAuthority(context.Context, *MsgUpdateAuthority) (*MsgUpdateAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAuthority not implemented")
 }

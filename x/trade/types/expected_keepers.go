@@ -4,6 +4,7 @@ import (
 	"context"
 
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -21,7 +22,6 @@ type BankKeeper interface {
 	SendCoinsFromAccountToModule(ctx context.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins) error
 	// Methods imported from bank should be defined here
 }
-
 
 type AclKeeper interface {
 	GetAclAuthority(ctx context.Context, address string) (val acltypes.AclAuthority, found bool)

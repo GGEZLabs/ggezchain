@@ -6,6 +6,10 @@ package types
 import (
 	context "context"
 	fmt "fmt"
+	io "io"
+	math "math"
+	math_bits "math/bits"
+
 	_ "github.com/cosmos/cosmos-proto"
 	_ "github.com/cosmos/cosmos-sdk/types/msgservice"
 	_ "github.com/cosmos/cosmos-sdk/types/tx/amino"
@@ -15,15 +19,14 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	io "io"
-	math "math"
-	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ = proto.Marshal
-var _ = fmt.Errorf
-var _ = math.Inf
+var (
+	_ = proto.Marshal
+	_ = fmt.Errorf
+	_ = math.Inf
+)
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -45,9 +48,11 @@ func (*MsgUpdateParams) ProtoMessage()    {}
 func (*MsgUpdateParams) Descriptor() ([]byte, []int) {
 	return fileDescriptor_fb2294b55728b641, []int{0}
 }
+
 func (m *MsgUpdateParams) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *MsgUpdateParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgUpdateParams.Marshal(b, m, deterministic)
@@ -60,12 +65,15 @@ func (m *MsgUpdateParams) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
+
 func (m *MsgUpdateParams) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgUpdateParams.Merge(m, src)
 }
+
 func (m *MsgUpdateParams) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *MsgUpdateParams) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgUpdateParams.DiscardUnknown(m)
 }
@@ -88,8 +96,7 @@ func (m *MsgUpdateParams) GetParams() Params {
 
 // MsgUpdateParamsResponse defines the response structure for executing a
 // MsgUpdateParams message.
-type MsgUpdateParamsResponse struct {
-}
+type MsgUpdateParamsResponse struct{}
 
 func (m *MsgUpdateParamsResponse) Reset()         { *m = MsgUpdateParamsResponse{} }
 func (m *MsgUpdateParamsResponse) String() string { return proto.CompactTextString(m) }
@@ -97,9 +104,11 @@ func (*MsgUpdateParamsResponse) ProtoMessage()    {}
 func (*MsgUpdateParamsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_fb2294b55728b641, []int{1}
 }
+
 func (m *MsgUpdateParamsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *MsgUpdateParamsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgUpdateParamsResponse.Marshal(b, m, deterministic)
@@ -112,12 +121,15 @@ func (m *MsgUpdateParamsResponse) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
+
 func (m *MsgUpdateParamsResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgUpdateParamsResponse.Merge(m, src)
 }
+
 func (m *MsgUpdateParamsResponse) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *MsgUpdateParamsResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgUpdateParamsResponse.DiscardUnknown(m)
 }
@@ -137,9 +149,11 @@ func (*MsgAddAuthority) ProtoMessage()    {}
 func (*MsgAddAuthority) Descriptor() ([]byte, []int) {
 	return fileDescriptor_fb2294b55728b641, []int{2}
 }
+
 func (m *MsgAddAuthority) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *MsgAddAuthority) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgAddAuthority.Marshal(b, m, deterministic)
@@ -152,12 +166,15 @@ func (m *MsgAddAuthority) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
+
 func (m *MsgAddAuthority) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgAddAuthority.Merge(m, src)
 }
+
 func (m *MsgAddAuthority) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *MsgAddAuthority) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgAddAuthority.DiscardUnknown(m)
 }
@@ -192,8 +209,7 @@ func (m *MsgAddAuthority) GetAccessDefinitions() string {
 	return ""
 }
 
-type MsgAddAuthorityResponse struct {
-}
+type MsgAddAuthorityResponse struct{}
 
 func (m *MsgAddAuthorityResponse) Reset()         { *m = MsgAddAuthorityResponse{} }
 func (m *MsgAddAuthorityResponse) String() string { return proto.CompactTextString(m) }
@@ -201,9 +217,11 @@ func (*MsgAddAuthorityResponse) ProtoMessage()    {}
 func (*MsgAddAuthorityResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_fb2294b55728b641, []int{3}
 }
+
 func (m *MsgAddAuthorityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *MsgAddAuthorityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgAddAuthorityResponse.Marshal(b, m, deterministic)
@@ -216,12 +234,15 @@ func (m *MsgAddAuthorityResponse) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
+
 func (m *MsgAddAuthorityResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgAddAuthorityResponse.Merge(m, src)
 }
+
 func (m *MsgAddAuthorityResponse) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *MsgAddAuthorityResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgAddAuthorityResponse.DiscardUnknown(m)
 }
@@ -239,9 +260,11 @@ func (*MsgDeleteAuthority) ProtoMessage()    {}
 func (*MsgDeleteAuthority) Descriptor() ([]byte, []int) {
 	return fileDescriptor_fb2294b55728b641, []int{4}
 }
+
 func (m *MsgDeleteAuthority) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *MsgDeleteAuthority) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgDeleteAuthority.Marshal(b, m, deterministic)
@@ -254,12 +277,15 @@ func (m *MsgDeleteAuthority) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
+
 func (m *MsgDeleteAuthority) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgDeleteAuthority.Merge(m, src)
 }
+
 func (m *MsgDeleteAuthority) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *MsgDeleteAuthority) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgDeleteAuthority.DiscardUnknown(m)
 }
@@ -280,8 +306,7 @@ func (m *MsgDeleteAuthority) GetAuthAddress() string {
 	return ""
 }
 
-type MsgDeleteAuthorityResponse struct {
-}
+type MsgDeleteAuthorityResponse struct{}
 
 func (m *MsgDeleteAuthorityResponse) Reset()         { *m = MsgDeleteAuthorityResponse{} }
 func (m *MsgDeleteAuthorityResponse) String() string { return proto.CompactTextString(m) }
@@ -289,9 +314,11 @@ func (*MsgDeleteAuthorityResponse) ProtoMessage()    {}
 func (*MsgDeleteAuthorityResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_fb2294b55728b641, []int{5}
 }
+
 func (m *MsgDeleteAuthorityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *MsgDeleteAuthorityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgDeleteAuthorityResponse.Marshal(b, m, deterministic)
@@ -304,12 +331,15 @@ func (m *MsgDeleteAuthorityResponse) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
+
 func (m *MsgDeleteAuthorityResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgDeleteAuthorityResponse.Merge(m, src)
 }
+
 func (m *MsgDeleteAuthorityResponse) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *MsgDeleteAuthorityResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgDeleteAuthorityResponse.DiscardUnknown(m)
 }
@@ -333,9 +363,11 @@ func (*MsgUpdateAuthority) ProtoMessage()    {}
 func (*MsgUpdateAuthority) Descriptor() ([]byte, []int) {
 	return fileDescriptor_fb2294b55728b641, []int{6}
 }
+
 func (m *MsgUpdateAuthority) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *MsgUpdateAuthority) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgUpdateAuthority.Marshal(b, m, deterministic)
@@ -348,12 +380,15 @@ func (m *MsgUpdateAuthority) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
+
 func (m *MsgUpdateAuthority) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgUpdateAuthority.Merge(m, src)
 }
+
 func (m *MsgUpdateAuthority) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *MsgUpdateAuthority) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgUpdateAuthority.DiscardUnknown(m)
 }
@@ -416,8 +451,7 @@ func (m *MsgUpdateAuthority) GetClearAllAccessDefinitions() bool {
 	return false
 }
 
-type MsgUpdateAuthorityResponse struct {
-}
+type MsgUpdateAuthorityResponse struct{}
 
 func (m *MsgUpdateAuthorityResponse) Reset()         { *m = MsgUpdateAuthorityResponse{} }
 func (m *MsgUpdateAuthorityResponse) String() string { return proto.CompactTextString(m) }
@@ -425,9 +459,11 @@ func (*MsgUpdateAuthorityResponse) ProtoMessage()    {}
 func (*MsgUpdateAuthorityResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_fb2294b55728b641, []int{7}
 }
+
 func (m *MsgUpdateAuthorityResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *MsgUpdateAuthorityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MsgUpdateAuthorityResponse.Marshal(b, m, deterministic)
@@ -440,12 +476,15 @@ func (m *MsgUpdateAuthorityResponse) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
+
 func (m *MsgUpdateAuthorityResponse) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MsgUpdateAuthorityResponse.Merge(m, src)
 }
+
 func (m *MsgUpdateAuthorityResponse) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *MsgUpdateAuthorityResponse) XXX_DiscardUnknown() {
 	xxx_messageInfo_MsgUpdateAuthorityResponse.DiscardUnknown(m)
 }
@@ -510,8 +549,10 @@ var fileDescriptor_fb2294b55728b641 = []byte{
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConn
+var (
+	_ context.Context
+	_ grpc.ClientConn
+)
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
@@ -584,18 +625,20 @@ type MsgServer interface {
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
-type UnimplementedMsgServer struct {
-}
+type UnimplementedMsgServer struct{}
 
 func (*UnimplementedMsgServer) UpdateParams(ctx context.Context, req *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
 }
+
 func (*UnimplementedMsgServer) AddAuthority(ctx context.Context, req *MsgAddAuthority) (*MsgAddAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAuthority not implemented")
 }
+
 func (*UnimplementedMsgServer) DeleteAuthority(ctx context.Context, req *MsgDeleteAuthority) (*MsgDeleteAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAuthority not implemented")
 }
+
 func (*UnimplementedMsgServer) UpdateAuthority(ctx context.Context, req *MsgUpdateAuthority) (*MsgUpdateAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAuthority not implemented")
 }
@@ -676,31 +719,33 @@ func _Msg_UpdateAuthority_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-var Msg_serviceDesc = _Msg_serviceDesc
-var _Msg_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "ggezchain.acl.Msg",
-	HandlerType: (*MsgServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "UpdateParams",
-			Handler:    _Msg_UpdateParams_Handler,
+var (
+	Msg_serviceDesc  = _Msg_serviceDesc
+	_Msg_serviceDesc = grpc.ServiceDesc{
+		ServiceName: "ggezchain.acl.Msg",
+		HandlerType: (*MsgServer)(nil),
+		Methods: []grpc.MethodDesc{
+			{
+				MethodName: "UpdateParams",
+				Handler:    _Msg_UpdateParams_Handler,
+			},
+			{
+				MethodName: "AddAuthority",
+				Handler:    _Msg_AddAuthority_Handler,
+			},
+			{
+				MethodName: "DeleteAuthority",
+				Handler:    _Msg_DeleteAuthority_Handler,
+			},
+			{
+				MethodName: "UpdateAuthority",
+				Handler:    _Msg_UpdateAuthority_Handler,
+			},
 		},
-		{
-			MethodName: "AddAuthority",
-			Handler:    _Msg_AddAuthority_Handler,
-		},
-		{
-			MethodName: "DeleteAuthority",
-			Handler:    _Msg_DeleteAuthority_Handler,
-		},
-		{
-			MethodName: "UpdateAuthority",
-			Handler:    _Msg_UpdateAuthority_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "ggezchain/acl/tx.proto",
-}
+		Streams:  []grpc.StreamDesc{},
+		Metadata: "ggezchain/acl/tx.proto",
+	}
+)
 
 func (m *MsgUpdateParams) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
@@ -1017,6 +1062,7 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+
 func (m *MsgUpdateParams) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1155,9 +1201,11 @@ func (m *MsgUpdateAuthorityResponse) Size() (n int) {
 func sovTx(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
+
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
+
 func (m *MsgUpdateParams) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1273,6 +1321,7 @@ func (m *MsgUpdateParams) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *MsgUpdateParamsResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1323,6 +1372,7 @@ func (m *MsgUpdateParamsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *MsgAddAuthority) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1501,6 +1551,7 @@ func (m *MsgAddAuthority) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *MsgAddAuthorityResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1551,6 +1602,7 @@ func (m *MsgAddAuthorityResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *MsgDeleteAuthority) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1665,6 +1717,7 @@ func (m *MsgDeleteAuthority) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *MsgDeleteAuthorityResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1715,6 +1768,7 @@ func (m *MsgDeleteAuthorityResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *MsgUpdateAuthority) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2009,6 +2063,7 @@ func (m *MsgUpdateAuthority) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *MsgUpdateAuthorityResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2059,6 +2114,7 @@ func (m *MsgUpdateAuthorityResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func skipTx(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

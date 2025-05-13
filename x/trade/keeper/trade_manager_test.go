@@ -6,10 +6,12 @@ import (
 	"math/rand"
 	"time"
 
-	sdkmath "cosmossdk.io/math"
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
+
+	sdkmath "cosmossdk.io/math"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -79,7 +81,6 @@ func (suite *KeeperTestSuite) TestHasPermission() {
 	}
 
 	for _, tt := range tests {
-
 		suite.Run(tt.name, func() {
 			hasPermission, err := suite.app.TradeKeeper.HasPermission(suite.ctx, tt.address, tt.msgType)
 			if tt.expectedErr {

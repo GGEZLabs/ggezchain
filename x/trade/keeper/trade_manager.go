@@ -7,6 +7,7 @@ import (
 
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

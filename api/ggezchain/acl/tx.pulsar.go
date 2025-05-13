@@ -2,18 +2,20 @@
 package acl
 
 import (
+	fmt "fmt"
+	io "io"
+	reflect "reflect"
+	sync "sync"
+
 	_ "cosmossdk.io/api/amino"
 	_ "cosmossdk.io/api/cosmos/msg/v1"
-	fmt "fmt"
+
 	_ "github.com/cosmos/cosmos-proto"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	io "io"
-	reflect "reflect"
-	sync "sync"
 )
 
 var (
@@ -49,17 +51,21 @@ func (x *MsgUpdateParams) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgUpdateParams_messageType fastReflection_MsgUpdateParams_messageType
-var _ protoreflect.MessageType = fastReflection_MsgUpdateParams_messageType{}
+var (
+	_fastReflection_MsgUpdateParams_messageType fastReflection_MsgUpdateParams_messageType
+	_                                           protoreflect.MessageType = fastReflection_MsgUpdateParams_messageType{}
+)
 
 type fastReflection_MsgUpdateParams_messageType struct{}
 
 func (x fastReflection_MsgUpdateParams_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgUpdateParams)(nil)
 }
+
 func (x fastReflection_MsgUpdateParams_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgUpdateParams)
 }
+
 func (x fastReflection_MsgUpdateParams_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgUpdateParams
 }
@@ -515,9 +521,7 @@ func (x *fastReflection_MsgUpdateParams) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var (
-	md_MsgUpdateParamsResponse protoreflect.MessageDescriptor
-)
+var md_MsgUpdateParamsResponse protoreflect.MessageDescriptor
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
@@ -544,17 +548,21 @@ func (x *MsgUpdateParamsResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgUpdateParamsResponse_messageType fastReflection_MsgUpdateParamsResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgUpdateParamsResponse_messageType{}
+var (
+	_fastReflection_MsgUpdateParamsResponse_messageType fastReflection_MsgUpdateParamsResponse_messageType
+	_                                                   protoreflect.MessageType = fastReflection_MsgUpdateParamsResponse_messageType{}
+)
 
 type fastReflection_MsgUpdateParamsResponse_messageType struct{}
 
 func (x fastReflection_MsgUpdateParamsResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgUpdateParamsResponse)(nil)
 }
+
 func (x fastReflection_MsgUpdateParamsResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgUpdateParamsResponse)
 }
+
 func (x fastReflection_MsgUpdateParamsResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgUpdateParamsResponse
 }
@@ -908,17 +916,21 @@ func (x *MsgAddAuthority) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgAddAuthority_messageType fastReflection_MsgAddAuthority_messageType
-var _ protoreflect.MessageType = fastReflection_MsgAddAuthority_messageType{}
+var (
+	_fastReflection_MsgAddAuthority_messageType fastReflection_MsgAddAuthority_messageType
+	_                                           protoreflect.MessageType = fastReflection_MsgAddAuthority_messageType{}
+)
 
 type fastReflection_MsgAddAuthority_messageType struct{}
 
 func (x fastReflection_MsgAddAuthority_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgAddAuthority)(nil)
 }
+
 func (x fastReflection_MsgAddAuthority_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgAddAuthority)
 }
+
 func (x fastReflection_MsgAddAuthority_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgAddAuthority
 }
@@ -1483,9 +1495,7 @@ func (x *fastReflection_MsgAddAuthority) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var (
-	md_MsgAddAuthorityResponse protoreflect.MessageDescriptor
-)
+var md_MsgAddAuthorityResponse protoreflect.MessageDescriptor
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
@@ -1512,17 +1522,21 @@ func (x *MsgAddAuthorityResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgAddAuthorityResponse_messageType fastReflection_MsgAddAuthorityResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgAddAuthorityResponse_messageType{}
+var (
+	_fastReflection_MsgAddAuthorityResponse_messageType fastReflection_MsgAddAuthorityResponse_messageType
+	_                                                   protoreflect.MessageType = fastReflection_MsgAddAuthorityResponse_messageType{}
+)
 
 type fastReflection_MsgAddAuthorityResponse_messageType struct{}
 
 func (x fastReflection_MsgAddAuthorityResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgAddAuthorityResponse)(nil)
 }
+
 func (x fastReflection_MsgAddAuthorityResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgAddAuthorityResponse)
 }
+
 func (x fastReflection_MsgAddAuthorityResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgAddAuthorityResponse
 }
@@ -1872,17 +1886,21 @@ func (x *MsgDeleteAuthority) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgDeleteAuthority_messageType fastReflection_MsgDeleteAuthority_messageType
-var _ protoreflect.MessageType = fastReflection_MsgDeleteAuthority_messageType{}
+var (
+	_fastReflection_MsgDeleteAuthority_messageType fastReflection_MsgDeleteAuthority_messageType
+	_                                              protoreflect.MessageType = fastReflection_MsgDeleteAuthority_messageType{}
+)
 
 type fastReflection_MsgDeleteAuthority_messageType struct{}
 
 func (x fastReflection_MsgDeleteAuthority_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgDeleteAuthority)(nil)
 }
+
 func (x fastReflection_MsgDeleteAuthority_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgDeleteAuthority)
 }
+
 func (x fastReflection_MsgDeleteAuthority_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgDeleteAuthority
 }
@@ -2323,9 +2341,7 @@ func (x *fastReflection_MsgDeleteAuthority) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var (
-	md_MsgDeleteAuthorityResponse protoreflect.MessageDescriptor
-)
+var md_MsgDeleteAuthorityResponse protoreflect.MessageDescriptor
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
@@ -2352,17 +2368,21 @@ func (x *MsgDeleteAuthorityResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgDeleteAuthorityResponse_messageType fastReflection_MsgDeleteAuthorityResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgDeleteAuthorityResponse_messageType{}
+var (
+	_fastReflection_MsgDeleteAuthorityResponse_messageType fastReflection_MsgDeleteAuthorityResponse_messageType
+	_                                                      protoreflect.MessageType = fastReflection_MsgDeleteAuthorityResponse_messageType{}
+)
 
 type fastReflection_MsgDeleteAuthorityResponse_messageType struct{}
 
 func (x fastReflection_MsgDeleteAuthorityResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgDeleteAuthorityResponse)(nil)
 }
+
 func (x fastReflection_MsgDeleteAuthorityResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgDeleteAuthorityResponse)
 }
+
 func (x fastReflection_MsgDeleteAuthorityResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgDeleteAuthorityResponse
 }
@@ -2770,17 +2790,21 @@ func (x *MsgUpdateAuthority) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgUpdateAuthority_messageType fastReflection_MsgUpdateAuthority_messageType
-var _ protoreflect.MessageType = fastReflection_MsgUpdateAuthority_messageType{}
+var (
+	_fastReflection_MsgUpdateAuthority_messageType fastReflection_MsgUpdateAuthority_messageType
+	_                                              protoreflect.MessageType = fastReflection_MsgUpdateAuthority_messageType{}
+)
 
 type fastReflection_MsgUpdateAuthority_messageType struct{}
 
 func (x fastReflection_MsgUpdateAuthority_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgUpdateAuthority)(nil)
 }
+
 func (x fastReflection_MsgUpdateAuthority_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgUpdateAuthority)
 }
+
 func (x fastReflection_MsgUpdateAuthority_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgUpdateAuthority
 }
@@ -3597,9 +3621,7 @@ func (x *fastReflection_MsgUpdateAuthority) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var (
-	md_MsgUpdateAuthorityResponse protoreflect.MessageDescriptor
-)
+var md_MsgUpdateAuthorityResponse protoreflect.MessageDescriptor
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
@@ -3626,17 +3648,21 @@ func (x *MsgUpdateAuthorityResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_MsgUpdateAuthorityResponse_messageType fastReflection_MsgUpdateAuthorityResponse_messageType
-var _ protoreflect.MessageType = fastReflection_MsgUpdateAuthorityResponse_messageType{}
+var (
+	_fastReflection_MsgUpdateAuthorityResponse_messageType fastReflection_MsgUpdateAuthorityResponse_messageType
+	_                                                      protoreflect.MessageType = fastReflection_MsgUpdateAuthorityResponse_messageType{}
+)
 
 type fastReflection_MsgUpdateAuthorityResponse_messageType struct{}
 
 func (x fastReflection_MsgUpdateAuthorityResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgUpdateAuthorityResponse)(nil)
 }
+
 func (x fastReflection_MsgUpdateAuthorityResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgUpdateAuthorityResponse)
 }
+
 func (x fastReflection_MsgUpdateAuthorityResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgUpdateAuthorityResponse
 }
@@ -4435,18 +4461,21 @@ func file_ggezchain_acl_tx_proto_rawDescGZIP() []byte {
 	return file_ggezchain_acl_tx_proto_rawDescData
 }
 
-var file_ggezchain_acl_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
-var file_ggezchain_acl_tx_proto_goTypes = []interface{}{
-	(*MsgUpdateParams)(nil),            // 0: ggezchain.acl.MsgUpdateParams
-	(*MsgUpdateParamsResponse)(nil),    // 1: ggezchain.acl.MsgUpdateParamsResponse
-	(*MsgAddAuthority)(nil),            // 2: ggezchain.acl.MsgAddAuthority
-	(*MsgAddAuthorityResponse)(nil),    // 3: ggezchain.acl.MsgAddAuthorityResponse
-	(*MsgDeleteAuthority)(nil),         // 4: ggezchain.acl.MsgDeleteAuthority
-	(*MsgDeleteAuthorityResponse)(nil), // 5: ggezchain.acl.MsgDeleteAuthorityResponse
-	(*MsgUpdateAuthority)(nil),         // 6: ggezchain.acl.MsgUpdateAuthority
-	(*MsgUpdateAuthorityResponse)(nil), // 7: ggezchain.acl.MsgUpdateAuthorityResponse
-	(*Params)(nil),                     // 8: ggezchain.acl.Params
-}
+var (
+	file_ggezchain_acl_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+	file_ggezchain_acl_tx_proto_goTypes  = []interface{}{
+		(*MsgUpdateParams)(nil),            // 0: ggezchain.acl.MsgUpdateParams
+		(*MsgUpdateParamsResponse)(nil),    // 1: ggezchain.acl.MsgUpdateParamsResponse
+		(*MsgAddAuthority)(nil),            // 2: ggezchain.acl.MsgAddAuthority
+		(*MsgAddAuthorityResponse)(nil),    // 3: ggezchain.acl.MsgAddAuthorityResponse
+		(*MsgDeleteAuthority)(nil),         // 4: ggezchain.acl.MsgDeleteAuthority
+		(*MsgDeleteAuthorityResponse)(nil), // 5: ggezchain.acl.MsgDeleteAuthorityResponse
+		(*MsgUpdateAuthority)(nil),         // 6: ggezchain.acl.MsgUpdateAuthority
+		(*MsgUpdateAuthorityResponse)(nil), // 7: ggezchain.acl.MsgUpdateAuthorityResponse
+		(*Params)(nil),                     // 8: ggezchain.acl.Params
+	}
+)
+
 var file_ggezchain_acl_tx_proto_depIdxs = []int32{
 	8, // 0: ggezchain.acl.MsgUpdateParams.params:type_name -> ggezchain.acl.Params
 	0, // 1: ggezchain.acl.Msg.UpdateParams:input_type -> ggezchain.acl.MsgUpdateParams

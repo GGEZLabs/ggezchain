@@ -2,15 +2,17 @@
 package trade
 
 import (
-	v1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
 	fmt "fmt"
+	io "io"
+	reflect "reflect"
+	sync "sync"
+
+	v1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
+
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	io "io"
-	reflect "reflect"
-	sync "sync"
 )
 
 var (
@@ -74,17 +76,21 @@ func (x *StoredTrade) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_StoredTrade_messageType fastReflection_StoredTrade_messageType
-var _ protoreflect.MessageType = fastReflection_StoredTrade_messageType{}
+var (
+	_fastReflection_StoredTrade_messageType fastReflection_StoredTrade_messageType
+	_                                       protoreflect.MessageType = fastReflection_StoredTrade_messageType{}
+)
 
 type fastReflection_StoredTrade_messageType struct{}
 
 func (x fastReflection_StoredTrade_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_StoredTrade)(nil)
 }
+
 func (x fastReflection_StoredTrade_messageType) New() protoreflect.Message {
 	return new(fastReflection_StoredTrade)
 }
+
 func (x fastReflection_StoredTrade_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_StoredTrade
 }
@@ -1606,13 +1612,16 @@ func file_ggezchain_trade_stored_trade_proto_rawDescGZIP() []byte {
 	return file_ggezchain_trade_stored_trade_proto_rawDescData
 }
 
-var file_ggezchain_trade_stored_trade_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_ggezchain_trade_stored_trade_proto_goTypes = []interface{}{
-	(*StoredTrade)(nil),  // 0: ggezchain.trade.StoredTrade
-	(TradeType)(0),       // 1: ggezchain.trade.TradeType
-	(*v1beta1.Coin)(nil), // 2: cosmos.base.v1beta1.Coin
-	(TradeStatus)(0),     // 3: ggezchain.trade.TradeStatus
-}
+var (
+	file_ggezchain_trade_stored_trade_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+	file_ggezchain_trade_stored_trade_proto_goTypes  = []interface{}{
+		(*StoredTrade)(nil),  // 0: ggezchain.trade.StoredTrade
+		(TradeType)(0),       // 1: ggezchain.trade.TradeType
+		(*v1beta1.Coin)(nil), // 2: cosmos.base.v1beta1.Coin
+		(TradeStatus)(0),     // 3: ggezchain.trade.TradeStatus
+	}
+)
+
 var file_ggezchain_trade_stored_trade_proto_depIdxs = []int32{
 	1, // 0: ggezchain.trade.StoredTrade.trade_type:type_name -> ggezchain.trade.TradeType
 	2, // 1: ggezchain.trade.StoredTrade.amount:type_name -> cosmos.base.v1beta1.Coin

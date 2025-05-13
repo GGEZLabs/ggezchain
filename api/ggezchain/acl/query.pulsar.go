@@ -2,23 +2,23 @@
 package acl
 
 import (
+	fmt "fmt"
+	io "io"
+	reflect "reflect"
+	sync "sync"
+
 	_ "cosmossdk.io/api/amino"
 	v1beta1 "cosmossdk.io/api/cosmos/base/query/v1beta1"
-	fmt "fmt"
+
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	io "io"
-	reflect "reflect"
-	sync "sync"
 )
 
-var (
-	md_QueryParamsRequest protoreflect.MessageDescriptor
-)
+var md_QueryParamsRequest protoreflect.MessageDescriptor
 
 func init() {
 	file_ggezchain_acl_query_proto_init()
@@ -45,17 +45,21 @@ func (x *QueryParamsRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryParamsRequest_messageType fastReflection_QueryParamsRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryParamsRequest_messageType{}
+var (
+	_fastReflection_QueryParamsRequest_messageType fastReflection_QueryParamsRequest_messageType
+	_                                              protoreflect.MessageType = fastReflection_QueryParamsRequest_messageType{}
+)
 
 type fastReflection_QueryParamsRequest_messageType struct{}
 
 func (x fastReflection_QueryParamsRequest_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryParamsRequest)(nil)
 }
+
 func (x fastReflection_QueryParamsRequest_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryParamsRequest)
 }
+
 func (x fastReflection_QueryParamsRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryParamsRequest
 }
@@ -403,17 +407,21 @@ func (x *QueryParamsResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryParamsResponse_messageType fastReflection_QueryParamsResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryParamsResponse_messageType{}
+var (
+	_fastReflection_QueryParamsResponse_messageType fastReflection_QueryParamsResponse_messageType
+	_                                               protoreflect.MessageType = fastReflection_QueryParamsResponse_messageType{}
+)
 
 type fastReflection_QueryParamsResponse_messageType struct{}
 
 func (x fastReflection_QueryParamsResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryParamsResponse)(nil)
 }
+
 func (x fastReflection_QueryParamsResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryParamsResponse)
 }
+
 func (x fastReflection_QueryParamsResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryParamsResponse
 }
@@ -838,17 +846,21 @@ func (x *QueryGetAclAuthorityRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryGetAclAuthorityRequest_messageType fastReflection_QueryGetAclAuthorityRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryGetAclAuthorityRequest_messageType{}
+var (
+	_fastReflection_QueryGetAclAuthorityRequest_messageType fastReflection_QueryGetAclAuthorityRequest_messageType
+	_                                                       protoreflect.MessageType = fastReflection_QueryGetAclAuthorityRequest_messageType{}
+)
 
 type fastReflection_QueryGetAclAuthorityRequest_messageType struct{}
 
 func (x fastReflection_QueryGetAclAuthorityRequest_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryGetAclAuthorityRequest)(nil)
 }
+
 func (x fastReflection_QueryGetAclAuthorityRequest_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryGetAclAuthorityRequest)
 }
+
 func (x fastReflection_QueryGetAclAuthorityRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryGetAclAuthorityRequest
 }
@@ -1258,17 +1270,21 @@ func (x *QueryGetAclAuthorityResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryGetAclAuthorityResponse_messageType fastReflection_QueryGetAclAuthorityResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryGetAclAuthorityResponse_messageType{}
+var (
+	_fastReflection_QueryGetAclAuthorityResponse_messageType fastReflection_QueryGetAclAuthorityResponse_messageType
+	_                                                        protoreflect.MessageType = fastReflection_QueryGetAclAuthorityResponse_messageType{}
+)
 
 type fastReflection_QueryGetAclAuthorityResponse_messageType struct{}
 
 func (x fastReflection_QueryGetAclAuthorityResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryGetAclAuthorityResponse)(nil)
 }
+
 func (x fastReflection_QueryGetAclAuthorityResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryGetAclAuthorityResponse)
 }
+
 func (x fastReflection_QueryGetAclAuthorityResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryGetAclAuthorityResponse
 }
@@ -1693,17 +1709,21 @@ func (x *QueryAllAclAuthorityRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryAllAclAuthorityRequest_messageType fastReflection_QueryAllAclAuthorityRequest_messageType
-var _ protoreflect.MessageType = fastReflection_QueryAllAclAuthorityRequest_messageType{}
+var (
+	_fastReflection_QueryAllAclAuthorityRequest_messageType fastReflection_QueryAllAclAuthorityRequest_messageType
+	_                                                       protoreflect.MessageType = fastReflection_QueryAllAclAuthorityRequest_messageType{}
+)
 
 type fastReflection_QueryAllAclAuthorityRequest_messageType struct{}
 
 func (x fastReflection_QueryAllAclAuthorityRequest_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryAllAclAuthorityRequest)(nil)
 }
+
 func (x fastReflection_QueryAllAclAuthorityRequest_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryAllAclAuthorityRequest)
 }
+
 func (x fastReflection_QueryAllAclAuthorityRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryAllAclAuthorityRequest
 }
@@ -2181,17 +2201,21 @@ func (x *QueryAllAclAuthorityResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_QueryAllAclAuthorityResponse_messageType fastReflection_QueryAllAclAuthorityResponse_messageType
-var _ protoreflect.MessageType = fastReflection_QueryAllAclAuthorityResponse_messageType{}
+var (
+	_fastReflection_QueryAllAclAuthorityResponse_messageType fastReflection_QueryAllAclAuthorityResponse_messageType
+	_                                                        protoreflect.MessageType = fastReflection_QueryAllAclAuthorityResponse_messageType{}
+)
 
 type fastReflection_QueryAllAclAuthorityResponse_messageType struct{}
 
 func (x fastReflection_QueryAllAclAuthorityResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryAllAclAuthorityResponse)(nil)
 }
+
 func (x fastReflection_QueryAllAclAuthorityResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryAllAclAuthorityResponse)
 }
+
 func (x fastReflection_QueryAllAclAuthorityResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryAllAclAuthorityResponse
 }
@@ -2999,19 +3023,22 @@ func file_ggezchain_acl_query_proto_rawDescGZIP() []byte {
 	return file_ggezchain_acl_query_proto_rawDescData
 }
 
-var file_ggezchain_acl_query_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
-var file_ggezchain_acl_query_proto_goTypes = []interface{}{
-	(*QueryParamsRequest)(nil),           // 0: ggezchain.acl.QueryParamsRequest
-	(*QueryParamsResponse)(nil),          // 1: ggezchain.acl.QueryParamsResponse
-	(*QueryGetAclAuthorityRequest)(nil),  // 2: ggezchain.acl.QueryGetAclAuthorityRequest
-	(*QueryGetAclAuthorityResponse)(nil), // 3: ggezchain.acl.QueryGetAclAuthorityResponse
-	(*QueryAllAclAuthorityRequest)(nil),  // 4: ggezchain.acl.QueryAllAclAuthorityRequest
-	(*QueryAllAclAuthorityResponse)(nil), // 5: ggezchain.acl.QueryAllAclAuthorityResponse
-	(*Params)(nil),                       // 6: ggezchain.acl.Params
-	(*AclAuthority)(nil),                 // 7: ggezchain.acl.AclAuthority
-	(*v1beta1.PageRequest)(nil),          // 8: cosmos.base.query.v1beta1.PageRequest
-	(*v1beta1.PageResponse)(nil),         // 9: cosmos.base.query.v1beta1.PageResponse
-}
+var (
+	file_ggezchain_acl_query_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+	file_ggezchain_acl_query_proto_goTypes  = []interface{}{
+		(*QueryParamsRequest)(nil),           // 0: ggezchain.acl.QueryParamsRequest
+		(*QueryParamsResponse)(nil),          // 1: ggezchain.acl.QueryParamsResponse
+		(*QueryGetAclAuthorityRequest)(nil),  // 2: ggezchain.acl.QueryGetAclAuthorityRequest
+		(*QueryGetAclAuthorityResponse)(nil), // 3: ggezchain.acl.QueryGetAclAuthorityResponse
+		(*QueryAllAclAuthorityRequest)(nil),  // 4: ggezchain.acl.QueryAllAclAuthorityRequest
+		(*QueryAllAclAuthorityResponse)(nil), // 5: ggezchain.acl.QueryAllAclAuthorityResponse
+		(*Params)(nil),                       // 6: ggezchain.acl.Params
+		(*AclAuthority)(nil),                 // 7: ggezchain.acl.AclAuthority
+		(*v1beta1.PageRequest)(nil),          // 8: cosmos.base.query.v1beta1.PageRequest
+		(*v1beta1.PageResponse)(nil),         // 9: cosmos.base.query.v1beta1.PageResponse
+	}
+)
+
 var file_ggezchain_acl_query_proto_depIdxs = []int32{
 	6, // 0: ggezchain.acl.QueryParamsResponse.params:type_name -> ggezchain.acl.Params
 	7, // 1: ggezchain.acl.QueryGetAclAuthorityResponse.acl_authority:type_name -> ggezchain.acl.AclAuthority
