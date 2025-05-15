@@ -35,6 +35,22 @@ func (gs GenesisState) Validate() error {
 		return fmt.Errorf("next_id must be more than 0")
 	}
 
+	err := gs.ValidateStoredTrade()
+	if err != nil {
+		return err
+	}
+
+	err = gs.ValidateStoredTempTrade()
+	if err != nil {
+		return err
+	}
+
+	// this line is used by starport scaffolding # genesis/types/validate
+
+	return gs.Params.Validate()
+}
+
+func (gs GenesisState) ValidateStoredTrade() error {
 	storedTradeIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.StoredTradeList {
@@ -122,14 +138,18 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("invalid banking_system_data JSON format, trade_index: %d", elem.TradeIndex)
 		}
 	}
+	return nil
+}
 
-	storedTempTradeIndexMap := make(map[string]struct{})
+func (gs GenesisState) ValidateStoredTempTrade() error {
+	storedTempTradeIndexMap := make(map[string]struct{}) // tradeIndex
+	tempTradeIndexMap := make(map[int64]struct{})        // tempTradeIndex
 
 	for _, elem := range gs.StoredTempTradeList {
-
 		if elem.TradeIndex <= 0 {
 			return fmt.Errorf("trade_index must be more than 0")
 		}
+
 		// Check for duplicated index in storedTempTrade
 		index := string(StoredTempTradeKey(elem.TradeIndex))
 		if _, ok := storedTempTradeIndexMap[index]; ok {
@@ -141,13 +161,17 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("temp_trade_index must be more than 0")
 		}
 
+		// Check for duplicated TempTradeIndex
+		if _, exists := tempTradeIndexMap[int64(elem.TempTradeIndex)]; exists {
+			return fmt.Errorf("duplicated temp_trade_index: %d", elem.TempTradeIndex)
+		}
+		tempTradeIndexMap[int64(elem.TempTradeIndex)] = struct{}{}
+
 		_, err := time.Parse(time.RFC3339, elem.CreateDate)
 		if err != nil {
 			return fmt.Errorf("invalid create_date format, trade_index: %d", elem.TradeIndex)
 		}
 
 	}
-	// this line is used by starport scaffolding # genesis/types/validate
-
-	return gs.Params.Validate()
+	return nil
 }

@@ -105,6 +105,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 		createDate := allStoredTempTrade[i].CreateDate
 		formattedCreateDate, err := time.Parse(time.RFC3339, createDate)
 		if err != nil {
+			// todo
 			k.logger.Error("an error occurred while canceling expired trades",
 				"trade_index", allStoredTempTrade[i].TradeIndex,
 				"error", err.Error(),

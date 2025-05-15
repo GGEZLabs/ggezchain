@@ -64,7 +64,8 @@ func ValidateSingleAccessDefinition(accessDefinitionStr string) (*AccessDefiniti
 	return &accessDefinition, nil
 }
 
-// GetUpdatedAccessDefinitionList finds a module by name (case-insensitive) and updates its roles in-place within the current list.
+// GetUpdatedAccessDefinitionList finds a module by name (case-insensitive)
+// and updates its roles in-place within the current list.
 func GetUpdatedAccessDefinitionList(currentList []*AccessDefinition, update *AccessDefinition) []*AccessDefinition {
 	// todo:
 	for _, m := range currentList {
@@ -149,7 +150,7 @@ func ValidateDeleteAccessDefinition(moduleNames []string, accessDefinitions []*A
 		currentModules[module.Module] = struct{}{}
 	}
 
-	// check if module not exist in current modules
+	// Check if module not exist in current modules
 	var missingModules []string
 	for name := range modulesToRemove {
 		if _, exists := currentModules[name]; !exists {
@@ -240,7 +241,7 @@ func validateModuleOverlap(modules, removedModules []string) error {
 	}
 
 	var overlaps []string
-	// check if any added/updated module exists in the removed set
+	// Check if any added/updated module exists in the removed set
 	for _, module := range modules {
 		if _, exists := removedSet[module]; exists {
 			overlaps = append(overlaps, module)

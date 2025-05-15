@@ -278,27 +278,27 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 	suite.Run("cancel multiple trades", func() {
 		storedTrades, storedTempTrades := generateStoredTrades(10, 15)
 
-		// set stored trades
+		// Set stored trades
 		for _, storedTrade := range storedTrades {
 			suite.app.TradeKeeper.SetStoredTrade(ctx, storedTrade)
 		}
 
-		// set stored temp trades
+		// Set stored temp trades
 		for _, storedTempTrade := range storedTempTrades {
 			suite.app.TradeKeeper.SetStoredTempTrade(ctx, storedTempTrade)
 		}
 
 		suite.app.TradeKeeper.CancelExpiredPendingTrades(ctx)
 
-		// total length
+		// Total length
 		trades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
 		suite.Equal(25, len(trades))
 
-		// cancelled trade length
+		// Cancelled trade length
 		cancelledTrades := getCancelledTrades(trades)
 		suite.Equal(10, len(cancelledTrades))
 
-		// pending trade length
+		// Pending trade length
 		tempTradeLength := len(suite.app.TradeKeeper.GetAllStoredTempTrade(ctx))
 		suite.Equal(15, tempTradeLength)
 	})
@@ -336,14 +336,14 @@ func generateStoredTrades(expiredCount, notExpiredCount int) ([]types.StoredTrad
 		return st, temp
 	}
 
-	// generate expired trades
+	// Generate expired trades
 	for range expiredCount {
 		st, temp := createStoredTrade(true)
 		storedTrades = append(storedTrades, st)
 		storedTempTrades = append(storedTempTrades, temp)
 	}
 
-	// generate not expired trades
+	// Generate not expired trades
 	for range notExpiredCount {
 		st, temp := createStoredTrade(false)
 		storedTrades = append(storedTrades, st)
@@ -356,7 +356,7 @@ func generateStoredTrades(expiredCount, notExpiredCount int) ([]types.StoredTrad
 // generateRandomPastDate returns a string date in RFC3339 format, before 24 hours.
 func generateRandomPastDate() string {
 	now := time.Now().UTC()
-	// generate a random duration between 24 and 48 hours ago
+	// Generate a random duration between 24 and 48 hours ago
 	min := int64(24 * time.Hour)
 	max := int64(48 * time.Hour)
 	randomDuration := time.Duration(rand.Int63n(max-min) + min)

@@ -63,7 +63,7 @@ func (gs GenesisState) ValidateAclAuthority() error {
 			seenModules[access.Module] = struct{}{}
 
 			// todo
-			// must have at least one role
+			// Must have at least one role
 			// if !access.IsMaker && !access.IsChecker {
 			// 	return fmt.Errorf("access definition for module '%s' must be either maker or checker (address: %s)", access.Module, authority.Address)
 			// }

@@ -25,14 +25,14 @@ func (k msgServer) UpdateAuthority(goCtx context.Context, msg *types.MsgUpdateAu
 	}
 
 	var err error
-	// if OverwriteAccessDefinitions passed ignore another flags
+	// If OverwriteAccessDefinitions passed ignore another flags
 	if msg.OverwriteAccessDefinitions != "" {
 		aclAuthority, err = k.OverwriteAccessDefinitionList(aclAuthority, msg.OverwriteAccessDefinitions)
 		if err != nil {
 			return nil, err
 		}
 	} else if msg.ClearAllAccessDefinitions {
-		// if ClearAllAccessDefinitions passed ignore another flags
+		// If ClearAllAccessDefinitions passed ignore another flags
 		aclAuthority = k.ClearAllAccessDefinitions(aclAuthority)
 	} else {
 
@@ -69,7 +69,7 @@ func (k msgServer) UpdateAuthority(goCtx context.Context, msg *types.MsgUpdateAu
 			}
 		}
 	}
-	// apply updated aclAuthority
+	// Apply updated aclAuthority
 	k.SetAclAuthority(ctx, aclAuthority)
 
 	ctx.EventManager().EmitEvent(
