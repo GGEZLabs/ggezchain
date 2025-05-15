@@ -13,7 +13,7 @@ func TestIsAdmin(t *testing.T) {
 	keeper, ctx := keepertest.AclKeeper(t)
 	admin := sample.AccAddress()
 	addr := sample.AccAddress()
-	require.NoError(t, keeper.SetParams(ctx, types.Params{Admin: admin}))
+	keeper.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
 	testCases := []struct {
 		name           string
 		address        string

@@ -9,9 +9,18 @@ import (
 
 // InitGenesis initializes the module's state from a provided genesis state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
+	err := genState.Validate()
+	if err != nil {
+		panic(err)
+	}
+
 	// Set all the aclAuthority
 	for _, elem := range genState.AclAuthorityList {
 		k.SetAclAuthority(ctx, elem)
+	}
+	// Set all the aclAdmin
+	for _, elem := range genState.AclAdminList {
+		k.SetAclAdmin(ctx, elem)
 	}
 	// this line is used by starport scaffolding # genesis/module/init
 	if err := k.SetParams(ctx, genState.Params); err != nil {
@@ -25,6 +34,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.Params = k.GetParams(ctx)
 
 	genesis.AclAuthorityList = k.GetAllAclAuthority(ctx)
+	genesis.AclAdminList = k.GetAllAclAdmin(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

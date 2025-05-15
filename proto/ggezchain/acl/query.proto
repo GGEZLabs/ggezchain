@@ -8,6 +8,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "ggezchain/acl/params.proto";
 import "ggezchain/acl/acl_authority.proto";
+import "ggezchain/acl/acl_admin.proto";
 
 option go_package = "github.com/GGEZLabs/ggezchain/x/acl/types";
 
@@ -27,6 +28,16 @@ service Query {
   }
   rpc AclAuthorityAll (QueryAllAclAuthorityRequest) returns (QueryAllAclAuthorityResponse) {
     option (google.api.http).get = "/GGEZLabs/ggezchain/acl/acl_authority";
+  
+  }
+  
+  // Queries a list of AclAdmin items.
+  rpc AclAdmin    (QueryGetAclAdminRequest) returns (QueryGetAclAdminResponse) {
+    option (google.api.http).get = "/GGEZLabs/ggezchain/acl/acl_admin/{address}";
+  
+  }
+  rpc AclAdminAll (QueryAllAclAdminRequest) returns (QueryAllAclAdminResponse) {
+    option (google.api.http).get = "/GGEZLabs/ggezchain/acl/acl_admin";
   
   }
 }
@@ -55,5 +66,22 @@ message QueryAllAclAuthorityRequest {
 message QueryAllAclAuthorityResponse {
   repeated AclAuthority                           acl_authority = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination    = 2;
+}
+
+message QueryGetAclAdminRequest {
+  string address = 1;
+}
+
+message QueryGetAclAdminResponse {
+  AclAdmin acl_admin = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllAclAdminRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAclAdminResponse {
+  repeated AclAdmin                               acl_admin   = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

@@ -21,7 +21,7 @@ func TestMsgDeleteAuthority(t *testing.T) {
 		AccessDefinitions: []*types.AccessDefinition{},
 	}
 	k.SetAclAuthority(ctx, aclAuthority)
-	require.NoError(t, k.SetParams(ctx, types.Params{Admin: admin}))
+	k.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
 	wctx := sdk.UnwrapSDKContext(ctx)
 
 	testCases := []struct {

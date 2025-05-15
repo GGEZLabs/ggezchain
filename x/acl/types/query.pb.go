@@ -330,6 +330,210 @@ func (m *QueryAllAclAuthorityResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
+type QueryGetAclAdminRequest struct {
+	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+}
+
+func (m *QueryGetAclAdminRequest) Reset()         { *m = QueryGetAclAdminRequest{} }
+func (m *QueryGetAclAdminRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetAclAdminRequest) ProtoMessage()    {}
+func (*QueryGetAclAdminRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2ed5381aadbc4354, []int{6}
+}
+
+func (m *QueryGetAclAdminRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+
+func (m *QueryGetAclAdminRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetAclAdminRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+
+func (m *QueryGetAclAdminRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetAclAdminRequest.Merge(m, src)
+}
+
+func (m *QueryGetAclAdminRequest) XXX_Size() int {
+	return m.Size()
+}
+
+func (m *QueryGetAclAdminRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetAclAdminRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetAclAdminRequest proto.InternalMessageInfo
+
+func (m *QueryGetAclAdminRequest) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+type QueryGetAclAdminResponse struct {
+	AclAdmin AclAdmin `protobuf:"bytes,1,opt,name=acl_admin,json=aclAdmin,proto3" json:"acl_admin"`
+}
+
+func (m *QueryGetAclAdminResponse) Reset()         { *m = QueryGetAclAdminResponse{} }
+func (m *QueryGetAclAdminResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetAclAdminResponse) ProtoMessage()    {}
+func (*QueryGetAclAdminResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2ed5381aadbc4354, []int{7}
+}
+
+func (m *QueryGetAclAdminResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+
+func (m *QueryGetAclAdminResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetAclAdminResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+
+func (m *QueryGetAclAdminResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetAclAdminResponse.Merge(m, src)
+}
+
+func (m *QueryGetAclAdminResponse) XXX_Size() int {
+	return m.Size()
+}
+
+func (m *QueryGetAclAdminResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetAclAdminResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetAclAdminResponse proto.InternalMessageInfo
+
+func (m *QueryGetAclAdminResponse) GetAclAdmin() AclAdmin {
+	if m != nil {
+		return m.AclAdmin
+	}
+	return AclAdmin{}
+}
+
+type QueryAllAclAdminRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllAclAdminRequest) Reset()         { *m = QueryAllAclAdminRequest{} }
+func (m *QueryAllAclAdminRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllAclAdminRequest) ProtoMessage()    {}
+func (*QueryAllAclAdminRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2ed5381aadbc4354, []int{8}
+}
+
+func (m *QueryAllAclAdminRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+
+func (m *QueryAllAclAdminRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllAclAdminRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+
+func (m *QueryAllAclAdminRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllAclAdminRequest.Merge(m, src)
+}
+
+func (m *QueryAllAclAdminRequest) XXX_Size() int {
+	return m.Size()
+}
+
+func (m *QueryAllAclAdminRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllAclAdminRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllAclAdminRequest proto.InternalMessageInfo
+
+func (m *QueryAllAclAdminRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllAclAdminResponse struct {
+	AclAdmin   []AclAdmin          `protobuf:"bytes,1,rep,name=acl_admin,json=aclAdmin,proto3" json:"acl_admin"`
+	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllAclAdminResponse) Reset()         { *m = QueryAllAclAdminResponse{} }
+func (m *QueryAllAclAdminResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllAclAdminResponse) ProtoMessage()    {}
+func (*QueryAllAclAdminResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2ed5381aadbc4354, []int{9}
+}
+
+func (m *QueryAllAclAdminResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+
+func (m *QueryAllAclAdminResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllAclAdminResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+
+func (m *QueryAllAclAdminResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllAclAdminResponse.Merge(m, src)
+}
+
+func (m *QueryAllAclAdminResponse) XXX_Size() int {
+	return m.Size()
+}
+
+func (m *QueryAllAclAdminResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllAclAdminResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllAclAdminResponse proto.InternalMessageInfo
+
+func (m *QueryAllAclAdminResponse) GetAclAdmin() []AclAdmin {
+	if m != nil {
+		return m.AclAdmin
+	}
+	return nil
+}
+
+func (m *QueryAllAclAdminResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "ggezchain.acl.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "ggezchain.acl.QueryParamsResponse")
@@ -337,45 +541,57 @@ func init() {
 	proto.RegisterType((*QueryGetAclAuthorityResponse)(nil), "ggezchain.acl.QueryGetAclAuthorityResponse")
 	proto.RegisterType((*QueryAllAclAuthorityRequest)(nil), "ggezchain.acl.QueryAllAclAuthorityRequest")
 	proto.RegisterType((*QueryAllAclAuthorityResponse)(nil), "ggezchain.acl.QueryAllAclAuthorityResponse")
+	proto.RegisterType((*QueryGetAclAdminRequest)(nil), "ggezchain.acl.QueryGetAclAdminRequest")
+	proto.RegisterType((*QueryGetAclAdminResponse)(nil), "ggezchain.acl.QueryGetAclAdminResponse")
+	proto.RegisterType((*QueryAllAclAdminRequest)(nil), "ggezchain.acl.QueryAllAclAdminRequest")
+	proto.RegisterType((*QueryAllAclAdminResponse)(nil), "ggezchain.acl.QueryAllAclAdminResponse")
 }
 
 func init() { proto.RegisterFile("ggezchain/acl/query.proto", fileDescriptor_2ed5381aadbc4354) }
 
 var fileDescriptor_2ed5381aadbc4354 = []byte{
-	// 528 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0x31, 0x6f, 0x13, 0x31,
-	0x14, 0xc7, 0x73, 0x2d, 0x04, 0xd5, 0xb4, 0x42, 0x98, 0x22, 0x95, 0xb4, 0x3a, 0xda, 0x93, 0x68,
-	0x21, 0x88, 0xb3, 0x52, 0x86, 0xb2, 0x26, 0x88, 0x66, 0x41, 0xa2, 0xdc, 0xd8, 0x05, 0xbd, 0xbb,
-	0x1a, 0xe7, 0x24, 0xe7, 0x7c, 0x3d, 0x3b, 0x40, 0x41, 0x2c, 0x7c, 0x02, 0x24, 0x26, 0x36, 0x46,
-	0x36, 0xf8, 0x06, 0xac, 0x1d, 0x2b, 0xb1, 0x30, 0x21, 0x94, 0x20, 0xf1, 0x35, 0x50, 0x6c, 0x07,
-	0xee, 0x5a, 0x07, 0xaa, 0x2e, 0x91, 0x63, 0xbf, 0xf7, 0x7f, 0xbf, 0x7f, 0xde, 0x5f, 0x41, 0xd7,
-	0x18, 0xa3, 0x2f, 0x93, 0x1e, 0xa4, 0x19, 0x81, 0x84, 0x93, 0xfd, 0x01, 0x2d, 0x0e, 0xc2, 0xbc,
-	0x10, 0x4a, 0xe0, 0x85, 0x3f, 0x4f, 0x21, 0x24, 0xbc, 0x71, 0x19, 0xfa, 0x69, 0x26, 0x88, 0xfe,
-	0x34, 0x15, 0x8d, 0x45, 0x26, 0x98, 0xd0, 0x47, 0x32, 0x3e, 0xd9, 0xdb, 0x15, 0x26, 0x04, 0xe3,
-	0x94, 0x40, 0x9e, 0x12, 0xc8, 0x32, 0xa1, 0x40, 0xa5, 0x22, 0x93, 0xf6, 0xb5, 0x99, 0x08, 0xd9,
-	0x17, 0x92, 0xc4, 0x20, 0xa9, 0x19, 0x47, 0x9e, 0xb5, 0x62, 0xaa, 0xa0, 0x45, 0x72, 0x60, 0x69,
-	0xa6, 0x8b, 0x6d, 0x6d, 0xa3, 0x0a, 0x97, 0x43, 0x01, 0xfd, 0x89, 0xce, 0x5a, 0xf5, 0x0d, 0x12,
-	0xfe, 0x04, 0x06, 0xaa, 0x27, 0x8a, 0x54, 0x59, 0x03, 0xc1, 0x22, 0xc2, 0x8f, 0xc7, 0x03, 0x76,
-	0x74, 0x5f, 0x44, 0xf7, 0x07, 0x54, 0xaa, 0xe0, 0x11, 0xba, 0x52, 0xb9, 0x95, 0xb9, 0xc8, 0x24,
-	0xc5, 0xf7, 0x50, 0xdd, 0xe8, 0x2f, 0x79, 0xab, 0xde, 0xcd, 0x8b, 0x9b, 0x57, 0xc3, 0x8a, 0xfd,
-	0xd0, 0x94, 0x77, 0xe6, 0x0e, 0xbf, 0x5f, 0xaf, 0x7d, 0xfc, 0xf5, 0xb9, 0xe9, 0x45, 0xb6, 0x3e,
-	0xd8, 0x42, 0xcb, 0x5a, 0xb0, 0x4b, 0x55, 0x3b, 0xe1, 0xed, 0x09, 0x84, 0x9d, 0x87, 0x97, 0xd0,
-	0x05, 0xd8, 0xdb, 0x2b, 0xa8, 0x34, 0xca, 0x73, 0xd1, 0xe4, 0x6b, 0xf0, 0x14, 0xad, 0xb8, 0x1b,
-	0x2d, 0xd2, 0x36, 0x5a, 0xa8, 0xd8, 0xb2, 0x64, 0xcb, 0xc7, 0xc8, 0xca, 0xbd, 0x9d, 0x73, 0x63,
-	0xbe, 0x68, 0x1e, 0x4a, 0x77, 0x01, 0xb5, 0x80, 0x6d, 0xce, 0x5d, 0x80, 0xdb, 0x08, 0xfd, 0xfd,
-	0xe5, 0xed, 0x8c, 0xf5, 0xd0, 0xac, 0x29, 0x1c, 0xaf, 0x29, 0x34, 0xa9, 0xb0, 0x6b, 0x0a, 0x77,
-	0x80, 0x51, 0xdb, 0x1b, 0x95, 0x3a, 0x83, 0x4f, 0x9e, 0xf5, 0x73, 0x62, 0xce, 0x74, 0x3f, 0xb3,
-	0x67, 0xf0, 0x83, 0xbb, 0x15, 0xe0, 0x19, 0x0d, 0xbc, 0xf1, 0x5f, 0x60, 0x03, 0x51, 0x26, 0xde,
-	0xfc, 0x32, 0x8b, 0xce, 0x6b, 0x62, 0xfc, 0x1c, 0xd5, 0xcd, 0x82, 0xf1, 0xda, 0x31, 0x9a, 0x93,
-	0x09, 0x6a, 0x04, 0xff, 0x2a, 0x31, 0x63, 0x82, 0xf5, 0x37, 0x5f, 0x7f, 0xbe, 0x9b, 0x59, 0xc5,
-	0x3e, 0xe9, 0x76, 0x1f, 0xec, 0x3e, 0x84, 0x58, 0x12, 0x57, 0x98, 0xf1, 0x07, 0x0f, 0xcd, 0x97,
-	0x0d, 0xe3, 0xa6, 0x4b, 0xdc, 0x1d, 0xad, 0xc6, 0xed, 0x53, 0xd5, 0x5a, 0xa2, 0x2d, 0x4d, 0xd4,
-	0xc2, 0x64, 0x1a, 0x51, 0x65, 0x37, 0xe4, 0x95, 0x4d, 0xe9, 0x6b, 0xfc, 0xde, 0x43, 0x97, 0xca,
-	0x8a, 0x6d, 0xce, 0xdd, 0x94, 0xee, 0x7c, 0xb9, 0x29, 0xa7, 0x64, 0x24, 0xb8, 0xa3, 0x29, 0x37,
-	0xf0, 0x8d, 0x53, 0x51, 0x76, 0xee, 0x1f, 0x0e, 0x7d, 0xef, 0x68, 0xe8, 0x7b, 0x3f, 0x86, 0xbe,
-	0xf7, 0x76, 0xe4, 0xd7, 0x8e, 0x46, 0x7e, 0xed, 0xdb, 0xc8, 0xaf, 0xed, 0xde, 0x62, 0xa9, 0xea,
-	0x0d, 0xe2, 0x30, 0x11, 0x7d, 0x97, 0xd4, 0x0b, 0x2d, 0xa6, 0x0e, 0x72, 0x2a, 0xe3, 0xba, 0xfe,
-	0xbb, 0xb8, 0xfb, 0x3b, 0x00, 0x00, 0xff, 0xff, 0x6d, 0x71, 0x3a, 0x27, 0x0c, 0x05, 0x00, 0x00,
+	// 652 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x95, 0xbf, 0x6f, 0xd3, 0x40,
+	0x14, 0xc7, 0x73, 0x2d, 0x2d, 0xed, 0xb5, 0x15, 0xe2, 0x28, 0x6a, 0x71, 0x8b, 0x69, 0x8c, 0x48,
+	0x68, 0xaa, 0xfa, 0x94, 0x66, 0x28, 0x62, 0x4b, 0x10, 0xcd, 0x82, 0x44, 0xc9, 0xc0, 0xd0, 0x05,
+	0x5d, 0x9c, 0xc3, 0xb1, 0xe4, 0xf8, 0xdc, 0xd8, 0x01, 0x0a, 0x62, 0x61, 0x63, 0xab, 0xc4, 0xc4,
+	0x04, 0x23, 0x1b, 0xfc, 0x19, 0x1d, 0x2b, 0xb1, 0x30, 0x55, 0x28, 0x41, 0xe2, 0xdf, 0x40, 0x3e,
+	0xbf, 0x14, 0xbb, 0xb9, 0x24, 0x05, 0x75, 0x89, 0xec, 0xbb, 0xf7, 0xbe, 0xef, 0xf3, 0x7e, 0xc5,
+	0xf8, 0x86, 0x6d, 0xf3, 0xd7, 0x56, 0x93, 0x39, 0x1e, 0x65, 0x96, 0x4b, 0xf7, 0x3b, 0xbc, 0x7d,
+	0x60, 0xfa, 0x6d, 0x11, 0x0a, 0xb2, 0x70, 0x7a, 0x65, 0x32, 0xcb, 0xd5, 0xae, 0xb2, 0x96, 0xe3,
+	0x09, 0x2a, 0x7f, 0x63, 0x0b, 0x6d, 0xd1, 0x16, 0xb6, 0x90, 0x8f, 0x34, 0x7a, 0x82, 0xd3, 0x55,
+	0x5b, 0x08, 0xdb, 0xe5, 0x94, 0xf9, 0x0e, 0x65, 0x9e, 0x27, 0x42, 0x16, 0x3a, 0xc2, 0x0b, 0xe0,
+	0xb6, 0x60, 0x89, 0xa0, 0x25, 0x02, 0x5a, 0x67, 0x01, 0x8f, 0xc3, 0xd1, 0x17, 0xc5, 0x3a, 0x0f,
+	0x59, 0x91, 0xfa, 0xcc, 0x76, 0x3c, 0x69, 0x0c, 0xb6, 0x5a, 0x1a, 0xce, 0x67, 0x6d, 0xd6, 0xea,
+	0xeb, 0x64, 0xd3, 0x77, 0xcc, 0x72, 0x9f, 0xb1, 0x4e, 0xd8, 0x14, 0x6d, 0x27, 0x84, 0x04, 0xb4,
+	0x9b, 0x0a, 0x93, 0x46, 0xcb, 0x01, 0x75, 0x63, 0x11, 0x93, 0x27, 0x51, 0xfc, 0x5d, 0x29, 0x5b,
+	0xe3, 0xfb, 0x1d, 0x1e, 0x84, 0xc6, 0x63, 0x7c, 0x2d, 0x75, 0x1a, 0xf8, 0xc2, 0x0b, 0x38, 0xb9,
+	0x87, 0xa7, 0xe3, 0xf0, 0xcb, 0x68, 0x0d, 0xdd, 0x9d, 0xdb, 0xba, 0x6e, 0xa6, 0xaa, 0x63, 0xc6,
+	0xe6, 0x95, 0xd9, 0xa3, 0x93, 0x5b, 0x99, 0x2f, 0xbf, 0xbf, 0x15, 0x50, 0x0d, 0xec, 0x8d, 0x6d,
+	0xbc, 0x22, 0x05, 0xab, 0x3c, 0x2c, 0x5b, 0x6e, 0xb9, 0xcf, 0x08, 0xf1, 0xc8, 0x32, 0xbe, 0xcc,
+	0x1a, 0x8d, 0x36, 0x0f, 0x62, 0xe5, 0xd9, 0x5a, 0xff, 0xd5, 0x78, 0x8e, 0x57, 0xd5, 0x8e, 0x80,
+	0xb4, 0x83, 0x17, 0x52, 0x59, 0x03, 0xd9, 0xca, 0x19, 0xb2, 0xa4, 0x6f, 0xe5, 0x52, 0xc4, 0x57,
+	0x9b, 0x67, 0x89, 0x33, 0x83, 0x03, 0x60, 0xd9, 0x75, 0x55, 0x80, 0x3b, 0x18, 0xff, 0x6d, 0x0c,
+	0xc4, 0xc8, 0x99, 0x71, 0x17, 0xcd, 0xa8, 0x8b, 0x66, 0x3c, 0x34, 0xd0, 0x45, 0x73, 0x97, 0xd9,
+	0x1c, 0x7c, 0x6b, 0x09, 0x4f, 0xe3, 0x2b, 0x82, 0x7c, 0x06, 0xe2, 0x0c, 0xcf, 0x67, 0xf2, 0x3f,
+	0xf2, 0x21, 0xd5, 0x14, 0xf0, 0x84, 0x04, 0xce, 0x8f, 0x05, 0x8e, 0x21, 0x52, 0xc4, 0x25, 0xbc,
+	0x94, 0x6c, 0x40, 0x34, 0x3a, 0xe3, 0xbb, 0xf6, 0x14, 0x2f, 0x0f, 0x3a, 0x41, 0x86, 0xf7, 0xf1,
+	0xec, 0xe9, 0x10, 0x42, 0x25, 0x97, 0x14, 0xd9, 0x45, 0xd7, 0x90, 0xd9, 0x0c, 0x83, 0x77, 0x83,
+	0x01, 0x0c, 0x54, 0x2f, 0x09, 0x73, 0x51, 0x1d, 0xfa, 0x84, 0x80, 0x3d, 0x15, 0x43, 0xcd, 0x3e,
+	0xf9, 0x0f, 0xec, 0x17, 0xd6, 0x91, 0xad, 0x93, 0x29, 0x3c, 0x25, 0x09, 0xc9, 0x4b, 0x3c, 0x1d,
+	0xaf, 0x1c, 0xc9, 0x9e, 0xa1, 0x18, 0xdc, 0x69, 0xcd, 0x18, 0x65, 0x12, 0x87, 0x31, 0x72, 0xef,
+	0xbe, 0xff, 0xfa, 0x30, 0xb1, 0x46, 0x74, 0x5a, 0xad, 0x3e, 0xdc, 0x7b, 0xc4, 0xea, 0x01, 0x55,
+	0xfd, 0xfb, 0x90, 0xcf, 0x08, 0xcf, 0x27, 0x47, 0x90, 0x14, 0x54, 0xe2, 0xea, 0x65, 0xd7, 0x36,
+	0xce, 0x65, 0x0b, 0x44, 0xdb, 0x92, 0xa8, 0x48, 0xe8, 0x30, 0xa2, 0xd4, 0xb6, 0xd0, 0x37, 0x30,
+	0x81, 0x6f, 0xc9, 0x47, 0x84, 0xaf, 0x24, 0x15, 0xcb, 0xae, 0xab, 0xa6, 0x54, 0x6f, 0xbc, 0x9a,
+	0x72, 0xc8, 0xd6, 0x1a, 0x9b, 0x92, 0x32, 0x4f, 0xee, 0x9c, 0x8b, 0x92, 0x1c, 0x22, 0x3c, 0xd3,
+	0x9f, 0x13, 0x92, 0x1b, 0x51, 0x8e, 0xc4, 0x80, 0x6b, 0xf9, 0xb1, 0x76, 0x00, 0x53, 0x92, 0x30,
+	0x9b, 0x64, 0x63, 0x24, 0x4c, 0xe4, 0x92, 0x28, 0xd7, 0x7b, 0x84, 0xe7, 0xfa, 0x4a, 0x51, 0xa9,
+	0x72, 0x23, 0xd2, 0x1f, 0x4b, 0xa5, 0x58, 0x1d, 0x63, 0x5d, 0x52, 0xdd, 0x26, 0xd9, 0xb1, 0x54,
+	0x95, 0x07, 0x47, 0x5d, 0x1d, 0x1d, 0x77, 0x75, 0xf4, 0xb3, 0xab, 0xa3, 0xc3, 0x9e, 0x9e, 0x39,
+	0xee, 0xe9, 0x99, 0x1f, 0x3d, 0x3d, 0xb3, 0xb7, 0x6e, 0x3b, 0x61, 0xb3, 0x53, 0x37, 0x2d, 0xd1,
+	0x52, 0xc9, 0xbc, 0x92, 0x42, 0xe1, 0x81, 0xcf, 0x83, 0xfa, 0xb4, 0xfc, 0xbe, 0x95, 0xfe, 0x04,
+	0x00, 0x00, 0xff, 0xff, 0xbe, 0x27, 0xf8, 0x9f, 0xdc, 0x07, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -397,6 +613,9 @@ type QueryClient interface {
 	// Queries a list of AclAuthority items.
 	AclAuthority(ctx context.Context, in *QueryGetAclAuthorityRequest, opts ...grpc.CallOption) (*QueryGetAclAuthorityResponse, error)
 	AclAuthorityAll(ctx context.Context, in *QueryAllAclAuthorityRequest, opts ...grpc.CallOption) (*QueryAllAclAuthorityResponse, error)
+	// Queries a list of AclAdmin items.
+	AclAdmin(ctx context.Context, in *QueryGetAclAdminRequest, opts ...grpc.CallOption) (*QueryGetAclAdminResponse, error)
+	AclAdminAll(ctx context.Context, in *QueryAllAclAdminRequest, opts ...grpc.CallOption) (*QueryAllAclAdminResponse, error)
 }
 
 type queryClient struct {
@@ -434,6 +653,24 @@ func (c *queryClient) AclAuthorityAll(ctx context.Context, in *QueryAllAclAuthor
 	return out, nil
 }
 
+func (c *queryClient) AclAdmin(ctx context.Context, in *QueryGetAclAdminRequest, opts ...grpc.CallOption) (*QueryGetAclAdminResponse, error) {
+	out := new(QueryGetAclAdminResponse)
+	err := c.cc.Invoke(ctx, "/ggezchain.acl.Query/AclAdmin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) AclAdminAll(ctx context.Context, in *QueryAllAclAdminRequest, opts ...grpc.CallOption) (*QueryAllAclAdminResponse, error) {
+	out := new(QueryAllAclAdminResponse)
+	err := c.cc.Invoke(ctx, "/ggezchain.acl.Query/AclAdminAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
@@ -441,6 +678,9 @@ type QueryServer interface {
 	// Queries a list of AclAuthority items.
 	AclAuthority(context.Context, *QueryGetAclAuthorityRequest) (*QueryGetAclAuthorityResponse, error)
 	AclAuthorityAll(context.Context, *QueryAllAclAuthorityRequest) (*QueryAllAclAuthorityResponse, error)
+	// Queries a list of AclAdmin items.
+	AclAdmin(context.Context, *QueryGetAclAdminRequest) (*QueryGetAclAdminResponse, error)
+	AclAdminAll(context.Context, *QueryAllAclAdminRequest) (*QueryAllAclAdminResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -456,6 +696,14 @@ func (*UnimplementedQueryServer) AclAuthority(ctx context.Context, req *QueryGet
 
 func (*UnimplementedQueryServer) AclAuthorityAll(ctx context.Context, req *QueryAllAclAuthorityRequest) (*QueryAllAclAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AclAuthorityAll not implemented")
+}
+
+func (*UnimplementedQueryServer) AclAdmin(ctx context.Context, req *QueryGetAclAdminRequest) (*QueryGetAclAdminResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AclAdmin not implemented")
+}
+
+func (*UnimplementedQueryServer) AclAdminAll(ctx context.Context, req *QueryAllAclAdminRequest) (*QueryAllAclAdminResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AclAdminAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -516,6 +764,42 @@ func _Query_AclAuthorityAll_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_AclAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetAclAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).AclAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ggezchain.acl.Query/AclAdmin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).AclAdmin(ctx, req.(*QueryGetAclAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_AclAdminAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllAclAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).AclAdminAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ggezchain.acl.Query/AclAdminAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).AclAdminAll(ctx, req.(*QueryAllAclAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var (
 	Query_serviceDesc  = _Query_serviceDesc
 	_Query_serviceDesc = grpc.ServiceDesc{
@@ -533,6 +817,14 @@ var (
 			{
 				MethodName: "AclAuthorityAll",
 				Handler:    _Query_AclAuthorityAll_Handler,
+			},
+			{
+				MethodName: "AclAdmin",
+				Handler:    _Query_AclAdmin_Handler,
+			},
+			{
+				MethodName: "AclAdminAll",
+				Handler:    _Query_AclAdminAll_Handler,
 			},
 		},
 		Streams:  []grpc.StreamDesc{},
@@ -743,6 +1035,153 @@ func (m *QueryAllAclAuthorityResponse) MarshalToSizedBuffer(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetAclAdminRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetAclAdminRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetAclAdminRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetAclAdminResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetAclAdminResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetAclAdminResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.AclAdmin.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllAclAdminRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllAclAdminRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllAclAdminRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllAclAdminResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllAclAdminResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllAclAdminResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.AclAdmin) > 0 {
+		for iNdEx := len(m.AclAdmin) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.AclAdmin[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -820,6 +1259,62 @@ func (m *QueryAllAclAuthorityResponse) Size() (n int) {
 	_ = l
 	if len(m.AclAuthority) > 0 {
 		for _, e := range m.AclAuthority {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetAclAdminRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetAclAdminResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.AclAdmin.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllAclAdminRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllAclAdminResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.AclAdmin) > 0 {
+		for _, e := range m.AclAdmin {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -1288,6 +1783,381 @@ func (m *QueryAllAclAuthorityResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.AclAuthority = append(m.AclAuthority, AclAuthority{})
 			if err := m.AclAuthority[len(m.AclAuthority)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+
+func (m *QueryGetAclAdminRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetAclAdminRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetAclAdminRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+
+func (m *QueryGetAclAdminResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetAclAdminResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetAclAdminResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AclAdmin", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.AclAdmin.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+
+func (m *QueryAllAclAdminRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllAclAdminRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllAclAdminRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+
+func (m *QueryAllAclAdminResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllAclAdminResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllAclAdminResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AclAdmin", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.AclAdmin = append(m.AclAdmin, AclAdmin{})
+			if err := m.AclAdmin[len(m.AclAdmin)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

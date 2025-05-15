@@ -24,8 +24,19 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod:      "AclAuthority",
-					Use:            "show-acl-authority [id]",
+					Use:            "show-acl-authority [address]",
 					Short:          "Shows a aclAuthority",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
+				},
+				{
+					RpcMethod: "AclAdminAll",
+					Use:       "list-acl-admin",
+					Short:     "List all aclAdmin",
+				},
+				{
+					RpcMethod:      "AclAdmin",
+					Use:            "show-acl-admin [address]",
+					Short:          "Shows a aclAdmin",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
 				},
 				// this line is used by ignite scaffolding # autocli/query
@@ -104,6 +115,24 @@ Clear all access definition. Default is false ()
 ggezchaind tx acl update-authority ggezauthaddress... --clear-all-access-definitions --from ggezaddress...
 
 `,
+				},
+				{
+					RpcMethod:      "InitAclAdmin",
+					Use:            "init-acl-admin [admins]",
+					Short:          "Initializes the AclAdmin by one or more admin. Can only be called once.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
+				},
+				{
+					RpcMethod:      "AddAclAdmin",
+					Use:            "add-acl-admin [admins]",
+					Short:          "add one or more aclAdmin. Must have admin authority to do so.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
+				},
+				{
+					RpcMethod:      "DeleteAclAdmin",
+					Use:            "delete-acl-admin [admins]",
+					Short:          "delete one or more aclAdmin. Must have admin authority to do so.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

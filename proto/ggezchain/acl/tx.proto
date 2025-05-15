@@ -20,6 +20,9 @@ service Msg {
   rpc AddAuthority    (MsgAddAuthority   ) returns (MsgAddAuthorityResponse   );
   rpc DeleteAuthority (MsgDeleteAuthority) returns (MsgDeleteAuthorityResponse);
   rpc UpdateAuthority (MsgUpdateAuthority) returns (MsgUpdateAuthorityResponse);
+  rpc InitAclAdmin    (MsgInitAclAdmin   ) returns (MsgInitAclAdminResponse   );
+  rpc AddAclAdmin     (MsgAddAclAdmin    ) returns (MsgAddAclAdminResponse    );
+  rpc DeleteAclAdmin  (MsgDeleteAclAdmin ) returns (MsgDeleteAclAdminResponse );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -59,15 +62,39 @@ message MsgDeleteAuthorityResponse {}
 
 message MsgUpdateAuthority {
   option (cosmos.msg.v1.signer) = "creator";
-           string creator                            = 1;
-           string auth_address                       = 2;
-           string new_name                           = 3;
-           string overwrite_access_definitions       = 4;
-           string add_access_definitions             = 5;
-           string update_access_definition           = 6;
-  repeated string delete_access_definitions          = 7;
-           bool   clear_all_access_definitions       = 8;
+           string creator                      = 1;
+           string auth_address                 = 2;
+           string new_name                     = 3;
+           string overwrite_access_definitions = 4;
+           string add_access_definitions       = 5;
+           string update_access_definition     = 6;
+  repeated string delete_access_definitions    = 7;
+           bool   clear_all_access_definitions = 8;
 }
 
 message MsgUpdateAuthorityResponse {}
+
+message MsgInitAclAdmin {
+  option (cosmos.msg.v1.signer) = "creator";
+           string creator = 1;
+  repeated string admins  = 2;
+}
+
+message MsgInitAclAdminResponse {}
+
+message MsgAddAclAdmin {
+  option (cosmos.msg.v1.signer) = "creator";
+           string creator = 1;
+  repeated string admins  = 2;
+}
+
+message MsgAddAclAdminResponse {}
+
+message MsgDeleteAclAdmin {
+  option (cosmos.msg.v1.signer) = "creator";
+           string creator = 1;
+  repeated string admins  = 2;
+}
+
+message MsgDeleteAclAdminResponse {}
 

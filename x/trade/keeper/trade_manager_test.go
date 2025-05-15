@@ -23,69 +23,69 @@ func (suite *KeeperTestSuite) TestHasPermission() {
 		address        string
 		msgType        int32
 		expectedOutput bool
-		expectedErr    bool
-		errMsg         string
+		expErr         bool
+		expErrMsg      string
 	}{
 		{
 			name:           "authority not found",
 			address:        sample.AccAddress(),
 			msgType:        types.TxTypeCreateTrade,
 			expectedOutput: false,
-			expectedErr:    true,
-			errMsg:         "no ACL record found for address",
+			expErr:         true,
+			expErrMsg:      "no ACL record found for address",
 		},
 		{
 			name:           "no module match",
 			address:        testutil.Carol,
 			msgType:        types.TxTypeCreateTrade,
 			expectedOutput: false,
-			expectedErr:    true,
-			errMsg:         "no permission for module",
+			expErr:         true,
+			expErrMsg:      "no permission for module",
 		},
 		{
 			name:           "invalid msg type",
 			address:        testutil.Alice,
 			msgType:        types.TxTypeUnspecified,
 			expectedOutput: false,
-			expectedErr:    true,
-			errMsg:         "unrecognized message type",
+			expErr:         true,
+			expErrMsg:      "unrecognized message type",
 		},
 		{
 			name:           "valid maker permission",
 			address:        testutil.Alice,
 			msgType:        types.TxTypeCreateTrade,
 			expectedOutput: true,
-			expectedErr:    false,
+			expErr:         false,
 		},
 		{
 			name:           "valid checker permission",
 			address:        testutil.Bob,
 			msgType:        types.TxTypeProcessTrade,
 			expectedOutput: true,
-			expectedErr:    false,
+			expErr:         false,
 		},
 		{
 			name:           "invalid maker permission",
 			address:        testutil.Bob,
 			msgType:        types.TxTypeCreateTrade,
 			expectedOutput: false,
-			expectedErr:    false,
+			expErr:         false,
 		},
 		{
 			name:           "invalid checker permission",
 			address:        testutil.Alice,
 			msgType:        types.TxTypeProcessTrade,
 			expectedOutput: false,
-			expectedErr:    false,
+			expErr:         false,
 		},
 	}
 
 	for _, tt := range tests {
 		suite.Run(tt.name, func() {
 			hasPermission, err := suite.app.TradeKeeper.HasPermission(suite.ctx, tt.address, tt.msgType)
-			if tt.expectedErr {
+			if tt.expErr {
 				suite.Error(err)
-				suite.Contains(err.Error(), tt.errMsg)
+				suite.Contains(err.Error(), tt.expErrMsg)
 				return
 			}
 			suite.NoError(err)

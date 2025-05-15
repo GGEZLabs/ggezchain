@@ -623,50 +623,50 @@ func TestValidateConflictBetweenAccessDefinition(t *testing.T) {
 
 func TestValidateJSONFormat(t *testing.T) {
 	tests := []struct {
-		name          string
-		jsonStr       string
-		fieldName     string
-		expectedError bool
-		errMsg        string
+		name      string
+		jsonStr   string
+		fieldName string
+		expErr    bool
+		expErrMsg string
 	}{
 		{
-			name:          "invalid JSON format for field updateAccessDefinition",
-			jsonStr:       `{"module":"module1","is_maker":true "is_checker":true}`,
-			fieldName:     "updateAccessDefinition",
-			expectedError: true,
-			errMsg:        "invalid JSON format for field updateAccessDefinition",
+			name:      "invalid JSON format for field updateAccessDefinition",
+			jsonStr:   `{"module":"module1","is_maker":true "is_checker":true}`,
+			fieldName: "updateAccessDefinition",
+			expErr:    true,
+			expErrMsg: "invalid JSON format for field updateAccessDefinition",
 		},
 		{
-			name:          "invalid JSON format for field addAccessDefinition",
-			jsonStr:       `[{"module":"module1","is_maker":true "is_checker":true}]`,
-			fieldName:     "addAccessDefinition",
-			expectedError: true,
-			errMsg:        "invalid JSON format for field addAccessDefinition",
+			name:      "invalid JSON format for field addAccessDefinition",
+			jsonStr:   `[{"module":"module1","is_maker":true "is_checker":true}]`,
+			fieldName: "addAccessDefinition",
+			expErr:    true,
+			expErrMsg: "invalid JSON format for field addAccessDefinition",
 		},
 		{
-			name:          "empty string",
-			jsonStr:       "",
-			fieldName:     "updateAccessDefinition",
-			expectedError: false,
+			name:      "empty string",
+			jsonStr:   "",
+			fieldName: "updateAccessDefinition",
+			expErr:    false,
 		},
 		{
-			name:          "valid JSON format for field updateAccessDefinition",
-			jsonStr:       `{"module":"module1","is_maker":true, "is_checker":true}`,
-			fieldName:     "updateAccessDefinition",
-			expectedError: false,
+			name:      "valid JSON format for field updateAccessDefinition",
+			jsonStr:   `{"module":"module1","is_maker":true, "is_checker":true}`,
+			fieldName: "updateAccessDefinition",
+			expErr:    false,
 		},
 		{
-			name:          "valid JSON format for field addAccessDefinition",
-			jsonStr:       `[{"module":"module1","is_maker":true, "is_checker":true}]`,
-			fieldName:     "addAccessDefinition",
-			expectedError: false,
+			name:      "valid JSON format for field addAccessDefinition",
+			jsonStr:   `[{"module":"module1","is_maker":true, "is_checker":true}]`,
+			fieldName: "addAccessDefinition",
+			expErr:    false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := validateJSONFormat(tt.jsonStr, tt.fieldName)
-			if tt.expectedError {
-				require.Contains(t, err.Error(), tt.errMsg)
+			if tt.expErr {
+				require.Contains(t, err.Error(), tt.expErrMsg)
 				return
 			}
 			require.NoError(t, err)
@@ -676,46 +676,46 @@ func TestValidateJSONFormat(t *testing.T) {
 
 func TestValidateDeletedModules(t *testing.T) {
 	tests := []struct {
-		name          string
-		modules       []string
-		expectedError bool
-		errMsg        string
+		name      string
+		modules   []string
+		expErr    bool
+		expErrMsg string
 	}{
 		{
-			name:          "empty module name",
-			modules:       []string{""},
-			expectedError: true,
-			errMsg:        "module name cannot be empty",
+			name:      "empty module name",
+			modules:   []string{""},
+			expErr:    true,
+			expErrMsg: "module name cannot be empty",
 		},
 		{
-			name:          "white space module name",
-			modules:       []string{"    "},
-			expectedError: true,
-			errMsg:        "module name cannot be empty",
+			name:      "white space module name",
+			modules:   []string{"    "},
+			expErr:    true,
+			expErrMsg: "module name cannot be empty",
 		},
 		{
-			name:          "duplicate module name",
-			modules:       []string{"module1", "module1"},
-			expectedError: true,
-			errMsg:        "module1 module(s) is duplicates",
+			name:      "duplicate module name",
+			modules:   []string{"module1", "module1"},
+			expErr:    true,
+			expErrMsg: "module1 module(s) is duplicates",
 		},
 		{
-			name:          "two duplicate module name",
-			modules:       []string{"module1", "module1", "module2", "module2"},
-			expectedError: true,
-			errMsg:        "module1, module2 module(s) is duplicates",
+			name:      "two duplicate module name",
+			modules:   []string{"module1", "module1", "module2", "module2"},
+			expErr:    true,
+			expErrMsg: "module1, module2 module(s) is duplicates",
 		},
 		{
-			name:          "all good",
-			modules:       []string{"module1", "module2"},
-			expectedError: false,
+			name:    "all good",
+			modules: []string{"module1", "module2"},
+			expErr:  false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := ValidateDeletedModules(tt.modules)
-			if tt.expectedError {
-				require.Contains(t, err.Error(), tt.errMsg)
+			if tt.expErr {
+				require.Contains(t, err.Error(), tt.expErrMsg)
 				return
 			}
 			require.NoError(t, err)
