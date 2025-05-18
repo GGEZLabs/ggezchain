@@ -10,8 +10,8 @@ import (
 var (
 	ErrInvalidSigner                 = sdkerrors.Register(ModuleName, 1100, "expected gov account as only signer for proposal message")
 	ErrEmptyName                     = sdkerrors.Register(ModuleName, 1101, "empty name not allowed")
-	ErrInvalidAccessDefinitionList   = sdkerrors.Register(ModuleName, 1102, "invalid AccessDefinitionList format")
-	ErrInvalidAccessDefinitionObject = sdkerrors.Register(ModuleName, 1103, "invalid AccessDefinitionObject format")
+	ErrInvalidAccessDefinitionList   = sdkerrors.Register(ModuleName, 1102, "invalid access definition list format")
+	ErrInvalidAccessDefinitionObject = sdkerrors.Register(ModuleName, 1103, "invalid access definition object format")
 	ErrInvalidModuleName             = sdkerrors.Register(ModuleName, 1104, "invalid module name")
 	ErrUnauthorized                  = sdkerrors.Register(ModuleName, 1105, "unauthorized account")
 	ErrAuthorityAddressExist         = sdkerrors.Register(ModuleName, 1106, "authority address already exist")

@@ -2,9 +2,7 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
-	"path/filepath"
 	"testing"
 	"time"
 
@@ -52,29 +50,6 @@ func setup(withGenesis bool, invCheckPeriod uint) (*App, GenesisState) {
 	tmpDir, err := os.MkdirTemp("", "ggezchain_test_")
 	if err != nil {
 		panic(err)
-	}
-
-	// Create the config directory inside tmpDir
-	configDir := filepath.Join(tmpDir, "config")
-	if err := os.MkdirAll(configDir, 0o755); err != nil {
-		panic(fmt.Sprintf("failed to create config directory: %v", err))
-	}
-
-	// Create the chain_acl.json file inside configDir
-	aclFilePath := filepath.Join(configDir, "chain_acl.json")
-
-	userHomeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(fmt.Sprintf("failed to get user home directory: %v", err))
-	}
-	chainAclPath := userHomeDir + "/ggezchain/chain_acl.json"
-	chainAclContent, err := os.ReadFile(chainAclPath)
-	if err != nil {
-		panic(fmt.Sprintf("failed to read chain_acl.json: %v, make sure that is exist in this path: %s", err, chainAclPath))
-	}
-
-	if err := os.WriteFile(aclFilePath, []byte(chainAclContent), 0o644); err != nil {
-		panic(fmt.Sprintf("failed to create chain_acl.json: %v", err))
 	}
 
 	appOptions := make(simtestutil.AppOptionsMap, 0)
