@@ -111,7 +111,7 @@ ggezchaind tx acl update-authority ggezauthaddress... --update-access-definition
 Delete one or more specific access definition (by module name):
 ggezchaind tx acl update-authority ggezauthaddress... --delete-access-definitions 'module2,module1' --from ggezaddress...
 
-Clear all access definition. Default is false ()
+Clear all access definition. (Default is false)
 ggezchaind tx acl update-authority ggezauthaddress... --clear-all-access-definitions --from ggezaddress...
 
 `,

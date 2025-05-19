@@ -70,7 +70,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 				OverwriteAccessDefinitions: `[{"module":"trade","is_maker":true "is_checker":true}]`,
 			},
 			expErr:    true,
-			expErrMsg: "invalid AccessDefinitionList format",
+			expErrMsg: "invalid access definition list format",
 		},
 		{
 			name: "invalid overwrite access definitions (empty module)",
@@ -110,7 +110,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 				UpdateAccessDefinition: `{"module":"trade","is_maker":true "is_checker":true}`,
 			},
 			expErr:    true,
-			expErrMsg: "invalid AccessDefinitionObject format",
+			expErrMsg: "invalid access definition object format",
 		},
 		{
 			name: "invalid add access definitions format",
@@ -120,7 +120,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 				AddAccessDefinitions: `[{"module":"trade","is_maker":true "is_checker":true}]`,
 			},
 			expErr:    true,
-			expErrMsg: "invalid AccessDefinitionList format",
+			expErrMsg: "invalid access definition list format",
 		},
 		{
 			name: "invalid delete access definitions (module not exist)",

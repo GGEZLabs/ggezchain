@@ -62,7 +62,7 @@ func TestMsgAddAuthority(t *testing.T) {
 				AccessDefinitions: `[{"module":"trade","is_maker":true "is_checker":true}]`,
 			},
 			expErr:    true,
-			expErrMsg: "invalid AccessDefinitionList format",
+			expErrMsg: "invalid access definition list format",
 		},
 		{
 			name: "empty access definition list",

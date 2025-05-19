@@ -8,18 +8,10 @@ func (msg *MsgProcessTrade) validateCheckerIsNotMaker(maker string) (err error) 
 }
 
 func (msg *MsgProcessTrade) validateStatus(status TradeStatus) (err error) {
-	switch status {
-	case StatusProcessed:
-		return ErrTradeStatusCompleted
-	case StatusRejected:
-		return ErrTradeStatusRejected
-	case StatusCanceled:
-		return ErrTradeStatusCanceled
-	case StatusPending:
-		return nil
-	default:
-		return ErrInvalidStatus
+	if status != StatusPending {
+		return ErrInvalidTradeStatus.Wrapf("cannot process trade with status %s; only trades with status %s can be processed", status.String(), StatusPending.String())
 	}
+	return nil
 }
 
 func (msg *MsgProcessTrade) Validate(status TradeStatus, maker string) error {

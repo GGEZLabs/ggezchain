@@ -121,7 +121,7 @@ func (suite *KeeperTestSuite) TestCreateTradeAuthorityAddressNotExist() {
 
 	suite.Nil(createResponse)
 	suite.ErrorIs(err, acltypes.ErrAuthorityAddressNotExist)
-	suite.Contains(err.Error(), "no ACL record found for address ggez1wq5p4zauc7e5xt3j63s2dp9dtms64mqrvuwzmv")
+	suite.Contains(err.Error(), "unauthorized account")
 }
 
 func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {

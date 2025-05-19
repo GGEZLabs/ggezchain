@@ -45,6 +45,11 @@ func (gs GenesisState) ValidateAclAuthority() error {
 			return fmt.Errorf("invalid address for aclAuthority: %s, error: %w", authority.Address, err)
 		}
 
+		// Validate name
+		if authority.Name == "" {
+			return fmt.Errorf("empty name not allowed, authority address: %s", authority.Address)
+		}
+		
 		// Check for duplicated index in aclAuthority
 		index := string(AclAuthorityKey(authority.Address))
 		if _, ok := aclAuthorityIndexMap[index]; ok {

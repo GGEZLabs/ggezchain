@@ -21,6 +21,7 @@ func ValidateAccessDefinitionList(AccessDefinitionListStr string) ([]*AccessDefi
 	}
 
 	seenModules := make(map[string]bool)
+	var duplicateModules []string
 
 	for _, accessDefinition := range accessDefinitionList {
 		accessDefinition.Module = strings.ToLower(strings.TrimSpace(accessDefinition.Module))
@@ -28,9 +29,9 @@ func ValidateAccessDefinitionList(AccessDefinitionListStr string) ([]*AccessDefi
 		if accessDefinition.Module == "" {
 			return nil, ErrInvalidModuleName.Wrapf("empty module not allowed")
 		}
-		// todo: put duplicate modules on array and return all duplicate module at same time
+
 		if seenModules[accessDefinition.Module] {
-			return nil, ErrInvalidModuleName.Wrapf("%s module(s) is duplicates", accessDefinition.Module)
+			duplicateModules = append(duplicateModules, accessDefinition.Module)
 		}
 		seenModules[accessDefinition.Module] = true
 
@@ -38,6 +39,10 @@ func ValidateAccessDefinitionList(AccessDefinitionListStr string) ([]*AccessDefi
 		if !accessDefinition.IsMaker && !accessDefinition.IsChecker {
 			return nil, ErrRequireMakerOrChecker.Wrapf("module %s", accessDefinition.Module)
 		}
+	}
+
+	if len(duplicateModules) > 0 {
+		return nil, ErrInvalidModuleName.Wrapf("%s module(s) is duplicates", strings.Join(duplicateModules, ", "))
 	}
 
 	return accessDefinitionList, nil
@@ -67,7 +72,6 @@ func ValidateSingleAccessDefinition(accessDefinitionStr string) (*AccessDefiniti
 // GetUpdatedAccessDefinitionList finds a module by name (case-insensitive)
 // and updates its roles in-place within the current list.
 func GetUpdatedAccessDefinitionList(currentList []*AccessDefinition, update *AccessDefinition) []*AccessDefinition {
-	// todo:
 	for _, m := range currentList {
 		if strings.EqualFold(m.Module, update.Module) {
 			m.IsMaker = update.IsMaker

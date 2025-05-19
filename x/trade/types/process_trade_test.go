@@ -49,17 +49,17 @@ func TestValidateStatus(t *testing.T) {
 		{
 			name:   "processed status",
 			status: StatusProcessed,
-			err:    ErrTradeStatusCompleted,
+			err:    ErrInvalidTradeStatus,
 		},
 		{
 			name:   "rejected status",
 			status: StatusRejected,
-			err:    ErrTradeStatusRejected,
+			err:    ErrInvalidTradeStatus,
 		},
 		{
 			name:   "canceled status",
 			status: StatusCanceled,
-			err:    ErrTradeStatusCanceled,
+			err:    ErrInvalidTradeStatus,
 		},
 		{
 			name:   "pending status",
@@ -104,28 +104,28 @@ func TestValidate(t *testing.T) {
 			msg:    MsgProcessTrade{Creator: checkerAdd},
 			maker:  makerAdd,
 			status: StatusNil,
-			err:    ErrInvalidStatus,
+			err:    ErrInvalidTradeStatus,
 		},
 		{
 			name:   "process trade with processed status",
 			msg:    MsgProcessTrade{Creator: checkerAdd},
 			maker:  makerAdd,
 			status: StatusProcessed,
-			err:    ErrTradeStatusCompleted,
+			err:    ErrInvalidTradeStatus,
 		},
 		{
 			name:   "process trade with Rejected status",
 			msg:    MsgProcessTrade{Creator: checkerAdd},
 			maker:  makerAdd,
 			status: StatusRejected,
-			err:    ErrTradeStatusRejected,
+			err:    ErrInvalidTradeStatus,
 		},
 		{
 			name:   "process trade with Canceled status",
 			msg:    MsgProcessTrade{Creator: checkerAdd},
 			maker:  makerAdd,
 			status: StatusCanceled,
-			err:    ErrTradeStatusCanceled,
+			err:    ErrInvalidTradeStatus,
 		},
 		{
 			name:   "process trade with Pending status",

@@ -221,7 +221,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 			},
 			expErr:    true,
-			expErrMsg: "invalid receiver address",
+			expErrMsg: "invalid receiver_address",
 		},
 		{
 			desc: "invalid status",
@@ -657,7 +657,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 				},
 			},
 			expErr:    true,
-			expErrMsg: "invalid receiver address",
+			expErrMsg: "invalid receiver_address",
 		},
 		{
 			desc: "invalid status",

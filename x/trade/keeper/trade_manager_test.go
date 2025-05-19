@@ -32,7 +32,7 @@ func (suite *KeeperTestSuite) TestHasPermission() {
 			msgType:        types.TxTypeCreateTrade,
 			expectedOutput: false,
 			expErr:         true,
-			expErrMsg:      "no ACL record found for address",
+			expErrMsg:      "unauthorized account",
 		},
 		{
 			name:           "no module match",

@@ -42,7 +42,6 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 		return sdkerrors.ErrInvalidRequest.Wrapf("invalid denom expected: %s, got: %s ", DefaultCoinDenom, msg.Amount.Denom)
 	}
 
-	// todo: check to large quantity
 	if msg.Amount.Amount.LTE(math.NewInt(0)) {
 		return ErrInvalidTradeQuantity
 	}

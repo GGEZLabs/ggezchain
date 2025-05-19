@@ -94,7 +94,7 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 			},
 			accessDefinitionListStr: `[{"module":"module4","is_maker":true "is_checker":true}]`,
 			expErr:                  true,
-			expErrMsg:               "invalid AccessDefinitionList format",
+			expErrMsg:               "invalid access definition list format",
 		},
 		{
 			name: "empty module name",
@@ -177,7 +177,7 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 			},
 			singleAccessDefinitionsStr: `{"module":"module1","is_maker":true "is_checker":false}`,
 			expErr:                     true,
-			expErrMsg:                  "invalid AccessDefinitionObject format",
+			expErrMsg:                  "invalid access definition object format",
 		},
 		{
 			name: "update empty module",
@@ -277,7 +277,7 @@ func TestAddAccessDefinitions(t *testing.T) {
 			},
 			accessDefinitionsListStr: `[{"module":"module4","is_maker":true "is_checker":true}]`,
 			expErr:                   true,
-			expErrMsg:                "invalid AccessDefinitionList format",
+			expErrMsg:                "invalid access definition list format",
 		},
 		{
 			name: "empty module name",

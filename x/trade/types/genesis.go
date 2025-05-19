@@ -93,7 +93,7 @@ func (gs GenesisState) ValidateStoredTrade() error {
 		}
 
 		if _, err := sdk.AccAddressFromBech32(elem.ReceiverAddress); err != nil {
-			return fmt.Errorf("invalid receiver address for trade_index %d, address %s, error: %w", elem.TradeIndex, elem.ReceiverAddress, err)
+			return fmt.Errorf("invalid receiver_address for trade_index %d, address %s, error: %w", elem.TradeIndex, elem.ReceiverAddress, err)
 		}
 
 		if elem.Status != StatusProcessed &&
@@ -108,8 +108,10 @@ func (gs GenesisState) ValidateStoredTrade() error {
 			return fmt.Errorf("invalid maker address for trade_index %d, address %s, error: %w", elem.TradeIndex, elem.Maker, err)
 		}
 
-		if _, err := sdk.AccAddressFromBech32(elem.Checker); err != nil {
-			return fmt.Errorf("invalid checker address for trade_index %d, address %s, error: %w", elem.TradeIndex, elem.Checker, err)
+		if elem.Checker != "" {
+			if _, err := sdk.AccAddressFromBech32(elem.Checker); err != nil {
+				return fmt.Errorf("invalid checker address for trade_index %d, address %s, error: %w", elem.TradeIndex, elem.Checker, err)
+			}
 		}
 
 		_, err = time.Parse(time.RFC3339, elem.CreateDate)

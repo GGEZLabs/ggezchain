@@ -262,7 +262,7 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyConfirmed() {
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.ErrorIs(err, types.ErrTradeStatusCompleted)
+	suite.ErrorIs(err, types.ErrInvalidTradeStatus)
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeAlreadyRejected() {
@@ -296,7 +296,7 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyRejected() {
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  indexes[0],
 	})
-	suite.ErrorIs(err, types.ErrTradeStatusRejected)
+	suite.ErrorIs(err, types.ErrInvalidTradeStatus)
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeCheckerIsNotMaker() {
