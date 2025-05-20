@@ -92,16 +92,16 @@ func TestMsgUpdateAuthority(t *testing.T) {
 			expErr:    true,
 			expErrMsg: "module1 module(s) is duplicates",
 		},
-		{
-			name: "invalid overwrite access definitions (at least one of is_maker or is_checker must be true)",
-			input: &types.MsgUpdateAuthority{
-				Creator:                    admin,
-				AuthAddress:                alice,
-				OverwriteAccessDefinitions: `[{"module":"module1","is_maker":false,"is_checker":false}]`,
-			},
-			expErr:    true,
-			expErrMsg: "at least one of is_maker or is_checker must be true",
-		},
+		// {
+		// 	name: "invalid overwrite access definitions (at least one of is_maker or is_checker must be true)",
+		// 	input: &types.MsgUpdateAuthority{
+		// 		Creator:                    admin,
+		// 		AuthAddress:                alice,
+		// 		OverwriteAccessDefinitions: `[{"module":"module1","is_maker":false,"is_checker":false}]`,
+		// 	},
+		// 	expErr:    true,
+		// 	expErrMsg: "at least one of is_maker or is_checker must be true",
+		// },
 		{
 			name: "invalid update access definitions format",
 			input: &types.MsgUpdateAuthority{

@@ -96,7 +96,7 @@ func GetMsgCreateTradeWithTypeAndAmount(tradeType TradeType, amount int64) *MsgC
 	}
 }
 
-// GetSampleStoredTrade return sample stored trade according to getSampleMsgCreateTrade function
+// GetSampleStoredTrade return sample stored trade according to GetSampleMsgCreateTrade function
 // used after create trade
 func GetSampleStoredTrade(tradeIndex uint64) StoredTrade {
 	sampleStoredTrade := GetBaseStoredTrade()

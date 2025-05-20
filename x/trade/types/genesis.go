@@ -7,8 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -71,8 +69,12 @@ func (gs GenesisState) ValidateStoredTrade() error {
 			return fmt.Errorf("trade_type must be buy or sell, trade_index: %d", elem.TradeIndex)
 		}
 
-		if elem.Amount.Amount.LTE(math.NewInt(0)) {
-			return fmt.Errorf("amount must be more than 0, trade_index: %d", elem.TradeIndex)
+		if !elem.Amount.IsValid() {
+			return fmt.Errorf("invalid amount: %s, trade_index: %d", elem.Amount.String(), elem.TradeIndex)
+		}
+
+		if elem.Amount.IsZero() {
+			return fmt.Errorf("zero amount not allowed: %s, trade_index: %d", elem.Amount.String(), elem.TradeIndex)
 		}
 
 		if elem.Amount.Denom != DefaultCoinDenom {

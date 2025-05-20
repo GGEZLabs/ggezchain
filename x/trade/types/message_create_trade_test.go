@@ -194,7 +194,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 				CoinMintingPriceJson: "{}",
 				ExchangeRateJson:     "{}",
 			},
-			err: ErrInvalidTradeQuantity,
+			err: sdkerrors.ErrInvalidRequest,
 		},
 		{
 			name: "create trade with invalid receiver address",

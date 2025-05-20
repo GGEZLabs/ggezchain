@@ -35,7 +35,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "trade with index %d not found", tradeIndex.NextId)
 	}
 
-	currentTime := ctx.BlockTime().UTC()
+	currentTime := ctx.BlockTime()
 	formattedDate := currentTime.Format(time.RFC3339)
 
 	newIndex := tradeIndex.NextId

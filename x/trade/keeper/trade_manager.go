@@ -96,10 +96,9 @@ func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade) (t
 func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	allStoredTempTrade := k.GetAllStoredTempTrade(ctx)
-	status := types.StatusCanceled
 	var canceledIds []uint64
 
-	currentDate := ctx.BlockTime().UTC()
+	currentDate := ctx.BlockTime()
 
 	for i := range allStoredTempTrade {
 		createDate := allStoredTempTrade[i].CreateDate
@@ -117,7 +116,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 		if totalDays >= 1 {
 
 			storedTrade, _ := k.GetStoredTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
-			storedTrade.Status = status
+			storedTrade.Status = types.StatusCanceled
 			storedTrade.UpdateDate = currentDate.Format(time.RFC3339)
 
 			k.SetStoredTrade(ctx, storedTrade)
@@ -129,9 +128,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 	}
 
 	if len(canceledIds) > 0 {
-		attributes := []sdk.Attribute{
-			sdk.NewAttribute(types.AttributeKeyStatus, status.String()),
-		}
+		var attributes []sdk.Attribute
 
 		for _, id := range canceledIds {
 			attributes = append(attributes, sdk.NewAttribute(types.AttributeKeyTradeIndex, strconv.FormatUint(id, 10)))

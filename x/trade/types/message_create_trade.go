@@ -5,8 +5,6 @@ import (
 	"strconv"
 	"strings"
 
-	"cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -33,28 +31,26 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 		return sdkerrors.ErrInvalidAddress.Wrapf("invalid creator address (%s)", err)
 	}
 
-	_, err = sdk.AccAddressFromBech32(msg.ReceiverAddress)
-	if err != nil {
-		return sdkerrors.ErrInvalidAddress.Wrapf("invalid receiver address (%s)", err)
+	// Validate trade type
+	if msg.TradeType != TradeTypeBuy &&
+		msg.TradeType != TradeTypeSell {
+		return ErrInvalidTradeType
+	}
+
+	// Validate amount
+	if !msg.Amount.IsValid() {
+		return sdkerrors.ErrInvalidRequest.Wrapf("invalid amount: %s", msg.Amount.String())
+	}
+
+	if msg.Amount.IsZero() {
+		return sdkerrors.ErrInvalidRequest.Wrapf("zero amount not allowed: %s", msg.Amount.String())
 	}
 
 	if msg.Amount.Denom != DefaultCoinDenom {
 		return sdkerrors.ErrInvalidRequest.Wrapf("invalid denom expected: %s, got: %s ", DefaultCoinDenom, msg.Amount.Denom)
 	}
 
-	if msg.Amount.Amount.LTE(math.NewInt(0)) {
-		return ErrInvalidTradeQuantity
-	}
-
-	if msg.TradeType != TradeTypeBuy &&
-		msg.TradeType != TradeTypeSell {
-		return ErrInvalidTradeType
-	}
-
-	if !json.Valid([]byte(msg.TradeData)) {
-		return ErrInvalidTradeData
-	}
-
+	// Validate price
 	if strings.TrimSpace(msg.Price) == "" {
 		return ErrInvalidTradePrice
 	}
@@ -68,6 +64,22 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 		return ErrInvalidTradePrice
 	}
 
+	// Validate receiver address
+	_, err = sdk.AccAddressFromBech32(msg.ReceiverAddress)
+	if err != nil {
+		return sdkerrors.ErrInvalidAddress.Wrapf("invalid receiver address (%s)", err)
+	}
+
+	// Validate trade data
+	if !json.Valid([]byte(msg.TradeData)) {
+		return ErrInvalidTradeData
+	}
+
+	// Validate banking system data
+	if !json.Valid([]byte(msg.BankingSystemData)) {
+		return ErrInvalidBankingSystemData
+	}
+
 	// to check data should be send
 	// if msg.CoinMintingPriceJSON == "" {
 	// 	return ErrInvalidCoinMintingPriceJSON
@@ -77,8 +89,5 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 	// 	return ErrInvalidExchangeRateJSON
 	// }
 
-	if !json.Valid([]byte(msg.BankingSystemData)) {
-		return ErrInvalidBankingSystemData
-	}
 	return nil
 }

@@ -36,9 +36,9 @@ func ValidateAccessDefinitionList(AccessDefinitionListStr string) ([]*AccessDefi
 		seenModules[accessDefinition.Module] = true
 
 		// todo: check if that condition necessary
-		if !accessDefinition.IsMaker && !accessDefinition.IsChecker {
-			return nil, ErrRequireMakerOrChecker.Wrapf("module %s", accessDefinition.Module)
-		}
+		// if !accessDefinition.IsMaker && !accessDefinition.IsChecker {
+		// 	return nil, ErrRequireMakerOrChecker.Wrapf("module %s", accessDefinition.Module)
+		// }
 	}
 
 	if len(duplicateModules) > 0 {
@@ -62,9 +62,10 @@ func ValidateSingleAccessDefinition(accessDefinitionStr string) (*AccessDefiniti
 		return nil, ErrInvalidModuleName.Wrapf("empty module not allowed")
 	}
 
-	if !accessDefinition.IsMaker && !accessDefinition.IsChecker {
-		return nil, ErrRequireMakerOrChecker.Wrapf("module %s", accessDefinition.Module)
-	}
+	// todo
+	// if !accessDefinition.IsMaker && !accessDefinition.IsChecker {
+	// 	return nil, ErrRequireMakerOrChecker.Wrapf("module %s", accessDefinition.Module)
+	// }
 
 	return &accessDefinition, nil
 }

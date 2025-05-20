@@ -167,7 +167,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 			},
 			expErr:    true,
-			expErrMsg: "amount must be more than 0",
+			expErrMsg: "zero amount not allowed",
 		},
 		{
 			desc: "invalid denom",
@@ -612,7 +612,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 				},
 			},
 			expErr:    true,
-			expErrMsg: "amount must be more than 0",
+			expErrMsg: "zero amount not allowed",
 		},
 		{
 			desc: "invalid denom",

@@ -8,6 +8,10 @@ import (
 func ValidateTradeData(tradeData string) (err error) {
 	var td TradeData
 	if err := json.Unmarshal([]byte(tradeData), &td); err != nil {
+		return ErrInvalidTradeData.Wrapf(err.Error())
+	}
+
+	if td.TradeInfo == nil || td.Brokerage == nil {
 		return ErrInvalidTradeData
 	}
 

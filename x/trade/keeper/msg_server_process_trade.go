@@ -35,7 +35,7 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 		return nil, err
 	}
 
-	currentTime := ctx.BlockTime().UTC()
+	currentTime := ctx.BlockTime()
 	formattedDate := currentTime.Format(time.RFC3339)
 
 	result := types.TradeProcessedSuccessfully
