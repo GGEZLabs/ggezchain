@@ -22,11 +22,11 @@ func TestGenesisState_Validate(t *testing.T) {
 				AclAuthorityList: []types.AclAuthority{
 					{
 						Address: duplicateAddress,
-						Name: "Alice",
+						Name:    "Alice",
 					},
 					{
 						Address: duplicateAddress,
-						Name: "Bob",
+						Name:    "Bob",
 					},
 				},
 			},
@@ -148,11 +148,11 @@ func TestGenesisState_ValidateAclAuthority(t *testing.T) {
 				AclAuthorityList: []types.AclAuthority{
 					{
 						Address: duplicateAddress,
-						Name: "Alice",
+						Name:    "Alice",
 					},
 					{
 						Address: duplicateAddress,
-						Name: "Bob",
+						Name:    "Bob",
 					},
 				},
 			},
