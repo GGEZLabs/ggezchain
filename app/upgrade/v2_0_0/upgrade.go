@@ -1,4 +1,4 @@
-package v1_0_1
+package v2_0_0
 
 import (
 	"context"
@@ -22,7 +22,6 @@ func CreateUpgradeHandler(
 
 		logger := ctx.Logger().With("upgrade", UpgradeName)
 
-		// Leave modules are as-is to avoid running InitGenesis.
 		logger.Debug("running module migrations ...")
 		return mm.RunMigrations(ctx, configurator, fromVM)
 	}

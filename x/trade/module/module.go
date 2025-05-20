@@ -121,7 +121,7 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 	if err := cfg.RegisterMigration(types.ModuleName, 1, func(ctx sdk.Context) error {
 		return nil
 	}); err != nil {
-		panic(fmt.Errorf("failed to register v1_0_1 stored trade migration of %s: %w", types.ModuleName, err))
+		panic(fmt.Errorf("failed to register v2.0.0 stored trade migration of %s: %w", types.ModuleName, err))
 	}
 }
 

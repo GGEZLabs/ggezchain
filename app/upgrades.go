@@ -3,7 +3,8 @@ package app
 import (
 	"fmt"
 
-	v1_0_1 "github.com/GGEZLabs/ggezchain/app/upgrade/v1_0_1"
+	"github.com/GGEZLabs/ggezchain/app/upgrade/v2_0_0"
+	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 
 	storetypes "cosmossdk.io/store/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
@@ -13,8 +14,8 @@ import (
 
 func (app *App) setupUpgradeHandlers(configurator module.Configurator) {
 	app.UpgradeKeeper.SetUpgradeHandler(
-		v1_0_1.UpgradeName,
-		v1_0_1.CreateUpgradeHandler(app.ModuleManager, configurator),
+		v2_0_0.UpgradeName,
+		v2_0_0.CreateUpgradeHandler(app.ModuleManager, configurator),
 	)
 
 	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
@@ -29,12 +30,10 @@ func (app *App) setupUpgradeHandlers(configurator module.Configurator) {
 	var storeUpgrades *storetypes.StoreUpgrades
 
 	switch upgradeInfo.Name {
-	case v1_0_1.UpgradeName:
-
-		// in case you want to add ,rename or delete module uncomment this:
-		// storeUpgrades = &storetypes.StoreUpgrades{
-		// 	Added: []string{"testmodule"},
-		// }
+	case v2_0_0.UpgradeName:
+		storeUpgrades = &storetypes.StoreUpgrades{
+			Added: []string{acltypes.ModuleName},
+		}
 	}
 
 	if storeUpgrades != nil {
