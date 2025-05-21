@@ -57,7 +57,7 @@ func TestValidateAccessDefinitionList(t *testing.T) {
 				return
 			}
 			require.NoError(t, err)
-			require.Equal(t, tt.expectedLen, len(accessDefinitions))
+			require.Len(t, accessDefinitions, tt.expectedLen)
 			require.Equal(t, tt.expectedOutput, accessDefinitions)
 		})
 	}
@@ -522,7 +522,7 @@ func TestValidateAndExtractModuleNames(t *testing.T) {
 			}
 			require.NoError(t, err)
 			require.Equal(t, tt.expectedOutput, modules)
-			require.Equal(t, tt.expectedLen, len(modules))
+			require.Len(t, modules, tt.expectedLen)
 		})
 	}
 }

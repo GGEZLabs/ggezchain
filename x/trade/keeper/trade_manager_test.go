@@ -6,12 +6,10 @@ import (
 	"math/rand"
 	"time"
 
+	sdkmath "cosmossdk.io/math"
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-
-	sdkmath "cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -84,12 +82,12 @@ func (suite *KeeperTestSuite) TestHasPermission() {
 		suite.Run(tt.name, func() {
 			hasPermission, err := suite.app.TradeKeeper.HasPermission(suite.ctx, tt.address, tt.msgType)
 			if tt.expErr {
-				suite.Error(err)
-				suite.Contains(err.Error(), tt.expErrMsg)
+				suite.Require().Error(err)
+				suite.Require().Contains(err.Error(), tt.expErrMsg)
 				return
 			}
-			suite.NoError(err)
-			suite.Equal(hasPermission, tt.expectedOutput)
+			suite.Require().NoError(err)
+			suite.Require().Equal(hasPermission, tt.expectedOutput)
 		})
 	}
 }
@@ -221,12 +219,12 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 		suite.Run(fmt.Sprintf("Case %s", tt.name), func() {
 			status, err := suite.app.TradeKeeper.MintOrBurnCoins(suite.ctx, tt.tradeData)
 			if tt.err != nil {
-				suite.Equal(status, tt.expectedStatus)
-				suite.ErrorIs(err, tt.err)
+				suite.Require().Equal(status, tt.expectedStatus)
+				suite.Require().ErrorIs(err, tt.err)
 				return
 			}
 			supply := suite.app.BankKeeper.GetSupply(suite.ctx, types.DefaultCoinDenom)
-			suite.Equal(supply, tt.expectedSupply)
+			suite.Require().Equal(supply, tt.expectedSupply)
 		})
 	}
 }
@@ -241,10 +239,10 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 		suite.app.TradeKeeper.CancelExpiredPendingTrades(ctx)
 
 		trades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
-		suite.Equal(0, len(trades))
+		suite.Require().Equal(0, len(trades))
 
 		tempTrades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
-		suite.Equal(0, len(tempTrades))
+		suite.Require().Equal(0, len(tempTrades))
 	})
 
 	suite.Run("invalid date format", func() {
@@ -268,11 +266,11 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 		suite.app.TradeKeeper.CancelExpiredPendingTrades(ctx)
 
 		trades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
-		suite.Equal(1, len(trades))
-		suite.Equal(types.StatusPending, trades[0].Status)
+		suite.Require().Equal(1, len(trades))
+		suite.Require().Equal(types.StatusPending, trades[0].Status)
 
 		tempTrades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
-		suite.Equal(1, len(tempTrades))
+		suite.Require().Equal(1, len(tempTrades))
 	})
 
 	suite.Run("cancel multiple trades", func() {
@@ -292,15 +290,15 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 
 		// Total length
 		trades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
-		suite.Equal(25, len(trades))
+		suite.Require().Equal(25, len(trades))
 
 		// Cancelled trade length
 		cancelledTrades := getCancelledTrades(trades)
-		suite.Equal(10, len(cancelledTrades))
+		suite.Require().Equal(10, len(cancelledTrades))
 
 		// Pending trade length
 		tempTradeLength := len(suite.app.TradeKeeper.GetAllStoredTempTrade(ctx))
-		suite.Equal(15, tempTradeLength)
+		suite.Require().Equal(15, tempTradeLength)
 	})
 }
 

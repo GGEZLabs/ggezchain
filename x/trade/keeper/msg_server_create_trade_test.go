@@ -1,19 +1,17 @@
 package keeper_test
 
 import (
+	sdkmath "cosmossdk.io/math"
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-
-	sdkmath "cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (suite *KeeperTestSuite) TestCreateTrade() {
 	indexes := suite.createTrade(1)
-	suite.EqualValues(1, len(indexes))
-	suite.EqualValues(1, indexes[0])
+	suite.Require().EqualValues(1, len(indexes))
+	suite.Require().EqualValues(1, indexes[0])
 }
 
 func (suite *KeeperTestSuite) TestIfTradeSaved() {
@@ -21,14 +19,14 @@ func (suite *KeeperTestSuite) TestIfTradeSaved() {
 	keeper := suite.app.TradeKeeper
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
 }
 
 func (suite *KeeperTestSuite) TestIfTempTradeSaved() {
@@ -36,14 +34,14 @@ func (suite *KeeperTestSuite) TestIfTempTradeSaved() {
 	keeper := suite.app.TradeKeeper
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.StoredTempTrade{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.StoredTempTrade{
 		TradeIndex:     indexes[0],
 		CreateDate:     types.GetSampleStoredTrade(indexes[0]).CreateDate,
 		TempTradeIndex: indexes[0],
@@ -55,14 +53,14 @@ func (suite *KeeperTestSuite) TestGetAllStoredTrade() {
 	keeper := suite.app.TradeKeeper
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	allTrades := keeper.GetAllStoredTrade(suite.ctx)
-	suite.EqualValues(len(allTrades), len(indexes))
-	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), allTrades[0])
+	suite.Require().EqualValues(len(allTrades), len(indexes))
+	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), allTrades[0])
 }
 
 func (suite *KeeperTestSuite) TestGetAllStoredTempTrade() {
@@ -70,13 +68,13 @@ func (suite *KeeperTestSuite) TestGetAllStoredTempTrade() {
 	keeper := suite.app.TradeKeeper
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	allTempTrades := keeper.GetAllStoredTempTrade(suite.ctx)
-	suite.EqualValues(types.StoredTempTrade{
+	suite.Require().EqualValues(types.StoredTempTrade{
 		TradeIndex:     indexes[0],
 		CreateDate:     types.GetSampleStoredTrade(indexes[0]).CreateDate,
 		TempTradeIndex: indexes[0],
@@ -99,8 +97,8 @@ func (suite *KeeperTestSuite) TestCreateTradeWithInvalidMakerPermission() {
 		BankingSystemData: "{}",
 	})
 
-	suite.Nil(createResponse)
-	suite.ErrorIs(err, types.ErrInvalidMakerPermission)
+	suite.Require().Nil(createResponse)
+	suite.Require().ErrorIs(err, types.ErrInvalidMakerPermission)
 }
 
 func (suite *KeeperTestSuite) TestCreateTradeAuthorityAddressNotExist() {
@@ -119,9 +117,9 @@ func (suite *KeeperTestSuite) TestCreateTradeAuthorityAddressNotExist() {
 		BankingSystemData: "{}",
 	})
 
-	suite.Nil(createResponse)
-	suite.ErrorIs(err, acltypes.ErrAuthorityAddressNotExist)
-	suite.Contains(err.Error(), "unauthorized account")
+	suite.Require().Nil(createResponse)
+	suite.Require().ErrorIs(err, acltypes.ErrAuthorityAddressNotExist)
+	suite.Require().Contains(err.Error(), "unauthorized account")
 }
 
 func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
@@ -140,9 +138,9 @@ func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
 		BankingSystemData: "{}",
 	})
 
-	suite.Nil(createResponse)
-	suite.ErrorIs(err, types.ErrModuleNotFound)
-	suite.Contains(err.Error(), "no permission for module trade")
+	suite.Require().Nil(createResponse)
+	suite.Require().ErrorIs(err, types.ErrModuleNotFound)
+	suite.Require().Contains(err.Error(), "no permission for module trade")
 }
 
 func (suite *KeeperTestSuite) TestCreateTradeWithInvalidTradeData() {
@@ -161,8 +159,8 @@ func (suite *KeeperTestSuite) TestCreateTradeWithInvalidTradeData() {
 		BankingSystemData: "{}",
 	})
 
-	suite.Nil(createResponse)
-	suite.ErrorIs(err, types.ErrInvalidTradeInfo)
+	suite.Require().Nil(createResponse)
+	suite.Require().ErrorIs(err, types.ErrInvalidTradeInfo)
 }
 
 func (suite *KeeperTestSuite) TestCreateTrades() {
@@ -171,12 +169,12 @@ func (suite *KeeperTestSuite) TestCreateTrades() {
 
 	for _, tradeIndex := range indexes {
 		trade, found := keeper.GetStoredTrade(suite.ctx, tradeIndex)
-		suite.True(found)
-		suite.EqualValues(types.GetSampleStoredTrade(tradeIndex), trade)
+		suite.Require().True(found)
+		suite.Require().EqualValues(types.GetSampleStoredTrade(tradeIndex), trade)
 
 		tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, tradeIndex)
-		suite.True(found)
-		suite.EqualValues(types.StoredTempTrade{
+		suite.Require().True(found)
+		suite.Require().EqualValues(types.StoredTempTrade{
 			TradeIndex:     tradeIndex,
 			CreateDate:     tempTrade.CreateDate,
 			TempTradeIndex: tradeIndex,
@@ -185,13 +183,13 @@ func (suite *KeeperTestSuite) TestCreateTrades() {
 
 	// check get all trades and temp trades and next trade index
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 	AllTrades := keeper.GetAllStoredTrade(suite.ctx)
-	suite.EqualValues(len(AllTrades), uint64(len(indexes)))
+	suite.Require().EqualValues(len(AllTrades), uint64(len(indexes)))
 
 	AllTempTrades := keeper.GetAllStoredTempTrade(suite.ctx)
-	suite.EqualValues(len(AllTempTrades), uint64(len(indexes)))
+	suite.Require().EqualValues(len(AllTempTrades), uint64(len(indexes)))
 }

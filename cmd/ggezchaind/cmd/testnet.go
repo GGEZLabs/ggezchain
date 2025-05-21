@@ -5,19 +5,15 @@ import (
 	"io"
 	"strings"
 
+	"cosmossdk.io/log"
+	"cosmossdk.io/math"
+	storetypes "cosmossdk.io/store/types"
 	"github.com/GGEZLabs/ggezchain/app"
 	"github.com/cometbft/cometbft/crypto"
 	"github.com/cometbft/cometbft/libs/bytes"
 	tmos "github.com/cometbft/cometbft/libs/os"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	dbm "github.com/cosmos/cosmos-db"
-	"github.com/spf13/cast"
-	"github.com/spf13/cobra"
-
-	"cosmossdk.io/log"
-	"cosmossdk.io/math"
-	storetypes "cosmossdk.io/store/types"
-
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
@@ -28,6 +24,8 @@ import (
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/spf13/cast"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -156,13 +154,25 @@ func initAppForTestnet(app *app.App, args valArgs) *app.App {
 	iterator.Close()
 
 	// Add our validator to power and last validators store
-	app.StakingKeeper.SetValidator(ctx, newVal)
+	err = app.StakingKeeper.SetValidator(ctx, newVal)
+	if err != nil {
+		tmos.Exit(err.Error())
+	}
+
 	err = app.StakingKeeper.SetValidatorByConsAddr(ctx, newVal)
 	if err != nil {
 		tmos.Exit(err.Error())
 	}
-	app.StakingKeeper.SetValidatorByPowerIndex(ctx, newVal)
-	app.StakingKeeper.SetLastValidatorPower(ctx, validator, 0)
+	err = app.StakingKeeper.SetValidatorByPowerIndex(ctx, newVal)
+	if err != nil {
+		tmos.Exit(err.Error())
+	}
+
+	err = app.StakingKeeper.SetLastValidatorPower(ctx, validator, 0)
+	if err != nil {
+		tmos.Exit(err.Error())
+	}
+
 	if err := app.StakingKeeper.Hooks().AfterValidatorCreated(ctx, validator); err != nil {
 		tmos.Exit(err.Error())
 	}
@@ -171,11 +181,25 @@ func initAppForTestnet(app *app.App, args valArgs) *app.App {
 	//
 
 	// Initialize records for this validator across all distribution stores
-	app.DistrKeeper.SetValidatorHistoricalRewards(ctx, validator, 0, distrtypes.NewValidatorHistoricalRewards(sdk.DecCoins{}, 1))
-	app.DistrKeeper.SetValidatorCurrentRewards(ctx, validator, distrtypes.NewValidatorCurrentRewards(sdk.DecCoins{}, 1))
-	app.DistrKeeper.SetValidatorAccumulatedCommission(ctx, validator, distrtypes.InitialValidatorAccumulatedCommission())
-	app.DistrKeeper.SetValidatorOutstandingRewards(ctx, validator, distrtypes.ValidatorOutstandingRewards{Rewards: sdk.DecCoins{}})
+	err = app.DistrKeeper.SetValidatorHistoricalRewards(ctx, validator, 0, distrtypes.NewValidatorHistoricalRewards(sdk.DecCoins{}, 1))
+	if err != nil {
+		tmos.Exit(err.Error())
+	}
 
+	err = app.DistrKeeper.SetValidatorCurrentRewards(ctx, validator, distrtypes.NewValidatorCurrentRewards(sdk.DecCoins{}, 1))
+	if err != nil {
+		tmos.Exit(err.Error())
+	}
+
+	err = app.DistrKeeper.SetValidatorAccumulatedCommission(ctx, validator, distrtypes.InitialValidatorAccumulatedCommission())
+	if err != nil {
+		tmos.Exit(err.Error())
+	}
+
+	err = app.DistrKeeper.SetValidatorOutstandingRewards(ctx, validator, distrtypes.ValidatorOutstandingRewards{Rewards: sdk.DecCoins{}})
+	if err != nil {
+		tmos.Exit(err.Error())
+	}
 	// SLASHING
 	//
 
@@ -186,8 +210,10 @@ func initAppForTestnet(app *app.App, args valArgs) *app.App {
 		StartHeight: app.LastBlockHeight() - 1,
 		Tombstoned:  false,
 	}
-	app.SlashingKeeper.SetValidatorSigningInfo(ctx, newConsAddr, newValidatorSigningInfo)
-
+	err = app.SlashingKeeper.SetValidatorSigningInfo(ctx, newConsAddr, newValidatorSigningInfo)
+	if err != nil {
+		tmos.Exit(err.Error())
+	}
 	// BANK
 	//
 	bondDenom, err := app.StakingKeeper.BondDenom(ctx)

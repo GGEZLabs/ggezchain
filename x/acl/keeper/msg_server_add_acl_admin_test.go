@@ -5,9 +5,8 @@ import (
 
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
-	"github.com/stretchr/testify/require"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgAddAclAdmin(t *testing.T) {
@@ -64,7 +63,7 @@ func TestMsgAddAclAdmin(t *testing.T) {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)
 			} else {
-				require.Equal(t, len(k.GetAllAclAdmin(ctx)), tc.expectedLen)
+				require.Len(t, k.GetAllAclAdmin(ctx), tc.expectedLen)
 				require.NoError(t, err)
 			}
 		})

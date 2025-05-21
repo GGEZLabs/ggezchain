@@ -4,9 +4,8 @@ import (
 	"testing"
 
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	"github.com/stretchr/testify/require"
-
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgInitAclAdmin_ValidateBasic(t *testing.T) {

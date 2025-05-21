@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+include contrib/devtools/lint.mk
+
 VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
 COMMIT := $(shell git log -1 --format='%H')
 LEDGER_ENABLED ?= true
@@ -164,10 +166,10 @@ benchmark:
 golangci_lint_cmd=golangci-lint
 golangci_version=v1.61.0
 
-lint:
-	@echo "--> Running linter"
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(golangci_version)
-	@$(golangci_lint_cmd) run ./... --timeout 15m
+# lint:
+# 	@echo "--> Running linter"
+# 	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(golangci_version)
+# 	@$(golangci_lint_cmd) run ./... --timeout 15m
 
 format-tools:
 	go install mvdan.cc/gofumpt@v0.4.0

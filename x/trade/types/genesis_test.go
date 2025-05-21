@@ -3,13 +3,11 @@ package types_test
 import (
 	"testing"
 
+	"cosmossdk.io/math"
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	"github.com/stretchr/testify/require"
-
-	"cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGenesisState_Validate(t *testing.T) {

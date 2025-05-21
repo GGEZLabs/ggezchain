@@ -3,13 +3,11 @@ package types
 import (
 	"testing"
 
-	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	"github.com/stretchr/testify/require"
-
 	"cosmossdk.io/math"
-
+	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgCreateTrade_ValidateBasic(t *testing.T) {

@@ -10,9 +10,9 @@ import (
 
 // ValidateAccessDefinitionList takes a JSON string of access definitions, validates it,
 // and returns a structured slice of AccessDefinition or an error if invalid.
-func ValidateAccessDefinitionList(AccessDefinitionListStr string) ([]*AccessDefinition, error) {
+func ValidateAccessDefinitionList(accessDefinitionListStr string) ([]*AccessDefinition, error) {
 	var accessDefinitionList []*AccessDefinition
-	if err := json.Unmarshal([]byte(AccessDefinitionListStr), &accessDefinitionList); err != nil {
+	if err := json.Unmarshal([]byte(accessDefinitionListStr), &accessDefinitionList); err != nil {
 		return nil, ErrInvalidAccessDefinitionList
 	}
 

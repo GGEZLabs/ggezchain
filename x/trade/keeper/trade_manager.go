@@ -7,7 +7,6 @@ import (
 
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -114,7 +113,6 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 		totalDays := int(differenceTime.Hours() / 24)
 
 		if totalDays >= 1 {
-
 			storedTrade, _ := k.GetStoredTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
 			storedTrade.Status = types.StatusCanceled
 			storedTrade.UpdateDate = currentDate.Format(time.RFC3339)
@@ -124,7 +122,6 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 
 			canceledIds = append(canceledIds, allStoredTempTrade[i].TempTradeIndex)
 		}
-
 	}
 
 	if len(canceledIds) > 0 {

@@ -3,7 +3,6 @@ package acl
 import (
 	"github.com/GGEZLabs/ggezchain/x/acl/keeper"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

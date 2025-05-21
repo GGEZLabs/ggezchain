@@ -3,11 +3,9 @@ package keeper
 import (
 	"fmt"
 
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
-
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
-
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

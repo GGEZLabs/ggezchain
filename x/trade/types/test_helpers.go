@@ -3,10 +3,8 @@ package types
 import (
 	"encoding/json"
 
-	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
-
 	"cosmossdk.io/math"
-
+	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

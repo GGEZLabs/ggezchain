@@ -5,10 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
-
 	errorsmod "cosmossdk.io/errors"
-
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )

@@ -134,7 +134,7 @@ func TestConvertStringsToAclAdmins(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			acladmins := ConvertStringsToAclAdmins(tt.addresses)
-			require.EqualValues(t, len(acladmins), tt.expectedLen)
+			require.Len(t, acladmins, tt.expectedLen)
 		})
 	}
 }
@@ -202,7 +202,7 @@ func TestHasDuplicateAddresses(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			hasDuplicate := hasDuplicateAddresses(tt.addresses)
-			require.EqualValues(t, hasDuplicate, tt.expectedOutput)
+			require.EqualValues(t, tt.expectedOutput, hasDuplicate)
 		})
 	}
 }

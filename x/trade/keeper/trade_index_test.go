@@ -12,7 +12,9 @@ import (
 )
 
 func createTestTradeIndex(keeper keeper.Keeper, ctx context.Context) types.TradeIndex {
-	item := types.TradeIndex{}
+	item := types.TradeIndex{
+		NextId: 1,
+	}
 	keeper.SetTradeIndex(ctx, item)
 	return item
 }

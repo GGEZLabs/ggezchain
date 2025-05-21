@@ -3,22 +3,20 @@ package keeper_test
 import (
 	"testing"
 
+	sdkmath "cosmossdk.io/math"
 	ggezchainapp "github.com/GGEZLabs/ggezchain/app"
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	tmtypes "github.com/cometbft/cometbft/types"
-	"github.com/stretchr/testify/suite"
-
-	sdkmath "cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/testutil/mock"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/stretchr/testify/suite"
 )
 
 type KeeperTestSuite struct {
@@ -37,7 +35,7 @@ func TestTradeKeeperTestSuite(t *testing.T) {
 func (suite *KeeperTestSuite) setupTest() {
 	privVal := mock.NewPV()
 	pubKey, err := privVal.GetPubKey()
-	suite.NoError(err)
+	suite.Require().NoError(err)
 	// create validator set with single validator
 	validator := tmtypes.NewValidator(pubKey, 1)
 	valSet := tmtypes.NewValidatorSet([]*tmtypes.Validator{validator})
@@ -125,8 +123,8 @@ func (suite *KeeperTestSuite) createTrade(numberOfTrades uint64) (tradeIndex []u
 
 	for i := uint64(0); i < numberOfTrades; i++ {
 		createResponse, err := suite.msgServer.CreateTrade(suite.ctx, types.GetSampleMsgCreateTrade())
-		suite.Nil(err)
-		suite.EqualValues(types.MsgCreateTradeResponse{
+		suite.Require().NoError(err)
+		suite.Require().EqualValues(types.MsgCreateTradeResponse{
 			TradeIndex: i + 1,
 			Status:     types.StatusPending,
 		}, *createResponse)

@@ -150,7 +150,7 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 				require.Contains(t, err.Error(), tc.expErrMsg)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, tc.expectedLen, len(aclAuthority.AccessDefinitions))
+				require.Len(t, aclAuthority.AccessDefinitions, tc.expectedLen)
 				require.Equal(t, tc.expectedOutput, aclAuthority.AccessDefinitions)
 			}
 		})
@@ -241,7 +241,7 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 				require.Contains(t, err.Error(), tc.expErrMsg)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, aclAuthority.AccessDefinitions, tc.expectedOutput)
+				require.Equal(t, tc.expectedOutput, aclAuthority.AccessDefinitions)
 			}
 		})
 	}
@@ -350,7 +350,7 @@ func TestAddAccessDefinitions(t *testing.T) {
 				require.Contains(t, err.Error(), tc.expErrMsg)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, tc.expectedLen, len(aclAuthority.AccessDefinitions))
+				require.Len(t, aclAuthority.AccessDefinitions, tc.expectedLen)
 				require.Equal(t, tc.expectedOutput, aclAuthority.AccessDefinitions)
 			}
 		})
@@ -434,7 +434,7 @@ func TestDeleteAccessDefinitions(t *testing.T) {
 				require.Contains(t, err.Error(), tc.expErrMsg)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, tc.expectedLen, len(aclAuthority.AccessDefinitions))
+				require.Len(t, aclAuthority.AccessDefinitions, tc.expectedLen)
 				require.Equal(t, tc.expectedOutput, aclAuthority.AccessDefinitions)
 			}
 		})
@@ -486,7 +486,7 @@ func TestClearAllAccessDefinitions(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			aclAuthority := keeper.ClearAllAccessDefinitions(tc.inputAclAuthority)
-			require.Equal(t, tc.expectedLen, len(aclAuthority.AccessDefinitions))
+			require.Len(t, aclAuthority.AccessDefinitions, tc.expectedLen)
 		})
 	}
 }

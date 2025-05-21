@@ -5,10 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
-
 	errorsmod "cosmossdk.io/errors"
-
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -65,7 +63,6 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 		}
 	} else if msg.ProcessType == types.ProcessTypeConfirm {
 		status, err = k.MintOrBurnCoins(ctx, tradeData)
-
 		if err != nil {
 			result = err.Error()
 		}

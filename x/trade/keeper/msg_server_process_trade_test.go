@@ -1,11 +1,9 @@
 package keeper_test
 
 import (
+	sdkmath "cosmossdk.io/math"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-
-	sdkmath "cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -17,8 +15,8 @@ func (suite *KeeperTestSuite) TestProcessTradeConfirm() {
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.Nil(err)
-	suite.EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().Nil(err)
+	suite.Require().EqualValues(types.MsgProcessTradeResponse{
 		TradeIndex: indexes[0],
 		Status:     types.StatusProcessed,
 	}, *processResponse)
@@ -32,8 +30,8 @@ func (suite *KeeperTestSuite) TestProcessTradeReject() {
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  indexes[0],
 	})
-	suite.Nil(err)
-	suite.EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().Nil(err)
+	suite.Require().EqualValues(types.MsgProcessTradeResponse{
 		TradeIndex: indexes[0],
 		Status:     types.StatusRejected,
 	}, *processResponse)
@@ -47,7 +45,7 @@ func (suite *KeeperTestSuite) TestProcessTradeWithInvalidCheckerPermission() {
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.ErrorIs(err, types.ErrInvalidCheckerPermission)
+	suite.Require().ErrorIs(err, types.ErrInvalidCheckerPermission)
 }
 
 func (suite *KeeperTestSuite) TestStoredTradeAfterConfirmTrade() {
@@ -55,25 +53,25 @@ func (suite *KeeperTestSuite) TestStoredTradeAfterConfirmTrade() {
 	keeper := suite.app.TradeKeeper
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
 
 	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.Nil(err)
+	suite.Require().Nil(err)
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	trade, found = keeper.GetStoredTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.GetSampleStoredTradeConfirmed(indexes[0]), trade)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.GetSampleStoredTradeConfirmed(indexes[0]), trade)
 }
 
 func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
@@ -81,8 +79,8 @@ func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
 	keeper := suite.app.TradeKeeper
 
 	tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.StoredTempTrade{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.StoredTempTrade{
 		TradeIndex:     1,
 		CreateDate:     types.GetSampleStoredTrade(indexes[0]).CreateDate,
 		TempTradeIndex: 1,
@@ -93,19 +91,19 @@ func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.Nil(err)
+	suite.Require().Nil(err)
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	// should remove temp trade after process
 	tempTrade, found = keeper.GetStoredTempTrade(suite.ctx, indexes[0])
-	suite.False(found)
-	suite.EqualValues(types.StoredTempTrade{
+	suite.Require().False(found)
+	suite.Require().EqualValues(types.StoredTempTrade{
 		TradeIndex:     0,
 		CreateDate:     "",
 		TempTradeIndex: 0,
@@ -117,26 +115,26 @@ func (suite *KeeperTestSuite) TestStoredTradeAfterRejectTrade() {
 	keeper := suite.app.TradeKeeper
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
 
 	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  indexes[0],
 	})
-	suite.Nil(err)
+	suite.Require().Nil(err)
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	trade, found = keeper.GetStoredTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.GetSampleStoredTradeRejected(indexes[0]), trade)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.GetSampleStoredTradeRejected(indexes[0]), trade)
 }
 
 func (suite *KeeperTestSuite) TestTempTradeAfterRejectTrade() {
@@ -148,19 +146,19 @@ func (suite *KeeperTestSuite) TestTempTradeAfterRejectTrade() {
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  indexes[0],
 	})
-	suite.Nil(err)
+	suite.Require().Nil(err)
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, 1)
 
-	suite.False(found)
-	suite.EqualValues(types.StoredTempTrade{
+	suite.Require().False(found)
+	suite.Require().EqualValues(types.StoredTempTrade{
 		TradeIndex:     0,
 		CreateDate:     "",
 		TempTradeIndex: 0,
@@ -173,30 +171,29 @@ func (suite *KeeperTestSuite) TestProcessTwoTrade() {
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	tempTrades := keeper.GetAllStoredTempTrade(suite.ctx)
 	trades := keeper.GetAllStoredTrade(suite.ctx)
-	suite.EqualValues(len(tempTrades), len(indexes))
-	suite.EqualValues(len(trades), len(indexes))
+	suite.Require().EqualValues(len(tempTrades), len(indexes))
+	suite.Require().EqualValues(len(trades), len(indexes))
 
 	for _, tradeIndex := range indexes {
-
 		_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 			Creator:     testutil.Bob,
 			ProcessType: types.ProcessTypeConfirm,
 			TradeIndex:  tradeIndex,
 		})
-		suite.Nil(err)
+		suite.Require().Nil(err)
 	}
 
 	tempTrades = keeper.GetAllStoredTempTrade(suite.ctx)
 	trades = keeper.GetAllStoredTrade(suite.ctx)
-	suite.EqualValues(len(tempTrades), 0)
-	suite.EqualValues(len(trades), len(indexes))
+	suite.Require().EqualValues(len(tempTrades), 0)
+	suite.Require().EqualValues(len(trades), len(indexes))
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeInsufficientFund() {
@@ -227,8 +224,8 @@ func (suite *KeeperTestSuite) TestProcessTradeInsufficientFund() {
 	suite.Require().NoError(err)
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, 2)
-	suite.True(found)
-	suite.EqualValues(types.StatusFailed, trade.Status)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.StatusFailed, trade.Status)
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeAlreadyConfirmed() {
@@ -236,25 +233,25 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyConfirmed() {
 	keeper := suite.app.TradeKeeper
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
 
 	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.Nil(err)
+	suite.Require().Nil(err)
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	trade, found = keeper.GetStoredTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.GetSampleStoredTradeConfirmed(indexes[0]), trade)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.GetSampleStoredTradeConfirmed(indexes[0]), trade)
 
 	// process confirmed trade
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
@@ -262,7 +259,7 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyConfirmed() {
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.ErrorIs(err, types.ErrInvalidTradeStatus)
+	suite.Require().ErrorIs(err, types.ErrInvalidTradeStatus)
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeAlreadyRejected() {
@@ -270,25 +267,25 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyRejected() {
 	keeper := suite.app.TradeKeeper
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
 
 	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  indexes[0],
 	})
-	suite.Nil(err)
+	suite.Require().Nil(err)
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	trade, found = keeper.GetStoredTrade(suite.ctx, indexes[0])
-	suite.True(found)
-	suite.EqualValues(types.GetSampleStoredTradeRejected(indexes[0]), trade)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.GetSampleStoredTradeRejected(indexes[0]), trade)
 
 	// process confirmed trade
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
@@ -296,7 +293,7 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyRejected() {
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  indexes[0],
 	})
-	suite.ErrorIs(err, types.ErrInvalidTradeStatus)
+	suite.Require().ErrorIs(err, types.ErrInvalidTradeStatus)
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeCheckerIsNotMaker() {
@@ -304,7 +301,7 @@ func (suite *KeeperTestSuite) TestProcessTradeCheckerIsNotMaker() {
 	msg := types.GetSampleMsgCreateTrade()
 	msg.Creator = testutil.Trent
 	_, err := suite.msgServer.CreateTrade(suite.ctx, msg)
-	suite.Nil(err)
+	suite.Require().Nil(err)
 
 	keeper := suite.app.TradeKeeper
 
@@ -313,17 +310,17 @@ func (suite *KeeperTestSuite) TestProcessTradeCheckerIsNotMaker() {
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  1,
 	})
-	suite.ErrorIs(err, types.ErrCheckerMustBeDifferent)
+	suite.Require().ErrorIs(err, types.ErrCheckerMustBeDifferent)
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
-	suite.True(found)
-	suite.EqualValues(types.TradeIndex{
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.TradeIndex{
 		NextId: 2,
 	}, tradeIndex)
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, 1)
-	suite.True(found)
-	suite.EqualValues(types.StatusPending, trade.Status)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.StatusPending, trade.Status)
 }
 
 func (suite *KeeperTestSuite) TestSupplyAfterProcessTrade() {

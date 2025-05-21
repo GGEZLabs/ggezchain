@@ -1,9 +1,8 @@
 package trade
 
 import (
-	modulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/trade"
-
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
+	modulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/trade"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.

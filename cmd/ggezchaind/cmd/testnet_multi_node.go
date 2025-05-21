@@ -12,14 +12,10 @@ import (
 	"strings"
 	"time"
 
+	"cosmossdk.io/math"
 	cmtconfig "github.com/cometbft/cometbft/config"
 	types "github.com/cometbft/cometbft/types"
 	tmtime "github.com/cometbft/cometbft/types/time"
-	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
-
-	"cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -37,6 +33,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 var (
@@ -325,7 +323,10 @@ func initTestnetFiles(
 			if err != nil || yes {
 				continue
 			}
-			copyFile(file, gentxsDir)
+			_, err = copyFile(file, gentxsDir)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	err := collectGenFiles(
@@ -526,7 +527,7 @@ func isSubDir(src, dstDir string) (bool, error) {
 // generateRandomString generates a random string of the specified length.
 func generateRandomString(length int) string {
 	const charset = "abcdefghijklmnopqrstuvwxyz0123456789"
-	var seededRand *rand.Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
+	seededRand := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	b := make([]byte, length)
 	for i := range b {

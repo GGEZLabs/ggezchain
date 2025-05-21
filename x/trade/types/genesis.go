@@ -17,7 +17,7 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		TradeIndex: TradeIndex{
-			NextId: uint64(DefaultIndex),
+			NextId: DefaultIndex,
 		},
 		StoredTradeList:     []StoredTrade{},
 		StoredTempTradeList: []StoredTempTrade{},
@@ -52,7 +52,6 @@ func (gs GenesisState) ValidateStoredTrade() error {
 	storedTradeIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.StoredTradeList {
-
 		if elem.TradeIndex <= 0 {
 			return fmt.Errorf("trade_index must be more than 0")
 		}
@@ -117,19 +116,16 @@ func (gs GenesisState) ValidateStoredTrade() error {
 		}
 
 		_, err = time.Parse(time.RFC3339, elem.CreateDate)
-
 		if err != nil {
 			return fmt.Errorf("invalid create_date format, trade_index: %d", elem.TradeIndex)
 		}
 
 		_, err = time.Parse(time.RFC3339, elem.UpdateDate)
-
 		if err != nil {
 			return fmt.Errorf("invalid update_date format, trade_index: %d", elem.TradeIndex)
 		}
 
 		_, err = time.Parse(time.RFC3339, elem.ProcessDate)
-
 		if err != nil {
 			return fmt.Errorf("invalid process_date format, trade_index: %d", elem.TradeIndex)
 		}
@@ -175,7 +171,6 @@ func (gs GenesisState) ValidateStoredTempTrade() error {
 		if err != nil {
 			return fmt.Errorf("invalid create_date format, trade_index: %d", elem.TradeIndex)
 		}
-
 	}
 	return nil
 }

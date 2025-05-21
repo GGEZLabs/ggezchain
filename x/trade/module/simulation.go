@@ -6,7 +6,6 @@ import (
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	tradesimulation "github.com/GGEZLabs/ggezchain/x/trade/simulation"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"

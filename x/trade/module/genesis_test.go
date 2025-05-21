@@ -3,16 +3,14 @@ package trade_test
 import (
 	"testing"
 
+	"cosmossdk.io/math"
 	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
 	"github.com/GGEZLabs/ggezchain/testutil/nullify"
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	trade "github.com/GGEZLabs/ggezchain/x/trade/module"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	"github.com/stretchr/testify/require"
-
-	"cosmossdk.io/math"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGenesis(t *testing.T) {

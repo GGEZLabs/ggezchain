@@ -6,7 +6,6 @@ import (
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	aclsimulation "github.com/GGEZLabs/ggezchain/x/acl/simulation"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"

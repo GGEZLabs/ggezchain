@@ -3,12 +3,10 @@ package app
 import (
 	"fmt"
 
-	"github.com/GGEZLabs/ggezchain/app/upgrade/v2_0_0"
-	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
-
 	storetypes "cosmossdk.io/store/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-
+	"github.com/GGEZLabs/ggezchain/app/upgrade/v2_0_0"
+	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 )
 
@@ -29,12 +27,17 @@ func (app *App) setupUpgradeHandlers(configurator module.Configurator) {
 
 	var storeUpgrades *storetypes.StoreUpgrades
 
-	switch upgradeInfo.Name {
-	case v2_0_0.UpgradeName:
+	if upgradeInfo.Name == v2_0_0.UpgradeName {
 		storeUpgrades = &storetypes.StoreUpgrades{
 			Added: []string{acltypes.ModuleName},
 		}
 	}
+	// switch upgradeInfo.Name {
+	// case v2_0_0.UpgradeName:
+	// 	storeUpgrades = &storetypes.StoreUpgrades{
+	// 		Added: []string{acltypes.ModuleName},
+	// 	}
+	// }
 
 	if storeUpgrades != nil {
 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, storeUpgrades))

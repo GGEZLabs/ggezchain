@@ -5,7 +5,6 @@ import (
 
 	"github.com/GGEZLabs/ggezchain/x/acl/keeper"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
-
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
