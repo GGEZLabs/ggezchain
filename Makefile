@@ -1,5 +1,6 @@
 #!/usr/bin/make -f
 
+include contrib/devtools/Makefile
 include contrib/devtools/lint.mk
 
 VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
@@ -79,9 +80,6 @@ ldflags := $(strip $(ldflags))
 
 BUILD_FLAGS := -tags "$(build_tags_comma_sep)" -ldflags '$(ldflags)' -trimpath
 
-# The below include contains the tools and runsim targets.
-include contrib/devtools/Makefile
-
 all: install lint test
 
 build: go.sum
@@ -89,31 +87,11 @@ ifeq ($(OS),Windows_NT)
 	$(error wasmd server not supported. Use "make build-windows-client" for client)
 	exit 1
 else
-	go build -mod=readonly $(BUILD_FLAGS) -o build/ggezchaind ./cmd/ggezchaind
+	go build -mod=readonly $(BUILD_FLAGS) -o $(OUTPUT_DIR)/ggezchaind ./cmd/ggezchaind
 endif
 
-build-all: clean
-	@echo "Building production binaries..."
-	@mkdir -p $(OUTPUT_DIR)
-
-	@for platform in $(PLATFORMS); do \
-		OS=$$(echo $$platform | cut -d '/' -f1); \
-		ARCH=$$(echo $$platform | cut -d '/' -f2); \
-		OUTPUT_NAME=$(OUTPUT_DIR)/$(APPNAME)d-$(VERSION)-$$OS-$$ARCH; \
-		echo "Building for $$OS/$$ARCH..."; \
-		GOOS=$$OS GOARCH=$$ARCH go build $(BUILD_FLAGS) -o $$OUTPUT_NAME ./cmd/$(APPNAME)d; \
-		chmod +x $$OUTPUT_NAME; \
-		tar -czvf $$OUTPUT_NAME.tar.gz -C $(OUTPUT_DIR) $$(basename $$OUTPUT_NAME); \
-	done
-
-	@echo "Generating checksum files..."
-	@cd $(OUTPUT_DIR) && sha256sum * > checksums.txt
-
-	@echo "Build complete. Binaries and checksums are available in '$(OUTPUT_DIR)'."
-
-
 build-windows-client: go.sum
-	GOOS=windows GOARCH=amd64 go build -mod=readonly $(BUILD_FLAGS) -o build/ggezchaind.exe ./cmd/ggezchaind
+	GOOS=windows GOARCH=amd64 go build -mod=readonly $(BUILD_FLAGS) -o $(OUTPUT_DIR)/ggezchaind.exe ./cmd/ggezchaind
 
 install: go.sum
 	go install -mod=readonly $(BUILD_FLAGS) ./cmd/ggezchaind
@@ -134,7 +112,7 @@ clean:
 	rm -rf $(OUTPUT_DIR)/*
 
 .PHONY: all install \
-	go-mod-cache clean build build-all \
+	go-mod-cache clean build \
     build-windows-client
 
 ########################################
@@ -163,8 +141,8 @@ benchmark:
 ###                                Linting                                  ###
 ###############################################################################
 
-golangci_lint_cmd=golangci-lint
-golangci_version=v1.61.0
+# golangci_lint_cmd=golangci-lint
+# golangci_version=v1.61.0
 
 # lint:
 # 	@echo "--> Running linter"
