@@ -1,13 +1,11 @@
 package keeper_test
 
 import (
-	"fmt"
 	"math"
 	"math/rand"
 	"time"
 
 	sdkmath "cosmossdk.io/math"
-	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -26,7 +24,7 @@ func (suite *KeeperTestSuite) TestHasPermission() {
 	}{
 		{
 			name:           "authority not found",
-			address:        sample.AccAddress(),
+			address:        testutil.Eve,
 			msgType:        types.TxTypeCreateTrade,
 			expectedOutput: false,
 			expErr:         true,
@@ -80,7 +78,7 @@ func (suite *KeeperTestSuite) TestHasPermission() {
 
 	for _, tt := range tests {
 		suite.Run(tt.name, func() {
-			hasPermission, err := suite.app.TradeKeeper.HasPermission(suite.ctx, tt.address, tt.msgType)
+			hasPermission, err := suite.tradeKeeper.HasPermission(suite.ctx, tt.address, tt.msgType)
 			if tt.expErr {
 				suite.Require().Error(err)
 				suite.Require().Contains(err.Error(), tt.expErrMsg)
@@ -94,139 +92,276 @@ func (suite *KeeperTestSuite) TestHasPermission() {
 
 func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 	suite.setupTest()
-	tests := []struct {
-		name           string
-		tradeData      types.StoredTrade
-		expectedStatus types.TradeStatus
-		expectedSupply sdk.Coin
-		err            error
-	}{
-		{
-			name: "invalid receiver address",
-			tradeData: types.StoredTrade{
-				ReceiverAddress: "invalid_address",
-				TradeType:       types.TradeTypeSell,
-			},
-			expectedStatus: types.StatusFailed,
-			err:            types.ErrInvalidReceiverAddress,
-		},
-		{
-			name: "invalid trade type",
-			tradeData: types.StoredTrade{
-				ReceiverAddress: sample.AccAddress(),
-				Amount: &sdk.Coin{
-					Denom:  types.DefaultCoinDenom,
-					Amount: sdkmath.NewInt(10000000),
-				},
-				TradeType: types.TradeTypeUnspecified,
-			},
-			expectedStatus: types.StatusFailed,
-			err:            types.ErrInvalidTradeType,
-		},
-		{
-			name: "unknown denom",
-			tradeData: types.StoredTrade{
-				ReceiverAddress: sample.AccAddress(),
-				Amount: &sdk.Coin{
-					Denom:  "unknown_denom",
-					Amount: sdkmath.NewInt(10000000),
-				},
-				TradeType: types.TradeTypeSell,
-			},
-			expectedStatus: types.StatusFailed,
-			err:            sdkerrors.ErrInsufficientFunds,
-		},
-		{
-			name: "mint max amount coins",
-			tradeData: types.StoredTrade{
-				Amount: &sdk.Coin{
-					Denom:  types.DefaultCoinDenom,
-					Amount: sdkmath.NewInt(math.MaxInt64),
-				},
-				ReceiverAddress: testutil.Alice,
-				TradeType:       types.TradeTypeBuy,
-			},
-			expectedStatus: types.StatusProcessed,
-			expectedSupply: sdk.Coin{
-				Denom:  types.DefaultCoinDenom,
-				Amount: sdkmath.NewInt(math.MaxInt64),
-			},
-		},
-		{
-			name: "burn max amount coins",
-			tradeData: types.StoredTrade{
-				Amount: &sdk.Coin{
-					Denom:  types.DefaultCoinDenom,
-					Amount: sdkmath.NewInt(math.MaxInt64),
-				},
-				ReceiverAddress: testutil.Alice,
-				TradeType:       types.TradeTypeSell,
-			},
-			expectedStatus: types.StatusProcessed,
-			expectedSupply: sdk.Coin{
-				Denom:  types.DefaultCoinDenom,
-				Amount: sdkmath.NewInt(0),
-			},
-		},
-		{
-			name: "mint coins",
-			tradeData: types.StoredTrade{
-				Amount: &sdk.Coin{
-					Denom:  types.DefaultCoinDenom,
-					Amount: sdkmath.NewInt(10000000),
-				},
-				ReceiverAddress: testutil.Alice,
-				TradeType:       types.TradeTypeBuy,
-			},
-			expectedStatus: types.StatusProcessed,
-			expectedSupply: sdk.Coin{
-				Denom:  types.DefaultCoinDenom,
+
+	suite.Run("invalid receiver address", func() {
+		tradeData := types.StoredTrade{
+			ReceiverAddress: "invalid_address",
+			TradeType:       types.TradeTypeSell,
+		}
+
+		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
+		suite.Require().Equal(status, types.StatusFailed)
+		suite.Require().ErrorIs(err, types.ErrInvalidReceiverAddress)
+	})
+
+	suite.Run("invalid trade type", func() {
+		tradeData := types.StoredTrade{
+			ReceiverAddress: testutil.Alice,
+			Amount: &sdk.Coin{
+				Denom:  types.DefaultDenom,
 				Amount: sdkmath.NewInt(10000000),
 			},
-		},
-		{
-			name: "burn fails when burn amount exceeds module account balance",
-			tradeData: types.StoredTrade{
-				Amount: &sdk.Coin{
-					Denom:  types.DefaultCoinDenom,
+			TradeType: types.TradeTypeUnspecified,
+		}
+
+		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
+		suite.Require().Equal(status, types.StatusFailed)
+		suite.Require().ErrorIs(err, types.ErrInvalidTradeType)
+	})
+
+	suite.Run("unknown denom", func() {
+		tradeData := types.StoredTrade{
+			ReceiverAddress: testutil.Alice,
+			Amount: &sdk.Coin{
+				Denom:  "unknown_denom",
+				Amount: sdkmath.NewInt(10000000),
+			},
+			TradeType: types.TradeTypeSell,
+		}
+
+		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, receiverAddress, types.ModuleName, sdk.Coins{
+			{
+				Denom:  "unknown_denom",
+				Amount: sdkmath.NewInt(10000000),
+			},
+		}).Return(sdkerrors.ErrInsufficientFunds).Times(1)
+
+		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
+		suite.Require().Equal(status, types.StatusFailed)
+		suite.Require().ErrorIs(err, sdkerrors.ErrInsufficientFunds)
+	})
+
+	suite.Run("mint max amount coins", func() {
+		tradeData := types.StoredTrade{
+			Amount: &sdk.Coin{
+				Denom:  types.DefaultDenom,
+				Amount: sdkmath.NewInt(math.MaxInt64),
+			},
+			ReceiverAddress: testutil.Alice,
+			TradeType:       types.TradeTypeBuy,
+		}
+
+		suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName,
+			sdk.Coins{
+				{
+					Denom:  types.DefaultDenom,
+					Amount: sdkmath.NewInt(math.MaxInt64),
+				},
+			}).Return(nil).Times(1)
+
+		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName,
+			receiverAddress,
+			sdk.Coins{
+				{
+					Denom:  types.DefaultDenom,
+					Amount: sdkmath.NewInt(math.MaxInt64),
+				},
+			}).Return(nil).Times(1)
+
+		suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(math.MaxInt64),
+		}).Times(1)
+
+		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
+		suite.Require().Equal(status, types.StatusProcessed)
+		suite.Require().NoError(err)
+		supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
+		suite.Require().Equal(supply, sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(math.MaxInt64),
+		})
+	})
+
+	suite.Run("burn max amount coins", func() {
+		tradeData := types.StoredTrade{
+			Amount: &sdk.Coin{
+				Denom:  types.DefaultDenom,
+				Amount: sdkmath.NewInt(math.MaxInt64),
+			},
+			ReceiverAddress: testutil.Alice,
+			TradeType:       types.TradeTypeSell,
+		}
+
+		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, receiverAddress,
+			types.ModuleName,
+			sdk.Coins{
+				{
+					Denom:  types.DefaultDenom,
+					Amount: sdkmath.NewInt(math.MaxInt64),
+				},
+			}).Return(nil).Times(1)
+
+		suite.bankKeeper.EXPECT().BurnCoins(suite.ctx, types.ModuleName,
+			sdk.Coins{
+				{
+					Denom:  types.DefaultDenom,
+					Amount: sdkmath.NewInt(math.MaxInt64),
+				},
+			}).Return(nil).Times(1)
+
+		suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(0),
+		}).Times(1)
+
+		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
+		suite.Require().Equal(status, types.StatusProcessed)
+		suite.Require().NoError(err)
+		supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
+		suite.Require().Equal(supply, sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(0),
+		})
+	})
+
+	suite.Run("mint coins", func() {
+		tradeData := types.StoredTrade{
+			Amount: &sdk.Coin{
+				Denom:  types.DefaultDenom,
+				Amount: sdkmath.NewInt(10000000),
+			},
+			ReceiverAddress: testutil.Alice,
+			TradeType:       types.TradeTypeBuy,
+		}
+
+		suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName,
+			sdk.Coins{
+				{
+					Denom:  types.DefaultDenom,
+					Amount: sdkmath.NewInt(10000000),
+				},
+			}).Return(nil).Times(1)
+
+		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName,
+			receiverAddress,
+			sdk.Coins{
+				{
+					Denom:  types.DefaultDenom,
+					Amount: sdkmath.NewInt(10000000),
+				},
+			}).Return(nil).Times(1)
+
+		suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(10000000),
+		}).Times(1)
+
+		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
+		suite.Require().Equal(status, types.StatusProcessed)
+		suite.Require().NoError(err)
+		supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
+		suite.Require().Equal(supply, sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(10000000),
+		})
+	})
+
+	suite.Run("send coins from account to module fails when sent amount exceeds account balance", func() {
+		tradeData := types.StoredTrade{
+			Amount: &sdk.Coin{
+				Denom:  types.DefaultDenom,
+				Amount: sdkmath.NewInt(100000000000000),
+			},
+			ReceiverAddress: testutil.Alice,
+			TradeType:       types.TradeTypeSell,
+		}
+
+		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, receiverAddress,
+			types.ModuleName,
+			sdk.Coins{
+				{
+					Denom:  types.DefaultDenom,
 					Amount: sdkmath.NewInt(100000000000000),
 				},
-				ReceiverAddress: testutil.Alice,
-				TradeType:       types.TradeTypeSell,
+			}).Return(sdkerrors.ErrInsufficientFunds).Times(1)
+
+		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
+		suite.Require().Equal(status, types.StatusFailed)
+		suite.Require().ErrorIs(err, sdkerrors.ErrInsufficientFunds)
+	})
+
+	suite.Run("burn coins", func() {
+		tradeData := types.StoredTrade{
+			Amount: &sdk.Coin{
+				Denom:  types.DefaultDenom,
+				Amount: sdkmath.NewInt(1000000),
 			},
-			expectedStatus: types.StatusFailed,
-			err:            sdkerrors.ErrInsufficientFunds,
-		},
-		{
-			name: "burn coins",
-			tradeData: types.StoredTrade{
-				Amount: &sdk.Coin{
-					Denom:  types.DefaultCoinDenom,
+			ReceiverAddress: testutil.Alice,
+			TradeType:       types.TradeTypeSell,
+		}
+
+		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, receiverAddress,
+			types.ModuleName,
+			sdk.Coins{
+				{
+					Denom:  types.DefaultDenom,
 					Amount: sdkmath.NewInt(1000000),
 				},
-				ReceiverAddress: testutil.Alice,
-				TradeType:       types.TradeTypeSell,
-			},
-			expectedStatus: types.StatusProcessed,
-			expectedSupply: sdk.Coin{
-				Denom:  types.DefaultCoinDenom,
-				Amount: sdkmath.NewInt(9000000),
-			},
-		},
-	}
+			}).Return(nil).Times(1)
 
-	for _, tt := range tests {
-		suite.Run(fmt.Sprintf("Case %s", tt.name), func() {
-			status, err := suite.app.TradeKeeper.MintOrBurnCoins(suite.ctx, tt.tradeData)
-			if tt.err != nil {
-				suite.Require().Equal(status, tt.expectedStatus)
-				suite.Require().ErrorIs(err, tt.err)
-				return
-			}
-			supply := suite.app.BankKeeper.GetSupply(suite.ctx, types.DefaultCoinDenom)
-			suite.Require().Equal(supply, tt.expectedSupply)
+		suite.bankKeeper.EXPECT().BurnCoins(suite.ctx, types.ModuleName,
+			sdk.Coins{
+				{
+					Denom:  types.DefaultDenom,
+					Amount: sdkmath.NewInt(1000000),
+				},
+			}).Return(nil).Times(1)
+
+		suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(9000000),
+		}).Times(1)
+
+		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
+		suite.Require().Equal(status, types.StatusProcessed)
+		suite.Require().NoError(err)
+		supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
+		suite.Require().Equal(supply, sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(9000000),
 		})
-	}
+	})
 }
 
 func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
@@ -236,12 +371,12 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 	ctx := suite.ctx.WithBlockHeight(blockHeight).WithBlockTime(blockTime)
 
 	suite.Run("no temp trades", func() {
-		suite.app.TradeKeeper.CancelExpiredPendingTrades(ctx)
+		suite.tradeKeeper.CancelExpiredPendingTrades(ctx)
 
-		trades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
+		trades := suite.tradeKeeper.GetAllStoredTrade(ctx)
 		suite.Require().Equal(0, len(trades))
 
-		tempTrades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
+		tempTrades := suite.tradeKeeper.GetAllStoredTrade(ctx)
 		suite.Require().Equal(0, len(tempTrades))
 	})
 
@@ -260,16 +395,16 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 			CreateDate:     "2023-05-06",
 		}
 
-		suite.app.TradeKeeper.SetStoredTrade(ctx, storedTrade)
-		suite.app.TradeKeeper.SetStoredTempTrade(ctx, storedTempTrade)
+		suite.tradeKeeper.SetStoredTrade(ctx, storedTrade)
+		suite.tradeKeeper.SetStoredTempTrade(ctx, storedTempTrade)
 
-		suite.app.TradeKeeper.CancelExpiredPendingTrades(ctx)
+		suite.tradeKeeper.CancelExpiredPendingTrades(ctx)
 
-		trades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
+		trades := suite.tradeKeeper.GetAllStoredTrade(ctx)
 		suite.Require().Equal(1, len(trades))
 		suite.Require().Equal(types.StatusPending, trades[0].Status)
 
-		tempTrades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
+		tempTrades := suite.tradeKeeper.GetAllStoredTrade(ctx)
 		suite.Require().Equal(1, len(tempTrades))
 	})
 
@@ -278,18 +413,18 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 
 		// Set stored trades
 		for _, storedTrade := range storedTrades {
-			suite.app.TradeKeeper.SetStoredTrade(ctx, storedTrade)
+			suite.tradeKeeper.SetStoredTrade(ctx, storedTrade)
 		}
 
 		// Set stored temp trades
 		for _, storedTempTrade := range storedTempTrades {
-			suite.app.TradeKeeper.SetStoredTempTrade(ctx, storedTempTrade)
+			suite.tradeKeeper.SetStoredTempTrade(ctx, storedTempTrade)
 		}
 
-		suite.app.TradeKeeper.CancelExpiredPendingTrades(ctx)
+		suite.tradeKeeper.CancelExpiredPendingTrades(ctx)
 
 		// Total length
-		trades := suite.app.TradeKeeper.GetAllStoredTrade(ctx)
+		trades := suite.tradeKeeper.GetAllStoredTrade(ctx)
 		suite.Require().Equal(25, len(trades))
 
 		// Cancelled trade length
@@ -297,7 +432,7 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 		suite.Require().Equal(10, len(cancelledTrades))
 
 		// Pending trade length
-		tempTradeLength := len(suite.app.TradeKeeper.GetAllStoredTempTrade(ctx))
+		tempTradeLength := len(suite.tradeKeeper.GetAllStoredTempTrade(ctx))
 		suite.Require().Equal(15, tempTradeLength)
 	})
 }

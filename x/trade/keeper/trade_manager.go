@@ -45,7 +45,7 @@ func (k Keeper) HasPermission(ctx sdk.Context, address string, msgType int32) (b
 func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade) (types.TradeStatus, error) {
 	receiverAddress, err := sdk.AccAddressFromBech32(tradeData.ReceiverAddress)
 	if err != nil {
-		return types.StatusFailed, types.ErrInvalidReceiverAddress
+		return types.StatusFailed, types.ErrInvalidReceiverAddress.Wrap(err.Error())
 	}
 
 	coins := sdk.NewCoins(*tradeData.Amount)

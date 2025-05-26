@@ -21,7 +21,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "0.001",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -35,7 +35,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeSell,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "0.001",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -49,7 +49,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              "invalid_address",
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "0.001",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -64,7 +64,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              "",
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "0.001",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -79,7 +79,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeUnspecified,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "0.001",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -124,7 +124,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "XXXX",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -139,7 +139,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "-0.001",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -154,7 +154,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "0",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -169,7 +169,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -184,7 +184,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(0)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(0)},
 				Price:                "0.001",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -199,7 +199,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "0.001",
 				ReceiverAddress:      "invalid_address",
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -214,7 +214,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "0.001",
 				ReceiverAddress:      "",
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -229,7 +229,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "10",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -244,7 +244,7 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			msg: MsgCreateTrade{
 				Creator:              sample.AccAddress(),
 				TradeType:            TradeTypeBuy,
-				Amount:               &types.Coin{Denom: DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:               &types.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
 				Price:                "10",
 				ReceiverAddress:      sample.AccAddress(),
 				TradeData:            `{"trade_data":{"asset_holder_id":1,"asset_id":1,"trade_type":"buy","trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,

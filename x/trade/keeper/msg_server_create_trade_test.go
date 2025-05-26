@@ -9,14 +9,14 @@ import (
 )
 
 func (suite *KeeperTestSuite) TestCreateTrade() {
-	indexes := suite.createTrade(1)
+	indexes := suite.createNTrades(1)
 	suite.Require().EqualValues(1, len(indexes))
 	suite.Require().EqualValues(1, indexes[0])
 }
 
 func (suite *KeeperTestSuite) TestIfTradeSaved() {
-	indexes := suite.createTrade(1)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(1)
+	keeper := suite.tradeKeeper
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 	suite.Require().True(found)
@@ -30,8 +30,8 @@ func (suite *KeeperTestSuite) TestIfTradeSaved() {
 }
 
 func (suite *KeeperTestSuite) TestIfTempTradeSaved() {
-	indexes := suite.createTrade(1)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(1)
+	keeper := suite.tradeKeeper
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 	suite.Require().True(found)
@@ -49,8 +49,8 @@ func (suite *KeeperTestSuite) TestIfTempTradeSaved() {
 }
 
 func (suite *KeeperTestSuite) TestGetAllStoredTrade() {
-	indexes := suite.createTrade(3)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(3)
+	keeper := suite.tradeKeeper
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 	suite.Require().True(found)
@@ -64,8 +64,8 @@ func (suite *KeeperTestSuite) TestGetAllStoredTrade() {
 }
 
 func (suite *KeeperTestSuite) TestGetAllStoredTempTrade() {
-	indexes := suite.createTrade(5)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(5)
+	keeper := suite.tradeKeeper
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 	suite.Require().True(found)
@@ -88,7 +88,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithInvalidMakerPermission() {
 		Creator:   testutil.Bob,
 		TradeType: types.TradeTypeBuy,
 		Amount: &sdk.Coin{
-			Denom:  types.DefaultCoinDenom,
+			Denom:  types.DefaultDenom,
 			Amount: sdkmath.NewInt(100000),
 		},
 		Price:             "0.001",
@@ -108,7 +108,7 @@ func (suite *KeeperTestSuite) TestCreateTradeAuthorityAddressNotExist() {
 		Creator:   testutil.Eve,
 		TradeType: types.TradeTypeBuy,
 		Amount: &sdk.Coin{
-			Denom:  types.DefaultCoinDenom,
+			Denom:  types.DefaultDenom,
 			Amount: sdkmath.NewInt(100000),
 		},
 		Price:             "0.001",
@@ -126,10 +126,10 @@ func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
 	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:   testutil.Carol,
+		Creator:   testutil.Carol, // Dose not has permission for trade module
 		TradeType: types.TradeTypeBuy,
 		Amount: &sdk.Coin{
-			Denom:  types.DefaultCoinDenom,
+			Denom:  types.DefaultDenom,
 			Amount: sdkmath.NewInt(100000),
 		},
 		Price:             "0.001",
@@ -145,12 +145,11 @@ func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
 
 func (suite *KeeperTestSuite) TestCreateTradeWithInvalidTradeData() {
 	suite.setupTest()
-
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:   testutil.Alice,
 		TradeType: types.TradeTypeBuy,
 		Amount: &sdk.Coin{
-			Denom:  types.DefaultCoinDenom,
+			Denom:  types.DefaultDenom,
 			Amount: sdkmath.NewInt(100000),
 		},
 		Price:             "0.001",
@@ -164,8 +163,8 @@ func (suite *KeeperTestSuite) TestCreateTradeWithInvalidTradeData() {
 }
 
 func (suite *KeeperTestSuite) TestCreateTrades() {
-	indexes := suite.createTrade(1000)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(1000)
+	keeper := suite.tradeKeeper
 
 	for _, tradeIndex := range indexes {
 		trade, found := keeper.GetStoredTrade(suite.ctx, tradeIndex)

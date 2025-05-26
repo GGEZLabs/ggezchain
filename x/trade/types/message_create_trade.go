@@ -46,8 +46,8 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 		return sdkerrors.ErrInvalidRequest.Wrapf("zero amount not allowed: %s", msg.Amount.String())
 	}
 
-	if msg.Amount.Denom != DefaultCoinDenom {
-		return sdkerrors.ErrInvalidRequest.Wrapf("invalid denom expected: %s, got: %s ", DefaultCoinDenom, msg.Amount.Denom)
+	if msg.Amount.Denom != DefaultDenom {
+		return sdkerrors.ErrInvalidRequest.Wrapf("invalid denom expected: %s, got: %s ", DefaultDenom, msg.Amount.Denom)
 	}
 
 	// Validate price

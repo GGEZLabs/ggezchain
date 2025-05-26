@@ -24,7 +24,7 @@ func TestGenesis(t *testing.T) {
 			{
 				TradeIndex:        1,
 				TradeType:         types.TradeTypeBuy,
-				Amount:            &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:            &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 				Price:             "0.01",
 				ReceiverAddress:   sample.AccAddress(),
 				Status:            types.StatusPending,
@@ -39,7 +39,7 @@ func TestGenesis(t *testing.T) {
 			{
 				TradeIndex:        2,
 				TradeType:         types.TradeTypeSell,
-				Amount:            &sdk.Coin{Denom: types.DefaultCoinDenom, Amount: math.NewInt(100000)},
+				Amount:            &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 				Price:             "0.01",
 				ReceiverAddress:   sample.AccAddress(),
 				Status:            types.StatusPending,

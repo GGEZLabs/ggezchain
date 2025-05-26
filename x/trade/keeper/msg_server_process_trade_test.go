@@ -5,10 +5,15 @@ import (
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	gomock "go.uber.org/mock/gomock"
 )
 
 func (suite *KeeperTestSuite) TestProcessTradeConfirm() {
-	indexes := suite.createTrade(1)
+	indexes := suite.createNTrades(1)
+
+	suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(1)
+	suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName, gomock.Any(), gomock.Any()).Return(nil).Times(1)
 
 	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
@@ -23,7 +28,7 @@ func (suite *KeeperTestSuite) TestProcessTradeConfirm() {
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeReject() {
-	indexes := suite.createTrade(1)
+	indexes := suite.createNTrades(1)
 
 	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
@@ -38,7 +43,7 @@ func (suite *KeeperTestSuite) TestProcessTradeReject() {
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeWithInvalidCheckerPermission() {
-	indexes := suite.createTrade(1)
+	indexes := suite.createNTrades(1)
 
 	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Alice,
@@ -49,8 +54,11 @@ func (suite *KeeperTestSuite) TestProcessTradeWithInvalidCheckerPermission() {
 }
 
 func (suite *KeeperTestSuite) TestStoredTradeAfterConfirmTrade() {
-	indexes := suite.createTrade(1)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(1)
+	keeper := suite.tradeKeeper
+
+	suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(1)
+	suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName, gomock.Any(), gomock.Any()).Return(nil).Times(1)
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
 	suite.Require().True(found)
@@ -75,8 +83,11 @@ func (suite *KeeperTestSuite) TestStoredTradeAfterConfirmTrade() {
 }
 
 func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
-	indexes := suite.createTrade(1)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(1)
+	keeper := suite.tradeKeeper
+
+	suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(1)
+	suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName, gomock.Any(), gomock.Any()).Return(nil).Times(1)
 
 	tempTrade, found := keeper.GetStoredTempTrade(suite.ctx, indexes[0])
 	suite.Require().True(found)
@@ -111,8 +122,8 @@ func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
 }
 
 func (suite *KeeperTestSuite) TestStoredTradeAfterRejectTrade() {
-	indexes := suite.createTrade(1)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(1)
+	keeper := suite.tradeKeeper
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
 	suite.Require().True(found)
@@ -138,8 +149,8 @@ func (suite *KeeperTestSuite) TestStoredTradeAfterRejectTrade() {
 }
 
 func (suite *KeeperTestSuite) TestTempTradeAfterRejectTrade() {
-	indexes := suite.createTrade(1)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(1)
+	keeper := suite.tradeKeeper
 
 	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
@@ -166,8 +177,11 @@ func (suite *KeeperTestSuite) TestTempTradeAfterRejectTrade() {
 }
 
 func (suite *KeeperTestSuite) TestProcessTwoTrade() {
-	indexes := suite.createTrade(2)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(2)
+	keeper := suite.tradeKeeper
+
+	suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(2)
+	suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName, gomock.Any(), gomock.Any()).Return(nil).Times(2)
 
 	tradeIndex, found := keeper.GetTradeIndex(suite.ctx)
 
@@ -198,13 +212,16 @@ func (suite *KeeperTestSuite) TestProcessTwoTrade() {
 
 func (suite *KeeperTestSuite) TestProcessTradeInsufficientFund() {
 	suite.setupTest()
-	keeper := suite.app.TradeKeeper
+	keeper := suite.tradeKeeper
 
 	msgCreateTradeBuy := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeBuy, 5000000000000)
 	msgCreateTradeSell := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeSell, 7000000000000)
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeBuy)
 	suite.Require().NoError(err)
+
+	suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(1)
+	suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).Times(1)
 
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
@@ -215,6 +232,8 @@ func (suite *KeeperTestSuite) TestProcessTradeInsufficientFund() {
 
 	createResponse, err = suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeSell)
 	suite.Require().NoError(err)
+
+	suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, gomock.Any(), gomock.Any(), gomock.Any()).Return(sdkerrors.ErrInsufficientFunds).Times(1)
 
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
@@ -229,12 +248,15 @@ func (suite *KeeperTestSuite) TestProcessTradeInsufficientFund() {
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeAlreadyConfirmed() {
-	indexes := suite.createTrade(1)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(1)
+	keeper := suite.tradeKeeper
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
 	suite.Require().True(found)
 	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+
+	suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(1)
+	suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName, gomock.Any(), gomock.Any()).Return(nil).Times(1)
 
 	_, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
@@ -263,8 +285,8 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyConfirmed() {
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeAlreadyRejected() {
-	indexes := suite.createTrade(1)
-	keeper := suite.app.TradeKeeper
+	indexes := suite.createNTrades(1)
+	keeper := suite.tradeKeeper
 
 	trade, found := keeper.GetStoredTrade(suite.ctx, indexes[0])
 	suite.Require().True(found)
@@ -298,12 +320,13 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyRejected() {
 
 func (suite *KeeperTestSuite) TestProcessTradeCheckerIsNotMaker() {
 	suite.setupTest()
+
 	msg := types.GetSampleMsgCreateTrade()
 	msg.Creator = testutil.Trent
 	_, err := suite.msgServer.CreateTrade(suite.ctx, msg)
 	suite.Require().Nil(err)
 
-	keeper := suite.app.TradeKeeper
+	keeper := suite.tradeKeeper
 
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Trent,
@@ -325,11 +348,15 @@ func (suite *KeeperTestSuite) TestProcessTradeCheckerIsNotMaker() {
 
 func (suite *KeeperTestSuite) TestSupplyAfterProcessTrade() {
 	suite.setupTest()
+
 	msgCreateTradeBuy := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeBuy, 5000000000000)
 	msgCreateTradeSell := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeSell, 3000000000000)
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeBuy)
 	suite.Require().NoError(err)
+
+	suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(1)
+	suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName, gomock.Any(), gomock.Any()).Return(nil).Times(1)
 
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
@@ -338,12 +365,20 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTrade() {
 	})
 	suite.Require().NoError(err)
 
-	supply := suite.app.BankKeeper.GetSupply(suite.ctx, types.DefaultCoinDenom)
+	suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
+		Denom:  types.DefaultDenom,
+		Amount: sdkmath.NewInt(5000000000000),
+	}).Times(1)
+
+	supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
 	suite.Require().Equal(sdkmath.NewInt(5000000000000), supply.Amount)
 
 	createResponse, err = suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeSell)
 	suite.Require().NoError(err)
 
+	suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).Times(1)
+	suite.bankKeeper.EXPECT().BurnCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(1)
+
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
 		ProcessType: types.ProcessTypeConfirm,
@@ -351,17 +386,26 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTrade() {
 	})
 	suite.Require().NoError(err)
 
-	supply = suite.app.BankKeeper.GetSupply(suite.ctx, types.DefaultCoinDenom)
+	suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
+		Denom:  types.DefaultDenom,
+		Amount: sdkmath.NewInt(2000000000000),
+	}).Times(1)
+
+	supply = suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
 	suite.Require().Equal(sdkmath.NewInt(2000000000000), supply.Amount)
 }
 
 func (suite *KeeperTestSuite) TestBalancesAfterProcessTrade() {
 	suite.setupTest()
+
 	msgCreateTradeBuy := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeBuy, 5000000000000)
 	msgCreateTradeSell := types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeSell, 3000000000000)
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeBuy)
 	suite.Require().NoError(err)
+
+	suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(1)
+	suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName, gomock.Any(), gomock.Any()).Return(nil).Times(1)
 
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
@@ -373,11 +417,19 @@ func (suite *KeeperTestSuite) TestBalancesAfterProcessTrade() {
 	receiverAddress, err := sdk.AccAddressFromBech32(msgCreateTradeBuy.ReceiverAddress)
 	suite.Require().NoError(err)
 
-	initialBalance := suite.app.BankKeeper.GetBalance(suite.ctx, receiverAddress, types.DefaultCoinDenom)
+	suite.bankKeeper.EXPECT().GetBalance(suite.ctx, gomock.Any(), types.DefaultDenom).Return(sdk.Coin{
+		Denom:  types.DefaultDenom,
+		Amount: sdkmath.NewInt(5000000000000),
+	}).Times(1)
+
+	initialBalance := suite.bankKeeper.GetBalance(suite.ctx, receiverAddress, types.DefaultDenom)
 	suite.Require().Equal(sdkmath.NewInt(5000000000000), initialBalance.Amount)
 
 	createResponse, err = suite.msgServer.CreateTrade(suite.ctx, msgCreateTradeSell)
 	suite.Require().NoError(err)
+
+	suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).Times(1)
+	suite.bankKeeper.EXPECT().BurnCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(1)
 
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     testutil.Bob,
@@ -386,7 +438,12 @@ func (suite *KeeperTestSuite) TestBalancesAfterProcessTrade() {
 	})
 	suite.Require().NoError(err)
 
-	finalBalance := suite.app.BankKeeper.GetBalance(suite.ctx, receiverAddress, types.DefaultCoinDenom)
+	suite.bankKeeper.EXPECT().GetBalance(suite.ctx, gomock.Any(), types.DefaultDenom).Return(sdk.Coin{
+		Denom:  types.DefaultDenom,
+		Amount: sdkmath.NewInt(2000000000000),
+	}).Times(1)
+
+	finalBalance := suite.bankKeeper.GetBalance(suite.ctx, receiverAddress, types.DefaultDenom)
 
 	suite.Require().Equal(sdkmath.NewInt(2000000000000), finalBalance.Amount)
 }

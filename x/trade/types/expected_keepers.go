@@ -19,11 +19,14 @@ type BankKeeper interface {
 	BurnCoins(ctx context.Context, moduleName string, amt sdk.Coins) error
 	SendCoinsFromModuleToAccount(ctx context.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error
 	SendCoinsFromAccountToModule(ctx context.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins) error
+	GetBalance(ctx context.Context, addr sdk.AccAddress, denom string) sdk.Coin
+	GetSupply(ctx context.Context, denom string) sdk.Coin
 	// Methods imported from bank should be defined here
 }
 
 type AclKeeper interface {
 	GetAclAuthority(ctx context.Context, address string) (val acltypes.AclAuthority, found bool)
+	SetAclAuthority(ctx context.Context, aclAuthority acltypes.AclAuthority)
 }
 
 // ParamSubspace defines the expected Subspace interface for parameters.

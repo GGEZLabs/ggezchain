@@ -76,8 +76,8 @@ func (gs GenesisState) ValidateStoredTrade() error {
 			return fmt.Errorf("zero amount not allowed: %s, trade_index: %d", elem.Amount.String(), elem.TradeIndex)
 		}
 
-		if elem.Amount.Denom != DefaultCoinDenom {
-			return fmt.Errorf("invalid denom expected: %s, got: %s, trade_index: %d", DefaultCoinDenom, elem.Amount.Denom, elem.TradeIndex)
+		if elem.Amount.Denom != DefaultDenom {
+			return fmt.Errorf("invalid denom expected: %s, got: %s, trade_index: %d", DefaultDenom, elem.Amount.Denom, elem.TradeIndex)
 		}
 
 		if strings.TrimSpace(elem.Price) == "" {

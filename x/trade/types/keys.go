@@ -22,7 +22,7 @@ const (
 )
 
 const (
-	DefaultCoinDenom           = "uggz"
+	DefaultDenom               = "uggz"
 	TradeCreatedSuccessfully   = "trade created successfully"
 	TradeProcessedSuccessfully = "trade processed successfully"
 )
