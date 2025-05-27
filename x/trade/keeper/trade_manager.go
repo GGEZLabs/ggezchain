@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"context"
-	"strconv"
+	"fmt"
 	"time"
 
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
@@ -128,7 +128,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 		var attributes []sdk.Attribute
 
 		for _, id := range canceledIds {
-			attributes = append(attributes, sdk.NewAttribute(types.AttributeKeyTradeIndex, strconv.FormatUint(id, 10)))
+			attributes = append(attributes, sdk.NewAttribute(types.AttributeKeyTradeIndex, fmt.Sprintf("%d", id)))
 		}
 
 		ctx.EventManager().EmitEvent(

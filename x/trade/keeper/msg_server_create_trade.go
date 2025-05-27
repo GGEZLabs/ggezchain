@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"context"
-	"strconv"
+	"fmt"
 	"time"
 
 	errorsmod "cosmossdk.io/errors"
@@ -75,7 +75,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeCreateTrade,
-			sdk.NewAttribute(types.AttributeKeyTradeIndex, strconv.FormatUint(newIndex, 10)),
+			sdk.NewAttribute(types.AttributeKeyTradeIndex, fmt.Sprintf("%d", newIndex)),
 			sdk.NewAttribute(types.AttributeKeyStatus, status.String()),
 		),
 	)
