@@ -86,6 +86,7 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 	f.ctx = f.ctx.WithBlockHeader(header)
 
 	msgServer := keeper.NewMsgServerImpl(*f.tradeKeeper)
+
 	// Set AclAuthority
 	setAclAuthority(f.ctx, f.aclKeeper)
 

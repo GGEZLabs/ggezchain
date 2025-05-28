@@ -28,7 +28,7 @@ func TestGRPCQueryTradeIndex(t *testing.T) {
 		expErrMsg string
 	}{
 		{
-			"store and get trade",
+			"get trade index",
 			func() {
 				f.tradeKeeper.SetTradeIndex(ctx, types.TradeIndex{NextId: 1})
 				var found bool
@@ -215,11 +215,6 @@ func TestGRPCQueryAllStoredTrade(t *testing.T) {
 		{
 			"get some of trades",
 			func() {
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 1})
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 2})
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 3})
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 4})
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 5})
 				storedTradeAll = f.tradeKeeper.GetAllStoredTrade(ctx)
 				assert.Assert(t, len(storedTradeAll) == 5)
 

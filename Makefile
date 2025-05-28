@@ -119,7 +119,7 @@ clean:
 ### Testing
 ########################################
 
-test-all: test-race test-cover test
+test-all: test test-race test-cover
 
 test:
 	@VERSION=$(VERSION) go test -mod=readonly -tags='ledger test_ledger_mock' ./...
