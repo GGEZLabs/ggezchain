@@ -10,7 +10,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// HasPermission checks if the given address has permission for a specific msgType within this module based on ACL rules.
+// HasPermission checks if the given address has permission
+// for a specific msgType within this module based on ACL rules.
 func (k Keeper) HasPermission(ctx sdk.Context, address string, msgType int32) (bool, error) {
 	authority, found := k.aclKeeper.GetAclAuthority(ctx, address)
 	if !found {
@@ -42,6 +43,8 @@ func (k Keeper) HasPermission(ctx sdk.Context, address string, msgType int32) (b
 	return false, types.ErrModuleNotFound.Wrapf("no permission for module %s", types.ModuleName)
 }
 
+// MintOrBurnCoins processes a trade by minting coins for a 'buy' or burning coins for a 'sell',
+// handling transfers and rollbacks on failure.
 func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade) (types.TradeStatus, error) {
 	receiverAddress, err := sdk.AccAddressFromBech32(tradeData.ReceiverAddress)
 	if err != nil {
@@ -92,6 +95,7 @@ func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade) (t
 	}
 }
 
+// CancelExpiredPendingTrades automatically cancels pending trades older than 1 day.
 func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	allStoredTempTrade := k.GetAllStoredTempTrade(ctx)
