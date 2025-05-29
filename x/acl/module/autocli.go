@@ -38,6 +38,11 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:          "Shows a aclAdmin",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
 				},
+				{
+					RpcMethod: "SuperAdmin",
+					Use:       "super-admin",
+					Short:     "show super_admin",
+				},
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},

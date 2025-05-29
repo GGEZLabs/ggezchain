@@ -14,6 +14,7 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		AclAuthorityList: []AclAuthority{},
 		AclAdminList:     []AclAdmin{},
+		SuperAdmin:       SuperAdmin{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

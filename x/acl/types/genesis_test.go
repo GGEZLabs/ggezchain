@@ -115,6 +115,9 @@ func TestGenesisState_Validate(t *testing.T) {
 						Address: sample.AccAddress(),
 					},
 				},
+				SuperAdmin: types.SuperAdmin{
+					Admin: "17",
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			expErr: false,

@@ -9,6 +9,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "ggezchain/acl/params.proto";
 import "ggezchain/acl/acl_authority.proto";
 import "ggezchain/acl/acl_admin.proto";
+import "ggezchain/acl/super_admin.proto";
 
 option go_package = "github.com/GGEZLabs/ggezchain/x/acl/types";
 
@@ -38,6 +39,12 @@ service Query {
   }
   rpc AclAdminAll (QueryAllAclAdminRequest) returns (QueryAllAclAdminResponse) {
     option (google.api.http).get = "/GGEZLabs/ggezchain/acl/acl_admin";
+  
+  }
+  
+  // Queries a SuperAdmin by index.
+  rpc SuperAdmin (QueryGetSuperAdminRequest) returns (QueryGetSuperAdminResponse) {
+    option (google.api.http).get = "/GGEZLabs/ggezchain/acl/super_admin";
   
   }
 }
@@ -81,7 +88,13 @@ message QueryAllAclAdminRequest {
 }
 
 message QueryAllAclAdminResponse {
-  repeated AclAdmin                               acl_admin   = 1 [(gogoproto.nullable) = false];
+  repeated AclAdmin                               acl_admin  = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetSuperAdminRequest {}
+
+message QueryGetSuperAdminResponse {
+  SuperAdmin super_admin = 1 [(gogoproto.nullable) = false];
 }
 
