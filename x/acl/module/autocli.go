@@ -14,34 +14,34 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				{
 					RpcMethod: "Params",
 					Use:       "params",
-					Short:     "Shows the parameters of the module",
-				},
-				{
-					RpcMethod: "AclAuthorityAll",
-					Use:       "list-acl-authority",
-					Short:     "List all aclAuthority",
+					Short:     "Query the parameters of the module",
 				},
 				{
 					RpcMethod:      "AclAuthority",
-					Use:            "show-acl-authority [address]",
-					Short:          "Shows a aclAuthority",
+					Use:            "acl-authority [address]",
+					Short:          "Query an acl-authority by address",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
+				},
+				{
+					RpcMethod: "AclAuthorityAll",
+					Use:       "acl-authorities",
+					Short:     "Query all acl-authorities",
+				},
+				{
+					RpcMethod:      "AclAdmin",
+					Use:            "admin [address]",
+					Short:          "Query an admin by address",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
 				},
 				{
 					RpcMethod: "AclAdminAll",
-					Use:       "list-acl-admin",
-					Short:     "List all aclAdmin",
-				},
-				{
-					RpcMethod:      "AclAdmin",
-					Use:            "show-acl-admin [address]",
-					Short:          "Shows a aclAdmin",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
+					Use:       "admins",
+					Short:     "Query all admins",
 				},
 				{
 					RpcMethod: "SuperAdmin",
 					Use:       "super-admin",
-					Short:     "show super_admin",
+					Short:     "Query a super-admin",
 				},
 				// this line is used by ignite scaffolding # autocli/query
 			},
