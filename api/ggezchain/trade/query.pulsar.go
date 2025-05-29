@@ -2,23 +2,23 @@
 package trade
 
 import (
-	fmt "fmt"
-	io "io"
-	reflect "reflect"
-	sync "sync"
-
 	_ "cosmossdk.io/api/amino"
 	v1beta1 "cosmossdk.io/api/cosmos/base/query/v1beta1"
-
+	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	io "io"
+	reflect "reflect"
+	sync "sync"
 )
 
-var md_QueryParamsRequest protoreflect.MessageDescriptor
+var (
+	md_QueryParamsRequest protoreflect.MessageDescriptor
+)
 
 func init() {
 	file_ggezchain_trade_query_proto_init()
@@ -45,21 +45,17 @@ func (x *QueryParamsRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryParamsRequest_messageType fastReflection_QueryParamsRequest_messageType
-	_                                              protoreflect.MessageType = fastReflection_QueryParamsRequest_messageType{}
-)
+var _fastReflection_QueryParamsRequest_messageType fastReflection_QueryParamsRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryParamsRequest_messageType{}
 
 type fastReflection_QueryParamsRequest_messageType struct{}
 
 func (x fastReflection_QueryParamsRequest_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryParamsRequest)(nil)
 }
-
 func (x fastReflection_QueryParamsRequest_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryParamsRequest)
 }
-
 func (x fastReflection_QueryParamsRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryParamsRequest
 }
@@ -407,21 +403,17 @@ func (x *QueryParamsResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryParamsResponse_messageType fastReflection_QueryParamsResponse_messageType
-	_                                               protoreflect.MessageType = fastReflection_QueryParamsResponse_messageType{}
-)
+var _fastReflection_QueryParamsResponse_messageType fastReflection_QueryParamsResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryParamsResponse_messageType{}
 
 type fastReflection_QueryParamsResponse_messageType struct{}
 
 func (x fastReflection_QueryParamsResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryParamsResponse)(nil)
 }
-
 func (x fastReflection_QueryParamsResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryParamsResponse)
 }
-
 func (x fastReflection_QueryParamsResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryParamsResponse
 }
@@ -815,7 +807,9 @@ func (x *fastReflection_QueryParamsResponse) ProtoMethods() *protoiface.Methods 
 	}
 }
 
-var md_QueryGetTradeIndexRequest protoreflect.MessageDescriptor
+var (
+	md_QueryGetTradeIndexRequest protoreflect.MessageDescriptor
+)
 
 func init() {
 	file_ggezchain_trade_query_proto_init()
@@ -842,21 +836,17 @@ func (x *QueryGetTradeIndexRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryGetTradeIndexRequest_messageType fastReflection_QueryGetTradeIndexRequest_messageType
-	_                                                     protoreflect.MessageType = fastReflection_QueryGetTradeIndexRequest_messageType{}
-)
+var _fastReflection_QueryGetTradeIndexRequest_messageType fastReflection_QueryGetTradeIndexRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryGetTradeIndexRequest_messageType{}
 
 type fastReflection_QueryGetTradeIndexRequest_messageType struct{}
 
 func (x fastReflection_QueryGetTradeIndexRequest_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryGetTradeIndexRequest)(nil)
 }
-
 func (x fastReflection_QueryGetTradeIndexRequest_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryGetTradeIndexRequest)
 }
-
 func (x fastReflection_QueryGetTradeIndexRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryGetTradeIndexRequest
 }
@@ -1204,21 +1194,17 @@ func (x *QueryGetTradeIndexResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryGetTradeIndexResponse_messageType fastReflection_QueryGetTradeIndexResponse_messageType
-	_                                                      protoreflect.MessageType = fastReflection_QueryGetTradeIndexResponse_messageType{}
-)
+var _fastReflection_QueryGetTradeIndexResponse_messageType fastReflection_QueryGetTradeIndexResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryGetTradeIndexResponse_messageType{}
 
 type fastReflection_QueryGetTradeIndexResponse_messageType struct{}
 
 func (x fastReflection_QueryGetTradeIndexResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryGetTradeIndexResponse)(nil)
 }
-
 func (x fastReflection_QueryGetTradeIndexResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryGetTradeIndexResponse)
 }
-
 func (x fastReflection_QueryGetTradeIndexResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryGetTradeIndexResponse
 }
@@ -1643,21 +1629,17 @@ func (x *QueryGetStoredTradeRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryGetStoredTradeRequest_messageType fastReflection_QueryGetStoredTradeRequest_messageType
-	_                                                      protoreflect.MessageType = fastReflection_QueryGetStoredTradeRequest_messageType{}
-)
+var _fastReflection_QueryGetStoredTradeRequest_messageType fastReflection_QueryGetStoredTradeRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryGetStoredTradeRequest_messageType{}
 
 type fastReflection_QueryGetStoredTradeRequest_messageType struct{}
 
 func (x fastReflection_QueryGetStoredTradeRequest_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryGetStoredTradeRequest)(nil)
 }
-
 func (x fastReflection_QueryGetStoredTradeRequest_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryGetStoredTradeRequest)
 }
-
 func (x fastReflection_QueryGetStoredTradeRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryGetStoredTradeRequest
 }
@@ -2051,21 +2033,17 @@ func (x *QueryGetStoredTradeResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryGetStoredTradeResponse_messageType fastReflection_QueryGetStoredTradeResponse_messageType
-	_                                                       protoreflect.MessageType = fastReflection_QueryGetStoredTradeResponse_messageType{}
-)
+var _fastReflection_QueryGetStoredTradeResponse_messageType fastReflection_QueryGetStoredTradeResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryGetStoredTradeResponse_messageType{}
 
 type fastReflection_QueryGetStoredTradeResponse_messageType struct{}
 
 func (x fastReflection_QueryGetStoredTradeResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryGetStoredTradeResponse)(nil)
 }
-
 func (x fastReflection_QueryGetStoredTradeResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryGetStoredTradeResponse)
 }
-
 func (x fastReflection_QueryGetStoredTradeResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryGetStoredTradeResponse
 }
@@ -2490,21 +2468,17 @@ func (x *QueryAllStoredTradeRequest) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryAllStoredTradeRequest_messageType fastReflection_QueryAllStoredTradeRequest_messageType
-	_                                                      protoreflect.MessageType = fastReflection_QueryAllStoredTradeRequest_messageType{}
-)
+var _fastReflection_QueryAllStoredTradeRequest_messageType fastReflection_QueryAllStoredTradeRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryAllStoredTradeRequest_messageType{}
 
 type fastReflection_QueryAllStoredTradeRequest_messageType struct{}
 
 func (x fastReflection_QueryAllStoredTradeRequest_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryAllStoredTradeRequest)(nil)
 }
-
 func (x fastReflection_QueryAllStoredTradeRequest_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryAllStoredTradeRequest)
 }
-
 func (x fastReflection_QueryAllStoredTradeRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryAllStoredTradeRequest
 }
@@ -2982,21 +2956,17 @@ func (x *QueryAllStoredTradeResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryAllStoredTradeResponse_messageType fastReflection_QueryAllStoredTradeResponse_messageType
-	_                                                       protoreflect.MessageType = fastReflection_QueryAllStoredTradeResponse_messageType{}
-)
+var _fastReflection_QueryAllStoredTradeResponse_messageType fastReflection_QueryAllStoredTradeResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryAllStoredTradeResponse_messageType{}
 
 type fastReflection_QueryAllStoredTradeResponse_messageType struct{}
 
 func (x fastReflection_QueryAllStoredTradeResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryAllStoredTradeResponse)(nil)
 }
-
 func (x fastReflection_QueryAllStoredTradeResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryAllStoredTradeResponse)
 }
-
 func (x fastReflection_QueryAllStoredTradeResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryAllStoredTradeResponse
 }
@@ -3506,21 +3476,17 @@ func (x *QueryGetStoredTempTradeRequest) slowProtoReflect() protoreflect.Message
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryGetStoredTempTradeRequest_messageType fastReflection_QueryGetStoredTempTradeRequest_messageType
-	_                                                          protoreflect.MessageType = fastReflection_QueryGetStoredTempTradeRequest_messageType{}
-)
+var _fastReflection_QueryGetStoredTempTradeRequest_messageType fastReflection_QueryGetStoredTempTradeRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryGetStoredTempTradeRequest_messageType{}
 
 type fastReflection_QueryGetStoredTempTradeRequest_messageType struct{}
 
 func (x fastReflection_QueryGetStoredTempTradeRequest_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryGetStoredTempTradeRequest)(nil)
 }
-
 func (x fastReflection_QueryGetStoredTempTradeRequest_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryGetStoredTempTradeRequest)
 }
-
 func (x fastReflection_QueryGetStoredTempTradeRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryGetStoredTempTradeRequest
 }
@@ -3914,21 +3880,17 @@ func (x *QueryGetStoredTempTradeResponse) slowProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryGetStoredTempTradeResponse_messageType fastReflection_QueryGetStoredTempTradeResponse_messageType
-	_                                                           protoreflect.MessageType = fastReflection_QueryGetStoredTempTradeResponse_messageType{}
-)
+var _fastReflection_QueryGetStoredTempTradeResponse_messageType fastReflection_QueryGetStoredTempTradeResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryGetStoredTempTradeResponse_messageType{}
 
 type fastReflection_QueryGetStoredTempTradeResponse_messageType struct{}
 
 func (x fastReflection_QueryGetStoredTempTradeResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryGetStoredTempTradeResponse)(nil)
 }
-
 func (x fastReflection_QueryGetStoredTempTradeResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryGetStoredTempTradeResponse)
 }
-
 func (x fastReflection_QueryGetStoredTempTradeResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryGetStoredTempTradeResponse
 }
@@ -4353,21 +4315,17 @@ func (x *QueryAllStoredTempTradeRequest) slowProtoReflect() protoreflect.Message
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryAllStoredTempTradeRequest_messageType fastReflection_QueryAllStoredTempTradeRequest_messageType
-	_                                                          protoreflect.MessageType = fastReflection_QueryAllStoredTempTradeRequest_messageType{}
-)
+var _fastReflection_QueryAllStoredTempTradeRequest_messageType fastReflection_QueryAllStoredTempTradeRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryAllStoredTempTradeRequest_messageType{}
 
 type fastReflection_QueryAllStoredTempTradeRequest_messageType struct{}
 
 func (x fastReflection_QueryAllStoredTempTradeRequest_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryAllStoredTempTradeRequest)(nil)
 }
-
 func (x fastReflection_QueryAllStoredTempTradeRequest_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryAllStoredTempTradeRequest)
 }
-
 func (x fastReflection_QueryAllStoredTempTradeRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryAllStoredTempTradeRequest
 }
@@ -4845,21 +4803,17 @@ func (x *QueryAllStoredTempTradeResponse) slowProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_QueryAllStoredTempTradeResponse_messageType fastReflection_QueryAllStoredTempTradeResponse_messageType
-	_                                                           protoreflect.MessageType = fastReflection_QueryAllStoredTempTradeResponse_messageType{}
-)
+var _fastReflection_QueryAllStoredTempTradeResponse_messageType fastReflection_QueryAllStoredTempTradeResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryAllStoredTempTradeResponse_messageType{}
 
 type fastReflection_QueryAllStoredTempTradeResponse_messageType struct{}
 
 func (x fastReflection_QueryAllStoredTempTradeResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_QueryAllStoredTempTradeResponse)(nil)
 }
-
 func (x fastReflection_QueryAllStoredTempTradeResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_QueryAllStoredTempTradeResponse)
 }
-
 func (x fastReflection_QueryAllStoredTempTradeResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_QueryAllStoredTempTradeResponse
 }
@@ -5954,30 +5908,27 @@ func file_ggezchain_trade_query_proto_rawDescGZIP() []byte {
 	return file_ggezchain_trade_query_proto_rawDescData
 }
 
-var (
-	file_ggezchain_trade_query_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
-	file_ggezchain_trade_query_proto_goTypes  = []interface{}{
-		(*QueryParamsRequest)(nil),              // 0: ggezchain.trade.QueryParamsRequest
-		(*QueryParamsResponse)(nil),             // 1: ggezchain.trade.QueryParamsResponse
-		(*QueryGetTradeIndexRequest)(nil),       // 2: ggezchain.trade.QueryGetTradeIndexRequest
-		(*QueryGetTradeIndexResponse)(nil),      // 3: ggezchain.trade.QueryGetTradeIndexResponse
-		(*QueryGetStoredTradeRequest)(nil),      // 4: ggezchain.trade.QueryGetStoredTradeRequest
-		(*QueryGetStoredTradeResponse)(nil),     // 5: ggezchain.trade.QueryGetStoredTradeResponse
-		(*QueryAllStoredTradeRequest)(nil),      // 6: ggezchain.trade.QueryAllStoredTradeRequest
-		(*QueryAllStoredTradeResponse)(nil),     // 7: ggezchain.trade.QueryAllStoredTradeResponse
-		(*QueryGetStoredTempTradeRequest)(nil),  // 8: ggezchain.trade.QueryGetStoredTempTradeRequest
-		(*QueryGetStoredTempTradeResponse)(nil), // 9: ggezchain.trade.QueryGetStoredTempTradeResponse
-		(*QueryAllStoredTempTradeRequest)(nil),  // 10: ggezchain.trade.QueryAllStoredTempTradeRequest
-		(*QueryAllStoredTempTradeResponse)(nil), // 11: ggezchain.trade.QueryAllStoredTempTradeResponse
-		(*Params)(nil),                          // 12: ggezchain.trade.Params
-		(*TradeIndex)(nil),                      // 13: ggezchain.trade.TradeIndex
-		(*StoredTrade)(nil),                     // 14: ggezchain.trade.StoredTrade
-		(*v1beta1.PageRequest)(nil),             // 15: cosmos.base.query.v1beta1.PageRequest
-		(*v1beta1.PageResponse)(nil),            // 16: cosmos.base.query.v1beta1.PageResponse
-		(*StoredTempTrade)(nil),                 // 17: ggezchain.trade.StoredTempTrade
-	}
-)
-
+var file_ggezchain_trade_query_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_ggezchain_trade_query_proto_goTypes = []interface{}{
+	(*QueryParamsRequest)(nil),              // 0: ggezchain.trade.QueryParamsRequest
+	(*QueryParamsResponse)(nil),             // 1: ggezchain.trade.QueryParamsResponse
+	(*QueryGetTradeIndexRequest)(nil),       // 2: ggezchain.trade.QueryGetTradeIndexRequest
+	(*QueryGetTradeIndexResponse)(nil),      // 3: ggezchain.trade.QueryGetTradeIndexResponse
+	(*QueryGetStoredTradeRequest)(nil),      // 4: ggezchain.trade.QueryGetStoredTradeRequest
+	(*QueryGetStoredTradeResponse)(nil),     // 5: ggezchain.trade.QueryGetStoredTradeResponse
+	(*QueryAllStoredTradeRequest)(nil),      // 6: ggezchain.trade.QueryAllStoredTradeRequest
+	(*QueryAllStoredTradeResponse)(nil),     // 7: ggezchain.trade.QueryAllStoredTradeResponse
+	(*QueryGetStoredTempTradeRequest)(nil),  // 8: ggezchain.trade.QueryGetStoredTempTradeRequest
+	(*QueryGetStoredTempTradeResponse)(nil), // 9: ggezchain.trade.QueryGetStoredTempTradeResponse
+	(*QueryAllStoredTempTradeRequest)(nil),  // 10: ggezchain.trade.QueryAllStoredTempTradeRequest
+	(*QueryAllStoredTempTradeResponse)(nil), // 11: ggezchain.trade.QueryAllStoredTempTradeResponse
+	(*Params)(nil),                          // 12: ggezchain.trade.Params
+	(*TradeIndex)(nil),                      // 13: ggezchain.trade.TradeIndex
+	(*StoredTrade)(nil),                     // 14: ggezchain.trade.StoredTrade
+	(*v1beta1.PageRequest)(nil),             // 15: cosmos.base.query.v1beta1.PageRequest
+	(*v1beta1.PageResponse)(nil),            // 16: cosmos.base.query.v1beta1.PageResponse
+	(*StoredTempTrade)(nil),                 // 17: ggezchain.trade.StoredTempTrade
+}
 var file_ggezchain_trade_query_proto_depIdxs = []int32{
 	12, // 0: ggezchain.trade.QueryParamsResponse.params:type_name -> ggezchain.trade.Params
 	13, // 1: ggezchain.trade.QueryGetTradeIndexResponse.trade_index:type_name -> ggezchain.trade.TradeIndex

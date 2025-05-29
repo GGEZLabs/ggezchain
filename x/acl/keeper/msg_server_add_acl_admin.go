@@ -8,14 +8,14 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) AddAclAdmin(goCtx context.Context, msg *types.MsgAddAclAdmin) (*types.MsgAddAclAdminResponse, error) {
+func (k msgServer) AddAdmin(goCtx context.Context, msg *types.MsgAddAdmin) (*types.MsgAddAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.IsAdmin(ctx, msg.Creator) {
 		return nil, types.ErrUnauthorized
 	}
 
-	err := types.ValidateAddAclAdmin(k.GetAllAclAdmin(ctx), msg.Admins)
+	err := types.ValidateAddAdmin(k.GetAllAclAdmin(ctx), msg.Admins)
 	if err != nil {
 		return nil, err
 	}
@@ -25,10 +25,10 @@ func (k msgServer) AddAclAdmin(goCtx context.Context, msg *types.MsgAddAclAdmin)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
-			types.EventTypeAddAclAdmin,
+			types.EventTypeAddAdmin,
 			sdk.NewAttribute(types.AttributeKeyAdmins, strings.Join(msg.Admins, ",")),
 		),
 	)
 
-	return &types.MsgAddAclAdminResponse{}, nil
+	return &types.MsgAddAdminResponse{}, nil
 }

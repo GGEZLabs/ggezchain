@@ -8,24 +8,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgDeleteAclAdmin_ValidateBasic(t *testing.T) {
+func TestMsgDeleteAdmin_ValidateBasic(t *testing.T) {
 	duplicateAdmin := sample.AccAddress()
 
 	tests := []struct {
 		name string
-		msg  MsgDeleteAclAdmin
+		msg  MsgDeleteAdmin
 		err  error
 	}{
 		{
 			name: "invalid creator address",
-			msg: MsgDeleteAclAdmin{
+			msg: MsgDeleteAdmin{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
 			name: "zero admins",
-			msg: MsgDeleteAclAdmin{
+			msg: MsgDeleteAdmin{
 				Creator: sample.AccAddress(),
 				Admins:  []string{},
 			},
@@ -33,7 +33,7 @@ func TestMsgDeleteAclAdmin_ValidateBasic(t *testing.T) {
 		},
 		{
 			name: "invalid admin address",
-			msg: MsgDeleteAclAdmin{
+			msg: MsgDeleteAdmin{
 				Creator: sample.AccAddress(),
 				Admins:  []string{"invalid_address", sample.AccAddress()},
 			},
@@ -41,7 +41,7 @@ func TestMsgDeleteAclAdmin_ValidateBasic(t *testing.T) {
 		},
 		{
 			name: "duplicate admin address",
-			msg: MsgDeleteAclAdmin{
+			msg: MsgDeleteAdmin{
 				Creator: sample.AccAddress(),
 				Admins:  []string{duplicateAdmin, duplicateAdmin},
 			},
@@ -49,7 +49,7 @@ func TestMsgDeleteAclAdmin_ValidateBasic(t *testing.T) {
 		},
 		{
 			name: "all good",
-			msg: MsgDeleteAclAdmin{
+			msg: MsgDeleteAdmin{
 				Creator: sample.AccAddress(),
 				Admins:  []string{sample.AccAddress(), sample.AccAddress()},
 			},

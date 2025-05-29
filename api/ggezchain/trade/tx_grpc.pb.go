@@ -8,7 +8,6 @@ package trade
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -84,16 +83,15 @@ type MsgServer interface {
 }
 
 // UnimplementedMsgServer must be embedded to have forward compatible implementations.
-type UnimplementedMsgServer struct{}
+type UnimplementedMsgServer struct {
+}
 
 func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
 }
-
 func (UnimplementedMsgServer) CreateTrade(context.Context, *MsgCreateTrade) (*MsgCreateTradeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTrade not implemented")
 }
-
 func (UnimplementedMsgServer) ProcessTrade(context.Context, *MsgProcessTrade) (*MsgProcessTradeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProcessTrade not implemented")
 }

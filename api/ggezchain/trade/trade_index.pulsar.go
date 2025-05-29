@@ -3,14 +3,13 @@ package trade
 
 import (
 	fmt "fmt"
-	io "io"
-	reflect "reflect"
-	sync "sync"
-
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	io "io"
+	reflect "reflect"
+	sync "sync"
 )
 
 var (
@@ -44,21 +43,17 @@ func (x *TradeIndex) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_TradeIndex_messageType fastReflection_TradeIndex_messageType
-	_                                      protoreflect.MessageType = fastReflection_TradeIndex_messageType{}
-)
+var _fastReflection_TradeIndex_messageType fastReflection_TradeIndex_messageType
+var _ protoreflect.MessageType = fastReflection_TradeIndex_messageType{}
 
 type fastReflection_TradeIndex_messageType struct{}
 
 func (x fastReflection_TradeIndex_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_TradeIndex)(nil)
 }
-
 func (x fastReflection_TradeIndex_messageType) New() protoreflect.Message {
 	return new(fastReflection_TradeIndex)
 }
-
 func (x fastReflection_TradeIndex_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_TradeIndex
 }
@@ -504,13 +499,10 @@ func file_ggezchain_trade_trade_index_proto_rawDescGZIP() []byte {
 	return file_ggezchain_trade_trade_index_proto_rawDescData
 }
 
-var (
-	file_ggezchain_trade_trade_index_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-	file_ggezchain_trade_trade_index_proto_goTypes  = []interface{}{
-		(*TradeIndex)(nil), // 0: ggezchain.trade.TradeIndex
-	}
-)
-
+var file_ggezchain_trade_trade_index_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_ggezchain_trade_trade_index_proto_goTypes = []interface{}{
+	(*TradeIndex)(nil), // 0: ggezchain.trade.TradeIndex
+}
 var file_ggezchain_trade_trade_index_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type

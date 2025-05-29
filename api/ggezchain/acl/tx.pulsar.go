@@ -2,20 +2,18 @@
 package acl
 
 import (
-	fmt "fmt"
-	io "io"
-	reflect "reflect"
-	sync "sync"
-
 	_ "cosmossdk.io/api/amino"
 	_ "cosmossdk.io/api/cosmos/msg/v1"
-
+	fmt "fmt"
 	_ "github.com/cosmos/cosmos-proto"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	io "io"
+	reflect "reflect"
+	sync "sync"
 )
 
 var (
@@ -51,21 +49,17 @@ func (x *MsgUpdateParams) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgUpdateParams_messageType fastReflection_MsgUpdateParams_messageType
-	_                                           protoreflect.MessageType = fastReflection_MsgUpdateParams_messageType{}
-)
+var _fastReflection_MsgUpdateParams_messageType fastReflection_MsgUpdateParams_messageType
+var _ protoreflect.MessageType = fastReflection_MsgUpdateParams_messageType{}
 
 type fastReflection_MsgUpdateParams_messageType struct{}
 
 func (x fastReflection_MsgUpdateParams_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgUpdateParams)(nil)
 }
-
 func (x fastReflection_MsgUpdateParams_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgUpdateParams)
 }
-
 func (x fastReflection_MsgUpdateParams_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgUpdateParams
 }
@@ -521,7 +515,9 @@ func (x *fastReflection_MsgUpdateParams) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var md_MsgUpdateParamsResponse protoreflect.MessageDescriptor
+var (
+	md_MsgUpdateParamsResponse protoreflect.MessageDescriptor
+)
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
@@ -548,21 +544,17 @@ func (x *MsgUpdateParamsResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgUpdateParamsResponse_messageType fastReflection_MsgUpdateParamsResponse_messageType
-	_                                                   protoreflect.MessageType = fastReflection_MsgUpdateParamsResponse_messageType{}
-)
+var _fastReflection_MsgUpdateParamsResponse_messageType fastReflection_MsgUpdateParamsResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgUpdateParamsResponse_messageType{}
 
 type fastReflection_MsgUpdateParamsResponse_messageType struct{}
 
 func (x fastReflection_MsgUpdateParamsResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgUpdateParamsResponse)(nil)
 }
-
 func (x fastReflection_MsgUpdateParamsResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgUpdateParamsResponse)
 }
-
 func (x fastReflection_MsgUpdateParamsResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgUpdateParamsResponse
 }
@@ -916,21 +908,17 @@ func (x *MsgAddAuthority) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgAddAuthority_messageType fastReflection_MsgAddAuthority_messageType
-	_                                           protoreflect.MessageType = fastReflection_MsgAddAuthority_messageType{}
-)
+var _fastReflection_MsgAddAuthority_messageType fastReflection_MsgAddAuthority_messageType
+var _ protoreflect.MessageType = fastReflection_MsgAddAuthority_messageType{}
 
 type fastReflection_MsgAddAuthority_messageType struct{}
 
 func (x fastReflection_MsgAddAuthority_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgAddAuthority)(nil)
 }
-
 func (x fastReflection_MsgAddAuthority_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgAddAuthority)
 }
-
 func (x fastReflection_MsgAddAuthority_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgAddAuthority
 }
@@ -1495,7 +1483,9 @@ func (x *fastReflection_MsgAddAuthority) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var md_MsgAddAuthorityResponse protoreflect.MessageDescriptor
+var (
+	md_MsgAddAuthorityResponse protoreflect.MessageDescriptor
+)
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
@@ -1522,21 +1512,17 @@ func (x *MsgAddAuthorityResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgAddAuthorityResponse_messageType fastReflection_MsgAddAuthorityResponse_messageType
-	_                                                   protoreflect.MessageType = fastReflection_MsgAddAuthorityResponse_messageType{}
-)
+var _fastReflection_MsgAddAuthorityResponse_messageType fastReflection_MsgAddAuthorityResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgAddAuthorityResponse_messageType{}
 
 type fastReflection_MsgAddAuthorityResponse_messageType struct{}
 
 func (x fastReflection_MsgAddAuthorityResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgAddAuthorityResponse)(nil)
 }
-
 func (x fastReflection_MsgAddAuthorityResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgAddAuthorityResponse)
 }
-
 func (x fastReflection_MsgAddAuthorityResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgAddAuthorityResponse
 }
@@ -1886,21 +1872,17 @@ func (x *MsgDeleteAuthority) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgDeleteAuthority_messageType fastReflection_MsgDeleteAuthority_messageType
-	_                                              protoreflect.MessageType = fastReflection_MsgDeleteAuthority_messageType{}
-)
+var _fastReflection_MsgDeleteAuthority_messageType fastReflection_MsgDeleteAuthority_messageType
+var _ protoreflect.MessageType = fastReflection_MsgDeleteAuthority_messageType{}
 
 type fastReflection_MsgDeleteAuthority_messageType struct{}
 
 func (x fastReflection_MsgDeleteAuthority_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgDeleteAuthority)(nil)
 }
-
 func (x fastReflection_MsgDeleteAuthority_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgDeleteAuthority)
 }
-
 func (x fastReflection_MsgDeleteAuthority_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgDeleteAuthority
 }
@@ -2341,7 +2323,9 @@ func (x *fastReflection_MsgDeleteAuthority) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var md_MsgDeleteAuthorityResponse protoreflect.MessageDescriptor
+var (
+	md_MsgDeleteAuthorityResponse protoreflect.MessageDescriptor
+)
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
@@ -2368,21 +2352,17 @@ func (x *MsgDeleteAuthorityResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgDeleteAuthorityResponse_messageType fastReflection_MsgDeleteAuthorityResponse_messageType
-	_                                                      protoreflect.MessageType = fastReflection_MsgDeleteAuthorityResponse_messageType{}
-)
+var _fastReflection_MsgDeleteAuthorityResponse_messageType fastReflection_MsgDeleteAuthorityResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgDeleteAuthorityResponse_messageType{}
 
 type fastReflection_MsgDeleteAuthorityResponse_messageType struct{}
 
 func (x fastReflection_MsgDeleteAuthorityResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgDeleteAuthorityResponse)(nil)
 }
-
 func (x fastReflection_MsgDeleteAuthorityResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgDeleteAuthorityResponse)
 }
-
 func (x fastReflection_MsgDeleteAuthorityResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgDeleteAuthorityResponse
 }
@@ -2790,21 +2770,17 @@ func (x *MsgUpdateAuthority) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgUpdateAuthority_messageType fastReflection_MsgUpdateAuthority_messageType
-	_                                              protoreflect.MessageType = fastReflection_MsgUpdateAuthority_messageType{}
-)
+var _fastReflection_MsgUpdateAuthority_messageType fastReflection_MsgUpdateAuthority_messageType
+var _ protoreflect.MessageType = fastReflection_MsgUpdateAuthority_messageType{}
 
 type fastReflection_MsgUpdateAuthority_messageType struct{}
 
 func (x fastReflection_MsgUpdateAuthority_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgUpdateAuthority)(nil)
 }
-
 func (x fastReflection_MsgUpdateAuthority_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgUpdateAuthority)
 }
-
 func (x fastReflection_MsgUpdateAuthority_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgUpdateAuthority
 }
@@ -3621,7 +3597,9 @@ func (x *fastReflection_MsgUpdateAuthority) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var md_MsgUpdateAuthorityResponse protoreflect.MessageDescriptor
+var (
+	md_MsgUpdateAuthorityResponse protoreflect.MessageDescriptor
+)
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
@@ -3648,21 +3626,17 @@ func (x *MsgUpdateAuthorityResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgUpdateAuthorityResponse_messageType fastReflection_MsgUpdateAuthorityResponse_messageType
-	_                                                      protoreflect.MessageType = fastReflection_MsgUpdateAuthorityResponse_messageType{}
-)
+var _fastReflection_MsgUpdateAuthorityResponse_messageType fastReflection_MsgUpdateAuthorityResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgUpdateAuthorityResponse_messageType{}
 
 type fastReflection_MsgUpdateAuthorityResponse_messageType struct{}
 
 func (x fastReflection_MsgUpdateAuthorityResponse_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_MsgUpdateAuthorityResponse)(nil)
 }
-
 func (x fastReflection_MsgUpdateAuthorityResponse_messageType) New() protoreflect.Message {
 	return new(fastReflection_MsgUpdateAuthorityResponse)
 }
-
 func (x fastReflection_MsgUpdateAuthorityResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_MsgUpdateAuthorityResponse
 }
@@ -3979,74 +3953,74 @@ func (x *fastReflection_MsgUpdateAuthorityResponse) ProtoMethods() *protoiface.M
 	}
 }
 
-var _ protoreflect.List = (*_MsgInitAclAdmin_2_list)(nil)
+var _ protoreflect.List = (*_MsgInit_2_list)(nil)
 
-type _MsgInitAclAdmin_2_list struct {
+type _MsgInit_2_list struct {
 	list *[]string
 }
 
-func (x *_MsgInitAclAdmin_2_list) Len() int {
+func (x *_MsgInit_2_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_MsgInitAclAdmin_2_list) Get(i int) protoreflect.Value {
+func (x *_MsgInit_2_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfString((*x.list)[i])
 }
 
-func (x *_MsgInitAclAdmin_2_list) Set(i int, value protoreflect.Value) {
+func (x *_MsgInit_2_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_MsgInitAclAdmin_2_list) Append(value protoreflect.Value) {
+func (x *_MsgInit_2_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_MsgInitAclAdmin_2_list) AppendMutable() protoreflect.Value {
-	panic(fmt.Errorf("AppendMutable can not be called on message MsgInitAclAdmin at list field Admins as it is not of Message kind"))
+func (x *_MsgInit_2_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message MsgInit at list field Admins as it is not of Message kind"))
 }
 
-func (x *_MsgInitAclAdmin_2_list) Truncate(n int) {
+func (x *_MsgInit_2_list) Truncate(n int) {
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_MsgInitAclAdmin_2_list) NewElement() protoreflect.Value {
+func (x *_MsgInit_2_list) NewElement() protoreflect.Value {
 	v := ""
 	return protoreflect.ValueOfString(v)
 }
 
-func (x *_MsgInitAclAdmin_2_list) IsValid() bool {
+func (x *_MsgInit_2_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_MsgInitAclAdmin         protoreflect.MessageDescriptor
-	fd_MsgInitAclAdmin_creator protoreflect.FieldDescriptor
-	fd_MsgInitAclAdmin_admins  protoreflect.FieldDescriptor
+	md_MsgInit         protoreflect.MessageDescriptor
+	fd_MsgInit_creator protoreflect.FieldDescriptor
+	fd_MsgInit_admins  protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
-	md_MsgInitAclAdmin = File_ggezchain_acl_tx_proto.Messages().ByName("MsgInitAclAdmin")
-	fd_MsgInitAclAdmin_creator = md_MsgInitAclAdmin.Fields().ByName("creator")
-	fd_MsgInitAclAdmin_admins = md_MsgInitAclAdmin.Fields().ByName("admins")
+	md_MsgInit = File_ggezchain_acl_tx_proto.Messages().ByName("MsgInit")
+	fd_MsgInit_creator = md_MsgInit.Fields().ByName("creator")
+	fd_MsgInit_admins = md_MsgInit.Fields().ByName("admins")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgInitAclAdmin)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgInit)(nil)
 
-type fastReflection_MsgInitAclAdmin MsgInitAclAdmin
+type fastReflection_MsgInit MsgInit
 
-func (x *MsgInitAclAdmin) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgInitAclAdmin)(x)
+func (x *MsgInit) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgInit)(x)
 }
 
-func (x *MsgInitAclAdmin) slowProtoReflect() protoreflect.Message {
+func (x *MsgInit) slowProtoReflect() protoreflect.Message {
 	mi := &file_ggezchain_acl_tx_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4058,47 +4032,43 @@ func (x *MsgInitAclAdmin) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgInitAclAdmin_messageType fastReflection_MsgInitAclAdmin_messageType
-	_                                           protoreflect.MessageType = fastReflection_MsgInitAclAdmin_messageType{}
-)
+var _fastReflection_MsgInit_messageType fastReflection_MsgInit_messageType
+var _ protoreflect.MessageType = fastReflection_MsgInit_messageType{}
 
-type fastReflection_MsgInitAclAdmin_messageType struct{}
+type fastReflection_MsgInit_messageType struct{}
 
-func (x fastReflection_MsgInitAclAdmin_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgInitAclAdmin)(nil)
+func (x fastReflection_MsgInit_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgInit)(nil)
 }
-
-func (x fastReflection_MsgInitAclAdmin_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgInitAclAdmin)
+func (x fastReflection_MsgInit_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgInit)
 }
-
-func (x fastReflection_MsgInitAclAdmin_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgInitAclAdmin
+func (x fastReflection_MsgInit_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgInit
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgInitAclAdmin) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgInitAclAdmin
+func (x *fastReflection_MsgInit) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgInit
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgInitAclAdmin) Type() protoreflect.MessageType {
-	return _fastReflection_MsgInitAclAdmin_messageType
+func (x *fastReflection_MsgInit) Type() protoreflect.MessageType {
+	return _fastReflection_MsgInit_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgInitAclAdmin) New() protoreflect.Message {
-	return new(fastReflection_MsgInitAclAdmin)
+func (x *fastReflection_MsgInit) New() protoreflect.Message {
+	return new(fastReflection_MsgInit)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgInitAclAdmin) Interface() protoreflect.ProtoMessage {
-	return (*MsgInitAclAdmin)(x)
+func (x *fastReflection_MsgInit) Interface() protoreflect.ProtoMessage {
+	return (*MsgInit)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -4106,16 +4076,16 @@ func (x *fastReflection_MsgInitAclAdmin) Interface() protoreflect.ProtoMessage {
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgInitAclAdmin) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgInit) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_MsgInitAclAdmin_creator, value) {
+		if !f(fd_MsgInit_creator, value) {
 			return
 		}
 	}
 	if len(x.Admins) != 0 {
-		value := protoreflect.ValueOfList(&_MsgInitAclAdmin_2_list{list: &x.Admins})
-		if !f(fd_MsgInitAclAdmin_admins, value) {
+		value := protoreflect.ValueOfList(&_MsgInit_2_list{list: &x.Admins})
+		if !f(fd_MsgInit_admins, value) {
 			return
 		}
 	}
@@ -4132,17 +4102,17 @@ func (x *fastReflection_MsgInitAclAdmin) Range(f func(protoreflect.FieldDescript
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgInitAclAdmin) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgInit) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgInitAclAdmin.creator":
+	case "ggezchain.acl.MsgInit.creator":
 		return x.Creator != ""
-	case "ggezchain.acl.MsgInitAclAdmin.admins":
+	case "ggezchain.acl.MsgInit.admins":
 		return len(x.Admins) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInit"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInit does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4152,17 +4122,17 @@ func (x *fastReflection_MsgInitAclAdmin) Has(fd protoreflect.FieldDescriptor) bo
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgInitAclAdmin) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgInit) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgInitAclAdmin.creator":
+	case "ggezchain.acl.MsgInit.creator":
 		x.Creator = ""
-	case "ggezchain.acl.MsgInitAclAdmin.admins":
+	case "ggezchain.acl.MsgInit.admins":
 		x.Admins = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInit"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInit does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4172,22 +4142,22 @@ func (x *fastReflection_MsgInitAclAdmin) Clear(fd protoreflect.FieldDescriptor) 
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgInitAclAdmin) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgInit) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "ggezchain.acl.MsgInitAclAdmin.creator":
+	case "ggezchain.acl.MsgInit.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.acl.MsgInitAclAdmin.admins":
+	case "ggezchain.acl.MsgInit.admins":
 		if len(x.Admins) == 0 {
-			return protoreflect.ValueOfList(&_MsgInitAclAdmin_2_list{})
+			return protoreflect.ValueOfList(&_MsgInit_2_list{})
 		}
-		listValue := &_MsgInitAclAdmin_2_list{list: &x.Admins}
+		listValue := &_MsgInit_2_list{list: &x.Admins}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInit"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdmin does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInit does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4201,19 +4171,19 @@ func (x *fastReflection_MsgInitAclAdmin) Get(descriptor protoreflect.FieldDescri
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgInitAclAdmin) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgInit) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgInitAclAdmin.creator":
+	case "ggezchain.acl.MsgInit.creator":
 		x.Creator = value.Interface().(string)
-	case "ggezchain.acl.MsgInitAclAdmin.admins":
+	case "ggezchain.acl.MsgInit.admins":
 		lv := value.List()
-		clv := lv.(*_MsgInitAclAdmin_2_list)
+		clv := lv.(*_MsgInit_2_list)
 		x.Admins = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInit"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInit does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4227,49 +4197,49 @@ func (x *fastReflection_MsgInitAclAdmin) Set(fd protoreflect.FieldDescriptor, va
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgInitAclAdmin) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgInit) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgInitAclAdmin.admins":
+	case "ggezchain.acl.MsgInit.admins":
 		if x.Admins == nil {
 			x.Admins = []string{}
 		}
-		value := &_MsgInitAclAdmin_2_list{list: &x.Admins}
+		value := &_MsgInit_2_list{list: &x.Admins}
 		return protoreflect.ValueOfList(value)
-	case "ggezchain.acl.MsgInitAclAdmin.creator":
-		panic(fmt.Errorf("field creator of message ggezchain.acl.MsgInitAclAdmin is not mutable"))
+	case "ggezchain.acl.MsgInit.creator":
+		panic(fmt.Errorf("field creator of message ggezchain.acl.MsgInit is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInit"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInit does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgInitAclAdmin) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgInit) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgInitAclAdmin.creator":
+	case "ggezchain.acl.MsgInit.creator":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.acl.MsgInitAclAdmin.admins":
+	case "ggezchain.acl.MsgInit.admins":
 		list := []string{}
-		return protoreflect.ValueOfList(&_MsgInitAclAdmin_2_list{list: &list})
+		return protoreflect.ValueOfList(&_MsgInit_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInit"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInit does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgInitAclAdmin) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgInit) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgInitAclAdmin", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgInit", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4277,7 +4247,7 @@ func (x *fastReflection_MsgInitAclAdmin) WhichOneof(d protoreflect.OneofDescript
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgInitAclAdmin) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgInit) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -4288,7 +4258,7 @@ func (x *fastReflection_MsgInitAclAdmin) GetUnknown() protoreflect.RawFields {
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgInitAclAdmin) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgInit) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -4300,7 +4270,7 @@ func (x *fastReflection_MsgInitAclAdmin) SetUnknown(fields protoreflect.RawField
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgInitAclAdmin) IsValid() bool {
+func (x *fastReflection_MsgInit) IsValid() bool {
 	return x != nil
 }
 
@@ -4310,9 +4280,9 @@ func (x *fastReflection_MsgInitAclAdmin) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgInitAclAdmin) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgInit) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgInitAclAdmin)
+		x := input.Message.Interface().(*MsgInit)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4344,7 +4314,7 @@ func (x *fastReflection_MsgInitAclAdmin) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgInitAclAdmin)
+		x := input.Message.Interface().(*MsgInit)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4390,7 +4360,7 @@ func (x *fastReflection_MsgInitAclAdmin) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgInitAclAdmin)
+		x := input.Message.Interface().(*MsgInit)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4422,10 +4392,10 @@ func (x *fastReflection_MsgInitAclAdmin) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgInitAclAdmin: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgInit: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgInitAclAdmin: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgInit: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -4527,22 +4497,24 @@ func (x *fastReflection_MsgInitAclAdmin) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var md_MsgInitAclAdminResponse protoreflect.MessageDescriptor
+var (
+	md_MsgInitResponse protoreflect.MessageDescriptor
+)
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
-	md_MsgInitAclAdminResponse = File_ggezchain_acl_tx_proto.Messages().ByName("MsgInitAclAdminResponse")
+	md_MsgInitResponse = File_ggezchain_acl_tx_proto.Messages().ByName("MsgInitResponse")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgInitAclAdminResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgInitResponse)(nil)
 
-type fastReflection_MsgInitAclAdminResponse MsgInitAclAdminResponse
+type fastReflection_MsgInitResponse MsgInitResponse
 
-func (x *MsgInitAclAdminResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgInitAclAdminResponse)(x)
+func (x *MsgInitResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgInitResponse)(x)
 }
 
-func (x *MsgInitAclAdminResponse) slowProtoReflect() protoreflect.Message {
+func (x *MsgInitResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_ggezchain_acl_tx_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4554,47 +4526,43 @@ func (x *MsgInitAclAdminResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgInitAclAdminResponse_messageType fastReflection_MsgInitAclAdminResponse_messageType
-	_                                                   protoreflect.MessageType = fastReflection_MsgInitAclAdminResponse_messageType{}
-)
+var _fastReflection_MsgInitResponse_messageType fastReflection_MsgInitResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgInitResponse_messageType{}
 
-type fastReflection_MsgInitAclAdminResponse_messageType struct{}
+type fastReflection_MsgInitResponse_messageType struct{}
 
-func (x fastReflection_MsgInitAclAdminResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgInitAclAdminResponse)(nil)
+func (x fastReflection_MsgInitResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgInitResponse)(nil)
 }
-
-func (x fastReflection_MsgInitAclAdminResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgInitAclAdminResponse)
+func (x fastReflection_MsgInitResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgInitResponse)
 }
-
-func (x fastReflection_MsgInitAclAdminResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgInitAclAdminResponse
+func (x fastReflection_MsgInitResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgInitResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgInitAclAdminResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgInitAclAdminResponse
+func (x *fastReflection_MsgInitResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgInitResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgInitAclAdminResponse) Type() protoreflect.MessageType {
-	return _fastReflection_MsgInitAclAdminResponse_messageType
+func (x *fastReflection_MsgInitResponse) Type() protoreflect.MessageType {
+	return _fastReflection_MsgInitResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgInitAclAdminResponse) New() protoreflect.Message {
-	return new(fastReflection_MsgInitAclAdminResponse)
+func (x *fastReflection_MsgInitResponse) New() protoreflect.Message {
+	return new(fastReflection_MsgInitResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgInitAclAdminResponse) Interface() protoreflect.ProtoMessage {
-	return (*MsgInitAclAdminResponse)(x)
+func (x *fastReflection_MsgInitResponse) Interface() protoreflect.ProtoMessage {
+	return (*MsgInitResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -4602,7 +4570,7 @@ func (x *fastReflection_MsgInitAclAdminResponse) Interface() protoreflect.ProtoM
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgInitAclAdminResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgInitResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 }
 
 // Has reports whether a field is populated.
@@ -4616,13 +4584,13 @@ func (x *fastReflection_MsgInitAclAdminResponse) Range(f func(protoreflect.Field
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgInitAclAdminResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgInitResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInitResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4632,13 +4600,13 @@ func (x *fastReflection_MsgInitAclAdminResponse) Has(fd protoreflect.FieldDescri
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgInitAclAdminResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgInitResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInitResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4648,13 +4616,13 @@ func (x *fastReflection_MsgInitAclAdminResponse) Clear(fd protoreflect.FieldDesc
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgInitAclAdminResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgInitResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdminResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInitResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -4668,13 +4636,13 @@ func (x *fastReflection_MsgInitAclAdminResponse) Get(descriptor protoreflect.Fie
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgInitAclAdminResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgInitResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInitResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -4688,36 +4656,36 @@ func (x *fastReflection_MsgInitAclAdminResponse) Set(fd protoreflect.FieldDescri
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgInitAclAdminResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgInitResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInitResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgInitAclAdminResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgInitResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgInitResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgInitAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgInitResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgInitAclAdminResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgInitResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgInitAclAdminResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgInitResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -4725,7 +4693,7 @@ func (x *fastReflection_MsgInitAclAdminResponse) WhichOneof(d protoreflect.Oneof
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgInitAclAdminResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgInitResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -4736,7 +4704,7 @@ func (x *fastReflection_MsgInitAclAdminResponse) GetUnknown() protoreflect.RawFi
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgInitAclAdminResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgInitResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -4748,7 +4716,7 @@ func (x *fastReflection_MsgInitAclAdminResponse) SetUnknown(fields protoreflect.
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgInitAclAdminResponse) IsValid() bool {
+func (x *fastReflection_MsgInitResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -4758,9 +4726,9 @@ func (x *fastReflection_MsgInitAclAdminResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgInitAclAdminResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgInitResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgInitAclAdminResponse)
+		x := input.Message.Interface().(*MsgInitResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4782,7 +4750,7 @@ func (x *fastReflection_MsgInitAclAdminResponse) ProtoMethods() *protoiface.Meth
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgInitAclAdminResponse)
+		x := input.Message.Interface().(*MsgInitResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4812,7 +4780,7 @@ func (x *fastReflection_MsgInitAclAdminResponse) ProtoMethods() *protoiface.Meth
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgInitAclAdminResponse)
+		x := input.Message.Interface().(*MsgInitResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -4844,10 +4812,10 @@ func (x *fastReflection_MsgInitAclAdminResponse) ProtoMethods() *protoiface.Meth
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgInitAclAdminResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgInitResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgInitAclAdminResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgInitResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			default:
@@ -4885,74 +4853,74 @@ func (x *fastReflection_MsgInitAclAdminResponse) ProtoMethods() *protoiface.Meth
 	}
 }
 
-var _ protoreflect.List = (*_MsgAddAclAdmin_2_list)(nil)
+var _ protoreflect.List = (*_MsgAddAdmin_2_list)(nil)
 
-type _MsgAddAclAdmin_2_list struct {
+type _MsgAddAdmin_2_list struct {
 	list *[]string
 }
 
-func (x *_MsgAddAclAdmin_2_list) Len() int {
+func (x *_MsgAddAdmin_2_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_MsgAddAclAdmin_2_list) Get(i int) protoreflect.Value {
+func (x *_MsgAddAdmin_2_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfString((*x.list)[i])
 }
 
-func (x *_MsgAddAclAdmin_2_list) Set(i int, value protoreflect.Value) {
+func (x *_MsgAddAdmin_2_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_MsgAddAclAdmin_2_list) Append(value protoreflect.Value) {
+func (x *_MsgAddAdmin_2_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_MsgAddAclAdmin_2_list) AppendMutable() protoreflect.Value {
-	panic(fmt.Errorf("AppendMutable can not be called on message MsgAddAclAdmin at list field Admins as it is not of Message kind"))
+func (x *_MsgAddAdmin_2_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message MsgAddAdmin at list field Admins as it is not of Message kind"))
 }
 
-func (x *_MsgAddAclAdmin_2_list) Truncate(n int) {
+func (x *_MsgAddAdmin_2_list) Truncate(n int) {
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_MsgAddAclAdmin_2_list) NewElement() protoreflect.Value {
+func (x *_MsgAddAdmin_2_list) NewElement() protoreflect.Value {
 	v := ""
 	return protoreflect.ValueOfString(v)
 }
 
-func (x *_MsgAddAclAdmin_2_list) IsValid() bool {
+func (x *_MsgAddAdmin_2_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_MsgAddAclAdmin         protoreflect.MessageDescriptor
-	fd_MsgAddAclAdmin_creator protoreflect.FieldDescriptor
-	fd_MsgAddAclAdmin_admins  protoreflect.FieldDescriptor
+	md_MsgAddAdmin         protoreflect.MessageDescriptor
+	fd_MsgAddAdmin_creator protoreflect.FieldDescriptor
+	fd_MsgAddAdmin_admins  protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
-	md_MsgAddAclAdmin = File_ggezchain_acl_tx_proto.Messages().ByName("MsgAddAclAdmin")
-	fd_MsgAddAclAdmin_creator = md_MsgAddAclAdmin.Fields().ByName("creator")
-	fd_MsgAddAclAdmin_admins = md_MsgAddAclAdmin.Fields().ByName("admins")
+	md_MsgAddAdmin = File_ggezchain_acl_tx_proto.Messages().ByName("MsgAddAdmin")
+	fd_MsgAddAdmin_creator = md_MsgAddAdmin.Fields().ByName("creator")
+	fd_MsgAddAdmin_admins = md_MsgAddAdmin.Fields().ByName("admins")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgAddAclAdmin)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgAddAdmin)(nil)
 
-type fastReflection_MsgAddAclAdmin MsgAddAclAdmin
+type fastReflection_MsgAddAdmin MsgAddAdmin
 
-func (x *MsgAddAclAdmin) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgAddAclAdmin)(x)
+func (x *MsgAddAdmin) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgAddAdmin)(x)
 }
 
-func (x *MsgAddAclAdmin) slowProtoReflect() protoreflect.Message {
+func (x *MsgAddAdmin) slowProtoReflect() protoreflect.Message {
 	mi := &file_ggezchain_acl_tx_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4964,47 +4932,43 @@ func (x *MsgAddAclAdmin) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgAddAclAdmin_messageType fastReflection_MsgAddAclAdmin_messageType
-	_                                          protoreflect.MessageType = fastReflection_MsgAddAclAdmin_messageType{}
-)
+var _fastReflection_MsgAddAdmin_messageType fastReflection_MsgAddAdmin_messageType
+var _ protoreflect.MessageType = fastReflection_MsgAddAdmin_messageType{}
 
-type fastReflection_MsgAddAclAdmin_messageType struct{}
+type fastReflection_MsgAddAdmin_messageType struct{}
 
-func (x fastReflection_MsgAddAclAdmin_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgAddAclAdmin)(nil)
+func (x fastReflection_MsgAddAdmin_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgAddAdmin)(nil)
 }
-
-func (x fastReflection_MsgAddAclAdmin_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgAddAclAdmin)
+func (x fastReflection_MsgAddAdmin_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgAddAdmin)
 }
-
-func (x fastReflection_MsgAddAclAdmin_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgAddAclAdmin
+func (x fastReflection_MsgAddAdmin_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgAddAdmin
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgAddAclAdmin) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgAddAclAdmin
+func (x *fastReflection_MsgAddAdmin) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgAddAdmin
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgAddAclAdmin) Type() protoreflect.MessageType {
-	return _fastReflection_MsgAddAclAdmin_messageType
+func (x *fastReflection_MsgAddAdmin) Type() protoreflect.MessageType {
+	return _fastReflection_MsgAddAdmin_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgAddAclAdmin) New() protoreflect.Message {
-	return new(fastReflection_MsgAddAclAdmin)
+func (x *fastReflection_MsgAddAdmin) New() protoreflect.Message {
+	return new(fastReflection_MsgAddAdmin)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgAddAclAdmin) Interface() protoreflect.ProtoMessage {
-	return (*MsgAddAclAdmin)(x)
+func (x *fastReflection_MsgAddAdmin) Interface() protoreflect.ProtoMessage {
+	return (*MsgAddAdmin)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -5012,16 +4976,16 @@ func (x *fastReflection_MsgAddAclAdmin) Interface() protoreflect.ProtoMessage {
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgAddAclAdmin) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgAddAdmin) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_MsgAddAclAdmin_creator, value) {
+		if !f(fd_MsgAddAdmin_creator, value) {
 			return
 		}
 	}
 	if len(x.Admins) != 0 {
-		value := protoreflect.ValueOfList(&_MsgAddAclAdmin_2_list{list: &x.Admins})
-		if !f(fd_MsgAddAclAdmin_admins, value) {
+		value := protoreflect.ValueOfList(&_MsgAddAdmin_2_list{list: &x.Admins})
+		if !f(fd_MsgAddAdmin_admins, value) {
 			return
 		}
 	}
@@ -5038,17 +5002,17 @@ func (x *fastReflection_MsgAddAclAdmin) Range(f func(protoreflect.FieldDescripto
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgAddAclAdmin) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgAddAdmin) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgAddAclAdmin.creator":
+	case "ggezchain.acl.MsgAddAdmin.creator":
 		return x.Creator != ""
-	case "ggezchain.acl.MsgAddAclAdmin.admins":
+	case "ggezchain.acl.MsgAddAdmin.admins":
 		return len(x.Admins) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdmin does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5058,17 +5022,17 @@ func (x *fastReflection_MsgAddAclAdmin) Has(fd protoreflect.FieldDescriptor) boo
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgAddAclAdmin) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgAddAdmin) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgAddAclAdmin.creator":
+	case "ggezchain.acl.MsgAddAdmin.creator":
 		x.Creator = ""
-	case "ggezchain.acl.MsgAddAclAdmin.admins":
+	case "ggezchain.acl.MsgAddAdmin.admins":
 		x.Admins = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdmin does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5078,22 +5042,22 @@ func (x *fastReflection_MsgAddAclAdmin) Clear(fd protoreflect.FieldDescriptor) {
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgAddAclAdmin) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgAddAdmin) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "ggezchain.acl.MsgAddAclAdmin.creator":
+	case "ggezchain.acl.MsgAddAdmin.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.acl.MsgAddAclAdmin.admins":
+	case "ggezchain.acl.MsgAddAdmin.admins":
 		if len(x.Admins) == 0 {
-			return protoreflect.ValueOfList(&_MsgAddAclAdmin_2_list{})
+			return protoreflect.ValueOfList(&_MsgAddAdmin_2_list{})
 		}
-		listValue := &_MsgAddAclAdmin_2_list{list: &x.Admins}
+		listValue := &_MsgAddAdmin_2_list{list: &x.Admins}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdmin does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdmin does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -5107,19 +5071,19 @@ func (x *fastReflection_MsgAddAclAdmin) Get(descriptor protoreflect.FieldDescrip
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgAddAclAdmin) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgAddAdmin) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgAddAclAdmin.creator":
+	case "ggezchain.acl.MsgAddAdmin.creator":
 		x.Creator = value.Interface().(string)
-	case "ggezchain.acl.MsgAddAclAdmin.admins":
+	case "ggezchain.acl.MsgAddAdmin.admins":
 		lv := value.List()
-		clv := lv.(*_MsgAddAclAdmin_2_list)
+		clv := lv.(*_MsgAddAdmin_2_list)
 		x.Admins = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdmin does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5133,49 +5097,49 @@ func (x *fastReflection_MsgAddAclAdmin) Set(fd protoreflect.FieldDescriptor, val
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgAddAclAdmin) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgAddAdmin) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgAddAclAdmin.admins":
+	case "ggezchain.acl.MsgAddAdmin.admins":
 		if x.Admins == nil {
 			x.Admins = []string{}
 		}
-		value := &_MsgAddAclAdmin_2_list{list: &x.Admins}
+		value := &_MsgAddAdmin_2_list{list: &x.Admins}
 		return protoreflect.ValueOfList(value)
-	case "ggezchain.acl.MsgAddAclAdmin.creator":
-		panic(fmt.Errorf("field creator of message ggezchain.acl.MsgAddAclAdmin is not mutable"))
+	case "ggezchain.acl.MsgAddAdmin.creator":
+		panic(fmt.Errorf("field creator of message ggezchain.acl.MsgAddAdmin is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdmin does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgAddAclAdmin) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgAddAdmin) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgAddAclAdmin.creator":
+	case "ggezchain.acl.MsgAddAdmin.creator":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.acl.MsgAddAclAdmin.admins":
+	case "ggezchain.acl.MsgAddAdmin.admins":
 		list := []string{}
-		return protoreflect.ValueOfList(&_MsgAddAclAdmin_2_list{list: &list})
+		return protoreflect.ValueOfList(&_MsgAddAdmin_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdmin does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgAddAclAdmin) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgAddAdmin) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgAddAclAdmin", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgAddAdmin", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -5183,7 +5147,7 @@ func (x *fastReflection_MsgAddAclAdmin) WhichOneof(d protoreflect.OneofDescripto
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgAddAclAdmin) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgAddAdmin) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -5194,7 +5158,7 @@ func (x *fastReflection_MsgAddAclAdmin) GetUnknown() protoreflect.RawFields {
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgAddAclAdmin) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgAddAdmin) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -5206,7 +5170,7 @@ func (x *fastReflection_MsgAddAclAdmin) SetUnknown(fields protoreflect.RawFields
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgAddAclAdmin) IsValid() bool {
+func (x *fastReflection_MsgAddAdmin) IsValid() bool {
 	return x != nil
 }
 
@@ -5216,9 +5180,9 @@ func (x *fastReflection_MsgAddAclAdmin) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgAddAclAdmin) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgAddAdmin) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgAddAclAdmin)
+		x := input.Message.Interface().(*MsgAddAdmin)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5250,7 +5214,7 @@ func (x *fastReflection_MsgAddAclAdmin) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgAddAclAdmin)
+		x := input.Message.Interface().(*MsgAddAdmin)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5296,7 +5260,7 @@ func (x *fastReflection_MsgAddAclAdmin) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgAddAclAdmin)
+		x := input.Message.Interface().(*MsgAddAdmin)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5328,10 +5292,10 @@ func (x *fastReflection_MsgAddAclAdmin) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgAddAclAdmin: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgAddAdmin: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgAddAclAdmin: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgAddAdmin: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -5433,22 +5397,24 @@ func (x *fastReflection_MsgAddAclAdmin) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var md_MsgAddAclAdminResponse protoreflect.MessageDescriptor
+var (
+	md_MsgAddAdminResponse protoreflect.MessageDescriptor
+)
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
-	md_MsgAddAclAdminResponse = File_ggezchain_acl_tx_proto.Messages().ByName("MsgAddAclAdminResponse")
+	md_MsgAddAdminResponse = File_ggezchain_acl_tx_proto.Messages().ByName("MsgAddAdminResponse")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgAddAclAdminResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgAddAdminResponse)(nil)
 
-type fastReflection_MsgAddAclAdminResponse MsgAddAclAdminResponse
+type fastReflection_MsgAddAdminResponse MsgAddAdminResponse
 
-func (x *MsgAddAclAdminResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgAddAclAdminResponse)(x)
+func (x *MsgAddAdminResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgAddAdminResponse)(x)
 }
 
-func (x *MsgAddAclAdminResponse) slowProtoReflect() protoreflect.Message {
+func (x *MsgAddAdminResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_ggezchain_acl_tx_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5460,47 +5426,43 @@ func (x *MsgAddAclAdminResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgAddAclAdminResponse_messageType fastReflection_MsgAddAclAdminResponse_messageType
-	_                                                  protoreflect.MessageType = fastReflection_MsgAddAclAdminResponse_messageType{}
-)
+var _fastReflection_MsgAddAdminResponse_messageType fastReflection_MsgAddAdminResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgAddAdminResponse_messageType{}
 
-type fastReflection_MsgAddAclAdminResponse_messageType struct{}
+type fastReflection_MsgAddAdminResponse_messageType struct{}
 
-func (x fastReflection_MsgAddAclAdminResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgAddAclAdminResponse)(nil)
+func (x fastReflection_MsgAddAdminResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgAddAdminResponse)(nil)
 }
-
-func (x fastReflection_MsgAddAclAdminResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgAddAclAdminResponse)
+func (x fastReflection_MsgAddAdminResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgAddAdminResponse)
 }
-
-func (x fastReflection_MsgAddAclAdminResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgAddAclAdminResponse
+func (x fastReflection_MsgAddAdminResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgAddAdminResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgAddAclAdminResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgAddAclAdminResponse
+func (x *fastReflection_MsgAddAdminResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgAddAdminResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgAddAclAdminResponse) Type() protoreflect.MessageType {
-	return _fastReflection_MsgAddAclAdminResponse_messageType
+func (x *fastReflection_MsgAddAdminResponse) Type() protoreflect.MessageType {
+	return _fastReflection_MsgAddAdminResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgAddAclAdminResponse) New() protoreflect.Message {
-	return new(fastReflection_MsgAddAclAdminResponse)
+func (x *fastReflection_MsgAddAdminResponse) New() protoreflect.Message {
+	return new(fastReflection_MsgAddAdminResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgAddAclAdminResponse) Interface() protoreflect.ProtoMessage {
-	return (*MsgAddAclAdminResponse)(x)
+func (x *fastReflection_MsgAddAdminResponse) Interface() protoreflect.ProtoMessage {
+	return (*MsgAddAdminResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -5508,7 +5470,7 @@ func (x *fastReflection_MsgAddAclAdminResponse) Interface() protoreflect.ProtoMe
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgAddAclAdminResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgAddAdminResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 }
 
 // Has reports whether a field is populated.
@@ -5522,13 +5484,13 @@ func (x *fastReflection_MsgAddAclAdminResponse) Range(f func(protoreflect.FieldD
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgAddAclAdminResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgAddAdminResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdminResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5538,13 +5500,13 @@ func (x *fastReflection_MsgAddAclAdminResponse) Has(fd protoreflect.FieldDescrip
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgAddAclAdminResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgAddAdminResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdminResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5554,13 +5516,13 @@ func (x *fastReflection_MsgAddAclAdminResponse) Clear(fd protoreflect.FieldDescr
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgAddAclAdminResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgAddAdminResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdminResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdminResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -5574,13 +5536,13 @@ func (x *fastReflection_MsgAddAclAdminResponse) Get(descriptor protoreflect.Fiel
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgAddAclAdminResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgAddAdminResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdminResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5594,36 +5556,36 @@ func (x *fastReflection_MsgAddAclAdminResponse) Set(fd protoreflect.FieldDescrip
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgAddAclAdminResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgAddAdminResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdminResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgAddAclAdminResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgAddAdminResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgAddAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgAddAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgAddAdminResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgAddAclAdminResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgAddAdminResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgAddAclAdminResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgAddAdminResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -5631,7 +5593,7 @@ func (x *fastReflection_MsgAddAclAdminResponse) WhichOneof(d protoreflect.OneofD
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgAddAclAdminResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgAddAdminResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -5642,7 +5604,7 @@ func (x *fastReflection_MsgAddAclAdminResponse) GetUnknown() protoreflect.RawFie
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgAddAclAdminResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgAddAdminResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -5654,7 +5616,7 @@ func (x *fastReflection_MsgAddAclAdminResponse) SetUnknown(fields protoreflect.R
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgAddAclAdminResponse) IsValid() bool {
+func (x *fastReflection_MsgAddAdminResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -5664,9 +5626,9 @@ func (x *fastReflection_MsgAddAclAdminResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgAddAclAdminResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgAddAdminResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgAddAclAdminResponse)
+		x := input.Message.Interface().(*MsgAddAdminResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5688,7 +5650,7 @@ func (x *fastReflection_MsgAddAclAdminResponse) ProtoMethods() *protoiface.Metho
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgAddAclAdminResponse)
+		x := input.Message.Interface().(*MsgAddAdminResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5718,7 +5680,7 @@ func (x *fastReflection_MsgAddAclAdminResponse) ProtoMethods() *protoiface.Metho
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgAddAclAdminResponse)
+		x := input.Message.Interface().(*MsgAddAdminResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5750,10 +5712,10 @@ func (x *fastReflection_MsgAddAclAdminResponse) ProtoMethods() *protoiface.Metho
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgAddAclAdminResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgAddAdminResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgAddAclAdminResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgAddAdminResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			default:
@@ -5791,74 +5753,74 @@ func (x *fastReflection_MsgAddAclAdminResponse) ProtoMethods() *protoiface.Metho
 	}
 }
 
-var _ protoreflect.List = (*_MsgDeleteAclAdmin_2_list)(nil)
+var _ protoreflect.List = (*_MsgDeleteAdmin_2_list)(nil)
 
-type _MsgDeleteAclAdmin_2_list struct {
+type _MsgDeleteAdmin_2_list struct {
 	list *[]string
 }
 
-func (x *_MsgDeleteAclAdmin_2_list) Len() int {
+func (x *_MsgDeleteAdmin_2_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_MsgDeleteAclAdmin_2_list) Get(i int) protoreflect.Value {
+func (x *_MsgDeleteAdmin_2_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfString((*x.list)[i])
 }
 
-func (x *_MsgDeleteAclAdmin_2_list) Set(i int, value protoreflect.Value) {
+func (x *_MsgDeleteAdmin_2_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_MsgDeleteAclAdmin_2_list) Append(value protoreflect.Value) {
+func (x *_MsgDeleteAdmin_2_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_MsgDeleteAclAdmin_2_list) AppendMutable() protoreflect.Value {
-	panic(fmt.Errorf("AppendMutable can not be called on message MsgDeleteAclAdmin at list field Admins as it is not of Message kind"))
+func (x *_MsgDeleteAdmin_2_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message MsgDeleteAdmin at list field Admins as it is not of Message kind"))
 }
 
-func (x *_MsgDeleteAclAdmin_2_list) Truncate(n int) {
+func (x *_MsgDeleteAdmin_2_list) Truncate(n int) {
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_MsgDeleteAclAdmin_2_list) NewElement() protoreflect.Value {
+func (x *_MsgDeleteAdmin_2_list) NewElement() protoreflect.Value {
 	v := ""
 	return protoreflect.ValueOfString(v)
 }
 
-func (x *_MsgDeleteAclAdmin_2_list) IsValid() bool {
+func (x *_MsgDeleteAdmin_2_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_MsgDeleteAclAdmin         protoreflect.MessageDescriptor
-	fd_MsgDeleteAclAdmin_creator protoreflect.FieldDescriptor
-	fd_MsgDeleteAclAdmin_admins  protoreflect.FieldDescriptor
+	md_MsgDeleteAdmin         protoreflect.MessageDescriptor
+	fd_MsgDeleteAdmin_creator protoreflect.FieldDescriptor
+	fd_MsgDeleteAdmin_admins  protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
-	md_MsgDeleteAclAdmin = File_ggezchain_acl_tx_proto.Messages().ByName("MsgDeleteAclAdmin")
-	fd_MsgDeleteAclAdmin_creator = md_MsgDeleteAclAdmin.Fields().ByName("creator")
-	fd_MsgDeleteAclAdmin_admins = md_MsgDeleteAclAdmin.Fields().ByName("admins")
+	md_MsgDeleteAdmin = File_ggezchain_acl_tx_proto.Messages().ByName("MsgDeleteAdmin")
+	fd_MsgDeleteAdmin_creator = md_MsgDeleteAdmin.Fields().ByName("creator")
+	fd_MsgDeleteAdmin_admins = md_MsgDeleteAdmin.Fields().ByName("admins")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgDeleteAclAdmin)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgDeleteAdmin)(nil)
 
-type fastReflection_MsgDeleteAclAdmin MsgDeleteAclAdmin
+type fastReflection_MsgDeleteAdmin MsgDeleteAdmin
 
-func (x *MsgDeleteAclAdmin) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgDeleteAclAdmin)(x)
+func (x *MsgDeleteAdmin) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgDeleteAdmin)(x)
 }
 
-func (x *MsgDeleteAclAdmin) slowProtoReflect() protoreflect.Message {
+func (x *MsgDeleteAdmin) slowProtoReflect() protoreflect.Message {
 	mi := &file_ggezchain_acl_tx_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -5870,47 +5832,43 @@ func (x *MsgDeleteAclAdmin) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgDeleteAclAdmin_messageType fastReflection_MsgDeleteAclAdmin_messageType
-	_                                             protoreflect.MessageType = fastReflection_MsgDeleteAclAdmin_messageType{}
-)
+var _fastReflection_MsgDeleteAdmin_messageType fastReflection_MsgDeleteAdmin_messageType
+var _ protoreflect.MessageType = fastReflection_MsgDeleteAdmin_messageType{}
 
-type fastReflection_MsgDeleteAclAdmin_messageType struct{}
+type fastReflection_MsgDeleteAdmin_messageType struct{}
 
-func (x fastReflection_MsgDeleteAclAdmin_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgDeleteAclAdmin)(nil)
+func (x fastReflection_MsgDeleteAdmin_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgDeleteAdmin)(nil)
 }
-
-func (x fastReflection_MsgDeleteAclAdmin_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgDeleteAclAdmin)
+func (x fastReflection_MsgDeleteAdmin_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgDeleteAdmin)
 }
-
-func (x fastReflection_MsgDeleteAclAdmin_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgDeleteAclAdmin
+func (x fastReflection_MsgDeleteAdmin_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgDeleteAdmin
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgDeleteAclAdmin) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgDeleteAclAdmin
+func (x *fastReflection_MsgDeleteAdmin) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgDeleteAdmin
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgDeleteAclAdmin) Type() protoreflect.MessageType {
-	return _fastReflection_MsgDeleteAclAdmin_messageType
+func (x *fastReflection_MsgDeleteAdmin) Type() protoreflect.MessageType {
+	return _fastReflection_MsgDeleteAdmin_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgDeleteAclAdmin) New() protoreflect.Message {
-	return new(fastReflection_MsgDeleteAclAdmin)
+func (x *fastReflection_MsgDeleteAdmin) New() protoreflect.Message {
+	return new(fastReflection_MsgDeleteAdmin)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgDeleteAclAdmin) Interface() protoreflect.ProtoMessage {
-	return (*MsgDeleteAclAdmin)(x)
+func (x *fastReflection_MsgDeleteAdmin) Interface() protoreflect.ProtoMessage {
+	return (*MsgDeleteAdmin)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -5918,16 +5876,16 @@ func (x *fastReflection_MsgDeleteAclAdmin) Interface() protoreflect.ProtoMessage
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgDeleteAclAdmin) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgDeleteAdmin) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Creator != "" {
 		value := protoreflect.ValueOfString(x.Creator)
-		if !f(fd_MsgDeleteAclAdmin_creator, value) {
+		if !f(fd_MsgDeleteAdmin_creator, value) {
 			return
 		}
 	}
 	if len(x.Admins) != 0 {
-		value := protoreflect.ValueOfList(&_MsgDeleteAclAdmin_2_list{list: &x.Admins})
-		if !f(fd_MsgDeleteAclAdmin_admins, value) {
+		value := protoreflect.ValueOfList(&_MsgDeleteAdmin_2_list{list: &x.Admins})
+		if !f(fd_MsgDeleteAdmin_admins, value) {
 			return
 		}
 	}
@@ -5944,17 +5902,17 @@ func (x *fastReflection_MsgDeleteAclAdmin) Range(f func(protoreflect.FieldDescri
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgDeleteAclAdmin) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgDeleteAdmin) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgDeleteAclAdmin.creator":
+	case "ggezchain.acl.MsgDeleteAdmin.creator":
 		return x.Creator != ""
-	case "ggezchain.acl.MsgDeleteAclAdmin.admins":
+	case "ggezchain.acl.MsgDeleteAdmin.admins":
 		return len(x.Admins) != 0
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdmin does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5964,17 +5922,17 @@ func (x *fastReflection_MsgDeleteAclAdmin) Has(fd protoreflect.FieldDescriptor) 
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgDeleteAclAdmin) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgDeleteAdmin) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgDeleteAclAdmin.creator":
+	case "ggezchain.acl.MsgDeleteAdmin.creator":
 		x.Creator = ""
-	case "ggezchain.acl.MsgDeleteAclAdmin.admins":
+	case "ggezchain.acl.MsgDeleteAdmin.admins":
 		x.Admins = nil
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdmin does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -5984,22 +5942,22 @@ func (x *fastReflection_MsgDeleteAclAdmin) Clear(fd protoreflect.FieldDescriptor
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgDeleteAclAdmin) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgDeleteAdmin) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "ggezchain.acl.MsgDeleteAclAdmin.creator":
+	case "ggezchain.acl.MsgDeleteAdmin.creator":
 		value := x.Creator
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.acl.MsgDeleteAclAdmin.admins":
+	case "ggezchain.acl.MsgDeleteAdmin.admins":
 		if len(x.Admins) == 0 {
-			return protoreflect.ValueOfList(&_MsgDeleteAclAdmin_2_list{})
+			return protoreflect.ValueOfList(&_MsgDeleteAdmin_2_list{})
 		}
-		listValue := &_MsgDeleteAclAdmin_2_list{list: &x.Admins}
+		listValue := &_MsgDeleteAdmin_2_list{list: &x.Admins}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdmin does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdmin does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -6013,19 +5971,19 @@ func (x *fastReflection_MsgDeleteAclAdmin) Get(descriptor protoreflect.FieldDesc
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgDeleteAclAdmin) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgDeleteAdmin) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgDeleteAclAdmin.creator":
+	case "ggezchain.acl.MsgDeleteAdmin.creator":
 		x.Creator = value.Interface().(string)
-	case "ggezchain.acl.MsgDeleteAclAdmin.admins":
+	case "ggezchain.acl.MsgDeleteAdmin.admins":
 		lv := value.List()
-		clv := lv.(*_MsgDeleteAclAdmin_2_list)
+		clv := lv.(*_MsgDeleteAdmin_2_list)
 		x.Admins = *clv.list
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdmin does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -6039,49 +5997,49 @@ func (x *fastReflection_MsgDeleteAclAdmin) Set(fd protoreflect.FieldDescriptor, 
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgDeleteAclAdmin) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgDeleteAdmin) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgDeleteAclAdmin.admins":
+	case "ggezchain.acl.MsgDeleteAdmin.admins":
 		if x.Admins == nil {
 			x.Admins = []string{}
 		}
-		value := &_MsgDeleteAclAdmin_2_list{list: &x.Admins}
+		value := &_MsgDeleteAdmin_2_list{list: &x.Admins}
 		return protoreflect.ValueOfList(value)
-	case "ggezchain.acl.MsgDeleteAclAdmin.creator":
-		panic(fmt.Errorf("field creator of message ggezchain.acl.MsgDeleteAclAdmin is not mutable"))
+	case "ggezchain.acl.MsgDeleteAdmin.creator":
+		panic(fmt.Errorf("field creator of message ggezchain.acl.MsgDeleteAdmin is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdmin does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgDeleteAclAdmin) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgDeleteAdmin) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "ggezchain.acl.MsgDeleteAclAdmin.creator":
+	case "ggezchain.acl.MsgDeleteAdmin.creator":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.acl.MsgDeleteAclAdmin.admins":
+	case "ggezchain.acl.MsgDeleteAdmin.admins":
 		list := []string{}
-		return protoreflect.ValueOfList(&_MsgDeleteAclAdmin_2_list{list: &list})
+		return protoreflect.ValueOfList(&_MsgDeleteAdmin_2_list{list: &list})
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdmin"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdmin"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdmin does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdmin does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgDeleteAclAdmin) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgDeleteAdmin) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgDeleteAclAdmin", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgDeleteAdmin", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -6089,7 +6047,7 @@ func (x *fastReflection_MsgDeleteAclAdmin) WhichOneof(d protoreflect.OneofDescri
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgDeleteAclAdmin) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgDeleteAdmin) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -6100,7 +6058,7 @@ func (x *fastReflection_MsgDeleteAclAdmin) GetUnknown() protoreflect.RawFields {
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgDeleteAclAdmin) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgDeleteAdmin) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -6112,7 +6070,7 @@ func (x *fastReflection_MsgDeleteAclAdmin) SetUnknown(fields protoreflect.RawFie
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgDeleteAclAdmin) IsValid() bool {
+func (x *fastReflection_MsgDeleteAdmin) IsValid() bool {
 	return x != nil
 }
 
@@ -6122,9 +6080,9 @@ func (x *fastReflection_MsgDeleteAclAdmin) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgDeleteAclAdmin) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgDeleteAdmin) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgDeleteAclAdmin)
+		x := input.Message.Interface().(*MsgDeleteAdmin)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6156,7 +6114,7 @@ func (x *fastReflection_MsgDeleteAclAdmin) ProtoMethods() *protoiface.Methods {
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgDeleteAclAdmin)
+		x := input.Message.Interface().(*MsgDeleteAdmin)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6202,7 +6160,7 @@ func (x *fastReflection_MsgDeleteAclAdmin) ProtoMethods() *protoiface.Methods {
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgDeleteAclAdmin)
+		x := input.Message.Interface().(*MsgDeleteAdmin)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6234,10 +6192,10 @@ func (x *fastReflection_MsgDeleteAclAdmin) ProtoMethods() *protoiface.Methods {
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgDeleteAclAdmin: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgDeleteAdmin: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgDeleteAclAdmin: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgDeleteAdmin: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -6339,22 +6297,24 @@ func (x *fastReflection_MsgDeleteAclAdmin) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var md_MsgDeleteAclAdminResponse protoreflect.MessageDescriptor
+var (
+	md_MsgDeleteAdminResponse protoreflect.MessageDescriptor
+)
 
 func init() {
 	file_ggezchain_acl_tx_proto_init()
-	md_MsgDeleteAclAdminResponse = File_ggezchain_acl_tx_proto.Messages().ByName("MsgDeleteAclAdminResponse")
+	md_MsgDeleteAdminResponse = File_ggezchain_acl_tx_proto.Messages().ByName("MsgDeleteAdminResponse")
 }
 
-var _ protoreflect.Message = (*fastReflection_MsgDeleteAclAdminResponse)(nil)
+var _ protoreflect.Message = (*fastReflection_MsgDeleteAdminResponse)(nil)
 
-type fastReflection_MsgDeleteAclAdminResponse MsgDeleteAclAdminResponse
+type fastReflection_MsgDeleteAdminResponse MsgDeleteAdminResponse
 
-func (x *MsgDeleteAclAdminResponse) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_MsgDeleteAclAdminResponse)(x)
+func (x *MsgDeleteAdminResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_MsgDeleteAdminResponse)(x)
 }
 
-func (x *MsgDeleteAclAdminResponse) slowProtoReflect() protoreflect.Message {
+func (x *MsgDeleteAdminResponse) slowProtoReflect() protoreflect.Message {
 	mi := &file_ggezchain_acl_tx_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -6366,47 +6326,43 @@ func (x *MsgDeleteAclAdminResponse) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_MsgDeleteAclAdminResponse_messageType fastReflection_MsgDeleteAclAdminResponse_messageType
-	_                                                     protoreflect.MessageType = fastReflection_MsgDeleteAclAdminResponse_messageType{}
-)
+var _fastReflection_MsgDeleteAdminResponse_messageType fastReflection_MsgDeleteAdminResponse_messageType
+var _ protoreflect.MessageType = fastReflection_MsgDeleteAdminResponse_messageType{}
 
-type fastReflection_MsgDeleteAclAdminResponse_messageType struct{}
+type fastReflection_MsgDeleteAdminResponse_messageType struct{}
 
-func (x fastReflection_MsgDeleteAclAdminResponse_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_MsgDeleteAclAdminResponse)(nil)
+func (x fastReflection_MsgDeleteAdminResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_MsgDeleteAdminResponse)(nil)
 }
-
-func (x fastReflection_MsgDeleteAclAdminResponse_messageType) New() protoreflect.Message {
-	return new(fastReflection_MsgDeleteAclAdminResponse)
+func (x fastReflection_MsgDeleteAdminResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_MsgDeleteAdminResponse)
 }
-
-func (x fastReflection_MsgDeleteAclAdminResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgDeleteAclAdminResponse
+func (x fastReflection_MsgDeleteAdminResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgDeleteAdminResponse
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_MsgDeleteAclAdminResponse) Descriptor() protoreflect.MessageDescriptor {
-	return md_MsgDeleteAclAdminResponse
+func (x *fastReflection_MsgDeleteAdminResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_MsgDeleteAdminResponse
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_MsgDeleteAclAdminResponse) Type() protoreflect.MessageType {
-	return _fastReflection_MsgDeleteAclAdminResponse_messageType
+func (x *fastReflection_MsgDeleteAdminResponse) Type() protoreflect.MessageType {
+	return _fastReflection_MsgDeleteAdminResponse_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_MsgDeleteAclAdminResponse) New() protoreflect.Message {
-	return new(fastReflection_MsgDeleteAclAdminResponse)
+func (x *fastReflection_MsgDeleteAdminResponse) New() protoreflect.Message {
+	return new(fastReflection_MsgDeleteAdminResponse)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_MsgDeleteAclAdminResponse) Interface() protoreflect.ProtoMessage {
-	return (*MsgDeleteAclAdminResponse)(x)
+func (x *fastReflection_MsgDeleteAdminResponse) Interface() protoreflect.ProtoMessage {
+	return (*MsgDeleteAdminResponse)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -6414,7 +6370,7 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) Interface() protoreflect.Prot
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_MsgDeleteAclAdminResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_MsgDeleteAdminResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 }
 
 // Has reports whether a field is populated.
@@ -6428,13 +6384,13 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) Range(f func(protoreflect.Fie
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_MsgDeleteAclAdminResponse) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_MsgDeleteAdminResponse) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdminResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -6444,13 +6400,13 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) Has(fd protoreflect.FieldDesc
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgDeleteAclAdminResponse) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_MsgDeleteAdminResponse) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdminResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -6460,13 +6416,13 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) Clear(fd protoreflect.FieldDe
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_MsgDeleteAclAdminResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgDeleteAdminResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdminResponse does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdminResponse does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -6480,13 +6436,13 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) Get(descriptor protoreflect.F
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgDeleteAclAdminResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_MsgDeleteAdminResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdminResponse does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -6500,36 +6456,36 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) Set(fd protoreflect.FieldDesc
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgDeleteAclAdminResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgDeleteAdminResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdminResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_MsgDeleteAclAdminResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_MsgDeleteAdminResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAclAdminResponse"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.MsgDeleteAdminResponse"))
 		}
-		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAclAdminResponse does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message ggezchain.acl.MsgDeleteAdminResponse does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_MsgDeleteAclAdminResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_MsgDeleteAdminResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgDeleteAclAdminResponse", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in ggezchain.acl.MsgDeleteAdminResponse", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -6537,7 +6493,7 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) WhichOneof(d protoreflect.One
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_MsgDeleteAclAdminResponse) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_MsgDeleteAdminResponse) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -6548,7 +6504,7 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) GetUnknown() protoreflect.Raw
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_MsgDeleteAclAdminResponse) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_MsgDeleteAdminResponse) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -6560,7 +6516,7 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) SetUnknown(fields protoreflec
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_MsgDeleteAclAdminResponse) IsValid() bool {
+func (x *fastReflection_MsgDeleteAdminResponse) IsValid() bool {
 	return x != nil
 }
 
@@ -6570,9 +6526,9 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_MsgDeleteAclAdminResponse) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_MsgDeleteAdminResponse) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*MsgDeleteAclAdminResponse)
+		x := input.Message.Interface().(*MsgDeleteAdminResponse)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6594,7 +6550,7 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) ProtoMethods() *protoiface.Me
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*MsgDeleteAclAdminResponse)
+		x := input.Message.Interface().(*MsgDeleteAdminResponse)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6624,7 +6580,7 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) ProtoMethods() *protoiface.Me
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*MsgDeleteAclAdminResponse)
+		x := input.Message.Interface().(*MsgDeleteAdminResponse)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6656,10 +6612,10 @@ func (x *fastReflection_MsgDeleteAclAdminResponse) ProtoMethods() *protoiface.Me
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgDeleteAclAdminResponse: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgDeleteAdminResponse: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgDeleteAclAdminResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: MsgDeleteAdminResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			default:
@@ -7055,7 +7011,7 @@ func (*MsgUpdateAuthorityResponse) Descriptor() ([]byte, []int) {
 	return file_ggezchain_acl_tx_proto_rawDescGZIP(), []int{7}
 }
 
-type MsgInitAclAdmin struct {
+type MsgInit struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -7064,8 +7020,8 @@ type MsgInitAclAdmin struct {
 	Admins  []string `protobuf:"bytes,2,rep,name=admins,proto3" json:"admins,omitempty"`
 }
 
-func (x *MsgInitAclAdmin) Reset() {
-	*x = MsgInitAclAdmin{}
+func (x *MsgInit) Reset() {
+	*x = MsgInit{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ggezchain_acl_tx_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -7073,39 +7029,39 @@ func (x *MsgInitAclAdmin) Reset() {
 	}
 }
 
-func (x *MsgInitAclAdmin) String() string {
+func (x *MsgInit) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgInitAclAdmin) ProtoMessage() {}
+func (*MsgInit) ProtoMessage() {}
 
-// Deprecated: Use MsgInitAclAdmin.ProtoReflect.Descriptor instead.
-func (*MsgInitAclAdmin) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgInit.ProtoReflect.Descriptor instead.
+func (*MsgInit) Descriptor() ([]byte, []int) {
 	return file_ggezchain_acl_tx_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *MsgInitAclAdmin) GetCreator() string {
+func (x *MsgInit) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *MsgInitAclAdmin) GetAdmins() []string {
+func (x *MsgInit) GetAdmins() []string {
 	if x != nil {
 		return x.Admins
 	}
 	return nil
 }
 
-type MsgInitAclAdminResponse struct {
+type MsgInitResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *MsgInitAclAdminResponse) Reset() {
-	*x = MsgInitAclAdminResponse{}
+func (x *MsgInitResponse) Reset() {
+	*x = MsgInitResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ggezchain_acl_tx_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -7113,18 +7069,18 @@ func (x *MsgInitAclAdminResponse) Reset() {
 	}
 }
 
-func (x *MsgInitAclAdminResponse) String() string {
+func (x *MsgInitResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgInitAclAdminResponse) ProtoMessage() {}
+func (*MsgInitResponse) ProtoMessage() {}
 
-// Deprecated: Use MsgInitAclAdminResponse.ProtoReflect.Descriptor instead.
-func (*MsgInitAclAdminResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgInitResponse.ProtoReflect.Descriptor instead.
+func (*MsgInitResponse) Descriptor() ([]byte, []int) {
 	return file_ggezchain_acl_tx_proto_rawDescGZIP(), []int{9}
 }
 
-type MsgAddAclAdmin struct {
+type MsgAddAdmin struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -7133,8 +7089,8 @@ type MsgAddAclAdmin struct {
 	Admins  []string `protobuf:"bytes,2,rep,name=admins,proto3" json:"admins,omitempty"`
 }
 
-func (x *MsgAddAclAdmin) Reset() {
-	*x = MsgAddAclAdmin{}
+func (x *MsgAddAdmin) Reset() {
+	*x = MsgAddAdmin{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ggezchain_acl_tx_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -7142,39 +7098,39 @@ func (x *MsgAddAclAdmin) Reset() {
 	}
 }
 
-func (x *MsgAddAclAdmin) String() string {
+func (x *MsgAddAdmin) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgAddAclAdmin) ProtoMessage() {}
+func (*MsgAddAdmin) ProtoMessage() {}
 
-// Deprecated: Use MsgAddAclAdmin.ProtoReflect.Descriptor instead.
-func (*MsgAddAclAdmin) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgAddAdmin.ProtoReflect.Descriptor instead.
+func (*MsgAddAdmin) Descriptor() ([]byte, []int) {
 	return file_ggezchain_acl_tx_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *MsgAddAclAdmin) GetCreator() string {
+func (x *MsgAddAdmin) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *MsgAddAclAdmin) GetAdmins() []string {
+func (x *MsgAddAdmin) GetAdmins() []string {
 	if x != nil {
 		return x.Admins
 	}
 	return nil
 }
 
-type MsgAddAclAdminResponse struct {
+type MsgAddAdminResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *MsgAddAclAdminResponse) Reset() {
-	*x = MsgAddAclAdminResponse{}
+func (x *MsgAddAdminResponse) Reset() {
+	*x = MsgAddAdminResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ggezchain_acl_tx_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -7182,18 +7138,18 @@ func (x *MsgAddAclAdminResponse) Reset() {
 	}
 }
 
-func (x *MsgAddAclAdminResponse) String() string {
+func (x *MsgAddAdminResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgAddAclAdminResponse) ProtoMessage() {}
+func (*MsgAddAdminResponse) ProtoMessage() {}
 
-// Deprecated: Use MsgAddAclAdminResponse.ProtoReflect.Descriptor instead.
-func (*MsgAddAclAdminResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgAddAdminResponse.ProtoReflect.Descriptor instead.
+func (*MsgAddAdminResponse) Descriptor() ([]byte, []int) {
 	return file_ggezchain_acl_tx_proto_rawDescGZIP(), []int{11}
 }
 
-type MsgDeleteAclAdmin struct {
+type MsgDeleteAdmin struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -7202,8 +7158,8 @@ type MsgDeleteAclAdmin struct {
 	Admins  []string `protobuf:"bytes,2,rep,name=admins,proto3" json:"admins,omitempty"`
 }
 
-func (x *MsgDeleteAclAdmin) Reset() {
-	*x = MsgDeleteAclAdmin{}
+func (x *MsgDeleteAdmin) Reset() {
+	*x = MsgDeleteAdmin{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ggezchain_acl_tx_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -7211,39 +7167,39 @@ func (x *MsgDeleteAclAdmin) Reset() {
 	}
 }
 
-func (x *MsgDeleteAclAdmin) String() string {
+func (x *MsgDeleteAdmin) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgDeleteAclAdmin) ProtoMessage() {}
+func (*MsgDeleteAdmin) ProtoMessage() {}
 
-// Deprecated: Use MsgDeleteAclAdmin.ProtoReflect.Descriptor instead.
-func (*MsgDeleteAclAdmin) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgDeleteAdmin.ProtoReflect.Descriptor instead.
+func (*MsgDeleteAdmin) Descriptor() ([]byte, []int) {
 	return file_ggezchain_acl_tx_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *MsgDeleteAclAdmin) GetCreator() string {
+func (x *MsgDeleteAdmin) GetCreator() string {
 	if x != nil {
 		return x.Creator
 	}
 	return ""
 }
 
-func (x *MsgDeleteAclAdmin) GetAdmins() []string {
+func (x *MsgDeleteAdmin) GetAdmins() []string {
 	if x != nil {
 		return x.Admins
 	}
 	return nil
 }
 
-type MsgDeleteAclAdminResponse struct {
+type MsgDeleteAdminResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *MsgDeleteAclAdminResponse) Reset() {
-	*x = MsgDeleteAclAdminResponse{}
+func (x *MsgDeleteAdminResponse) Reset() {
+	*x = MsgDeleteAdminResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ggezchain_acl_tx_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -7251,14 +7207,14 @@ func (x *MsgDeleteAclAdminResponse) Reset() {
 	}
 }
 
-func (x *MsgDeleteAclAdminResponse) String() string {
+func (x *MsgDeleteAdminResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MsgDeleteAclAdminResponse) ProtoMessage() {}
+func (*MsgDeleteAdminResponse) ProtoMessage() {}
 
-// Deprecated: Use MsgDeleteAclAdminResponse.ProtoReflect.Descriptor instead.
-func (*MsgDeleteAclAdminResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use MsgDeleteAdminResponse.ProtoReflect.Descriptor instead.
+func (*MsgDeleteAdminResponse) Descriptor() ([]byte, []int) {
 	return file_ggezchain_acl_tx_proto_rawDescGZIP(), []int{13}
 }
 
@@ -7336,79 +7292,75 @@ var file_ggezchain_acl_tx_proto_rawDesc = []byte{
 	0x63, 0x65, 0x73, 0x73, 0x44, 0x65, 0x66, 0x69, 0x6e, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x3a,
 	0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x1c, 0x0a,
 	0x1a, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
-	0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x51, 0x0a, 0x0f, 0x4d,
-	0x73, 0x67, 0x49, 0x6e, 0x69, 0x74, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x12, 0x18,
-	0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x64, 0x6d, 0x69,
-	0x6e, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73,
-	0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x19,
-	0x0a, 0x17, 0x4d, 0x73, 0x67, 0x49, 0x6e, 0x69, 0x74, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69,
-	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x50, 0x0a, 0x0e, 0x4d, 0x73, 0x67,
-	0x41, 0x64, 0x64, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63,
-	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72,
-	0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x18,
-	0x02, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x3a, 0x0c, 0x82,
-	0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x18, 0x0a, 0x16, 0x4d,
-	0x73, 0x67, 0x41, 0x64, 0x64, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x53, 0x0a, 0x11, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65,
-	0x74, 0x65, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72,
-	0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65,
-	0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x18, 0x02,
-	0x20, 0x03, 0x28, 0x09, 0x52, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x3a, 0x0c, 0x82, 0xe7,
-	0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x1b, 0x0a, 0x19, 0x4d, 0x73,
-	0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0x89, 0x05, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x12,
-	0x56, 0x0a, 0x0c, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12,
-	0x1e, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e,
-	0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a,
-	0x26, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e,
-	0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x56, 0x0a, 0x0c, 0x41, 0x64, 0x64, 0x41, 0x75,
-	0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x1e, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x41, 0x75,
-	0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x1a, 0x26, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x41, 0x75,
-	0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x5f, 0x0a, 0x0f, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69,
-	0x74, 0x79, 0x12, 0x21, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61,
-	0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68,
-	0x6f, 0x72, 0x69, 0x74, 0x79, 0x1a, 0x29, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69,
-	0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41,
-	0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x5f, 0x0a, 0x0f, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72,
-	0x69, 0x74, 0x79, 0x12, 0x21, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e,
-	0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74,
-	0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x1a, 0x29, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61,
-	0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
-	0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x56, 0x0a, 0x0c, 0x49, 0x6e, 0x69, 0x74, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69,
-	0x6e, 0x12, 0x1e, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63,
-	0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x49, 0x6e, 0x69, 0x74, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69,
-	0x6e, 0x1a, 0x26, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63,
-	0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x49, 0x6e, 0x69, 0x74, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69,
-	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x53, 0x0a, 0x0b, 0x41, 0x64, 0x64,
-	0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x12, 0x1d, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63,
-	0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x41,
-	0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x1a, 0x25, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x41, 0x63,
-	0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5c,
-	0x0a, 0x0e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e,
-	0x12, 0x20, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c,
-	0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x63, 0x6c, 0x41, 0x64, 0x6d,
-	0x69, 0x6e, 0x1a, 0x28, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61,
-	0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x63, 0x6c, 0x41,
-	0x64, 0x6d, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x1a, 0x05, 0x80, 0xe7,
-	0xb0, 0x2a, 0x01, 0x42, 0xa2, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x67, 0x67, 0x65, 0x7a,
-	0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x42, 0x07, 0x54, 0x78, 0x50, 0x72, 0x6f,
-	0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x47, 0x47, 0x45, 0x5a, 0x4c, 0x61, 0x62, 0x73, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69,
-	0x6e, 0x2f, 0x61, 0x63, 0x6c, 0xa2, 0x02, 0x03, 0x47, 0x41, 0x58, 0xaa, 0x02, 0x0d, 0x47, 0x67,
-	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x41, 0x63, 0x6c, 0xca, 0x02, 0x0d, 0x47, 0x67,
-	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x41, 0x63, 0x6c, 0xe2, 0x02, 0x19, 0x47, 0x67,
-	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x41, 0x63, 0x6c, 0x5c, 0x47, 0x50, 0x42, 0x4d,
-	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x41, 0x63, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x49, 0x0a, 0x07, 0x4d,
+	0x73, 0x67, 0x49, 0x6e, 0x69, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
+	0x12, 0x16, 0x0a, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09,
+	0x52, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63,
+	0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x11, 0x0a, 0x0f, 0x4d, 0x73, 0x67, 0x49, 0x6e, 0x69,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x4d, 0x0a, 0x0b, 0x4d, 0x73, 0x67,
+	0x41, 0x64, 0x64, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61,
+	0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
+	0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x03,
+	0x28, 0x09, 0x52, 0x06, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x73, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a,
+	0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x22, 0x15, 0x0a, 0x13, 0x4d, 0x73, 0x67, 0x41,
+	0x64, 0x64, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x50, 0x0a, 0x0e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x64, 0x6d, 0x69,
+	0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x16, 0x0a, 0x06, 0x61,
+	0x64, 0x6d, 0x69, 0x6e, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06, 0x61, 0x64, 0x6d,
+	0x69, 0x6e, 0x73, 0x3a, 0x0c, 0x82, 0xe7, 0xb0, 0x2a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
+	0x72, 0x22, 0x18, 0x0a, 0x16, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x64,
+	0x6d, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0xdf, 0x04, 0x0a, 0x03,
+	0x4d, 0x73, 0x67, 0x12, 0x56, 0x0a, 0x0c, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72,
+	0x61, 0x6d, 0x73, 0x12, 0x1e, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e,
+	0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72,
+	0x61, 0x6d, 0x73, 0x1a, 0x26, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e,
+	0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72,
+	0x61, 0x6d, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x56, 0x0a, 0x0c, 0x41,
+	0x64, 0x64, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x1e, 0x2e, 0x67, 0x67,
+	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x41,
+	0x64, 0x64, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x1a, 0x26, 0x2e, 0x67, 0x67,
+	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x41,
+	0x64, 0x64, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x5f, 0x0a, 0x0f, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x75, 0x74,
+	0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x21, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x1a, 0x29, 0x2e, 0x67, 0x67, 0x65, 0x7a,
+	0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c,
+	0x65, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5f, 0x0a, 0x0f, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x75,
+	0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x12, 0x21, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68,
+	0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74,
+	0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x1a, 0x29, 0x2e, 0x67, 0x67, 0x65,
+	0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x55, 0x70,
+	0x64, 0x61, 0x74, 0x65, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3e, 0x0a, 0x04, 0x49, 0x6e, 0x69, 0x74, 0x12, 0x16, 0x2e,
+	0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73,
+	0x67, 0x49, 0x6e, 0x69, 0x74, 0x1a, 0x1e, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69,
+	0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x49, 0x6e, 0x69, 0x74, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4a, 0x0a, 0x08, 0x41, 0x64, 0x64, 0x41, 0x64, 0x6d, 0x69,
+	0x6e, 0x12, 0x1a, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63,
+	0x6c, 0x2e, 0x4d, 0x73, 0x67, 0x41, 0x64, 0x64, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x1a, 0x22, 0x2e,
+	0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x4d, 0x73,
+	0x67, 0x41, 0x64, 0x64, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x53, 0x0a, 0x0b, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x64, 0x6d, 0x69, 0x6e,
+	0x12, 0x1d, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c,
+	0x2e, 0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x1a,
+	0x25, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e,
+	0x4d, 0x73, 0x67, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x1a, 0x05, 0x80, 0xe7, 0xb0, 0x2a, 0x01, 0x42, 0xa2, 0x01,
+	0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e,
+	0x61, 0x63, 0x6c, 0x42, 0x07, 0x54, 0x78, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2f,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x47, 0x47, 0x45, 0x5a, 0x4c,
+	0x61, 0x62, 0x73, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70,
+	0x69, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x63, 0x6c, 0xa2,
+	0x02, 0x03, 0x47, 0x41, 0x58, 0xaa, 0x02, 0x0d, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69,
+	0x6e, 0x2e, 0x41, 0x63, 0x6c, 0xca, 0x02, 0x0d, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69,
+	0x6e, 0x5c, 0x41, 0x63, 0x6c, 0xe2, 0x02, 0x19, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69,
+	0x6e, 0x5c, 0x41, 0x63, 0x6c, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74,
+	0x61, 0xea, 0x02, 0x0e, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x41,
+	0x63, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -7423,43 +7375,40 @@ func file_ggezchain_acl_tx_proto_rawDescGZIP() []byte {
 	return file_ggezchain_acl_tx_proto_rawDescData
 }
 
-var (
-	file_ggezchain_acl_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
-	file_ggezchain_acl_tx_proto_goTypes  = []interface{}{
-		(*MsgUpdateParams)(nil),            // 0: ggezchain.acl.MsgUpdateParams
-		(*MsgUpdateParamsResponse)(nil),    // 1: ggezchain.acl.MsgUpdateParamsResponse
-		(*MsgAddAuthority)(nil),            // 2: ggezchain.acl.MsgAddAuthority
-		(*MsgAddAuthorityResponse)(nil),    // 3: ggezchain.acl.MsgAddAuthorityResponse
-		(*MsgDeleteAuthority)(nil),         // 4: ggezchain.acl.MsgDeleteAuthority
-		(*MsgDeleteAuthorityResponse)(nil), // 5: ggezchain.acl.MsgDeleteAuthorityResponse
-		(*MsgUpdateAuthority)(nil),         // 6: ggezchain.acl.MsgUpdateAuthority
-		(*MsgUpdateAuthorityResponse)(nil), // 7: ggezchain.acl.MsgUpdateAuthorityResponse
-		(*MsgInitAclAdmin)(nil),            // 8: ggezchain.acl.MsgInitAclAdmin
-		(*MsgInitAclAdminResponse)(nil),    // 9: ggezchain.acl.MsgInitAclAdminResponse
-		(*MsgAddAclAdmin)(nil),             // 10: ggezchain.acl.MsgAddAclAdmin
-		(*MsgAddAclAdminResponse)(nil),     // 11: ggezchain.acl.MsgAddAclAdminResponse
-		(*MsgDeleteAclAdmin)(nil),          // 12: ggezchain.acl.MsgDeleteAclAdmin
-		(*MsgDeleteAclAdminResponse)(nil),  // 13: ggezchain.acl.MsgDeleteAclAdminResponse
-		(*Params)(nil),                     // 14: ggezchain.acl.Params
-	}
-)
-
+var file_ggezchain_acl_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_ggezchain_acl_tx_proto_goTypes = []interface{}{
+	(*MsgUpdateParams)(nil),            // 0: ggezchain.acl.MsgUpdateParams
+	(*MsgUpdateParamsResponse)(nil),    // 1: ggezchain.acl.MsgUpdateParamsResponse
+	(*MsgAddAuthority)(nil),            // 2: ggezchain.acl.MsgAddAuthority
+	(*MsgAddAuthorityResponse)(nil),    // 3: ggezchain.acl.MsgAddAuthorityResponse
+	(*MsgDeleteAuthority)(nil),         // 4: ggezchain.acl.MsgDeleteAuthority
+	(*MsgDeleteAuthorityResponse)(nil), // 5: ggezchain.acl.MsgDeleteAuthorityResponse
+	(*MsgUpdateAuthority)(nil),         // 6: ggezchain.acl.MsgUpdateAuthority
+	(*MsgUpdateAuthorityResponse)(nil), // 7: ggezchain.acl.MsgUpdateAuthorityResponse
+	(*MsgInit)(nil),                    // 8: ggezchain.acl.MsgInit
+	(*MsgInitResponse)(nil),            // 9: ggezchain.acl.MsgInitResponse
+	(*MsgAddAdmin)(nil),                // 10: ggezchain.acl.MsgAddAdmin
+	(*MsgAddAdminResponse)(nil),        // 11: ggezchain.acl.MsgAddAdminResponse
+	(*MsgDeleteAdmin)(nil),             // 12: ggezchain.acl.MsgDeleteAdmin
+	(*MsgDeleteAdminResponse)(nil),     // 13: ggezchain.acl.MsgDeleteAdminResponse
+	(*Params)(nil),                     // 14: ggezchain.acl.Params
+}
 var file_ggezchain_acl_tx_proto_depIdxs = []int32{
 	14, // 0: ggezchain.acl.MsgUpdateParams.params:type_name -> ggezchain.acl.Params
 	0,  // 1: ggezchain.acl.Msg.UpdateParams:input_type -> ggezchain.acl.MsgUpdateParams
 	2,  // 2: ggezchain.acl.Msg.AddAuthority:input_type -> ggezchain.acl.MsgAddAuthority
 	4,  // 3: ggezchain.acl.Msg.DeleteAuthority:input_type -> ggezchain.acl.MsgDeleteAuthority
 	6,  // 4: ggezchain.acl.Msg.UpdateAuthority:input_type -> ggezchain.acl.MsgUpdateAuthority
-	8,  // 5: ggezchain.acl.Msg.InitAclAdmin:input_type -> ggezchain.acl.MsgInitAclAdmin
-	10, // 6: ggezchain.acl.Msg.AddAclAdmin:input_type -> ggezchain.acl.MsgAddAclAdmin
-	12, // 7: ggezchain.acl.Msg.DeleteAclAdmin:input_type -> ggezchain.acl.MsgDeleteAclAdmin
+	8,  // 5: ggezchain.acl.Msg.Init:input_type -> ggezchain.acl.MsgInit
+	10, // 6: ggezchain.acl.Msg.AddAdmin:input_type -> ggezchain.acl.MsgAddAdmin
+	12, // 7: ggezchain.acl.Msg.DeleteAdmin:input_type -> ggezchain.acl.MsgDeleteAdmin
 	1,  // 8: ggezchain.acl.Msg.UpdateParams:output_type -> ggezchain.acl.MsgUpdateParamsResponse
 	3,  // 9: ggezchain.acl.Msg.AddAuthority:output_type -> ggezchain.acl.MsgAddAuthorityResponse
 	5,  // 10: ggezchain.acl.Msg.DeleteAuthority:output_type -> ggezchain.acl.MsgDeleteAuthorityResponse
 	7,  // 11: ggezchain.acl.Msg.UpdateAuthority:output_type -> ggezchain.acl.MsgUpdateAuthorityResponse
-	9,  // 12: ggezchain.acl.Msg.InitAclAdmin:output_type -> ggezchain.acl.MsgInitAclAdminResponse
-	11, // 13: ggezchain.acl.Msg.AddAclAdmin:output_type -> ggezchain.acl.MsgAddAclAdminResponse
-	13, // 14: ggezchain.acl.Msg.DeleteAclAdmin:output_type -> ggezchain.acl.MsgDeleteAclAdminResponse
+	9,  // 12: ggezchain.acl.Msg.Init:output_type -> ggezchain.acl.MsgInitResponse
+	11, // 13: ggezchain.acl.Msg.AddAdmin:output_type -> ggezchain.acl.MsgAddAdminResponse
+	13, // 14: ggezchain.acl.Msg.DeleteAdmin:output_type -> ggezchain.acl.MsgDeleteAdminResponse
 	8,  // [8:15] is the sub-list for method output_type
 	1,  // [1:8] is the sub-list for method input_type
 	1,  // [1:1] is the sub-list for extension type_name
@@ -7571,7 +7520,7 @@ func file_ggezchain_acl_tx_proto_init() {
 			}
 		}
 		file_ggezchain_acl_tx_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgInitAclAdmin); i {
+			switch v := v.(*MsgInit); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -7583,7 +7532,7 @@ func file_ggezchain_acl_tx_proto_init() {
 			}
 		}
 		file_ggezchain_acl_tx_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgInitAclAdminResponse); i {
+			switch v := v.(*MsgInitResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -7595,7 +7544,7 @@ func file_ggezchain_acl_tx_proto_init() {
 			}
 		}
 		file_ggezchain_acl_tx_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgAddAclAdmin); i {
+			switch v := v.(*MsgAddAdmin); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -7607,7 +7556,7 @@ func file_ggezchain_acl_tx_proto_init() {
 			}
 		}
 		file_ggezchain_acl_tx_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgAddAclAdminResponse); i {
+			switch v := v.(*MsgAddAdminResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -7619,7 +7568,7 @@ func file_ggezchain_acl_tx_proto_init() {
 			}
 		}
 		file_ggezchain_acl_tx_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgDeleteAclAdmin); i {
+			switch v := v.(*MsgDeleteAdmin); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -7631,7 +7580,7 @@ func file_ggezchain_acl_tx_proto_init() {
 			}
 		}
 		file_ggezchain_acl_tx_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MsgDeleteAclAdminResponse); i {
+			switch v := v.(*MsgDeleteAdminResponse); i {
 			case 0:
 				return &v.state
 			case 1:

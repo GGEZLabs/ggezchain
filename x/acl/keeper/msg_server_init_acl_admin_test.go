@@ -9,21 +9,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgInitAclAdmin(t *testing.T) {
+func TestMsgInit(t *testing.T) {
 	k, ms, ctx := setupMsgServer(t)
 	aclAdmin := sample.AccAddress()
 	wctx := sdk.UnwrapSDKContext(ctx)
 
 	testCases := []struct {
 		name      string
-		input     *types.MsgInitAclAdmin
+		input     *types.MsgInit
 		fun       func()
 		expErr    bool
 		expErrMsg string
 	}{
 		{
 			name: "acl admin initialized",
-			input: &types.MsgInitAclAdmin{
+			input: &types.MsgInit{
 				Creator: sample.AccAddress(),
 				Admins:  []string{sample.AccAddress()},
 			},
@@ -35,7 +35,7 @@ func TestMsgInitAclAdmin(t *testing.T) {
 		},
 		{
 			name: "all good",
-			input: &types.MsgInitAclAdmin{
+			input: &types.MsgInit{
 				Creator: sample.AccAddress(),
 				Admins:  []string{sample.AccAddress()},
 			},
@@ -49,7 +49,7 @@ func TestMsgInitAclAdmin(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			tc.fun()
-			_, err := ms.InitAclAdmin(wctx, tc.input)
+			_, err := ms.Init(wctx, tc.input)
 
 			if tc.expErr {
 				require.Error(t, err)

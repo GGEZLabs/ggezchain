@@ -8,7 +8,6 @@ package acl
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -24,9 +23,9 @@ const (
 	Msg_AddAuthority_FullMethodName    = "/ggezchain.acl.Msg/AddAuthority"
 	Msg_DeleteAuthority_FullMethodName = "/ggezchain.acl.Msg/DeleteAuthority"
 	Msg_UpdateAuthority_FullMethodName = "/ggezchain.acl.Msg/UpdateAuthority"
-	Msg_InitAclAdmin_FullMethodName    = "/ggezchain.acl.Msg/InitAclAdmin"
-	Msg_AddAclAdmin_FullMethodName     = "/ggezchain.acl.Msg/AddAclAdmin"
-	Msg_DeleteAclAdmin_FullMethodName  = "/ggezchain.acl.Msg/DeleteAclAdmin"
+	Msg_Init_FullMethodName            = "/ggezchain.acl.Msg/Init"
+	Msg_AddAdmin_FullMethodName        = "/ggezchain.acl.Msg/AddAdmin"
+	Msg_DeleteAdmin_FullMethodName     = "/ggezchain.acl.Msg/DeleteAdmin"
 )
 
 // MsgClient is the client API for Msg service.
@@ -39,9 +38,9 @@ type MsgClient interface {
 	AddAuthority(ctx context.Context, in *MsgAddAuthority, opts ...grpc.CallOption) (*MsgAddAuthorityResponse, error)
 	DeleteAuthority(ctx context.Context, in *MsgDeleteAuthority, opts ...grpc.CallOption) (*MsgDeleteAuthorityResponse, error)
 	UpdateAuthority(ctx context.Context, in *MsgUpdateAuthority, opts ...grpc.CallOption) (*MsgUpdateAuthorityResponse, error)
-	InitAclAdmin(ctx context.Context, in *MsgInitAclAdmin, opts ...grpc.CallOption) (*MsgInitAclAdminResponse, error)
-	AddAclAdmin(ctx context.Context, in *MsgAddAclAdmin, opts ...grpc.CallOption) (*MsgAddAclAdminResponse, error)
-	DeleteAclAdmin(ctx context.Context, in *MsgDeleteAclAdmin, opts ...grpc.CallOption) (*MsgDeleteAclAdminResponse, error)
+	Init(ctx context.Context, in *MsgInit, opts ...grpc.CallOption) (*MsgInitResponse, error)
+	AddAdmin(ctx context.Context, in *MsgAddAdmin, opts ...grpc.CallOption) (*MsgAddAdminResponse, error)
+	DeleteAdmin(ctx context.Context, in *MsgDeleteAdmin, opts ...grpc.CallOption) (*MsgDeleteAdminResponse, error)
 }
 
 type msgClient struct {
@@ -88,27 +87,27 @@ func (c *msgClient) UpdateAuthority(ctx context.Context, in *MsgUpdateAuthority,
 	return out, nil
 }
 
-func (c *msgClient) InitAclAdmin(ctx context.Context, in *MsgInitAclAdmin, opts ...grpc.CallOption) (*MsgInitAclAdminResponse, error) {
-	out := new(MsgInitAclAdminResponse)
-	err := c.cc.Invoke(ctx, Msg_InitAclAdmin_FullMethodName, in, out, opts...)
+func (c *msgClient) Init(ctx context.Context, in *MsgInit, opts ...grpc.CallOption) (*MsgInitResponse, error) {
+	out := new(MsgInitResponse)
+	err := c.cc.Invoke(ctx, Msg_Init_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) AddAclAdmin(ctx context.Context, in *MsgAddAclAdmin, opts ...grpc.CallOption) (*MsgAddAclAdminResponse, error) {
-	out := new(MsgAddAclAdminResponse)
-	err := c.cc.Invoke(ctx, Msg_AddAclAdmin_FullMethodName, in, out, opts...)
+func (c *msgClient) AddAdmin(ctx context.Context, in *MsgAddAdmin, opts ...grpc.CallOption) (*MsgAddAdminResponse, error) {
+	out := new(MsgAddAdminResponse)
+	err := c.cc.Invoke(ctx, Msg_AddAdmin_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) DeleteAclAdmin(ctx context.Context, in *MsgDeleteAclAdmin, opts ...grpc.CallOption) (*MsgDeleteAclAdminResponse, error) {
-	out := new(MsgDeleteAclAdminResponse)
-	err := c.cc.Invoke(ctx, Msg_DeleteAclAdmin_FullMethodName, in, out, opts...)
+func (c *msgClient) DeleteAdmin(ctx context.Context, in *MsgDeleteAdmin, opts ...grpc.CallOption) (*MsgDeleteAdminResponse, error) {
+	out := new(MsgDeleteAdminResponse)
+	err := c.cc.Invoke(ctx, Msg_DeleteAdmin_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -125,41 +124,36 @@ type MsgServer interface {
 	AddAuthority(context.Context, *MsgAddAuthority) (*MsgAddAuthorityResponse, error)
 	DeleteAuthority(context.Context, *MsgDeleteAuthority) (*MsgDeleteAuthorityResponse, error)
 	UpdateAuthority(context.Context, *MsgUpdateAuthority) (*MsgUpdateAuthorityResponse, error)
-	InitAclAdmin(context.Context, *MsgInitAclAdmin) (*MsgInitAclAdminResponse, error)
-	AddAclAdmin(context.Context, *MsgAddAclAdmin) (*MsgAddAclAdminResponse, error)
-	DeleteAclAdmin(context.Context, *MsgDeleteAclAdmin) (*MsgDeleteAclAdminResponse, error)
+	Init(context.Context, *MsgInit) (*MsgInitResponse, error)
+	AddAdmin(context.Context, *MsgAddAdmin) (*MsgAddAdminResponse, error)
+	DeleteAdmin(context.Context, *MsgDeleteAdmin) (*MsgDeleteAdminResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
 // UnimplementedMsgServer must be embedded to have forward compatible implementations.
-type UnimplementedMsgServer struct{}
+type UnimplementedMsgServer struct {
+}
 
 func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
 }
-
 func (UnimplementedMsgServer) AddAuthority(context.Context, *MsgAddAuthority) (*MsgAddAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAuthority not implemented")
 }
-
 func (UnimplementedMsgServer) DeleteAuthority(context.Context, *MsgDeleteAuthority) (*MsgDeleteAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAuthority not implemented")
 }
-
 func (UnimplementedMsgServer) UpdateAuthority(context.Context, *MsgUpdateAuthority) (*MsgUpdateAuthorityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAuthority not implemented")
 }
-
-func (UnimplementedMsgServer) InitAclAdmin(context.Context, *MsgInitAclAdmin) (*MsgInitAclAdminResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InitAclAdmin not implemented")
+func (UnimplementedMsgServer) Init(context.Context, *MsgInit) (*MsgInitResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Init not implemented")
 }
-
-func (UnimplementedMsgServer) AddAclAdmin(context.Context, *MsgAddAclAdmin) (*MsgAddAclAdminResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddAclAdmin not implemented")
+func (UnimplementedMsgServer) AddAdmin(context.Context, *MsgAddAdmin) (*MsgAddAdminResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddAdmin not implemented")
 }
-
-func (UnimplementedMsgServer) DeleteAclAdmin(context.Context, *MsgDeleteAclAdmin) (*MsgDeleteAclAdminResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteAclAdmin not implemented")
+func (UnimplementedMsgServer) DeleteAdmin(context.Context, *MsgDeleteAdmin) (*MsgDeleteAdminResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAdmin not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -246,56 +240,56 @@ func _Msg_UpdateAuthority_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_InitAclAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgInitAclAdmin)
+func _Msg_Init_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgInit)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).InitAclAdmin(ctx, in)
+		return srv.(MsgServer).Init(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_InitAclAdmin_FullMethodName,
+		FullMethod: Msg_Init_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).InitAclAdmin(ctx, req.(*MsgInitAclAdmin))
+		return srv.(MsgServer).Init(ctx, req.(*MsgInit))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_AddAclAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgAddAclAdmin)
+func _Msg_AddAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAddAdmin)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).AddAclAdmin(ctx, in)
+		return srv.(MsgServer).AddAdmin(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_AddAclAdmin_FullMethodName,
+		FullMethod: Msg_AddAdmin_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).AddAclAdmin(ctx, req.(*MsgAddAclAdmin))
+		return srv.(MsgServer).AddAdmin(ctx, req.(*MsgAddAdmin))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_DeleteAclAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteAclAdmin)
+func _Msg_DeleteAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgDeleteAdmin)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).DeleteAclAdmin(ctx, in)
+		return srv.(MsgServer).DeleteAdmin(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Msg_DeleteAclAdmin_FullMethodName,
+		FullMethod: Msg_DeleteAdmin_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteAclAdmin(ctx, req.(*MsgDeleteAclAdmin))
+		return srv.(MsgServer).DeleteAdmin(ctx, req.(*MsgDeleteAdmin))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -324,16 +318,16 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_UpdateAuthority_Handler,
 		},
 		{
-			MethodName: "InitAclAdmin",
-			Handler:    _Msg_InitAclAdmin_Handler,
+			MethodName: "Init",
+			Handler:    _Msg_Init_Handler,
 		},
 		{
-			MethodName: "AddAclAdmin",
-			Handler:    _Msg_AddAclAdmin_Handler,
+			MethodName: "AddAdmin",
+			Handler:    _Msg_AddAdmin_Handler,
 		},
 		{
-			MethodName: "DeleteAclAdmin",
-			Handler:    _Msg_DeleteAclAdmin_Handler,
+			MethodName: "DeleteAdmin",
+			Handler:    _Msg_DeleteAdmin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

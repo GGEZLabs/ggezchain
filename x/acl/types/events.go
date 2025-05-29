@@ -5,9 +5,9 @@ const (
 	EventTypeAddAuthority    = "add_authority"
 	EventTypeDeleteAuthority = "delete_authority"
 	EventTypeUpdateAuthority = "update_authority"
-	EventTypeInitAclAdmin    = "init_acl_admin"
-	EventTypeAddAclAdmin     = "add_acl_admin"
-	EventTypeDeleteAclAdmin  = "delete_acl_admin"
+	EventTypeInit            = "init"
+	EventTypeAddAdmin        = "add_admin"
+	EventTypeDeleteAdmin     = "delete_admin"
 
 	AttributeKeyAuthorityAddress  = "authority_address"
 	AttributeKeyName              = "name"

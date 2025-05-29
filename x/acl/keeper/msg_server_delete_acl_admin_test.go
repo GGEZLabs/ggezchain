@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgDeleteAclAdmin(t *testing.T) {
+func TestMsgDeleteAdmin(t *testing.T) {
 	k, ms, ctx := setupMsgServer(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -22,14 +22,14 @@ func TestMsgDeleteAclAdmin(t *testing.T) {
 
 	testCases := []struct {
 		name        string
-		input       *types.MsgDeleteAclAdmin
+		input       *types.MsgDeleteAdmin
 		expectedLen int
 		expErr      bool
 		expErrMsg   string
 	}{
 		{
 			name: "address unauthorized",
-			input: &types.MsgDeleteAclAdmin{
+			input: &types.MsgDeleteAdmin{
 				Creator: sample.AccAddress(),
 			},
 			expErr:    true,
@@ -37,7 +37,7 @@ func TestMsgDeleteAclAdmin(t *testing.T) {
 		},
 		{
 			name: "delete all admins",
-			input: &types.MsgDeleteAclAdmin{
+			input: &types.MsgDeleteAdmin{
 				Creator: aclAdmin,
 				Admins:  []string{aclAdmin, alice, bob},
 			},
@@ -46,7 +46,7 @@ func TestMsgDeleteAclAdmin(t *testing.T) {
 		},
 		{
 			name: "admin not exist",
-			input: &types.MsgDeleteAclAdmin{
+			input: &types.MsgDeleteAdmin{
 				Creator: aclAdmin,
 				Admins:  []string{sample.AccAddress()},
 			},
@@ -55,7 +55,7 @@ func TestMsgDeleteAclAdmin(t *testing.T) {
 		},
 		{
 			name: "all good",
-			input: &types.MsgDeleteAclAdmin{
+			input: &types.MsgDeleteAdmin{
 				Creator: aclAdmin,
 				Admins:  []string{alice, bob},
 			},
@@ -66,7 +66,7 @@ func TestMsgDeleteAclAdmin(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			_, err := ms.DeleteAclAdmin(wctx, tc.input)
+			_, err := ms.DeleteAdmin(wctx, tc.input)
 
 			if tc.expErr {
 				require.Error(t, err)

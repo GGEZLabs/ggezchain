@@ -20,9 +20,9 @@ service Msg {
   rpc AddAuthority    (MsgAddAuthority   ) returns (MsgAddAuthorityResponse   );
   rpc DeleteAuthority (MsgDeleteAuthority) returns (MsgDeleteAuthorityResponse);
   rpc UpdateAuthority (MsgUpdateAuthority) returns (MsgUpdateAuthorityResponse);
-  rpc InitAclAdmin    (MsgInitAclAdmin   ) returns (MsgInitAclAdminResponse   );
-  rpc AddAclAdmin     (MsgAddAclAdmin    ) returns (MsgAddAclAdminResponse    );
-  rpc DeleteAclAdmin  (MsgDeleteAclAdmin ) returns (MsgDeleteAclAdminResponse );
+  rpc Init            (MsgInit           ) returns (MsgInitResponse           );
+  rpc AddAdmin        (MsgAddAdmin       ) returns (MsgAddAdminResponse       );
+  rpc DeleteAdmin     (MsgDeleteAdmin    ) returns (MsgDeleteAdminResponse    );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -74,27 +74,27 @@ message MsgUpdateAuthority {
 
 message MsgUpdateAuthorityResponse {}
 
-message MsgInitAclAdmin {
+message MsgInit {
   option (cosmos.msg.v1.signer) = "creator";
            string creator = 1;
   repeated string admins  = 2;
 }
 
-message MsgInitAclAdminResponse {}
+message MsgInitResponse {}
 
-message MsgAddAclAdmin {
+message MsgAddAdmin {
   option (cosmos.msg.v1.signer) = "creator";
            string creator = 1;
   repeated string admins  = 2;
 }
 
-message MsgAddAclAdminResponse {}
+message MsgAddAdminResponse {}
 
-message MsgDeleteAclAdmin {
+message MsgDeleteAdmin {
   option (cosmos.msg.v1.signer) = "creator";
            string creator = 1;
   repeated string admins  = 2;
 }
 
-message MsgDeleteAclAdminResponse {}
+message MsgDeleteAdminResponse {}
 

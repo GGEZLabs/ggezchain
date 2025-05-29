@@ -10,7 +10,7 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 )
 
-func SimulateMsgAddAclAdmin(
+func SimulateMsgAddAdmin(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -18,12 +18,12 @@ func SimulateMsgAddAclAdmin(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgAddAclAdmin{
+		msg := &types.MsgAddAdmin{
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the AddAclAdmin simulation
+		// TODO: Handling the AddAdmin simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "AddAclAdmin simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "AddAdmin simulation not implemented"), nil, nil
 	}
 }

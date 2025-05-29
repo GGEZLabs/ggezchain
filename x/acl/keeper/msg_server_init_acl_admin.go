@@ -8,7 +8,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) InitAclAdmin(goCtx context.Context, msg *types.MsgInitAclAdmin) (*types.MsgInitAclAdminResponse, error) {
+func (k msgServer) Init(goCtx context.Context, msg *types.MsgInit) (*types.MsgInitResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if len(k.GetAllAclAdmin(ctx)) != 0 {
@@ -20,9 +20,9 @@ func (k msgServer) InitAclAdmin(goCtx context.Context, msg *types.MsgInitAclAdmi
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
-			types.EventTypeInitAclAdmin,
+			types.EventTypeInit,
 			sdk.NewAttribute(types.AttributeKeyAdmins, strings.Join(msg.Admins, ",")),
 		),
 	)
-	return &types.MsgInitAclAdminResponse{}, nil
+	return &types.MsgInitResponse{}, nil
 }

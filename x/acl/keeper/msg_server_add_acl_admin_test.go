@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgAddAclAdmin(t *testing.T) {
+func TestMsgAddAdmin(t *testing.T) {
 	k, ms, ctx := setupMsgServer(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -21,14 +21,14 @@ func TestMsgAddAclAdmin(t *testing.T) {
 
 	testCases := []struct {
 		name        string
-		input       *types.MsgAddAclAdmin
+		input       *types.MsgAddAdmin
 		expectedLen int
 		expErr      bool
 		expErrMsg   string
 	}{
 		{
 			name: "address unauthorized",
-			input: &types.MsgAddAclAdmin{
+			input: &types.MsgAddAdmin{
 				Creator: sample.AccAddress(),
 			},
 			expErr:    true,
@@ -36,7 +36,7 @@ func TestMsgAddAclAdmin(t *testing.T) {
 		},
 		{
 			name: "duplicate admin",
-			input: &types.MsgAddAclAdmin{
+			input: &types.MsgAddAdmin{
 				Creator: aclAdmin,
 				Admins:  []string{duplicateAdmin, sample.AccAddress()},
 			},
@@ -45,7 +45,7 @@ func TestMsgAddAclAdmin(t *testing.T) {
 		},
 		{
 			name: "all good",
-			input: &types.MsgAddAclAdmin{
+			input: &types.MsgAddAdmin{
 				Creator: aclAdmin,
 				Admins:  []string{sample.AccAddress(), sample.AccAddress()},
 			},
@@ -57,7 +57,7 @@ func TestMsgAddAclAdmin(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			_, err := ms.AddAclAdmin(wctx, tc.input)
+			_, err := ms.AddAdmin(wctx, tc.input)
 
 			if tc.expErr {
 				require.Error(t, err)

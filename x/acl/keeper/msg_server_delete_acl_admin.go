@@ -8,14 +8,14 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) DeleteAclAdmin(goCtx context.Context, msg *types.MsgDeleteAclAdmin) (*types.MsgDeleteAclAdminResponse, error) {
+func (k msgServer) DeleteAdmin(goCtx context.Context, msg *types.MsgDeleteAdmin) (*types.MsgDeleteAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if !k.IsAdmin(ctx, msg.Creator) {
 		return nil, types.ErrUnauthorized
 	}
 
-	err := types.ValidateDeleteAclAdmin(k.GetAllAclAdmin(ctx), msg.Admins)
+	err := types.ValidateDeleteAdmin(k.GetAllAclAdmin(ctx), msg.Admins)
 	if err != nil {
 		return nil, err
 	}
@@ -24,9 +24,9 @@ func (k msgServer) DeleteAclAdmin(goCtx context.Context, msg *types.MsgDeleteAcl
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
-			types.EventTypeDeleteAclAdmin,
+			types.EventTypeDeleteAdmin,
 			sdk.NewAttribute(types.AttributeKeyAdmins, strings.Join(msg.Admins, ",")),
 		),
 	)
-	return &types.MsgDeleteAclAdminResponse{}, nil
+	return &types.MsgDeleteAdminResponse{}, nil
 }

@@ -8,24 +8,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgInitAclAdmin_ValidateBasic(t *testing.T) {
+func TestMsgInit_ValidateBasic(t *testing.T) {
 	duplicateAdmin := sample.AccAddress()
 
 	tests := []struct {
 		name string
-		msg  MsgInitAclAdmin
+		msg  MsgInit
 		err  error
 	}{
 		{
 			name: "invalid creator address",
-			msg: MsgInitAclAdmin{
+			msg: MsgInit{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
 			name: "zero admins",
-			msg: MsgInitAclAdmin{
+			msg: MsgInit{
 				Creator: sample.AccAddress(),
 				Admins:  []string{},
 			},
@@ -33,7 +33,7 @@ func TestMsgInitAclAdmin_ValidateBasic(t *testing.T) {
 		},
 		{
 			name: "invalid admin address",
-			msg: MsgInitAclAdmin{
+			msg: MsgInit{
 				Creator: sample.AccAddress(),
 				Admins:  []string{"invalid_address", sample.AccAddress()},
 			},
@@ -41,7 +41,7 @@ func TestMsgInitAclAdmin_ValidateBasic(t *testing.T) {
 		},
 		{
 			name: "duplicate admin address",
-			msg: MsgInitAclAdmin{
+			msg: MsgInit{
 				Creator: sample.AccAddress(),
 				Admins:  []string{duplicateAdmin, duplicateAdmin},
 			},
@@ -49,7 +49,7 @@ func TestMsgInitAclAdmin_ValidateBasic(t *testing.T) {
 		},
 		{
 			name: "all good",
-			msg: MsgInitAclAdmin{
+			msg: MsgInit{
 				Creator: sample.AccAddress(),
 				Admins:  []string{sample.AccAddress(), sample.AccAddress()},
 			},

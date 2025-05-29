@@ -3,14 +3,13 @@ package acl
 
 import (
 	fmt "fmt"
-	io "io"
-	reflect "reflect"
-	sync "sync"
-
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	io "io"
+	reflect "reflect"
+	sync "sync"
 )
 
 var (
@@ -44,21 +43,17 @@ func (x *AclAdmin) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_AclAdmin_messageType fastReflection_AclAdmin_messageType
-	_                                    protoreflect.MessageType = fastReflection_AclAdmin_messageType{}
-)
+var _fastReflection_AclAdmin_messageType fastReflection_AclAdmin_messageType
+var _ protoreflect.MessageType = fastReflection_AclAdmin_messageType{}
 
 type fastReflection_AclAdmin_messageType struct{}
 
 func (x fastReflection_AclAdmin_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_AclAdmin)(nil)
 }
-
 func (x fastReflection_AclAdmin_messageType) New() protoreflect.Message {
 	return new(fastReflection_AclAdmin)
 }
-
 func (x fastReflection_AclAdmin_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_AclAdmin
 }
@@ -519,13 +514,10 @@ func file_ggezchain_acl_acl_admin_proto_rawDescGZIP() []byte {
 	return file_ggezchain_acl_acl_admin_proto_rawDescData
 }
 
-var (
-	file_ggezchain_acl_acl_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-	file_ggezchain_acl_acl_admin_proto_goTypes  = []interface{}{
-		(*AclAdmin)(nil), // 0: ggezchain.acl.AclAdmin
-	}
-)
-
+var file_ggezchain_acl_acl_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_ggezchain_acl_acl_admin_proto_goTypes = []interface{}{
+	(*AclAdmin)(nil), // 0: ggezchain.acl.AclAdmin
+}
 var file_ggezchain_acl_acl_admin_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type

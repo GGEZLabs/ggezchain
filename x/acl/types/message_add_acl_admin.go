@@ -6,16 +6,16 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgAddAclAdmin{}
+var _ sdk.Msg = &MsgAddAdmin{}
 
-func NewMsgAddAclAdmin(creator string, admins []string) *MsgAddAclAdmin {
-	return &MsgAddAclAdmin{
+func NewMsgAddAdmin(creator string, admins []string) *MsgAddAdmin {
+	return &MsgAddAdmin{
 		Creator: creator,
 		Admins:  admins,
 	}
 }
 
-func (msg *MsgAddAclAdmin) ValidateBasic() error {
+func (msg *MsgAddAdmin) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

@@ -7,9 +7,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// ValidateAddAclAdmin validates whether any of the new admin addresses already exist
+// ValidateAddAdmin validates whether any of the new admin addresses already exist
 // in the current admin list
-func ValidateAddAclAdmin(currentAdmins []AclAdmin, newAdmins []string) error {
+func ValidateAddAdmin(currentAdmins []AclAdmin, newAdmins []string) error {
 	adminMap := make(map[string]struct{}, len(currentAdmins))
 	for _, admin := range currentAdmins {
 		adminMap[admin.Address] = struct{}{}
@@ -29,9 +29,9 @@ func ValidateAddAclAdmin(currentAdmins []AclAdmin, newAdmins []string) error {
 	return nil
 }
 
-// ValidateDeleteAclAdmin validates whether any of the new admin addresses not exist
+// ValidateDeleteAdmin validates whether any of the new admin addresses not exist
 // in the current admin list
-func ValidateDeleteAclAdmin(currentAdmins []AclAdmin, deletedAdmins []string) error {
+func ValidateDeleteAdmin(currentAdmins []AclAdmin, deletedAdmins []string) error {
 	adminMap := make(map[string]struct{}, len(currentAdmins))
 	for _, admin := range currentAdmins {
 		adminMap[admin.Address] = struct{}{}

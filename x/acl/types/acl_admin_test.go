@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestValidateAddAclAdmin(t *testing.T) {
+func TestValidateAddAdmin(t *testing.T) {
 	alice := sample.AccAddress()
 	testCases := []struct {
 		name          string
@@ -40,7 +40,7 @@ func TestValidateAddAclAdmin(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			err := ValidateAddAclAdmin(tc.currentAdmins, tc.newAdmins)
+			err := ValidateAddAdmin(tc.currentAdmins, tc.newAdmins)
 			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)
@@ -51,7 +51,7 @@ func TestValidateAddAclAdmin(t *testing.T) {
 	}
 }
 
-func TestValidateDeleteAclAdmin(t *testing.T) {
+func TestValidateDeleteAdmin(t *testing.T) {
 	alice := sample.AccAddress()
 	bob := sample.AccAddress()
 	testCases := []struct {
@@ -103,7 +103,7 @@ func TestValidateDeleteAclAdmin(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			err := ValidateDeleteAclAdmin(tc.currentAdmins, tc.deletedAdmins)
+			err := ValidateDeleteAdmin(tc.currentAdmins, tc.deletedAdmins)
 			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)

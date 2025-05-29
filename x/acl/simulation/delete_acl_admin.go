@@ -10,7 +10,7 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 )
 
-func SimulateMsgDeleteAclAdmin(
+func SimulateMsgDeleteAdmin(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -18,12 +18,12 @@ func SimulateMsgDeleteAclAdmin(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgDeleteAclAdmin{
+		msg := &types.MsgDeleteAdmin{
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the DeleteAclAdmin simulation
+		// TODO: Handling the DeleteAdmin simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "DeleteAclAdmin simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "DeleteAdmin simulation not implemented"), nil, nil
 	}
 }

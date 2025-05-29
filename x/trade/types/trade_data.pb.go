@@ -6,19 +6,16 @@ package types
 import (
 	encoding_binary "encoding/binary"
 	fmt "fmt"
+	proto "github.com/cosmos/gogoproto/proto"
 	io "io"
 	math "math"
 	math_bits "math/bits"
-
-	proto "github.com/cosmos/gogoproto/proto"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
-var (
-	_ = proto.Marshal
-	_ = fmt.Errorf
-	_ = math.Inf
-)
+var _ = proto.Marshal
+var _ = fmt.Errorf
+var _ = math.Inf
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -37,11 +34,9 @@ func (*TradeData) ProtoMessage()    {}
 func (*TradeData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_48bddbd32b8de3ed, []int{0}
 }
-
 func (m *TradeData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *TradeData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_TradeData.Marshal(b, m, deterministic)
@@ -54,15 +49,12 @@ func (m *TradeData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-
 func (m *TradeData) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_TradeData.Merge(m, src)
 }
-
 func (m *TradeData) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *TradeData) XXX_DiscardUnknown() {
 	xxx_messageInfo_TradeData.DiscardUnknown(m)
 }
@@ -109,11 +101,9 @@ func (*TradeInfo) ProtoMessage()    {}
 func (*TradeInfo) Descriptor() ([]byte, []int) {
 	return fileDescriptor_48bddbd32b8de3ed, []int{1}
 }
-
 func (m *TradeInfo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *TradeInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_TradeInfo.Marshal(b, m, deterministic)
@@ -126,15 +116,12 @@ func (m *TradeInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-
 func (m *TradeInfo) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_TradeInfo.Merge(m, src)
 }
-
 func (m *TradeInfo) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *TradeInfo) XXX_DiscardUnknown() {
 	xxx_messageInfo_TradeInfo.DiscardUnknown(m)
 }
@@ -272,11 +259,9 @@ func (*Brokerage) ProtoMessage()    {}
 func (*Brokerage) Descriptor() ([]byte, []int) {
 	return fileDescriptor_48bddbd32b8de3ed, []int{2}
 }
-
 func (m *Brokerage) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *Brokerage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_Brokerage.Marshal(b, m, deterministic)
@@ -289,15 +274,12 @@ func (m *Brokerage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-
 func (m *Brokerage) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_Brokerage.Merge(m, src)
 }
-
 func (m *Brokerage) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *Brokerage) XXX_DiscardUnknown() {
 	xxx_messageInfo_Brokerage.DiscardUnknown(m)
 }
@@ -602,7 +584,6 @@ func encodeVarintTradeData(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-
 func (m *TradeData) Size() (n int) {
 	if m == nil {
 		return 0
@@ -710,11 +691,9 @@ func (m *Brokerage) Size() (n int) {
 func sovTradeData(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
-
 func sozTradeData(x uint64) (n int) {
 	return sovTradeData(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-
 func (m *TradeData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -837,7 +816,6 @@ func (m *TradeData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *TradeInfo) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1241,7 +1219,6 @@ func (m *TradeInfo) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *Brokerage) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1388,7 +1365,6 @@ func (m *Brokerage) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func skipTradeData(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
