@@ -138,6 +138,12 @@ ggezchaind tx acl update-authority ggezauthaddress... --clear-all-access-definit
 					Short:          "Delete one or more admin. Only a super admin can perform this action.",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
 				},
+				{
+					RpcMethod:      "UpdateSuperAdmin",
+					Use:            "update-super-admin [new-super-admin]",
+					Short:          "Update super admin. Only a super admin can perform this action.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "new_super_admin"}},
+				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},

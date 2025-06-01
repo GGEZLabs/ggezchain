@@ -19,13 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName    = "/ggezchain.acl.Msg/UpdateParams"
-	Msg_AddAuthority_FullMethodName    = "/ggezchain.acl.Msg/AddAuthority"
-	Msg_DeleteAuthority_FullMethodName = "/ggezchain.acl.Msg/DeleteAuthority"
-	Msg_UpdateAuthority_FullMethodName = "/ggezchain.acl.Msg/UpdateAuthority"
-	Msg_Init_FullMethodName            = "/ggezchain.acl.Msg/Init"
-	Msg_AddAdmin_FullMethodName        = "/ggezchain.acl.Msg/AddAdmin"
-	Msg_DeleteAdmin_FullMethodName     = "/ggezchain.acl.Msg/DeleteAdmin"
+	Msg_UpdateParams_FullMethodName     = "/ggezchain.acl.Msg/UpdateParams"
+	Msg_AddAuthority_FullMethodName     = "/ggezchain.acl.Msg/AddAuthority"
+	Msg_DeleteAuthority_FullMethodName  = "/ggezchain.acl.Msg/DeleteAuthority"
+	Msg_UpdateAuthority_FullMethodName  = "/ggezchain.acl.Msg/UpdateAuthority"
+	Msg_Init_FullMethodName             = "/ggezchain.acl.Msg/Init"
+	Msg_AddAdmin_FullMethodName         = "/ggezchain.acl.Msg/AddAdmin"
+	Msg_DeleteAdmin_FullMethodName      = "/ggezchain.acl.Msg/DeleteAdmin"
+	Msg_UpdateSuperAdmin_FullMethodName = "/ggezchain.acl.Msg/UpdateSuperAdmin"
 )
 
 // MsgClient is the client API for Msg service.
@@ -41,6 +42,7 @@ type MsgClient interface {
 	Init(ctx context.Context, in *MsgInit, opts ...grpc.CallOption) (*MsgInitResponse, error)
 	AddAdmin(ctx context.Context, in *MsgAddAdmin, opts ...grpc.CallOption) (*MsgAddAdminResponse, error)
 	DeleteAdmin(ctx context.Context, in *MsgDeleteAdmin, opts ...grpc.CallOption) (*MsgDeleteAdminResponse, error)
+	UpdateSuperAdmin(ctx context.Context, in *MsgUpdateSuperAdmin, opts ...grpc.CallOption) (*MsgUpdateSuperAdminResponse, error)
 }
 
 type msgClient struct {
@@ -114,6 +116,15 @@ func (c *msgClient) DeleteAdmin(ctx context.Context, in *MsgDeleteAdmin, opts ..
 	return out, nil
 }
 
+func (c *msgClient) UpdateSuperAdmin(ctx context.Context, in *MsgUpdateSuperAdmin, opts ...grpc.CallOption) (*MsgUpdateSuperAdminResponse, error) {
+	out := new(MsgUpdateSuperAdminResponse)
+	err := c.cc.Invoke(ctx, Msg_UpdateSuperAdmin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -127,6 +138,7 @@ type MsgServer interface {
 	Init(context.Context, *MsgInit) (*MsgInitResponse, error)
 	AddAdmin(context.Context, *MsgAddAdmin) (*MsgAddAdminResponse, error)
 	DeleteAdmin(context.Context, *MsgDeleteAdmin) (*MsgDeleteAdminResponse, error)
+	UpdateSuperAdmin(context.Context, *MsgUpdateSuperAdmin) (*MsgUpdateSuperAdminResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -154,6 +166,9 @@ func (UnimplementedMsgServer) AddAdmin(context.Context, *MsgAddAdmin) (*MsgAddAd
 }
 func (UnimplementedMsgServer) DeleteAdmin(context.Context, *MsgDeleteAdmin) (*MsgDeleteAdminResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAdmin not implemented")
+}
+func (UnimplementedMsgServer) UpdateSuperAdmin(context.Context, *MsgUpdateSuperAdmin) (*MsgUpdateSuperAdminResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateSuperAdmin not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -294,6 +309,24 @@ func _Msg_DeleteAdmin_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_UpdateSuperAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateSuperAdmin)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateSuperAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_UpdateSuperAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateSuperAdmin(ctx, req.(*MsgUpdateSuperAdmin))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -328,6 +361,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteAdmin",
 			Handler:    _Msg_DeleteAdmin_Handler,
+		},
+		{
+			MethodName: "UpdateSuperAdmin",
+			Handler:    _Msg_UpdateSuperAdmin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
