@@ -435,7 +435,6 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 		suite.Require().Equal(0, len(tempTrades))
 	})
 
-
 	suite.Run("cancel multiple trades", func() {
 		storedTrades, storedTempTrades := generateStoredTrades(10, 15)
 
