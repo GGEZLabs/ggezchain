@@ -116,16 +116,6 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 			expErr:                  true,
 			expErrMsg:               "invalid module name",
 		},
-		// {
-		// 	name: "at least one of is_maker or is_checker must be true",
-		// 	inputAclAuthority: types.AclAuthority{
-		// 		Address: addr,
-		// 		Name:    "Alice",
-		// 	},
-		// 	accessDefinitionListStr: `[{"module":"module5","is_maker":false,"is_checker":false}]`,
-		// 	expErr:                  true,
-		// 	expErrMsg:               "at least one of is_maker or is_checker must be true",
-		// },
 		{
 			name: "all good",
 			inputAclAuthority: types.AclAuthority{
@@ -190,19 +180,6 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 			expErr:                     true,
 			expErrMsg:                  "invalid module name",
 		},
-		// {
-		// 	name: "at least one of is_maker or is_checker must be true",
-		// 	inputAclAuthority: types.AclAuthority{
-		// 		Address: addr,
-		// 		Name:    "Alice",
-		// 		AccessDefinitions: []*types.AccessDefinition{
-		// 			{Module: "module1", IsMaker: false, IsChecker: false},
-		// 		},
-		// 	},
-		// 	singleAccessDefinitionsStr: `{"module":"module1","is_maker":false ,"is_checker":false}`,
-		// 	expErr:                     true,
-		// 	expErrMsg:                  "at least one of is_maker or is_checker must be true",
-		// },
 		{
 			name: "fail when module does not exist in current ACL list",
 			inputAclAuthority: types.AclAuthority{
@@ -299,16 +276,6 @@ func TestAddAccessDefinitions(t *testing.T) {
 			expErr:                   true,
 			expErrMsg:                "invalid module name",
 		},
-		// {
-		// 	name: "at least one of is_maker or is_checker must be true",
-		// 	inputAclAuthority: types.AclAuthority{
-		// 		Address: addr,
-		// 		Name:    "Alice",
-		// 	},
-		// 	accessDefinitionsListStr: `[{"module":"module5","is_maker":false,"is_checker":false}]`,
-		// 	expErr:                   true,
-		// 	expErrMsg:                "at least one of is_maker or is_checker must be true",
-		// },
 		{
 			name: "add existing module",
 			inputAclAuthority: types.AclAuthority{

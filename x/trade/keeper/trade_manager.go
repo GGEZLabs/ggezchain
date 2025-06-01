@@ -63,7 +63,6 @@ func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade) (t
 		// Send coins to user
 		if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddress, coins); err != nil {
 			// Rollback: burn minted coins
-			// todo: check update CoinsStuckOnModule to StatusFailed
 			if err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, coins); err != nil {
 				return types.StatusFailed, err
 			}
@@ -81,7 +80,6 @@ func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade) (t
 		// Burn coins from module
 		if err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, coins); err != nil {
 			// Rollback: refund coins to user
-			// todo: check update CoinsStuckOnModule to StatusFailed
 			if err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, receiverAddress, coins); err != nil {
 				return types.StatusFailed, err
 			}

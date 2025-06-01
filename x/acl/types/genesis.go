@@ -83,12 +83,6 @@ func (gs GenesisState) ValidateAclAuthority() error {
 				return fmt.Errorf("duplicate module '%s' found in access definitions for address '%s'", access.Module, authority.Address)
 			}
 			seenModules[access.Module] = struct{}{}
-
-			// todo
-			// Must have at least one role
-			// if !access.IsMaker && !access.IsChecker {
-			// 	return fmt.Errorf("access definition for module '%s' must be either maker or checker (address: %s)", access.Module, authority.Address)
-			// }
 		}
 	}
 	return nil
