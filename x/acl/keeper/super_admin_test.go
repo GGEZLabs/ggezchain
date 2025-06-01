@@ -4,16 +4,18 @@ import (
 	"context"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
 	"github.com/GGEZLabs/ggezchain/testutil/nullify"
+	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/acl/keeper"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/stretchr/testify/require"
 )
 
 func createTestSuperAdmin(keeper keeper.Keeper, ctx context.Context) types.SuperAdmin {
-	item := types.SuperAdmin{}
+	item := types.SuperAdmin{
+		Admin: sample.AccAddress(),
+	}
 	keeper.SetSuperAdmin(ctx, item)
 	return item
 }

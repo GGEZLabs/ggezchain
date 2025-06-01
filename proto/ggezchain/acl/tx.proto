@@ -76,8 +76,8 @@ message MsgUpdateAuthorityResponse {}
 
 message MsgInit {
   option (cosmos.msg.v1.signer) = "creator";
-           string creator = 1;
-  repeated string admins  = 2;
+   string creator = 1;
+   string super_admin = 2;
 }
 
 message MsgInitResponse {}

@@ -11,7 +11,7 @@ import (
 func (k msgServer) DeleteAdmin(goCtx context.Context, msg *types.MsgDeleteAdmin) (*types.MsgDeleteAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.IsAdmin(ctx, msg.Creator) {
+	if !k.IsSuperAdmin(ctx, msg.Creator) {
 		return nil, types.ErrUnauthorized
 	}
 

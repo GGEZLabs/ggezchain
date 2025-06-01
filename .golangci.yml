@@ -35,7 +35,7 @@ linters:
     - promlinter
     - staticcheck
     - stylecheck
-    - tenv
+    - usetesting
     - testableexamples
     - testifylint
     - thelper

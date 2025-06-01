@@ -68,7 +68,7 @@ func TestValidateDeleteAdmin(t *testing.T) {
 			},
 			deletedAdmins: []string{alice},
 			expErr:        true,
-			expErrMsg:     "cannot delete all admins, at least one aclAdmin must remain",
+			expErrMsg:     "cannot delete all admins, at least one admin must remain",
 		},
 		{
 			name: "delete all admins",
@@ -78,7 +78,7 @@ func TestValidateDeleteAdmin(t *testing.T) {
 			},
 			deletedAdmins: []string{alice, bob},
 			expErr:        true,
-			expErrMsg:     "cannot delete all admins, at least one aclAdmin must remain",
+			expErrMsg:     "cannot delete all admins, at least one admin must remain",
 		},
 		{
 			name: "address not exist",

@@ -10,45 +10,36 @@ import (
 )
 
 func TestMsgInit(t *testing.T) {
-	k, ms, ctx := setupMsgServer(t)
-	aclAdmin := sample.AccAddress()
+	_, ms, ctx := setupMsgServer(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
 	testCases := []struct {
 		name      string
 		input     *types.MsgInit
-		fun       func()
 		expErr    bool
 		expErrMsg string
 	}{
 		{
-			name: "acl admin initialized",
-			input: &types.MsgInit{
-				Creator: sample.AccAddress(),
-				Admins:  []string{sample.AccAddress()},
-			},
-			fun: func() {
-				k.SetAclAdmin(ctx, types.AclAdmin{Address: aclAdmin})
-			},
-			expErr:    true,
-			expErrMsg: "acl admin already initialized",
-		},
-		{
 			name: "all good",
 			input: &types.MsgInit{
-				Creator: sample.AccAddress(),
-				Admins:  []string{sample.AccAddress()},
-			},
-			fun: func() {
-				k.RemoveAclAdmin(ctx, aclAdmin)
+				Creator:    sample.AccAddress(),
+				SuperAdmin: sample.AccAddress(),
 			},
 			expErr: false,
+		},
+		{
+			name: "super admin initialized",
+			input: &types.MsgInit{
+				Creator:    sample.AccAddress(),
+				SuperAdmin: sample.AccAddress(),
+			},
+			expErr:    true,
+			expErrMsg: "super admin already initialized",
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			tc.fun()
 			_, err := ms.Init(wctx, tc.input)
 
 			if tc.expErr {

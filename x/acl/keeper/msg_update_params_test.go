@@ -30,28 +30,6 @@ func TestMsgUpdateParams(t *testing.T) {
 			expErr:    true,
 			expErrMsg: "invalid authority",
 		},
-		// {
-		// 	name: "invalid admin",
-		// 	input: &types.MsgUpdateParams{
-		// 		Authority: k.GetAuthority(),
-		// 		Params:    types.Params{
-		// 			Admin: "invalid_address",
-		// 		},
-		// 	},
-		// 	expErr:    true,
-		// 	expErrMsg: "invalid admin address",
-		// },
-		// {
-		// 	name: "empty admin",
-		// 	input: &types.MsgUpdateParams{
-		// 		Authority: k.GetAuthority(),
-		// 		Params:    types.Params{
-		// 			Admin: "",
-		// 		},
-		// 	},
-		// 	expErr:    true,
-		// 	expErrMsg: "admin address cannot be empty",
-		// },
 		{
 			name: "all good",
 			input: &types.MsgUpdateParams{

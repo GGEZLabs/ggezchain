@@ -18,6 +18,6 @@ message GenesisState {
            Params       params             = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
   repeated AclAuthority acl_authority_list = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
   repeated AclAdmin     acl_admin_list     = 3 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-           SuperAdmin   super_admin        = 4 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           SuperAdmin   super_admin        = 4 ;
 }
 

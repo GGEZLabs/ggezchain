@@ -22,7 +22,9 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetAclAdmin(ctx, elem)
 	}
 	// Set if defined
-	k.SetSuperAdmin(ctx, genState.SuperAdmin)
+	if genState.SuperAdmin != nil {
+		k.SetSuperAdmin(ctx, *genState.SuperAdmin)
+	}
 
 	// this line is used by starport scaffolding # genesis/module/init
 	if err := k.SetParams(ctx, genState.Params); err != nil {
@@ -40,7 +42,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	// Get all superAdmin
 	superAdmin, found := k.GetSuperAdmin(ctx)
 	if found {
-		genesis.SuperAdmin = superAdmin
+		genesis.SuperAdmin = &superAdmin
 	}
 	// this line is used by starport scaffolding # genesis/module/export
 

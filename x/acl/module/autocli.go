@@ -122,20 +122,20 @@ ggezchaind tx acl update-authority ggezauthaddress... --clear-all-access-definit
 				},
 				{
 					RpcMethod:      "Init",
-					Use:            "init [admins]",
-					Short:          "Initializes the AclAdmin by one or more admin. Can only be called once.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
+					Use:            "init [super-admin]",
+					Short:          "Initializes the super-admin. Can only be called once.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "super_admin"}},
 				},
 				{
 					RpcMethod:      "AddAdmin",
 					Use:            "add-admin [admins]",
-					Short:          "Add one or more aclAdmin. Must have admin authority to do so.",
+					Short:          "Add one or more admin. Only a super admin can perform this action.",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
 				},
 				{
 					RpcMethod:      "DeleteAdmin",
 					Use:            "delete-admin [admins]",
-					Short:          "Delete one or more aclAdmin. Must have admin authority to do so.",
+					Short:          "Delete one or more admin. Only a super admin can perform this action.",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
 				},
 				// this line is used by ignite scaffolding # autocli/tx

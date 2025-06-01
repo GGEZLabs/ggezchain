@@ -9,8 +9,6 @@ import (
 )
 
 func TestMsgInit_ValidateBasic(t *testing.T) {
-	duplicateAdmin := sample.AccAddress()
-
 	tests := []struct {
 		name string
 		msg  MsgInit
@@ -24,34 +22,18 @@ func TestMsgInit_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
-			name: "zero admins",
+			name: "invalid super admin address",
 			msg: MsgInit{
-				Creator: sample.AccAddress(),
-				Admins:  []string{},
-			},
-			err: sdkerrors.ErrInvalidRequest,
-		},
-		{
-			name: "invalid admin address",
-			msg: MsgInit{
-				Creator: sample.AccAddress(),
-				Admins:  []string{"invalid_address", sample.AccAddress()},
+				Creator:    sample.AccAddress(),
+				SuperAdmin: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
-			name: "duplicate admin address",
-			msg: MsgInit{
-				Creator: sample.AccAddress(),
-				Admins:  []string{duplicateAdmin, duplicateAdmin},
-			},
-			err: sdkerrors.ErrInvalidRequest,
-		},
-		{
 			name: "all good",
 			msg: MsgInit{
-				Creator: sample.AccAddress(),
-				Admins:  []string{sample.AccAddress(), sample.AccAddress()},
+				Creator:    sample.AccAddress(),
+				SuperAdmin: sample.AccAddress(),
 			},
 		},
 	}

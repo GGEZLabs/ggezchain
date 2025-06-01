@@ -13,10 +13,10 @@ func TestMsgAddAdmin(t *testing.T) {
 	k, ms, ctx := setupMsgServer(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	aclAdmin := sample.AccAddress()
+	superAdmin := sample.AccAddress()
 	duplicateAdmin := sample.AccAddress()
 
-	k.SetAclAdmin(ctx, types.AclAdmin{Address: aclAdmin})
+	k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: superAdmin})
 	k.SetAclAdmin(ctx, types.AclAdmin{Address: duplicateAdmin})
 
 	testCases := []struct {
@@ -37,7 +37,7 @@ func TestMsgAddAdmin(t *testing.T) {
 		{
 			name: "duplicate admin",
 			input: &types.MsgAddAdmin{
-				Creator: aclAdmin,
+				Creator: superAdmin,
 				Admins:  []string{duplicateAdmin, sample.AccAddress()},
 			},
 			expErr:    true,
@@ -46,11 +46,11 @@ func TestMsgAddAdmin(t *testing.T) {
 		{
 			name: "all good",
 			input: &types.MsgAddAdmin{
-				Creator: aclAdmin,
+				Creator: superAdmin,
 				Admins:  []string{sample.AccAddress(), sample.AccAddress()},
 			},
-			// duplicateAdmin + aclAdmin + 2
-			expectedLen: 4,
+			// duplicateAdmin + 2
+			expectedLen: 3,
 			expErr:      false,
 		},
 	}

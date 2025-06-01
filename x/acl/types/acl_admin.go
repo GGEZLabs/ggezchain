@@ -29,8 +29,7 @@ func ValidateAddAdmin(currentAdmins []AclAdmin, newAdmins []string) error {
 	return nil
 }
 
-// ValidateDeleteAdmin validates whether any of the new admin addresses not exist
-// in the current admin list
+// ValidateDeleteAdmin ensures that deletion admins exist and that the admin list is not emptied.
 func ValidateDeleteAdmin(currentAdmins []AclAdmin, deletedAdmins []string) error {
 	adminMap := make(map[string]struct{}, len(currentAdmins))
 	for _, admin := range currentAdmins {
@@ -49,7 +48,8 @@ func ValidateDeleteAdmin(currentAdmins []AclAdmin, deletedAdmins []string) error
 		return ErrAdminNotExist.Wrapf("%s", strings.Join(notExistingAdmins, ", "))
 	}
 
-	// AclAdmin list can not be empty
+	// After validate if admins exist (because may be send admins not exist on current list)
+	// check if the length of current addresses equal deleted addresses
 	if len(currentAdmins) == len(deletedAdmins) {
 		return ErrAllAdminDeletion
 	}

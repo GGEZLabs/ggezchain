@@ -13,11 +13,12 @@ func TestMsgDeleteAdmin(t *testing.T) {
 	k, ms, ctx := setupMsgServer(t)
 	wctx := sdk.UnwrapSDKContext(ctx)
 
-	aclAdmin := sample.AccAddress()
+	superAdmin := sample.AccAddress()
 	alice := sample.AccAddress()
 	bob := sample.AccAddress()
 
-	aclAdmins := types.ConvertStringsToAclAdmins([]string{aclAdmin, alice, bob})
+	k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: superAdmin})
+	aclAdmins := types.ConvertStringsToAclAdmins([]string{alice, bob})
 	k.SetAclAdmins(ctx, aclAdmins)
 
 	testCases := []struct {
@@ -38,16 +39,16 @@ func TestMsgDeleteAdmin(t *testing.T) {
 		{
 			name: "delete all admins",
 			input: &types.MsgDeleteAdmin{
-				Creator: aclAdmin,
-				Admins:  []string{aclAdmin, alice, bob},
+				Creator: superAdmin,
+				Admins:  []string{alice, bob},
 			},
 			expErr:    true,
-			expErrMsg: "cannot delete all admins, at least one aclAdmin must remain",
+			expErrMsg: "cannot delete all admins, at least one admin must remain",
 		},
 		{
 			name: "admin not exist",
 			input: &types.MsgDeleteAdmin{
-				Creator: aclAdmin,
+				Creator: superAdmin,
 				Admins:  []string{sample.AccAddress()},
 			},
 			expErr:    true,
@@ -56,8 +57,8 @@ func TestMsgDeleteAdmin(t *testing.T) {
 		{
 			name: "all good",
 			input: &types.MsgDeleteAdmin{
-				Creator: aclAdmin,
-				Admins:  []string{alice, bob},
+				Creator: superAdmin,
+				Admins:  []string{alice},
 			},
 			expectedLen: 1,
 			expErr:      false,
