@@ -25,6 +25,7 @@ const (
 	DefaultDenom               = "uggz"
 	TradeCreatedSuccessfully   = "trade created successfully"
 	TradeProcessedSuccessfully = "trade processed successfully"
+	TradeIsCanceled            = "trade is canceled"
 )
 
 const (

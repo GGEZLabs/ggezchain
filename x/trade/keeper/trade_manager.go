@@ -120,6 +120,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 			storedTrade, _ := k.GetStoredTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
 			storedTrade.Status = types.StatusCanceled
 			storedTrade.UpdateDate = currentDate.Format(time.RFC3339)
+			storedTrade.Result = types.TradeIsCanceled
 
 			k.SetStoredTrade(ctx, storedTrade)
 			k.RemoveStoredTempTrade(ctx, allStoredTempTrade[i].TempTradeIndex)

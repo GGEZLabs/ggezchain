@@ -376,7 +376,7 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 		trades := suite.tradeKeeper.GetAllStoredTrade(ctx)
 		suite.Require().Equal(0, len(trades))
 
-		tempTrades := suite.tradeKeeper.GetAllStoredTrade(ctx)
+		tempTrades := suite.tradeKeeper.GetAllStoredTempTrade(ctx)
 		suite.Require().Equal(0, len(tempTrades))
 	})
 
@@ -385,7 +385,6 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 			TradeIndex:  1,
 			Status:      types.StatusPending,
 			CreateDate:  "2023-05-11T08:44:00Z",
-			UpdateDate:  "",
 			ProcessDate: "2023-05-11T08:44:00Z",
 		}
 
@@ -404,9 +403,38 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 		suite.Require().Equal(1, len(trades))
 		suite.Require().Equal(types.StatusPending, trades[0].Status)
 
-		tempTrades := suite.tradeKeeper.GetAllStoredTrade(ctx)
+		tempTrades := suite.tradeKeeper.GetAllStoredTempTrade(ctx)
 		suite.Require().Equal(1, len(tempTrades))
 	})
+
+	suite.Run("cancel trade", func() {
+		storedTrade := types.StoredTrade{
+			TradeIndex:  1,
+			Status:      types.StatusPending,
+			CreateDate:  "2023-05-11T08:44:00Z",
+			ProcessDate: "2023-05-11T08:44:00Z",
+		}
+
+		storedTempTrade := types.StoredTempTrade{
+			TradeIndex:     1,
+			TempTradeIndex: 1,
+			CreateDate:     "2023-05-11T08:44:00Z",
+		}
+
+		suite.tradeKeeper.SetStoredTrade(ctx, storedTrade)
+		suite.tradeKeeper.SetStoredTempTrade(ctx, storedTempTrade)
+
+		suite.tradeKeeper.CancelExpiredPendingTrades(ctx)
+
+		trades := suite.tradeKeeper.GetAllStoredTrade(ctx)
+		suite.Require().Equal(1, len(trades))
+		suite.Require().Equal(types.StatusCanceled, trades[0].Status)
+		suite.Require().Equal(types.TradeIsCanceled, trades[0].Result)
+
+		tempTrades := suite.tradeKeeper.GetAllStoredTempTrade(ctx)
+		suite.Require().Equal(0, len(tempTrades))
+	})
+
 
 	suite.Run("cancel multiple trades", func() {
 		storedTrades, storedTempTrades := generateStoredTrades(10, 15)
