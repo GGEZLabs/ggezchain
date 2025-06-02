@@ -96,6 +96,14 @@ build-windows-client: go.sum
 install: go.sum
 	go install -mod=readonly $(BUILD_FLAGS) ./cmd/ggezchaind
 
+build-image:
+	docker build -f Dockerfile -t ggezlabs/ggezchain .
+
+mocks:
+	@go install go.uber.org/mock/mockgen@v0.5.0
+	sh ./scripts/mockgen.sh
+.PHONY: mocks
+
 ########################################
 ### Tools & dependencies
 ########################################
