@@ -77,8 +77,9 @@ func (s *IntegrationTestSuite) fundCommunityPool() {
 			afterDistUGGEZ1Balance, err := getSpecificBalance(chainAAPIEndpoint, distModuleAddress, tokenAmount.Denom)
 			s.Require().NoErrorf(err, "Error getting balance: %s", afterDistUGGEZ1Balance)
 
-			// check if the balance is increased by the tokenAmount
-			return beforeDistUGGEZ1Balance.Add(tokenAmount).IsEqual(afterDistUGGEZ1Balance)
+			// check if the balance is increased by the tokenAmount and at least some portion of
+			// the fees (some amount of the fees will be given to the proposer)
+			return beforeDistUGGEZ1Balance.Add(tokenAmount).Add(standardFees).IsEqual(afterDistUGGEZ1Balance)
 		},
 		15*time.Second,
 		5*time.Second,

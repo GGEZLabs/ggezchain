@@ -126,20 +126,25 @@ clean:
 ########################################
 ### Testing
 ########################################
+PACKAGES_E2E=$(shell cd tests/e2e && go list ./... | grep '/e2e')
+PACKAGES_UNIT=$(shell go list ./... | grep -v -e '/tests/e2e')
 
 test-all: test test-race test-cover
 
 test:
-	@VERSION=$(VERSION) go test -mod=readonly -tags='ledger test_ledger_mock' ./...
+	@VERSION=$(VERSION) go test -mod=readonly -tags='ledger test_ledger_mock'  $(PACKAGES_UNIT)
 
 test-race:
-	@VERSION=$(VERSION) go test -mod=readonly -race -tags='ledger test_ledger_mock' ./...
+	@VERSION=$(VERSION) go test -mod=readonly -race -tags='ledger test_ledger_mock'  $(PACKAGES_UNIT)
 
 test-cover:
 	@go test -mod=readonly -timeout 30m -race -coverprofile=coverage.txt -covermode=atomic -tags='ledger test_ledger_mock' ./...
 
+test-e2e: build-image
+	@VERSION=$(VERSION) go test -mod=readonly -timeout=35m -v $(PACKAGES_E2E)
+
 benchmark:
-	@go test -mod=readonly -bench=. ./...
+	@go test -mod=readonly -bench=. $(PACKAGES_UNIT)
 
 .PHONY: test test-all \
 	test test-race \

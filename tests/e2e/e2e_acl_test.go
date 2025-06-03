@@ -20,8 +20,11 @@ func (s *IntegrationTestSuite) testAcl() {
 	admin2, err := s.chainA.genesisAccounts[1].keyInfo.GetAddress()
 	s.Require().NoError(err)
 
+	admin3, err := s.chainA.genesisAccounts[2].keyInfo.GetAddress()
+	s.Require().NoError(err)
+
 	fees := sdk.NewCoin(uggez1Denom, math.NewInt(1))
-	s.T().Logf("Len: %d", len(s.chainA.genesisAccounts))
+
 	// Init ACL module
 	s.execInitAcl(s.chainA, 0, superAdmin.String(), superAdmin.String(), ggezHomePath, fees.String())
 	s.Require().Eventually(
@@ -66,19 +69,36 @@ func (s *IntegrationTestSuite) testAcl() {
 		5*time.Second,
 	)
 
-	// // Delete second admin
-	// s.execDeleteAclAdmin(s.chainA, 0, admin2.String(), superAdmin.String(), ggezHomePath, fees.String())
+	// Add admin3 by super admin
+	s.execAddAclAdmin(s.chainA, 0, admin3.String(), superAdmin.String(), ggezHomePath, fees.String())
 
-	// s.Require().Eventually(
-	// 	func() bool {
-	// 		aclAdminAll, err := queryAllAclAdmin(chainEndpoint)
-	// 		s.Require().NoError(err)
+	s.Require().Eventually(
+		func() bool {
+			aclAdmin, err := queryAclAdmin(chainEndpoint, admin3.String())
+			s.Require().NoError(err)
 
-	// 		return len(aclAdminAll.AclAdmin) == 1
-	// 	},
-	// 	20*time.Second,
-	// 	5*time.Second,
-	// )
+			aclAdminAll, err := queryAllAclAdmin(chainEndpoint)
+			s.Require().NoError(err)
+
+			return aclAdmin.GetAclAdmin().Address == admin3.String() && len(aclAdminAll.AclAdmin) == 3
+		},
+		20*time.Second,
+		5*time.Second,
+	)
+
+	// Delete admin3
+	s.execDeleteAclAdmin(s.chainA, 0, admin3.String(), superAdmin.String(), ggezHomePath, fees.String())
+
+	s.Require().Eventually(
+		func() bool {
+			aclAdminAll, err := queryAllAclAdmin(chainEndpoint)
+			s.Require().NoError(err)
+
+			return len(aclAdminAll.AclAdmin) == 2
+		},
+		20*time.Second,
+		5*time.Second,
+	)
 
 	// Add authority for super admin
 	accessDefinitions := `[{"module":"trade","is_maker":true,"is_checker":true},{"module":"acl","is_maker":true,"is_checker":true}]`
@@ -98,9 +118,9 @@ func (s *IntegrationTestSuite) testAcl() {
 		5*time.Second,
 	)
 
-	// Add another authority
-	accessDefinitions = `[{"module":"trade","is_maker":true,"is_checker":true},{"module":"acl","is_maker":true,"is_checker":true}]`
-	s.execAddAclAuthority(s.chainA, 0, admin2.String(), "Alice", accessDefinitions, admin1.String(), ggezHomePath, fees.String())
+	// Add authority for admin2
+	accessDefinitions = `[{"module":"trade","is_maker":false,"is_checker":true}]`
+	s.execAddAclAuthority(s.chainA, 0, admin2.String(), "Bob", accessDefinitions, admin1.String(), ggezHomePath, fees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -116,19 +136,37 @@ func (s *IntegrationTestSuite) testAcl() {
 		5*time.Second,
 	)
 
-	// Delete second authority
-	// s.execDeleteAclAuthority(s.chainA, 0, admin2.String(), admin1.String(), ggezHomePath, fees.String())
+	// Add authority for admin3
+	accessDefinitions = `[{"module":"trade","is_maker":true,"is_checker":true}]`
+	s.execAddAclAuthority(s.chainA, 0, admin3.String(), "Carol", accessDefinitions, admin1.String(), ggezHomePath, fees.String())
 
-	// s.Require().Eventually(
-	// 	func() bool {
-	// 		aclAuthorityAll, err := queryAllAclAuthority(chainEndpoint)
-	// 		s.Require().NoError(err)
+	s.Require().Eventually(
+		func() bool {
+			aclAuthority, err := queryAclAuthority(chainEndpoint, admin3.String())
+			s.Require().NoError(err)
 
-	// 		return len(aclAuthorityAll.AclAuthority) == 1
-	// 	},
-	// 	20*time.Second,
-	// 	5*time.Second,
-	// )
+			aclAuthorityAll, err := queryAllAclAuthority(chainEndpoint)
+			s.Require().NoError(err)
+
+			return len(aclAuthorityAll.AclAuthority) == 3 && aclAuthority.GetAclAuthority().Address == admin3.String()
+		},
+		20*time.Second,
+		5*time.Second,
+	)
+
+	// Delete admin3 authority
+	s.execDeleteAclAuthority(s.chainA, 0, admin3.String(), admin1.String(), ggezHomePath, fees.String())
+
+	s.Require().Eventually(
+		func() bool {
+			aclAuthorityAll, err := queryAllAclAuthority(chainEndpoint)
+			s.Require().NoError(err)
+
+			return len(aclAuthorityAll.AclAuthority) == 2
+		},
+		20*time.Second,
+		5*time.Second,
+	)
 
 	// update authority
 	updateAccessDefinitions := `{"module":"trade","is_maker":true,"is_checker":false}`
@@ -146,5 +184,4 @@ func (s *IntegrationTestSuite) testAcl() {
 		20*time.Second,
 		5*time.Second,
 	)
-
 }

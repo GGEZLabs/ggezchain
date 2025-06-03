@@ -1127,7 +1127,8 @@ func (s *IntegrationTestSuite) execUpdateAclAuthority(c *chain, valIdx int, auth
 
 func (s *IntegrationTestSuite) execCreateTrade(c *chain, valIdx int,
 	tradeType, amount, price, receiverAddress, tradeData, bankingSystemData, coinMintingPriceJson, exchangeRateJson,
-	from, home, createTradeFees string) {
+	from, home, createTradeFees string,
+) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
@@ -1161,7 +1162,8 @@ func (s *IntegrationTestSuite) execCreateTrade(c *chain, valIdx int,
 }
 
 func (s *IntegrationTestSuite) execProcessTrade(c *chain, valIdx int,
-	tradeIndex, processType, from, home, createTradeFees string) {
+	tradeIndex, processType, from, home, createTradeFees string, expErr bool,
+) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
@@ -1184,6 +1186,11 @@ func (s *IntegrationTestSuite) execProcessTrade(c *chain, valIdx int,
 		"-y",
 	}
 
-	s.executeTxCommand(ctx, c, ggezCommand, valIdx, s.defaultExecValidation(c, valIdx))
-	s.T().Logf("successfully process trade, trade index:%s", tradeIndex)
+	if expErr {
+		s.executeTxCommand(ctx, c, ggezCommand, valIdx, s.expectErrExecValidation(c, valIdx, true))
+		s.T().Logf("unsuccessfully process trade, trade index: %s", tradeIndex)
+	} else {
+		s.executeTxCommand(ctx, c, ggezCommand, valIdx, s.defaultExecValidation(c, valIdx))
+		s.T().Logf("successfully process trade, trade index: %s", tradeIndex)
+	}
 }

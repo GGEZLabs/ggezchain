@@ -9,7 +9,6 @@ import (
 
 	"cosmossdk.io/math"
 	evidencetypes "cosmossdk.io/x/evidence/types"
-
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	tradetypes "github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -20,9 +19,7 @@ import (
 	govtypesv1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	govtypesv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	ratelimittypes "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/types"
 	icacontrollertypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/controller/types"
-	transfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 )
 
 func queryTx(endpoint, txHash string) error {
@@ -266,19 +263,6 @@ func queryValidators(endpoint string) (stakingtypes.Validators, error) {
 	return stakingtypes.Validators{Validators: res.Validators}, nil
 }
 
-func queryEvidence(endpoint, hash string) (evidencetypes.QueryEvidenceResponse, error) { //nolint:unused // this is called during e2e tests
-	var res evidencetypes.QueryEvidenceResponse
-	body, err := httpGet(fmt.Sprintf("%s/cosmos/evidence/v1beta1/evidence/%s", endpoint, hash))
-	if err != nil {
-		return res, err
-	}
-
-	if err = cdc.UnmarshalJSON(body, &res); err != nil {
-		return res, err
-	}
-	return res, nil
-}
-
 func queryAllEvidence(endpoint string) (evidencetypes.QueryAllEvidenceResponse, error) {
 	var res evidencetypes.QueryAllEvidenceResponse
 	body, err := httpGet(fmt.Sprintf("%s/cosmos/evidence/v1beta1/evidence", endpoint))
@@ -290,78 +274,6 @@ func queryAllEvidence(endpoint string) (evidencetypes.QueryAllEvidenceResponse, 
 		return res, err
 	}
 	return res, nil
-}
-
-//nolint:unused
-func queryAllRateLimits(endpoint string) ([]ratelimittypes.RateLimit, error) {
-	var res ratelimittypes.QueryAllRateLimitsResponse
-
-	body, err := httpGet(fmt.Sprintf("%s/Stride-Labs/ibc-rate-limiting/ratelimit/ratelimits", endpoint))
-	if err != nil {
-		return []ratelimittypes.RateLimit{}, fmt.Errorf("failed to execute HTTP request: %w", err)
-	}
-
-	if err := cdc.UnmarshalJSON(body, &res); err != nil {
-		return []ratelimittypes.RateLimit{}, err
-	}
-	return res.RateLimits, nil
-}
-
-//nolint:unparam
-func queryRateLimit(endpoint, channelID, denom string) (ratelimittypes.QueryRateLimitResponse, error) {
-	var res ratelimittypes.QueryRateLimitResponse
-
-	body, err := httpGet(fmt.Sprintf("%s/Stride-Labs/ibc-rate-limiting/ratelimit/ratelimit/%s/by_denom?denom=%s", endpoint, channelID, denom))
-	if err != nil {
-		return ratelimittypes.QueryRateLimitResponse{}, fmt.Errorf("failed to execute HTTP request: %w", err)
-	}
-
-	if err := cdc.UnmarshalJSON(body, &res); err != nil {
-		return ratelimittypes.QueryRateLimitResponse{}, err
-	}
-	return res, nil
-}
-
-func queryRateLimitsByChainID(endpoint, channelID string) ([]ratelimittypes.RateLimit, error) {
-	var res ratelimittypes.QueryRateLimitsByChainIdResponse
-
-	body, err := httpGet(fmt.Sprintf("%s/Stride-Labs/ibc-rate-limiting/ratelimit/ratelimits/%s", endpoint, channelID))
-	if err != nil {
-		return []ratelimittypes.RateLimit{}, fmt.Errorf("failed to execute HTTP request: %w", err)
-	}
-
-	if err := cdc.UnmarshalJSON(body, &res); err != nil {
-		return []ratelimittypes.RateLimit{}, err
-	}
-	return res.RateLimits, nil
-}
-
-func queryTradeParams(endpoint string) (tradetypes.QueryParamsResponse, error) {
-	body, err := httpGet(fmt.Sprintf("%s/ggezchain/trade/v1beta1/params", endpoint))
-	if err != nil {
-		return tradetypes.QueryParamsResponse{}, fmt.Errorf("failed to execute HTTP request: %w", err)
-	}
-
-	var params tradetypes.QueryParamsResponse
-	if err := cdc.UnmarshalJSON(body, &params); err != nil {
-		return tradetypes.QueryParamsResponse{}, err
-	}
-
-	return params, nil
-}
-
-func queryIBCEscrowAddress(endpoint, channelID string) (string, error) {
-	body, err := httpGet(fmt.Sprintf("%s/ibc/apps/transfer/v1/channels/%s/ports/transfer/escrow_address", endpoint, channelID))
-	if err != nil {
-		return "", fmt.Errorf("failed to execute HTTP request: %w", err)
-	}
-
-	var resp transfertypes.QueryEscrowAddressResponse
-	if err := cdc.UnmarshalJSON(body, &resp); err != nil {
-		return "", err
-	}
-
-	return resp.EscrowAddress, nil
 }
 
 func queryICAAccountAddress(endpoint, owner, connectionID string) (string, error) {

@@ -75,7 +75,7 @@ const (
 	transferPort              = "transfer"
 	transferChannel           = "channel-0"
 
-	govAuthority = "ggez10d07y265gmmuvt4z0w9aw880jnsr700jm4garg"
+	govAuthority = "ggez10d07y265gmmuvt4z0w9aw880jnsr700jm4garg" //nolint:unused
 )
 
 var (

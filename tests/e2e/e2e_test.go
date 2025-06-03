@@ -4,16 +4,16 @@ import "fmt"
 
 var (
 	runBankTest                   = true
-	runEncodeTest                 = false
-	runEvidenceTest               = false
-	runGovTest                    = false
-	runIBCTest                    = false
-	runSlashingTest               = false
-	runStakingAndDistributionTest = false
-	runVestingTest                = false
-	runRestInterfacesTest         = false
-	runAclTest                    = false
-	runTradeTest                  = false
+	runEncodeTest                 = true
+	runEvidenceTest               = true
+	runGovTest                    = true
+	runIBCTest                    = true
+	runSlashingTest               = true
+	runStakingAndDistributionTest = true
+	runVestingTest                = true
+	runRestInterfacesTest         = true
+	runAclTest                    = true
+	runTradeTest                  = true
 )
 
 func (s *IntegrationTestSuite) TestRestInterfaces() {
