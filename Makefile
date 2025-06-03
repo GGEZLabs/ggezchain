@@ -3,6 +3,22 @@
 include contrib/devtools/Makefile
 include contrib/devtools/lint.mk
 
+.DEFAULT_GOAL := help
+help:
+	@echo "Available commands:"
+	@echo ""
+	@echo "Usage:"
+	@echo "    make [command]"
+	@echo ""
+	@echo "  make install               Install ggezchaind binary"
+	@echo "  make build                 Build ggezchaind binary"
+	@echo "  make lint                  Show available lint commands"
+	@echo "  make test                  Run unit tests"
+	@echo "  make test-e2e              Run e2e tests"
+	@echo "  make mocks                 Generate mock files"
+	@echo "  make proto-gen             Generate proto"
+	@echo ""
+
 VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
 COMMIT := $(shell git log -1 --format='%H')
 LEDGER_ENABLED ?= true
