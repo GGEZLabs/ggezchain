@@ -9,6 +9,7 @@ import (
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	ggezchain "github.com/GGEZLabs/ggezchain/app"
 	tradetypes "github.com/GGEZLabs/ggezchain/x/trade/types"
+	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	tmrand "github.com/cometbft/cometbft/libs/rand"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -59,6 +60,7 @@ func init() {
 	distribtypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	ratelimittypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	tradetypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
+	acltypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 
 	cdc = encodingConfig.Codec
 	txConfig = encodingConfig.TxConfig

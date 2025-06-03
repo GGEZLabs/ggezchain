@@ -59,12 +59,12 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 				afterBobUGGEZ1Balance, err = getSpecificBalance(chainEndpoint, bob.String(), uggez1Denom)
 				s.Require().NoError(err)
 
-				gasFeesBurnt := standardFees.Sub(sdk.NewCoin(uggez1Denom, math.NewInt(1000)))
+				// gasFeesBurnt := standardFees.Sub(sdk.NewCoin(uggez1Denom, math.NewInt(1000)))
 				// alice's balance should be decremented by the token amount and the gas fees
 				// if the difference between expceted and actual balance is less than 500, consider it as a success
 				// any small change in operation/code can result in the gasFee difference
 				// we set the threshold to 500 to avoid false negatives
-				expectedAfterAliceUGGEZ1Balance := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(gasFeesBurnt)
+				expectedAfterAliceUGGEZ1Balance := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(standardFees)
 				decremented := afterAliceUGGEZ1Balance.Sub(expectedAfterAliceUGGEZ1Balance).Amount.LT(math.NewInt(500))
 
 				incremented := beforeBobUGGEZ1Balance.Add(tokenAmount).IsEqual(afterBobUGGEZ1Balance)
@@ -92,12 +92,12 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 				afterCharlieUGGEZ1Balance, err = getSpecificBalance(chainEndpoint, charlie.String(), uggez1Denom)
 				s.Require().NoError(err)
 
-				gasFeesBurnt := standardFees.Sub(sdk.NewCoin(uggez1Denom, math.NewInt(1016)))
+				// gasFeesBurnt := standardFees.Sub(sdk.NewCoin(uggez1Denom, math.NewInt(1016)))
 				// alice's balance should be decremented by the token amount and the gas fees
 				// if the difference between expceted and actual balance is less than 500, consider it as a success
 				// any small change in operation/code can result in the gasFee difference
 				// we set the threshold to 500 to avoid false negatives
-				expectedAfterAliceUGGEZ1Balance := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(tokenAmount).Sub(gasFeesBurnt)
+				expectedAfterAliceUGGEZ1Balance := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(tokenAmount).Sub(standardFees)
 				decremented := afterAliceUGGEZ1Balance.Sub(expectedAfterAliceUGGEZ1Balance).Amount.LT(math.NewInt(500))
 
 				incremented := beforeBobUGGEZ1Balance.Add(tokenAmount).IsEqual(afterBobUGGEZ1Balance) &&
