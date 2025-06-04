@@ -59,6 +59,12 @@ import (
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
+	protocolpoolmodulev1 "cosmossdk.io/api/cosmos/protocolpool/module/v1"
+    _ "github.com/cosmos/cosmos-sdk/x/protocolpool" // import for side-effects
+    protocolpooltypes "github.com/cosmos/cosmos-sdk/x/protocolpool/types"
+	epochsmodulev1 "cosmossdk.io/api/cosmos/epochs/module/v1"
+    _ "github.com/cosmos/cosmos-sdk/x/epochs" // import for side-effects
+    epochstypes "github.com/cosmos/cosmos-sdk/x/epochs/types"
 )
 
 var (
@@ -72,6 +78,42 @@ var (
 		// cosmos-sdk/ibc modules
 		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
+		banktypes.ModuleName,
+		distrtypes.ModuleName,
+		protocolpooltypes.ModuleName,
+		stakingtypes.ModuleName,
+		slashingtypes.ModuleName,
+		govtypes.ModuleName,
+		minttypes.ModuleName,
+		crisistypes.ModuleName,
+		ibcexported.ModuleName,
+		genutiltypes.ModuleName,
+		evidencetypes.ModuleName,
+		authz.ModuleName,
+		ibctransfertypes.ModuleName,
+		icatypes.ModuleName,
+		ibcfeetypes.ModuleName,
+		feegrant.ModuleName,
+		paramstypes.ModuleName,
+		upgradetypes.ModuleName,
+		vestingtypes.ModuleName,
+		nft.ModuleName,
+		group.ModuleName,
+		consensustypes.ModuleName,
+		circuittypes.ModuleName,
+		epochstypes.ModuleName,
+		// chain modules
+		trademoduletypes.ModuleName,
+		aclmoduletypes.ModuleName,
+		wasmtypes.ModuleName,
+		// this line is used by starport scaffolding # stargate/app/initGenesis
+	}
+
+	exportGenesisOrder = []string{
+		// cosmos-sdk/ibc modules
+		capabilitytypes.ModuleName,
+		authtypes.ModuleName,
+		protocolpooltypes.ModuleName,
 		banktypes.ModuleName,
 		distrtypes.ModuleName,
 		stakingtypes.ModuleName,
@@ -94,6 +136,7 @@ var (
 		group.ModuleName,
 		consensustypes.ModuleName,
 		circuittypes.ModuleName,
+		epochstypes.ModuleName,
 		// chain modules
 		trademoduletypes.ModuleName,
 		aclmoduletypes.ModuleName,
@@ -110,11 +153,13 @@ var (
 		// cosmos sdk modules
 		minttypes.ModuleName,
 		distrtypes.ModuleName,
+		protocolpooltypes.ModuleName,
 		slashingtypes.ModuleName,
 		evidencetypes.ModuleName,
 		stakingtypes.ModuleName,
 		authz.ModuleName,
 		genutiltypes.ModuleName,
+		epochstypes.ModuleName,
 		// ibc modules
 		capabilitytypes.ModuleName,
 		ibcexported.ModuleName,
@@ -136,6 +181,7 @@ var (
 		feegrant.ModuleName,
 		group.ModuleName,
 		genutiltypes.ModuleName,
+		protocolpooltypes.ModuleName,
 		// ibc modules
 		ibcexported.ModuleName,
 		ibctransfertypes.ModuleName,
@@ -151,6 +197,7 @@ var (
 
 	preBlockers = []string{
 		upgradetypes.ModuleName,
+		authtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/preBlockers
 	}
 
@@ -168,6 +215,8 @@ var (
 		{Account: icatypes.ModuleName},
 		{Account: trademoduletypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner, authtypes.Staking}},
 		{Account: wasmtypes.ModuleName, Permissions: []string{authtypes.Burner}},
+		{Account: protocolpooltypes.ModuleName},
+		{Account: protocolpooltypes.ProtocolPoolEscrowAccount},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -202,7 +251,7 @@ var (
 					},
 					// When ExportGenesis is not specified, the export genesis module order
 					// is equal to the init genesis order
-					// ExportGenesis: genesisModuleOrder,
+					ExportGenesis: exportGenesisOrder,
 					// Uncomment if you want to set a custom migration order here.
 					// OrderMigrations: nil,
 				}),
@@ -310,6 +359,14 @@ var (
 			{
 				Name:   aclmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&aclmodulev1.Module{}),
+			},
+			{
+				Name:   protocolpooltypes.ModuleName,
+				Config: appconfig.WrapAny(&protocolpoolmodulev1.Module{}),
+			},
+			{
+				Name:   epochstypes.ModuleName,
+				Config: appconfig.WrapAny(&epochsmodulev1.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

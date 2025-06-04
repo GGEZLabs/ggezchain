@@ -27,6 +27,7 @@ import (
 	govv1types "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	govv1beta1types "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramsproptypes "github.com/cosmos/cosmos-sdk/x/params/types/proposal"
+	protocolpooltypes "github.com/cosmos/cosmos-sdk/x/protocolpool/types"
 	simcli "github.com/cosmos/cosmos-sdk/x/simulation/client/cli"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	ratelimittypes "github.com/cosmos/ibc-apps/modules/rate-limiting/v8/types"
@@ -61,6 +62,7 @@ func init() {
 	ratelimittypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	tradetypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	acltypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
+	protocolpooltypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 
 	cdc = encodingConfig.Codec
 	txConfig = encodingConfig.TxConfig

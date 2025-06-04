@@ -20,6 +20,7 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	distributiontypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	protocolpooltypes "github.com/cosmos/cosmos-sdk/x/protocolpool/types"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/ory/dockertest/v3/docker"
@@ -329,16 +330,16 @@ func (s *IntegrationTestSuite) execBankMultiSend(
 	s.executeTxCommand(ctx, c, ggezCommand, valIdx, s.expectErrExecValidation(c, valIdx, expectErr))
 }
 
-func (s *IntegrationTestSuite) execDistributionFundCommunityPool(c *chain, valIdx int, from, amt, fees string) {
+func (s *IntegrationTestSuite) execProtocolpoolFundCommunityPool(c *chain, valIdx int, from, amt, fees string) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	s.T().Logf("Executing ggezchaind tx distribution fund-community-pool on chain %s", c.id)
+	s.T().Logf("Executing ggezchaind tx protocolpool fund-community-pool on chain %s", c.id)
 
 	ggezCommand := []string{
 		ggezchaindBinary,
 		txCommand,
-		distributiontypes.ModuleName,
+		protocolpooltypes.ModuleName,
 		"fund-community-pool",
 		amt,
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, from),

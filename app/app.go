@@ -79,6 +79,8 @@ import (
 	ibcfeekeeper "github.com/cosmos/ibc-go/v8/modules/apps/29-fee/keeper"
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
+	protocolpoolkeeper "github.com/cosmos/cosmos-sdk/x/protocolpool/keeper"
+	epochskeeper "github.com/cosmos/cosmos-sdk/x/epochs/keeper"
 )
 
 const (
@@ -123,7 +125,8 @@ type App struct {
 	GroupKeeper          groupkeeper.Keeper
 	NFTKeeper            nftkeeper.Keeper
 	CircuitBreakerKeeper circuitkeeper.Keeper
-
+	ProtocolPoolKeeper   protocolpoolkeeper.Keeper
+	EpochsKeeper epochskeeper.Keeper
 	// IBC
 	IBCKeeper           *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
 	CapabilityKeeper    *capabilitykeeper.Keeper
@@ -250,6 +253,8 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.TradeKeeper,
 		&app.AclKeeper,
+		&app.ProtocolPoolKeeper,
+		&app.EpochsKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
