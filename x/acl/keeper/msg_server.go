@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/GGEZLabs/ramichain/x/acl/types"
 )
 
 type msgServer struct {

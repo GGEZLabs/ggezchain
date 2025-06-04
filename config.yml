@@ -1,24 +1,26 @@
 version: 1
 validation: sovereign
+default_denom: uggez1
 accounts: 
 - name: alice
+  mnemonic: later rookie jazz alter minute group share scan random try brain brain task afraid roast fuel ring autumn awake diamond length sadness please round
   coins:
-  - 10000000000uggz
-  - 200000000000stake
-  mnemonic: later rookie jazz alter minute group share scan random try brain brain task afraid roast fuel ring autumn awake diamond length sadness please round  
+  - 200000000uggez1
 - name: bob
+  mnemonic: float elder spice lamp blue cause office surge reopen brass stone garbage pistol noodle breeze fortune jewel flavor asthma dirt rubber lyrics vicious picnic
   coins:
-  - 10000000000uggz
-  - 1000000000000stake
-  mnemonic: float elder spice lamp blue cause office surge reopen brass stone garbage pistol noodle breeze fortune jewel flavor asthma dirt rubber lyrics vicious picnic  
+  - 100000000uggez1
 client:
   openapi:
     path: docs/static/openapi.yml
 faucet:
   name: bob
   coins:
-  - 50000uggz
-  - 100000stake
+  - 100000uggez1
 validators:
 - name: alice
-  bonded: 100000000stake
+  bonded: 100000000uggez1
+- name: validator1
+  bonded: 200000000uggez1
+- name: validator2
+  bonded: 100000000uggez1

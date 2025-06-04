@@ -2,34 +2,28 @@ package keeper
 
 import (
 	"context"
+	"errors"
 
-	"cosmossdk.io/store/prefix"
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
-	"github.com/cosmos/cosmos-sdk/runtime"
+	"cosmossdk.io/collections"
+	"github.com/GGEZLabs/ramichain/x/acl/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) AclAdminAll(ctx context.Context, req *types.QueryAllAclAdminRequest) (*types.QueryAllAclAdminResponse, error) {
+func (q queryServer) ListAclAdmin(ctx context.Context, req *types.QueryAllAclAdminRequest) (*types.QueryAllAclAdminResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var aclAdmins []types.AclAdmin
-
-	store := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	aclAdminStore := prefix.NewStore(store, types.KeyPrefix(types.AclAdminKeyPrefix))
-
-	pageRes, err := query.Paginate(aclAdminStore, req.Pagination, func(key []byte, value []byte) error {
-		var aclAdmin types.AclAdmin
-		if err := k.cdc.Unmarshal(value, &aclAdmin); err != nil {
-			return err
-		}
-
-		aclAdmins = append(aclAdmins, aclAdmin)
-		return nil
-	})
+	aclAdmins, pageRes, err := query.CollectionPaginate(
+		ctx,
+		q.k.AclAdmin,
+		req.Pagination,
+		func(_ string, value types.AclAdmin) (types.AclAdmin, error) {
+			return value, nil
+		},
+	)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -37,17 +31,18 @@ func (k Keeper) AclAdminAll(ctx context.Context, req *types.QueryAllAclAdminRequ
 	return &types.QueryAllAclAdminResponse{AclAdmin: aclAdmins, Pagination: pageRes}, nil
 }
 
-func (k Keeper) AclAdmin(ctx context.Context, req *types.QueryGetAclAdminRequest) (*types.QueryGetAclAdminResponse, error) {
+func (q queryServer) GetAclAdmin(ctx context.Context, req *types.QueryGetAclAdminRequest) (*types.QueryGetAclAdminResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	val, found := k.GetAclAdmin(
-		ctx,
-		req.Address,
-	)
-	if !found {
-		return nil, status.Error(codes.NotFound, "not found")
+	val, err := q.k.AclAdmin.Get(ctx, req.Address)
+	if err != nil {
+		if errors.Is(err, collections.ErrNotFound) {
+			return nil, status.Error(codes.NotFound, "not found")
+		}
+
+		return nil, status.Error(codes.Internal, "internal error")
 	}
 
 	return &types.QueryGetAclAdminResponse{AclAdmin: val}, nil

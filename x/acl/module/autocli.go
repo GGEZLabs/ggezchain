@@ -2,44 +2,46 @@ package acl
 
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
-	modulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/acl"
+
+	"github.com/GGEZLabs/ramichain/x/acl/types"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.
 func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 	return &autocliv1.ModuleOptions{
 		Query: &autocliv1.ServiceCommandDescriptor{
-			Service: modulev1.Query_ServiceDesc.ServiceName,
+			Service: types.Query_serviceDesc.ServiceName,
 			RpcCommandOptions: []*autocliv1.RpcCommandOptions{
 				{
 					RpcMethod: "Params",
 					Use:       "params",
 					Short:     "Query the parameters of the module",
 				},
+
 				{
-					RpcMethod:      "AclAuthority",
+					RpcMethod: "ListAclAuthority",
+					Use:       "acl-authorities",
+					Short:     "Query all acl-authorities",
+				},
+				{
+					RpcMethod:      "GetAclAuthority",
 					Use:            "acl-authority [address]",
 					Short:          "Query an acl-authority by address",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
 				},
 				{
-					RpcMethod: "AclAuthorityAll",
-					Use:       "acl-authorities",
-					Short:     "Query all acl-authorities",
+					RpcMethod: "ListAclAdmin",
+					Use:       "admins",
+					Short:     "Query all admins",
 				},
 				{
-					RpcMethod:      "AclAdmin",
+					RpcMethod:      "GetAclAdmin",
 					Use:            "admin [address]",
 					Short:          "Query an admin by address",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
 				},
 				{
-					RpcMethod: "AclAdminAll",
-					Use:       "admins",
-					Short:     "Query all admins",
-				},
-				{
-					RpcMethod: "SuperAdmin",
+					RpcMethod: "GetSuperAdmin",
 					Use:       "super-admin",
 					Short:     "Query a super-admin",
 				},
@@ -47,12 +49,36 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 			},
 		},
 		Tx: &autocliv1.ServiceCommandDescriptor{
-			Service:              modulev1.Msg_ServiceDesc.ServiceName,
+			Service:              types.Msg_serviceDesc.ServiceName,
 			EnhanceCustomCommand: true, // only required if you want to use the custom command
 			RpcCommandOptions: []*autocliv1.RpcCommandOptions{
 				{
 					RpcMethod: "UpdateParams",
 					Skip:      true, // skipped because authority gated
+				},
+				{
+					RpcMethod:      "Init",
+					Use:            "init [super-admin]",
+					Short:          "Initializes the super-admin. Can only be called once.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "super_admin"}},
+				},
+				{
+					RpcMethod:      "AddAdmin",
+					Use:            "add-admin [admins]",
+					Short:          "Add one or more admin. Only a super admin can perform this action.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
+				},
+				{
+					RpcMethod:      "DeleteAdmin",
+					Use:            "delete-admin [admins]",
+					Short:          "Delete one or more admin. Only a super admin can perform this action.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
+				},
+				{
+					RpcMethod:      "UpdateSuperAdmin",
+					Use:            "update-super-admin [new-super-admin]",
+					Short:          "Update super admin. Only a super admin can perform this action.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "new_super_admin"}},
 				},
 				{
 					RpcMethod:      "AddAuthority",
@@ -120,30 +146,7 @@ ggezchaind tx acl update-authority ggezauthaddress... --clear-all-access-definit
 
 `,
 				},
-				{
-					RpcMethod:      "Init",
-					Use:            "init [super-admin]",
-					Short:          "Initializes the super-admin. Can only be called once.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "super_admin"}},
-				},
-				{
-					RpcMethod:      "AddAdmin",
-					Use:            "add-admin [admins]",
-					Short:          "Add one or more admin. Only a super admin can perform this action.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
-				},
-				{
-					RpcMethod:      "DeleteAdmin",
-					Use:            "delete-admin [admins]",
-					Short:          "Delete one or more admin. Only a super admin can perform this action.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
-				},
-				{
-					RpcMethod:      "UpdateSuperAdmin",
-					Use:            "update-super-admin [new-super-admin]",
-					Short:          "Update super admin. Only a super admin can perform this action.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "new_super_admin"}},
-				},
+
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},

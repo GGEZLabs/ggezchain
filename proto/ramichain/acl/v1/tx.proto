@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+package ramichain.acl.v1;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "ramichain/acl/v1/params.proto";
+
+option go_package = "github.com/GGEZLabs/ramichain/x/acl/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
+  // Init defines the Init RPC.
+  rpc Init(MsgInit) returns (MsgInitResponse);
+
+  // AddAdmin defines the AddAdmin RPC.
+  rpc AddAdmin(MsgAddAdmin) returns (MsgAddAdminResponse);
+
+  // DeleteAdmin defines the DeleteAdmin RPC.
+  rpc DeleteAdmin(MsgDeleteAdmin) returns (MsgDeleteAdminResponse);
+
+  // UpdateSuperAdmin defines the UpdateSuperAdmin RPC.
+  rpc UpdateSuperAdmin(MsgUpdateSuperAdmin) returns (MsgUpdateSuperAdminResponse);
+
+  // AddAuthority defines the AddAuthority RPC.
+  rpc AddAuthority(MsgAddAuthority) returns (MsgAddAuthorityResponse);
+
+  // DeleteAuthority defines the DeleteAuthority RPC.
+  rpc DeleteAuthority(MsgDeleteAuthority) returns (MsgDeleteAuthorityResponse);
+
+  // UpdateAuthority defines the UpdateAuthority RPC.
+  rpc UpdateAuthority(MsgUpdateAuthority) returns (MsgUpdateAuthorityResponse);
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "ramichain/x/acl/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+// MsgInit defines the MsgInit message.
+message MsgInit {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string super_admin = 2;
+}
+
+// MsgInitResponse defines the MsgInitResponse message.
+message MsgInitResponse {}
+
+// MsgAddAdmin defines the MsgAddAdmin message.
+message MsgAddAdmin {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string admins = 2;
+}
+
+// MsgAddAdminResponse defines the MsgAddAdminResponse message.
+message MsgAddAdminResponse {}
+
+// MsgDeleteAdmin defines the MsgDeleteAdmin message.
+message MsgDeleteAdmin {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string admins = 2;
+}
+
+// MsgDeleteAdminResponse defines the MsgDeleteAdminResponse message.
+message MsgDeleteAdminResponse {}
+
+// MsgUpdateSuperAdmin defines the MsgUpdateSuperAdmin message.
+message MsgUpdateSuperAdmin {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string new_super_admin = 2;
+}
+
+// MsgUpdateSuperAdminResponse defines the MsgUpdateSuperAdminResponse message.
+message MsgUpdateSuperAdminResponse {}
+
+// MsgAddAuthority defines the MsgAddAuthority message.
+message MsgAddAuthority {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string auth_address = 2;
+  string name = 3;
+  string access_definitions = 4;
+}
+
+// MsgAddAuthorityResponse defines the MsgAddAuthorityResponse message.
+message MsgAddAuthorityResponse {}
+
+// MsgDeleteAuthority defines the MsgDeleteAuthority message.
+message MsgDeleteAuthority {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string auth_address = 2;
+}
+
+// MsgDeleteAuthorityResponse defines the MsgDeleteAuthorityResponse message.
+message MsgDeleteAuthorityResponse {}
+
+// MsgUpdateAuthority defines the MsgUpdateAuthority message.
+message MsgUpdateAuthority {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string auth_address = 2;
+  string new_name = 3;
+  string overwrite_access_definitions = 4;
+  string add_access_definitions = 5;
+  string update_access_definition = 6;
+  repeated string delete_access_definitions = 7;
+  bool clear_all_access_definitions = 8;
+}
+
+// MsgUpdateAuthorityResponse defines the MsgUpdateAuthorityResponse message.
+message MsgUpdateAuthorityResponse {}

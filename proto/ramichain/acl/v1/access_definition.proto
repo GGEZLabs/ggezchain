@@ -1,0 +1,11 @@
+syntax = "proto3";
+package ramichain.acl.v1;
+
+option go_package = "github.com/GGEZLabs/ramichain/x/acl/types";
+
+// AccessDefinition defines the AccessDefinition message.
+message AccessDefinition {
+  string module = 1;
+  bool is_maker = 2;
+  bool is_checker = 3;
+}

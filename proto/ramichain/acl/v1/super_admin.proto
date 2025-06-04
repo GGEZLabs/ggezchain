@@ -1,0 +1,9 @@
+syntax = "proto3";
+package ramichain.acl.v1;
+
+option go_package = "github.com/GGEZLabs/ramichain/x/acl/types";
+
+// SuperAdmin defines the SuperAdmin message.
+message SuperAdmin {
+  string admin = 1;
+}

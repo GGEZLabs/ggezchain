@@ -3,30 +3,16 @@ package keeper
 import (
 	"context"
 
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	errorsmod "cosmossdk.io/errors"
+	"github.com/GGEZLabs/ramichain/x/acl/types"
 )
 
-func (k msgServer) DeleteAuthority(goCtx context.Context, msg *types.MsgDeleteAuthority) (*types.MsgDeleteAuthorityResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	if !k.IsAdmin(ctx, msg.Creator) {
-		return nil, types.ErrUnauthorized
+func (k msgServer) DeleteAuthority(ctx context.Context, msg *types.MsgDeleteAuthority) (*types.MsgDeleteAuthorityResponse, error) {
+	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
+		return nil, errorsmod.Wrap(err, "invalid authority address")
 	}
 
-	_, found := k.GetAclAuthority(ctx, msg.AuthAddress)
-	if !found {
-		return nil, types.ErrAuthorityAddressNotExist
-	}
-
-	k.RemoveAclAuthority(ctx, msg.AuthAddress)
-
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			types.EventTypeDeleteAuthority,
-			sdk.NewAttribute(types.AttributeKeyAuthorityAddress, msg.AuthAddress),
-		),
-	)
+	// TODO: Handle the message
 
 	return &types.MsgDeleteAuthorityResponse{}, nil
 }

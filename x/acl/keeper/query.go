@@ -1,7 +1,17 @@
 package keeper
 
 import (
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/GGEZLabs/ramichain/x/acl/types"
 )
 
-var _ types.QueryServer = Keeper{}
+var _ types.QueryServer = queryServer{}
+
+// NewQueryServerImpl returns an implementation of the QueryServer interface
+// for the provided Keeper.
+func NewQueryServerImpl(k Keeper) types.QueryServer {
+	return queryServer{k}
+}
+
+type queryServer struct {
+	k Keeper
+}

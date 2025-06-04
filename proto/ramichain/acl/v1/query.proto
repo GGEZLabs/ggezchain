@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package ramichain.acl.v1;
+
+import "amino/amino.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "ramichain/acl/v1/acl_admin.proto";
+import "ramichain/acl/v1/acl_authority.proto";
+import "ramichain/acl/v1/params.proto";
+import "ramichain/acl/v1/super_admin.proto";
+
+option go_package = "github.com/GGEZLabs/ramichain/x/acl/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/GGEZLabs/ramichain/acl/v1/params";
+  }
+
+  // GetAclAuthority Queries a list of AclAuthority items.
+  rpc GetAclAuthority(QueryGetAclAuthorityRequest) returns (QueryGetAclAuthorityResponse) {
+    option (google.api.http).get = "/GGEZLabs/ramichain/acl/v1/acl_authority/{address}";
+  }
+
+  // ListAclAuthority defines the ListAclAuthority RPC.
+  rpc ListAclAuthority(QueryAllAclAuthorityRequest) returns (QueryAllAclAuthorityResponse) {
+    option (google.api.http).get = "/GGEZLabs/ramichain/acl/v1/acl_authority";
+  }
+
+  // GetAclAdmin Queries a list of AclAdmin items.
+  rpc GetAclAdmin(QueryGetAclAdminRequest) returns (QueryGetAclAdminResponse) {
+    option (google.api.http).get = "/GGEZLabs/ramichain/acl/v1/acl_admin/{address}";
+  }
+
+  // ListAclAdmin defines the ListAclAdmin RPC.
+  rpc ListAclAdmin(QueryAllAclAdminRequest) returns (QueryAllAclAdminResponse) {
+    option (google.api.http).get = "/GGEZLabs/ramichain/acl/v1/acl_admin";
+  }
+
+  // Queries a SuperAdmin by index.
+  rpc GetSuperAdmin(QueryGetSuperAdminRequest) returns (QueryGetSuperAdminResponse) {
+    option (google.api.http).get = "/GGEZLabs/ramichain/acl/v1/super_admin";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryGetAclAuthorityRequest defines the QueryGetAclAuthorityRequest message.
+message QueryGetAclAuthorityRequest {
+  string address = 1;
+}
+
+// QueryGetAclAuthorityResponse defines the QueryGetAclAuthorityResponse message.
+message QueryGetAclAuthorityResponse {
+  AclAuthority acl_authority = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllAclAuthorityRequest defines the QueryAllAclAuthorityRequest message.
+message QueryAllAclAuthorityRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllAclAuthorityResponse defines the QueryAllAclAuthorityResponse message.
+message QueryAllAclAuthorityResponse {
+  repeated AclAuthority acl_authority = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetAclAdminRequest defines the QueryGetAclAdminRequest message.
+message QueryGetAclAdminRequest {
+  string address = 1;
+}
+
+// QueryGetAclAdminResponse defines the QueryGetAclAdminResponse message.
+message QueryGetAclAdminResponse {
+  AclAdmin acl_admin = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllAclAdminRequest defines the QueryAllAclAdminRequest message.
+message QueryAllAclAdminRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllAclAdminResponse defines the QueryAllAclAdminResponse message.
+message QueryAllAclAdminResponse {
+  repeated AclAdmin acl_admin = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetSuperAdminRequest defines the QueryGetSuperAdminRequest message.
+message QueryGetSuperAdminRequest {}
+
+// QueryGetSuperAdminResponse defines the QueryGetSuperAdminResponse message.
+message QueryGetSuperAdminResponse {
+  SuperAdmin super_admin = 1 [(gogoproto.nullable) = false];
+}

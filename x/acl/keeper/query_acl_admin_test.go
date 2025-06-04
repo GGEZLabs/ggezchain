@@ -1,24 +1,32 @@
 package keeper_test
 
 import (
+	"context"
 	"strconv"
 	"testing"
 
-	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
-	"github.com/GGEZLabs/ggezchain/testutil/nullify"
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/GGEZLabs/ramichain/x/acl/keeper"
+	"github.com/GGEZLabs/ramichain/x/acl/types"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
+func createNAclAdmin(keeper keeper.Keeper, ctx context.Context, n int) []types.AclAdmin {
+	items := make([]types.AclAdmin, n)
+	for i := range items {
+		items[i].Address = strconv.Itoa(i)
+		_ = keeper.AclAdmin.Set(ctx, items[i].Address, items[i])
+	}
+	return items
+}
 
 func TestAclAdminQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
-	msgs := createNAclAdmin(keeper, ctx, 2)
+	f := initFixture(t)
+	qs := keeper.NewQueryServerImpl(f.keeper)
+	msgs := createNAclAdmin(f.keeper, f.ctx, 2)
 	tests := []struct {
 		desc     string
 		request  *types.QueryGetAclAdminRequest
@@ -53,23 +61,21 @@ func TestAclAdminQuerySingle(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.AclAdmin(ctx, tc.request)
+			response, err := qs.GetAclAdmin(f.ctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t,
-					nullify.Fill(tc.response),
-					nullify.Fill(response),
-				)
+				require.EqualExportedValues(t, tc.response, response)
 			}
 		})
 	}
 }
 
 func TestAclAdminQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
-	msgs := createNAclAdmin(keeper, ctx, 5)
+	f := initFixture(t)
+	qs := keeper.NewQueryServerImpl(f.keeper)
+	msgs := createNAclAdmin(f.keeper, f.ctx, 5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllAclAdminRequest {
 		return &types.QueryAllAclAdminRequest{
@@ -84,40 +90,31 @@ func TestAclAdminQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.AclAdminAll(ctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := qs.ListAclAdmin(f.ctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.AclAdmin), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.AclAdmin),
-			)
+			require.Subset(t, msgs, resp.AclAdmin)
 		}
 	})
 	t.Run("ByKey", func(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.AclAdminAll(ctx, request(next, 0, uint64(step), false))
+			resp, err := qs.ListAclAdmin(f.ctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.AclAdmin), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.AclAdmin),
-			)
+			require.Subset(t, msgs, resp.AclAdmin)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.AclAdminAll(ctx, request(nil, 0, 0, true))
+		resp, err := qs.ListAclAdmin(f.ctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
-		require.ElementsMatch(t,
-			nullify.Fill(msgs),
-			nullify.Fill(resp.AclAdmin),
-		)
+		require.EqualExportedValues(t, msgs, resp.AclAdmin)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.AclAdminAll(ctx, nil)
+		_, err := qs.ListAclAdmin(f.ctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

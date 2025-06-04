@@ -1,0 +1,9 @@
+syntax = "proto3";
+package ramichain.acl.v1;
+
+option go_package = "github.com/GGEZLabs/ramichain/x/acl/types";
+
+// AclAdmin defines the AclAdmin message.
+message AclAdmin {
+  string address = 1;
+}

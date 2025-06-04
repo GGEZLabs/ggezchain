@@ -2,33 +2,17 @@ package keeper
 
 import (
 	"context"
-	"strings"
 
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	errorsmod "cosmossdk.io/errors"
+	"github.com/GGEZLabs/ramichain/x/acl/types"
 )
 
-func (k msgServer) AddAdmin(goCtx context.Context, msg *types.MsgAddAdmin) (*types.MsgAddAdminResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	if !k.IsSuperAdmin(ctx, msg.Creator) {
-		return nil, types.ErrUnauthorized
+func (k msgServer) AddAdmin(ctx context.Context, msg *types.MsgAddAdmin) (*types.MsgAddAdminResponse, error) {
+	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
+		return nil, errorsmod.Wrap(err, "invalid authority address")
 	}
 
-	err := types.ValidateAddAdmin(k.GetAllAclAdmin(ctx), msg.Admins)
-	if err != nil {
-		return nil, err
-	}
-
-	aclAdmins := types.ConvertStringsToAclAdmins(msg.Admins)
-	k.SetAclAdmins(ctx, aclAdmins)
-
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			types.EventTypeAddAdmin,
-			sdk.NewAttribute(types.AttributeKeyAdmins, strings.Join(msg.Admins, ",")),
-		),
-	)
+	// TODO: Handle the message
 
 	return &types.MsgAddAdminResponse{}, nil
 }

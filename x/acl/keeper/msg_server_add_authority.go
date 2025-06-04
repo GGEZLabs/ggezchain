@@ -2,43 +2,17 @@ package keeper
 
 import (
 	"context"
-	"strings"
 
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	errorsmod "cosmossdk.io/errors"
+	"github.com/GGEZLabs/ramichain/x/acl/types"
 )
 
-func (k msgServer) AddAuthority(goCtx context.Context, msg *types.MsgAddAuthority) (*types.MsgAddAuthorityResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
-	if !k.IsAdmin(ctx, msg.Creator) {
-		return nil, types.ErrUnauthorized
+func (k msgServer) AddAuthority(ctx context.Context, msg *types.MsgAddAuthority) (*types.MsgAddAuthorityResponse, error) {
+	if _, err := k.addressCodec.StringToBytes(msg.Creator); err != nil {
+		return nil, errorsmod.Wrap(err, "invalid authority address")
 	}
 
-	_, found := k.GetAclAuthority(ctx, msg.AuthAddress)
-	if found {
-		return nil, types.ErrAuthorityAddressExist
-	}
+	// TODO: Handle the message
 
-	accessDefinitions, err := types.ValidateAccessDefinitionList(msg.AccessDefinitions)
-	if err != nil {
-		return nil, err
-	}
-
-	aclAuthority := types.AclAuthority{
-		Address:           msg.AuthAddress,
-		Name:              strings.TrimSpace(msg.Name),
-		AccessDefinitions: accessDefinitions,
-	}
-	k.SetAclAuthority(ctx, aclAuthority)
-
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			types.EventTypeAddAuthority,
-			sdk.NewAttribute(types.AttributeKeyAuthorityAddress, aclAuthority.Address),
-			sdk.NewAttribute(types.AttributeKeyName, aclAuthority.Name),
-			sdk.NewAttribute(types.AttributeKeyAccessDefinitions, aclAuthority.AccessDefinitionsJSON()),
-		),
-	)
 	return &types.MsgAddAuthorityResponse{}, nil
 }

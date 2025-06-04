@@ -2,22 +2,27 @@ package keeper
 
 import (
 	"context"
+	"errors"
 
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	"cosmossdk.io/collections"
+
+	"github.com/GGEZLabs/ramichain/x/acl/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) SuperAdmin(goCtx context.Context, req *types.QueryGetSuperAdminRequest) (*types.QueryGetSuperAdminResponse, error) {
+func (q queryServer) GetSuperAdmin(ctx context.Context, req *types.QueryGetSuperAdminRequest) (*types.QueryGetSuperAdminResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
-	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	val, found := k.GetSuperAdmin(ctx)
-	if !found {
-		return nil, status.Error(codes.NotFound, "not found")
+	val, err := q.k.SuperAdmin.Get(ctx)
+	if err != nil {
+		if errors.Is(err, collections.ErrNotFound) {
+			return nil, status.Error(codes.NotFound, "not found")
+		}
+
+		return nil, status.Error(codes.Internal, "internal error")
 	}
 
 	return &types.QueryGetSuperAdminResponse{SuperAdmin: val}, nil
