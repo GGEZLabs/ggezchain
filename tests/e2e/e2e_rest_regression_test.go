@@ -18,7 +18,7 @@ import (
 // Test Module REST Endpoints
 // 1. Bank total
 // 2. Auth params
-// 3. Protocolpool for Community Pool
+// 3. Distribution for Community Pool
 // 4. Evidence
 // 5. Gov proposals
 // 6. Mint params
@@ -35,7 +35,7 @@ const (
 	transactionsPath                    = "/cosmos/tx/v1beta1/txs?query=tx.height=9999999999"
 	bankTotalModuleQueryPath            = "/cosmos/bank/v1beta1/supply"
 	authParamsModuleQueryPath           = "/cosmos/auth/v1beta1/params"
-	protocolpoolCommPoolModuleQueryPath = "/cosmos/protocolpool/v1/community_pool"
+	distributionCommPoolModuleQueryPath = "/cosmos/distribution/v1beta1/community_pool"
 	evidenceModuleQueryPath             = "/cosmos/evidence/v1beta1/evidence"
 	govPropsModuleQueryPath             = "/cosmos/gov/v1beta1/proposals"
 	mintParamsModuleQueryPath           = "/cosmos/mint/v1beta1/params"
@@ -66,7 +66,7 @@ func (s *IntegrationTestSuite) testRestInterfaces() {
 				// Module Endpoints
 				{bankTotalModuleQueryPath, 200},
 				{authParamsModuleQueryPath, 200},
-				{protocolpoolCommPoolModuleQueryPath, 200},
+				{distributionCommPoolModuleQueryPath, 200},
 				{evidenceModuleQueryPath, 200},
 				{govPropsModuleQueryPath, 200},
 				{mintParamsModuleQueryPath, 200},

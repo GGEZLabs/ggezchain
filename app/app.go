@@ -52,7 +52,6 @@ import (
 	crisiskeeper "github.com/cosmos/cosmos-sdk/x/crisis/keeper"
 	_ "github.com/cosmos/cosmos-sdk/x/distribution" // import for side-effects
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
-	epochskeeper "github.com/cosmos/cosmos-sdk/x/epochs/keeper"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/gov"
@@ -67,7 +66,6 @@ import (
 	paramsclient "github.com/cosmos/cosmos-sdk/x/params/client"
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	protocolpoolkeeper "github.com/cosmos/cosmos-sdk/x/protocolpool/keeper"
 	_ "github.com/cosmos/cosmos-sdk/x/slashing" // import for side-effects
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
@@ -125,8 +123,7 @@ type App struct {
 	GroupKeeper          groupkeeper.Keeper
 	NFTKeeper            nftkeeper.Keeper
 	CircuitBreakerKeeper circuitkeeper.Keeper
-	ProtocolPoolKeeper   protocolpoolkeeper.Keeper
-	EpochsKeeper         epochskeeper.Keeper
+
 	// IBC
 	IBCKeeper           *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
 	CapabilityKeeper    *capabilitykeeper.Keeper
@@ -253,8 +250,6 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.TradeKeeper,
 		&app.AclKeeper,
-		&app.ProtocolPoolKeeper,
-		&app.EpochsKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)
