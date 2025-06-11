@@ -1,7 +1,6 @@
 #!/usr/bin/make -f
 
-include contrib/devtools/Makefile
-include contrib/devtools/lint.mk
+include scripts/makefiles/lint.mk
 
 .DEFAULT_GOAL := help
 help:
@@ -118,7 +117,6 @@ build-image:
 mocks:
 	@go install go.uber.org/mock/mockgen@v0.5.0
 	sh ./scripts/mockgen.sh
-.PHONY: mocks
 
 ########################################
 ### Tools & dependencies
@@ -135,9 +133,10 @@ go.sum: go.mod
 clean:
 	rm -rf $(OUTPUT_DIR)/*
 
-.PHONY: all install \
-	go-mod-cache clean build \
-    build-windows-client
+.PHONY: all build  build-windows-client \
+		install build-image mocks\
+	    go-mod-cache clean \
+   
 
 ########################################
 ### Testing
@@ -154,7 +153,7 @@ test-race:
 	@VERSION=$(VERSION) go test -mod=readonly -race -tags='ledger test_ledger_mock'  $(PACKAGES_UNIT)
 
 test-cover:
-	@go test -mod=readonly -timeout 30m -race -coverprofile=coverage.txt -covermode=atomic -tags='ledger test_ledger_mock' ./...
+	@go test -mod=readonly -timeout 30m -race -coverprofile=coverage.txt -covermode=atomic -tags='ledger test_ledger_mock' $(PACKAGES_UNIT)
 
 test-e2e: build-image
 	@VERSION=$(VERSION) go test -mod=readonly -timeout=35m -v $(PACKAGES_E2E)
@@ -162,9 +161,9 @@ test-e2e: build-image
 benchmark:
 	@go test -mod=readonly -bench=. $(PACKAGES_UNIT)
 
-.PHONY: test test-all \
-	test test-race \
-	test-cover benchmark
+.PHONY: test-all test \
+	test-race test-cover\
+	test-e2e benchmark
 
 ###############################################################################
 ###                                Linting                                  ###
@@ -191,7 +190,7 @@ format: format-tools
 mod-tidy:
 	go mod tidy
 
-.PHONY: format-tools lint format mod-tidy
+.PHONY: format-tools format mod-tidy lint
 
 
 ###############################################################################
@@ -202,7 +201,7 @@ CURRENT_GID := $(shell id -g)
 
 protoVer=0.13.2
 protoImageName=ghcr.io/cosmos/proto-builder:$(protoVer)
-protoImage=sudo "$(DOCKER)" run -e BUF_CACHE_DIR=/tmp/buf --rm -v "$(CURDIR)":/workspace:rw --user ${CURRENT_UID}:${CURRENT_GID} --workdir /workspace $(protoImageName)
+protoImage="$(DOCKER)" run -e BUF_CACHE_DIR=/tmp/buf --rm -v "$(CURDIR)":/workspace:rw --user ${CURRENT_UID}:${CURRENT_GID} --workdir /workspace $(protoImageName)
 
 proto-gen:
 	@echo "Generating protobuf files..."
