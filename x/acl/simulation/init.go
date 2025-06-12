@@ -2,9 +2,7 @@ package simulation
 
 import (
 	"math/rand"
-	"strconv"
 
-	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/acl/keeper"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -14,7 +12,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 )
 
-func SimulateMsgAddAuthority(
+func SimulateMsgInit(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -22,14 +20,15 @@ func SimulateMsgAddAuthority(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		i := r.Int()
 
-		k.SetAclAdmin(ctx, types.AclAdmin{Address: simAccount.Address.String()})
-		msg := &types.MsgAddAuthority{
-			Creator:           simAccount.Address.String(),
-			AuthAddress:       sample.AccAddress(),
-			Name:              strconv.Itoa(i),
-			AccessDefinitions: `[{"module":"trade","is_maker":true,"is_checker":true}]`,
+		_, found := k.GetSuperAdmin(ctx)
+		if found {
+			return simtypes.NoOpMsg(types.ModuleName, "MsgInit", "super admin already initialized"), nil, nil
+		}
+
+		msg := &types.MsgInit{
+			Creator:    simAccount.Address.String(),
+			SuperAdmin: simAccount.Address.String(),
 		}
 
 		txCtx := simulation.OperationInput{

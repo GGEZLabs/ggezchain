@@ -107,7 +107,7 @@ func initFixture(tb testing.TB) *fixture {
 	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil)
 	bankModule := bank.NewAppModule(cdc, bankKeeper, accountKeeper, nil)
 	aclModule := acl.NewAppModule(cdc, aclKeeper, accountKeeper, bankKeeper)
-	tradeModule := trade.NewAppModule(cdc, tradeKeeper, accountKeeper, bankKeeper)
+	tradeModule := trade.NewAppModule(cdc, tradeKeeper, accountKeeper, bankKeeper, aclKeeper)
 
 	integrationApp := integration.NewIntegrationApp(newCtx, logger, keys, cdc, map[string]appmodule.AppModule{
 		authtypes.ModuleName: authModule,

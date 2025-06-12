@@ -54,14 +54,12 @@ func TestGenesis(t *testing.T) {
 		},
 		StoredTempTradeList: []types.StoredTempTrade{
 			{
-				TradeIndex:     1,
-				TempTradeIndex: 1,
-				CreateDate:     "2023-05-11T08:44:00Z",
+				TradeIndex: 1,
+				CreateDate: "2023-05-11T08:44:00Z",
 			},
 			{
-				TradeIndex:     2,
-				TempTradeIndex: 2,
-				CreateDate:     "2023-05-11T08:44:00Z",
+				TradeIndex: 2,
+				CreateDate: "2023-05-11T08:44:00Z",
 			},
 		},
 		// this line is used by starport scaffolding # genesis/test/state

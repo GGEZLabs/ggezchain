@@ -48,6 +48,7 @@ func ValidateDeleteAdmin(currentAdmins []AclAdmin, deletedAdmins []string) error
 		return ErrAdminNotExist.Wrapf("%s", strings.Join(notExistingAdmins, ", "))
 	}
 
+	// todo : check if that condition necessary
 	// After validate if admins exist (because may be send admins not exist on current list)
 	// check if the length of current addresses equal deleted addresses
 	if len(currentAdmins) == len(deletedAdmins) {

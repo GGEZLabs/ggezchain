@@ -2,7 +2,6 @@ package simulation
 
 import (
 	"math/rand"
-	"strconv"
 
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/acl/keeper"
@@ -14,7 +13,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 )
 
-func SimulateMsgAddAuthority(
+func SimulateMsgAddAdmin(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -22,14 +21,12 @@ func SimulateMsgAddAuthority(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		i := r.Int()
 
-		k.SetAclAdmin(ctx, types.AclAdmin{Address: simAccount.Address.String()})
-		msg := &types.MsgAddAuthority{
-			Creator:           simAccount.Address.String(),
-			AuthAddress:       sample.AccAddress(),
-			Name:              strconv.Itoa(i),
-			AccessDefinitions: `[{"module":"trade","is_maker":true,"is_checker":true}]`,
+		k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: simAccount.Address.String()})
+
+		msg := &types.MsgAddAdmin{
+			Creator: simAccount.Address.String(),
+			Admins:  []string{sample.AccAddress()},
 		}
 
 		txCtx := simulation.OperationInput{

@@ -47,9 +47,8 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 				StoredTempTradeList: []types.StoredTempTrade{
 					{
-						TradeIndex:     1,
-						TempTradeIndex: 1,
-						CreateDate:     "2023-05-11T08:44:00Z",
+						TradeIndex: 1,
+						CreateDate: "2023-05-11T08:44:00Z",
 					},
 				},
 			},
@@ -105,14 +104,12 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 				StoredTempTradeList: []types.StoredTempTrade{
 					{
-						TradeIndex:     1,
-						TempTradeIndex: 1,
-						CreateDate:     "2023-05-11T08:44:00Z",
+						TradeIndex: 1,
+						CreateDate: "2023-05-11T08:44:00Z",
 					},
 					{
-						TradeIndex:     1,
-						TempTradeIndex: 1,
-						CreateDate:     "2023-05-11T08:44:00Z",
+						TradeIndex: 1,
+						CreateDate: "2023-05-11T08:44:00Z",
 					},
 				},
 			},
@@ -425,42 +422,24 @@ func TestGenesisState_Validate(t *testing.T) {
 			expErrMsg: "trade_index must be more than 0",
 		},
 		{
-			desc: "invalid temp_trade_index (stored temp trade)",
+			desc: "duplicate trade_index (stored temp trade)",
 			genState: &types.GenesisState{
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTempTradeList: []types.StoredTempTrade{
 					{
-						TradeIndex:     1,
-						TempTradeIndex: 0,
+						TradeIndex: 1,
+						CreateDate: "2023-05-11T08:44:00Z",
+					},
+					{
+						TradeIndex: 1,
+						CreateDate: "2023-05-12T08:44:00Z",
 					},
 				},
 			},
 			expErr:    true,
-			expErrMsg: "temp_trade_index must be more than 0",
-		},
-		{
-			desc: "duplicate temp_trade_index (stored temp trade)",
-			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
-					NextId: 2,
-				},
-				StoredTempTradeList: []types.StoredTempTrade{
-					{
-						TradeIndex:     1,
-						TempTradeIndex: 1,
-						CreateDate:     "2023-05-11T08:44:00Z",
-					},
-					{
-						TradeIndex:     2,
-						TempTradeIndex: 1,
-						CreateDate:     "2023-05-12T08:44:00Z",
-					},
-				},
-			},
-			expErr:    true,
-			expErrMsg: "duplicated temp_trade_index",
+			expErrMsg: "duplicated index for storedTempTrade",
 		},
 		{
 			desc: "invalid create_date (stored temp trade)",
@@ -470,9 +449,8 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 				StoredTempTradeList: []types.StoredTempTrade{
 					{
-						TradeIndex:     1,
-						TempTradeIndex: 1,
-						CreateDate:     "2023-05-11T08:4",
+						TradeIndex: 1,
+						CreateDate: "2023-05-11T08:4",
 					},
 				},
 			},
@@ -847,14 +825,12 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 			genState: &types.GenesisState{
 				StoredTempTradeList: []types.StoredTempTrade{
 					{
-						TradeIndex:     1,
-						TempTradeIndex: 1,
-						CreateDate:     "2023-05-11T08:44:00Z",
+						TradeIndex: 1,
+						CreateDate: "2023-05-11T08:44:00Z",
 					},
 					{
-						TradeIndex:     2,
-						TempTradeIndex: 2,
-						CreateDate:     "2023-05-11T10:44:00Z",
+						TradeIndex: 2,
+						CreateDate: "2023-05-11T10:44:00Z",
 					},
 				},
 			},
@@ -873,45 +849,29 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 			expErrMsg: "trade_index must be more than 0",
 		},
 		{
-			desc: "invalid temp_trade_index",
+			desc: "duplicate trade_index",
 			genState: &types.GenesisState{
 				StoredTempTradeList: []types.StoredTempTrade{
 					{
-						TradeIndex:     1,
-						TempTradeIndex: 0,
+						TradeIndex: 1,
+						CreateDate: "2023-05-11T08:44:00Z",
+					},
+					{
+						TradeIndex: 1,
+						CreateDate: "2023-05-12T08:44:00Z",
 					},
 				},
 			},
 			expErr:    true,
-			expErrMsg: "temp_trade_index must be more than 0",
-		},
-		{
-			desc: "duplicate temp_trade_index",
-			genState: &types.GenesisState{
-				StoredTempTradeList: []types.StoredTempTrade{
-					{
-						TradeIndex:     1,
-						TempTradeIndex: 1,
-						CreateDate:     "2023-05-11T08:44:00Z",
-					},
-					{
-						TradeIndex:     2,
-						TempTradeIndex: 1,
-						CreateDate:     "2023-05-12T08:44:00Z",
-					},
-				},
-			},
-			expErr:    true,
-			expErrMsg: "duplicated temp_trade_index",
+			expErrMsg: "duplicated index for storedTempTrade",
 		},
 		{
 			desc: "invalid create_date",
 			genState: &types.GenesisState{
 				StoredTempTradeList: []types.StoredTempTrade{
 					{
-						TradeIndex:     1,
-						TempTradeIndex: 1,
-						CreateDate:     "2023-05-11T08:4",
+						TradeIndex: 1,
+						CreateDate: "2023-05-11T08:4",
 					},
 				},
 			},

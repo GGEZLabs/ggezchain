@@ -142,8 +142,7 @@ func (gs GenesisState) ValidateStoredTrade() error {
 }
 
 func (gs GenesisState) ValidateStoredTempTrade() error {
-	storedTempTradeIndexMap := make(map[string]struct{}) // tradeIndex
-	tempTradeIndexMap := make(map[int64]struct{})        // tempTradeIndex
+	storedTradeIndexMap := make(map[string]struct{}) // tradeIndex
 
 	for _, elem := range gs.StoredTempTradeList {
 		if elem.TradeIndex <= 0 {
@@ -152,20 +151,10 @@ func (gs GenesisState) ValidateStoredTempTrade() error {
 
 		// Check for duplicated index in storedTempTrade
 		index := string(StoredTempTradeKey(elem.TradeIndex))
-		if _, ok := storedTempTradeIndexMap[index]; ok {
+		if _, ok := storedTradeIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for storedTempTrade")
 		}
-		storedTempTradeIndexMap[index] = struct{}{}
-
-		if elem.TempTradeIndex <= 0 {
-			return fmt.Errorf("temp_trade_index must be more than 0")
-		}
-
-		// Check for duplicated TempTradeIndex
-		if _, exists := tempTradeIndexMap[int64(elem.TempTradeIndex)]; exists {
-			return fmt.Errorf("duplicated temp_trade_index: %d", elem.TempTradeIndex)
-		}
-		tempTradeIndexMap[int64(elem.TempTradeIndex)] = struct{}{}
+		storedTradeIndexMap[index] = struct{}{}
 
 		_, err := time.Parse(time.RFC3339, elem.CreateDate)
 		if err != nil {

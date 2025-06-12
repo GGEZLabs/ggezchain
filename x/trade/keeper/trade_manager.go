@@ -115,15 +115,15 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 		totalDays := int(differenceTime.Hours() / 24)
 
 		if totalDays >= 1 {
-			storedTrade, _ := k.GetStoredTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
+			storedTrade, _ := k.GetStoredTrade(ctx, allStoredTempTrade[i].TradeIndex)
 			storedTrade.Status = types.StatusCanceled
 			storedTrade.UpdateDate = currentDate.Format(time.RFC3339)
 			storedTrade.Result = types.TradeIsCanceled
 
 			k.SetStoredTrade(ctx, storedTrade)
-			k.RemoveStoredTempTrade(ctx, allStoredTempTrade[i].TempTradeIndex)
+			k.RemoveStoredTempTrade(ctx, allStoredTempTrade[i].TradeIndex)
 
-			canceledIds = append(canceledIds, allStoredTempTrade[i].TempTradeIndex)
+			canceledIds = append(canceledIds, allStoredTempTrade[i].TradeIndex)
 		}
 	}
 

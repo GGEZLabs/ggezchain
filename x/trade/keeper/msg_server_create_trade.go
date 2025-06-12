@@ -58,9 +58,8 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	}
 
 	storedTempTrade := types.StoredTempTrade{
-		TradeIndex:     newIndex,
-		TempTradeIndex: newIndex,
-		CreateDate:     formattedDate,
+		TradeIndex: newIndex,
+		CreateDate: formattedDate,
 	}
 
 	k.Keeper.SetStoredTrade(ctx, storedTrade)

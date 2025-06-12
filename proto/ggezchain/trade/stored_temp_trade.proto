@@ -5,8 +5,7 @@ option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
 
 message StoredTempTrade {
   uint64 trade_index      = 1; 
-  uint64 temp_trade_index = 2; 
-  string create_date      = 3; 
+  string create_date      = 2; 
   
 }
 

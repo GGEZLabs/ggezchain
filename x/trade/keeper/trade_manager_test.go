@@ -389,9 +389,8 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 		}
 
 		storedTempTrade := types.StoredTempTrade{
-			TradeIndex:     1,
-			TempTradeIndex: 1,
-			CreateDate:     "2023-05-06",
+			TradeIndex: 1,
+			CreateDate: "2023-05-06",
 		}
 
 		suite.tradeKeeper.SetStoredTrade(ctx, storedTrade)
@@ -416,9 +415,8 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 		}
 
 		storedTempTrade := types.StoredTempTrade{
-			TradeIndex:     1,
-			TempTradeIndex: 1,
-			CreateDate:     "2023-05-11T08:44:00Z",
+			TradeIndex: 1,
+			CreateDate: "2023-05-11T08:44:00Z",
 		}
 
 		suite.tradeKeeper.SetStoredTrade(ctx, storedTrade)
@@ -488,9 +486,8 @@ func generateStoredTrades(expiredCount, notExpiredCount int) ([]types.StoredTrad
 			ProcessDate: processDate,
 		}
 		temp := types.StoredTempTrade{
-			TradeIndex:     tradeIndex,
-			TempTradeIndex: tradeIndex,
-			CreateDate:     createDate,
+			TradeIndex: tradeIndex,
+			CreateDate: createDate,
 		}
 		tradeIndex++
 		return st, temp
