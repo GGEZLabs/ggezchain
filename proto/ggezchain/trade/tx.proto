@@ -42,15 +42,16 @@ message MsgUpdateParamsResponse {}
 
 message MsgCreateTrade {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator                 = 1;
+  string creator                    = 1;
   TradeType trade_type              = 2;
-  cosmos.base.v1beta1.Coin amount = 3;
-  string price                   = 4;
-  string receiver_address        = 5;
-  string trade_data              = 6;
-  string banking_system_data     = 7; 
-  string coin_minting_price_json = 8; 
-  string exchange_rate_json      = 9; 
+  cosmos.base.v1beta1.Coin amount   = 3;
+  string price                      = 4;
+  string receiver_address           = 5;
+  string trade_data                 = 6;
+  string banking_system_data        = 7; 
+  string coin_minting_price_json    = 8; 
+  string exchange_rate_json         = 9; 
+  string create_date                = 10; 
 }
 
 message MsgCreateTradeResponse {

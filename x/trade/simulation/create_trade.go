@@ -3,6 +3,7 @@ package simulation
 import (
 	"math/rand"
 	"strconv"
+	"time"
 
 	"cosmossdk.io/math"
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
@@ -39,6 +40,11 @@ func SimulateMsgCreateTrade(
 			},
 		})
 
+		randomDate := RandomDate(r)
+		if IsFutureDate(randomDate) {
+			return simtypes.NoOpMsg(types.ModuleName, "MsgCreateTrade", "create date is future date"), nil, nil
+		}
+
 		msg := &types.MsgCreateTrade{
 			Creator:   simAccount.Address.String(),
 			TradeType: randomTradeType(r),
@@ -52,6 +58,7 @@ func SimulateMsgCreateTrade(
 			BankingSystemData:    `{}`,
 			CoinMintingPriceJson: `{}`,
 			ExchangeRateJson:     `{}`,
+			CreateDate:           randomDate,
 		}
 
 		txCtx := simulation.OperationInput{
@@ -82,4 +89,25 @@ func randomTradeType(r *rand.Rand) types.TradeType {
 	default:
 		panic("invalid trade type")
 	}
+}
+
+// RandomDate generates a random RFC3339-formatted date.
+func RandomDate(r *rand.Rand) string {
+	start := time.Date(2012, 1, 1, 0, 0, 0, 0, time.UTC)
+	year := time.Now().Year() + 5
+	end := time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC)
+
+	duration := end.Sub(start)
+	randomOffset := time.Duration(r.Int63n(int64(duration)))
+	randomTime := start.Add(randomOffset)
+
+	return randomTime.Format(time.RFC3339)
+}
+
+func IsFutureDate(dateStr string) bool {
+	parsedDate, err := time.Parse(time.RFC3339, dateStr)
+	if err != nil {
+		panic(err.Error())
+	}
+	return parsedDate.After(time.Now())
 }

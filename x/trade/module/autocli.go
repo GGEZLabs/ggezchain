@@ -55,10 +55,26 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Skip:      true, // skipped because authority gated
 				},
 				{
-					RpcMethod:      "CreateTrade",
-					Use:            "create-trade [trade-type] [amount] [price] [receiver-address] [trade-data] [banking-system-data] [coin-minting-price-json] [exchange-rate-json]",
-					Short:          "Send a create-trade tx",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_type"}, {ProtoField: "amount"}, {ProtoField: "price"}, {ProtoField: "receiver_address"}, {ProtoField: "trade_data"}, {ProtoField: "banking_system_data"}, {ProtoField: "coin_minting_price_json"}, {ProtoField: "exchange_rate_json"}},
+					RpcMethod: "CreateTrade",
+					Use:       "create-trade [trade-type] [amount] [price] [receiver-address] [trade-data] [banking-system-data] [coin-minting-price-json] [exchange-rate-json]",
+					Short:     "Send a create-trade tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
+						{ProtoField: "trade_type"},
+						{ProtoField: "amount"},
+						{ProtoField: "price"},
+						{ProtoField: "receiver_address"},
+						{ProtoField: "trade_data"},
+						{ProtoField: "banking_system_data"},
+						{ProtoField: "coin_minting_price_json"},
+						{ProtoField: "exchange_rate_json"},
+					},
+					FlagOptions: map[string]*autocliv1.FlagOptions{
+						"create_date": {
+							Name:         "create-date",
+							Usage:        "Set a create date. Default is current date",
+							DefaultValue: "",
+						},
+					},
 				},
 				{
 					RpcMethod:      "ProcessTrade",

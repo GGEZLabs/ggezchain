@@ -33,8 +33,15 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "trade with index %d not found", tradeIndex.NextId)
 	}
 
-	currentTime := ctx.BlockTime()
-	formattedDate := currentTime.Format(time.RFC3339)
+	currentDateTime := ctx.BlockTime()
+	createDateTime := currentDateTime.Format(time.RFC3339)
+
+	if msg.CreateDate != "" {
+		if err = types.ValidateDate(currentDateTime, msg.CreateDate); err != nil {
+			return nil, err
+		}
+		createDateTime = msg.CreateDate
+	}
 
 	newIndex := tradeIndex.NextId
 	status := types.StatusPending
@@ -42,14 +49,14 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	storedTrade := types.StoredTrade{
 		TradeIndex:           newIndex,
 		Status:               status,
-		CreateDate:           formattedDate,
-		UpdateDate:           formattedDate,
+		CreateDate:           createDateTime,
+		UpdateDate:           createDateTime,
 		TradeType:            msg.TradeType,
 		Amount:               msg.Amount,
 		Price:                msg.Price,
 		ReceiverAddress:      msg.ReceiverAddress,
 		Maker:                msg.Creator,
-		ProcessDate:          formattedDate,
+		ProcessDate:          createDateTime,
 		TradeData:            msg.TradeData,
 		BankingSystemData:    msg.BankingSystemData,
 		CoinMintingPriceJson: msg.CoinMintingPriceJson,
@@ -59,7 +66,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 
 	storedTempTrade := types.StoredTempTrade{
 		TradeIndex: newIndex,
-		CreateDate: formattedDate,
+		CreateDate: createDateTime,
 	}
 
 	k.Keeper.SetStoredTrade(ctx, storedTrade)

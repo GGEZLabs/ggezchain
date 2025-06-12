@@ -1,6 +1,8 @@
 package keeper_test
 
 import (
+	"time"
+
 	sdkmath "cosmossdk.io/math"
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
@@ -91,7 +93,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithInvalidMakerPermission() {
 		},
 		Price:             "0.001",
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":1,"trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		TradeData:         types.GetSampleTradeData(),
 		BankingSystemData: "{}",
 	})
 
@@ -111,7 +113,7 @@ func (suite *KeeperTestSuite) TestCreateTradeAuthorityAddressNotExist() {
 		},
 		Price:             "0.001",
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":1,"trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		TradeData:         types.GetSampleTradeData(),
 		BankingSystemData: "{}",
 	})
 
@@ -132,7 +134,7 @@ func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
 		},
 		Price:             "0.001",
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":1,"trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		TradeData:         types.GetSampleTradeData(),
 		BankingSystemData: "{}",
 	})
 
@@ -188,4 +190,105 @@ func (suite *KeeperTestSuite) TestCreateTrades() {
 
 	AllTempTrades := keeper.GetAllStoredTempTrade(suite.ctx)
 	suite.Require().EqualValues(len(AllTempTrades), uint64(len(indexes)))
+}
+
+func (suite *KeeperTestSuite) TestCreateTradeWithInvalidCreateDate() {
+	suite.setupTest()
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:   testutil.Alice,
+		TradeType: types.TradeTypeBuy,
+		Amount: &sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(100000),
+		},
+		Price:             "0.001",
+		ReceiverAddress:   testutil.Alice,
+		TradeData:         types.GetSampleTradeData(),
+		BankingSystemData: "{}",
+		CreateDate:        "2023-05-06",
+	})
+
+	suite.Require().Nil(createResponse)
+	suite.Require().Contains(err.Error(), "invalid date format")
+}
+
+func (suite *KeeperTestSuite) TestCreateTradeWithCreateDateInFuture() {
+	suite.setupTest()
+	blockHeight := int64(1)
+	blockTime := time.Now().UTC()
+	suite.ctx = suite.ctx.WithBlockHeight(blockHeight).WithBlockTime(blockTime)
+
+	// Use EXPECT after update context
+	suite.aclKeeper.EXPECT().GetAclAuthority(suite.ctx, testutil.Alice).Return(acltypes.AclAuthority{
+		Address: testutil.Alice,
+		Name:    "Alice",
+		AccessDefinitions: []*acltypes.AccessDefinition{
+			{
+				Module:    types.ModuleName,
+				IsMaker:   true,
+				IsChecker: false,
+			},
+		},
+	}, true).AnyTimes()
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:   testutil.Alice,
+		TradeType: types.TradeTypeBuy,
+		Amount: &sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(100000),
+		},
+		Price:             "0.001",
+		ReceiverAddress:   testutil.Alice,
+		TradeData:         types.GetSampleTradeData(),
+		BankingSystemData: "{}",
+		CreateDate:        "2050-05-11T08:44:00Z",
+	})
+
+	suite.Require().Nil(createResponse)
+	suite.Require().Contains(err.Error(), "date cannot be in the future")
+}
+
+func (suite *KeeperTestSuite) TestCreateTradeWithValidCreateDate() {
+	suite.setupTest()
+	blockHeight := int64(1)
+	blockTime := time.Now().UTC()
+	suite.ctx = suite.ctx.WithBlockHeight(blockHeight).WithBlockTime(blockTime)
+
+	// Use EXPECT after update context
+	suite.aclKeeper.EXPECT().GetAclAuthority(suite.ctx, testutil.Alice).Return(acltypes.AclAuthority{
+		Address: testutil.Alice,
+		Name:    "Alice",
+		AccessDefinitions: []*acltypes.AccessDefinition{
+			{
+				Module:    types.ModuleName,
+				IsMaker:   true,
+				IsChecker: false,
+			},
+		},
+	}, true).AnyTimes()
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:   testutil.Alice,
+		TradeType: types.TradeTypeBuy,
+		Amount: &sdk.Coin{
+			Denom:  types.DefaultDenom,
+			Amount: sdkmath.NewInt(100000),
+		},
+		Price:             "0.001",
+		ReceiverAddress:   testutil.Alice,
+		TradeData:         types.GetSampleTradeData(),
+		BankingSystemData: "{}",
+		CreateDate:        "2024-05-11T08:44:00Z",
+	})
+
+	suite.Require().Nil(err)
+	suite.Require().Equal(&types.MsgCreateTradeResponse{
+		TradeIndex: uint64(1),
+		Status:     types.StatusPending,
+	}, createResponse)
+
+	trade, found := suite.tradeKeeper.GetStoredTrade(suite.ctx, 1)
+	suite.Require().True(found)
+	suite.Require().Equal(trade.CreateDate, "2024-05-11T08:44:00Z")
 }

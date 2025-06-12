@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"strconv"
 	"strings"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -88,6 +89,13 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 	// if msg.ExchangeRateJSON == "" {
 	// 	return ErrInvalidExchangeRateJSON
 	// }
+
+	if msg.CreateDate != "" {
+		_, err = time.Parse(time.RFC3339, msg.CreateDate)
+		if err != nil {
+			return sdkerrors.ErrInvalidRequest.Wrapf("invalid create_date format: %s, date format should be like: %s", msg.CreateDate, time.RFC3339)
+		}
+	}
 
 	return nil
 }
