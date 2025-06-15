@@ -1,0 +1,37 @@
+syntax = "proto3";
+package ggezchain.trade;
+
+import "ggezchain/trade/trade.proto";
+
+option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
+
+message TradeData {
+  TradeInfo trade_info = 1;
+  Brokerage brokerage = 2;
+}
+
+message TradeInfo {
+  uint64 asset_holder_id = 1;
+  uint64 asset_id = 2;
+  TradeType trade_type = 3;
+  double trade_value = 4;
+  string currency = 5;
+  string exchange = 6;
+  string fund_name = 7;
+  string issuer = 8;
+  uint64 no_shares = 9;
+  double price = 10;
+  uint64 quantity = 11;
+  string segment = 12;
+  double share_price = 13;
+  string ticker = 14;
+  double trade_fee = 15;
+  double trade_net_price = 16;
+  double trade_net_value = 17;
+}
+
+message Brokerage {
+  string name = 1;
+  string type = 2;
+  string country = 3;
+}

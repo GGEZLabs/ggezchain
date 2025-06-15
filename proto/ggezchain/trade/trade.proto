@@ -1,0 +1,36 @@
+syntax = "proto3";
+package ggezchain.trade;
+
+option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
+
+enum TradeStatus {
+    // TRADE_STATUS_UNSPECIFIED defines the default trade status.
+    TRADE_STATUS_UNSPECIFIED = 0;
+    // TRADE_STATUS_PENDING defines a trade status of a trade that still
+    // not processed.
+    TRADE_STATUS_PENDING = 1;
+    // TRADE_STATUS_CANCELED defines a trade status of a trade that has
+    // canceled.
+    TRADE_STATUS_CANCELED = 2;
+    // TRADE_STATUS_PROCESSED defines a trade status of a trade that has
+    // processed.
+    TRADE_STATUS_PROCESSED = 3;
+    // TRADE_STATUS_REJECTED defines a trade status of a trade that has
+    // been REJECTED.
+    TRADE_STATUS_REJECTED = 4;
+    // TRADE_STATUS_FAILED defines a trade status of a trade that has
+    // failed.
+    TRADE_STATUS_FAILED = 5;
+  }
+
+  enum ProcessType {
+    PROCESS_TYPE_UNSPECIFIED = 0;
+    PROCESS_TYPE_CONFIRM = 1;
+    PROCESS_TYPE_REJECT = 2;
+  }
+
+  enum TradeType {
+    TRADE_TYPE_UNSPECIFIED = 0;
+    TRADE_TYPE_BUY = 1;
+    TRADE_TYPE_SELL = 2;
+  }

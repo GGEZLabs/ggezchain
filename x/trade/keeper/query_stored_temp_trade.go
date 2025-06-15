@@ -30,7 +30,6 @@ func (k Keeper) StoredTempTradeAll(ctx context.Context, req *types.QueryAllStore
 		storedTempTrades = append(storedTempTrades, storedTempTrade)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

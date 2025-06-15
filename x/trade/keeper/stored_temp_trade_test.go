@@ -39,6 +39,7 @@ func TestStoredTempTradeGet(t *testing.T) {
 		)
 	}
 }
+
 func TestStoredTempTradeRemove(t *testing.T) {
 	keeper, ctx := keepertest.TradeKeeper(t)
 	items := createNStoredTempTrade(keeper, ctx, 10)

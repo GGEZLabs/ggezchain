@@ -1,26 +1,27 @@
 syntax = "proto3";
 package ggezchain.trade;
 
+import "cosmos/base/v1beta1/coin.proto";
+import "ggezchain/trade/trade.proto";
+
 option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
 
 message StoredTrade {
-  uint64 tradeIndex = 1; 
-  string tradeType = 2; 
-  string coin = 3; 
+  uint64 trade_index = 1; 
+  TradeType trade_type = 2; 
+  cosmos.base.v1beta1.Coin amount = 3; 
   string price = 4; 
-  string quantity = 5; 
-  string receiverAddress = 6; 
-  string status = 7; 
-  string maker = 8; 
-  string checker = 9; 
-  string createDate = 10; 
-  string updateDate = 11; 
-  string processDate = 12; 
-  string tradeData = 13; 
-  string coinMintingPriceJSON = 14; 
-  string exchangeRateJSON = 15; 
-  string bankingSystemData = 16; 
-  string result = 17; 
-  
+  string receiver_address = 5; 
+  TradeStatus status = 6; 
+  string maker = 7; 
+  string checker = 8; 
+  string create_date = 9; 
+  string update_date = 10; 
+  string process_date = 11; 
+  string trade_data = 12; 
+  string coin_minting_price_json = 13; 
+  string exchange_rate_json = 14; 
+  string banking_system_data = 15; 
+  string result = 16; 
 }
 

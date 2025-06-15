@@ -1,0 +1,203 @@
+version: 2
+
+project_name: ggezchaind
+
+env:
+  - GO111MODULE=on
+  - CGO_ENABLED=1
+
+builds:
+  - id: ggezchaind-linux-amd64
+    main: ./cmd/ggezchaind
+    binary: ggezchaind
+    hooks:
+      pre:
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.COSMWASM_VERSION }}/libwasmvm_muslc.x86_64.a -O /usr/lib/libwasmvm_muslc.x86_64.a
+    goos:
+      - linux
+    goarch:
+      - amd64
+    env:
+      - CC=x86_64-linux-gnu-gcc
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -X github.com/cosmos/cosmos-sdk/version.Name=ggezchain
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=ggezchaind
+      - -X github.com/cosmos/cosmos-sdk/version.Version=v{{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
+      - -w -s
+      - -linkmode=external
+      - -extldflags '-L/usr/lib -lwasmvm_muslc.x86_64 -Wl,-z,muldefs -static -lm'
+    tags:
+      - netgo
+      - ledger
+      - muslc
+      - osusergo
+
+  - id: ggezchaind-linux-arm64
+    main: ./cmd/ggezchaind
+    binary: ggezchaind
+    hooks:
+      pre:
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.COSMWASM_VERSION }}/libwasmvm_muslc.aarch64.a -O /usr/lib/libwasmvm_muslc.aarch64.a
+    goos:
+      - linux
+    goarch:
+      - arm64
+    env:
+      - CC=aarch64-linux-gnu-gcc
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -X github.com/cosmos/cosmos-sdk/version.Name=ggezchain
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=ggezchaind
+      - -X github.com/cosmos/cosmos-sdk/version.Version=v{{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
+      - -w -s
+      - -linkmode=external
+      - -extldflags '-L/usr/lib -lwasmvm_muslc.aarch64 -Wl,-z,muldefs -static -lm'
+    tags:
+      - netgo
+      - ledger
+      - muslc
+      - osusergo
+
+  - id: ggezchaind-darwin-amd64
+    main: ./cmd/ggezchaind/main.go
+    binary: ggezchaind
+    hooks:
+      pre:
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.COSMWASM_VERSION }}/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
+    env:
+      - CC=o64-clang
+      - CGO_CFLAGS=-mmacosx-version-min=10.12
+      - CGO_LDFLAGS=-L/lib -mmacosx-version-min=10.12
+    goos:
+      - darwin
+    goarch:
+      - amd64
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -X github.com/cosmos/cosmos-sdk/version.Name=ggezchain
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=ggezchaind
+      - -X github.com/cosmos/cosmos-sdk/version.Version=v{{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,static_wasm
+      - -w -s
+      - -linkmode=external
+    tags:
+      - netgo
+      - ledger
+      - static_wasm
+
+  - id: ggezchaind-darwin-arm64
+    main: ./cmd/ggezchaind/main.go
+    binary: ggezchaind
+    hooks:
+      pre:
+        - wget https://github.com/CosmWasm/wasmvm/releases/download/{{ .Env.COSMWASM_VERSION }}/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
+    env:
+      - CC=oa64-clang
+      - CGO_LDFLAGS=-L/lib
+    goos:
+      - darwin
+    goarch:
+      - arm64
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -X github.com/cosmos/cosmos-sdk/version.Name=ggezchain
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=ggezchaind
+      - -X github.com/cosmos/cosmos-sdk/version.Version=v{{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,static_wasm
+      - -w -s
+      - -linkmode=external
+    tags:
+      - netgo
+      - ledger
+      - static_wasm
+
+universal_binaries:
+  - id: ggezchaind-darwin-universal
+    ids:
+      - ggezchaind-darwin-amd64
+      - ggezchaind-darwin-arm64
+    replace: false
+
+archives:
+  - id: zipped
+    ids:
+      - ggezchaind-darwin-universal
+      - ggezchaind-linux-amd64
+      - ggezchaind-linux-arm64
+      - ggezchaind-darwin-amd64
+      - ggezchaind-darwin-arm64
+    name_template: "{{.ProjectName}}-v{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+    formats: tar.gz
+    files:
+      - none*
+  - id: binaries
+    ids:
+      - ggezchaind-darwin-universal
+      - ggezchaind-linux-amd64
+      - ggezchaind-linux-arm64
+      - ggezchaind-darwin-amd64
+      - ggezchaind-darwin-arm64
+    name_template: "{{.ProjectName}}-v{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+    formats: binary
+    files:
+      - none*
+
+checksum:
+  name_template: "sha256sum.txt"
+  algorithm: sha256
+
+# Docs: https://goreleaser.com/customization/changelog/
+changelog:
+  disable: true
+
+
+# Docs: https://goreleaser.com/customization/release/
+release:
+  github:
+    owner: GGEZLabs
+    name: ggezchain
+  replace_existing_draft: true
+  header: |
+
+    #### 🔨 Build from source
+
+    If you prefer to build from source, you can use the following commands:
+
+    ````bash
+    git clone https://github.com/{{ .Env.REPO_OWNER }}/{{ .Env.REPO_NAME }}
+    cd ggezchain && git checkout v{{ .Version }}
+    make install
+    ````
+
+  name_template: "ggezchain v{{.Version}}"
+  mode: replace
+  draft: true
+
+# Docs: https://goreleaser.com/customization/announce/
+# We could automatically announce the release in
+# - discord
+# - slack
+# - twitter
+# - webhooks
+# - telegram
+# - reddit
+#
+# announce:
+  # discord:
+  #   enabled: true
+  #   message_template: 'New {{.Tag}} is out!'

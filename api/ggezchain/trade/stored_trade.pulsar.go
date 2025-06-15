@@ -2,6 +2,7 @@
 package trade
 
 import (
+	v1beta1 "cosmossdk.io/api/cosmos/base/v1beta1"
 	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -13,45 +14,43 @@ import (
 )
 
 var (
-	md_StoredTrade                      protoreflect.MessageDescriptor
-	fd_StoredTrade_tradeIndex           protoreflect.FieldDescriptor
-	fd_StoredTrade_tradeType            protoreflect.FieldDescriptor
-	fd_StoredTrade_coin                 protoreflect.FieldDescriptor
-	fd_StoredTrade_price                protoreflect.FieldDescriptor
-	fd_StoredTrade_quantity             protoreflect.FieldDescriptor
-	fd_StoredTrade_receiverAddress      protoreflect.FieldDescriptor
-	fd_StoredTrade_status               protoreflect.FieldDescriptor
-	fd_StoredTrade_maker                protoreflect.FieldDescriptor
-	fd_StoredTrade_checker              protoreflect.FieldDescriptor
-	fd_StoredTrade_createDate           protoreflect.FieldDescriptor
-	fd_StoredTrade_updateDate           protoreflect.FieldDescriptor
-	fd_StoredTrade_processDate          protoreflect.FieldDescriptor
-	fd_StoredTrade_tradeData            protoreflect.FieldDescriptor
-	fd_StoredTrade_coinMintingPriceJSON protoreflect.FieldDescriptor
-	fd_StoredTrade_exchangeRateJSON     protoreflect.FieldDescriptor
-	fd_StoredTrade_bankingSystemData    protoreflect.FieldDescriptor
-	fd_StoredTrade_result               protoreflect.FieldDescriptor
+	md_StoredTrade                         protoreflect.MessageDescriptor
+	fd_StoredTrade_trade_index             protoreflect.FieldDescriptor
+	fd_StoredTrade_trade_type              protoreflect.FieldDescriptor
+	fd_StoredTrade_amount                  protoreflect.FieldDescriptor
+	fd_StoredTrade_price                   protoreflect.FieldDescriptor
+	fd_StoredTrade_receiver_address        protoreflect.FieldDescriptor
+	fd_StoredTrade_status                  protoreflect.FieldDescriptor
+	fd_StoredTrade_maker                   protoreflect.FieldDescriptor
+	fd_StoredTrade_checker                 protoreflect.FieldDescriptor
+	fd_StoredTrade_create_date             protoreflect.FieldDescriptor
+	fd_StoredTrade_update_date             protoreflect.FieldDescriptor
+	fd_StoredTrade_process_date            protoreflect.FieldDescriptor
+	fd_StoredTrade_trade_data              protoreflect.FieldDescriptor
+	fd_StoredTrade_coin_minting_price_json protoreflect.FieldDescriptor
+	fd_StoredTrade_exchange_rate_json      protoreflect.FieldDescriptor
+	fd_StoredTrade_banking_system_data     protoreflect.FieldDescriptor
+	fd_StoredTrade_result                  protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_ggezchain_trade_stored_trade_proto_init()
 	md_StoredTrade = File_ggezchain_trade_stored_trade_proto.Messages().ByName("StoredTrade")
-	fd_StoredTrade_tradeIndex = md_StoredTrade.Fields().ByName("tradeIndex")
-	fd_StoredTrade_tradeType = md_StoredTrade.Fields().ByName("tradeType")
-	fd_StoredTrade_coin = md_StoredTrade.Fields().ByName("coin")
+	fd_StoredTrade_trade_index = md_StoredTrade.Fields().ByName("trade_index")
+	fd_StoredTrade_trade_type = md_StoredTrade.Fields().ByName("trade_type")
+	fd_StoredTrade_amount = md_StoredTrade.Fields().ByName("amount")
 	fd_StoredTrade_price = md_StoredTrade.Fields().ByName("price")
-	fd_StoredTrade_quantity = md_StoredTrade.Fields().ByName("quantity")
-	fd_StoredTrade_receiverAddress = md_StoredTrade.Fields().ByName("receiverAddress")
+	fd_StoredTrade_receiver_address = md_StoredTrade.Fields().ByName("receiver_address")
 	fd_StoredTrade_status = md_StoredTrade.Fields().ByName("status")
 	fd_StoredTrade_maker = md_StoredTrade.Fields().ByName("maker")
 	fd_StoredTrade_checker = md_StoredTrade.Fields().ByName("checker")
-	fd_StoredTrade_createDate = md_StoredTrade.Fields().ByName("createDate")
-	fd_StoredTrade_updateDate = md_StoredTrade.Fields().ByName("updateDate")
-	fd_StoredTrade_processDate = md_StoredTrade.Fields().ByName("processDate")
-	fd_StoredTrade_tradeData = md_StoredTrade.Fields().ByName("tradeData")
-	fd_StoredTrade_coinMintingPriceJSON = md_StoredTrade.Fields().ByName("coinMintingPriceJSON")
-	fd_StoredTrade_exchangeRateJSON = md_StoredTrade.Fields().ByName("exchangeRateJSON")
-	fd_StoredTrade_bankingSystemData = md_StoredTrade.Fields().ByName("bankingSystemData")
+	fd_StoredTrade_create_date = md_StoredTrade.Fields().ByName("create_date")
+	fd_StoredTrade_update_date = md_StoredTrade.Fields().ByName("update_date")
+	fd_StoredTrade_process_date = md_StoredTrade.Fields().ByName("process_date")
+	fd_StoredTrade_trade_data = md_StoredTrade.Fields().ByName("trade_data")
+	fd_StoredTrade_coin_minting_price_json = md_StoredTrade.Fields().ByName("coin_minting_price_json")
+	fd_StoredTrade_exchange_rate_json = md_StoredTrade.Fields().ByName("exchange_rate_json")
+	fd_StoredTrade_banking_system_data = md_StoredTrade.Fields().ByName("banking_system_data")
 	fd_StoredTrade_result = md_StoredTrade.Fields().ByName("result")
 }
 
@@ -122,19 +121,19 @@ func (x *fastReflection_StoredTrade) Interface() protoreflect.ProtoMessage {
 func (x *fastReflection_StoredTrade) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.TradeIndex != uint64(0) {
 		value := protoreflect.ValueOfUint64(x.TradeIndex)
-		if !f(fd_StoredTrade_tradeIndex, value) {
+		if !f(fd_StoredTrade_trade_index, value) {
 			return
 		}
 	}
-	if x.TradeType != "" {
-		value := protoreflect.ValueOfString(x.TradeType)
-		if !f(fd_StoredTrade_tradeType, value) {
+	if x.TradeType != 0 {
+		value := protoreflect.ValueOfEnum((protoreflect.EnumNumber)(x.TradeType))
+		if !f(fd_StoredTrade_trade_type, value) {
 			return
 		}
 	}
-	if x.Coin != "" {
-		value := protoreflect.ValueOfString(x.Coin)
-		if !f(fd_StoredTrade_coin, value) {
+	if x.Amount != nil {
+		value := protoreflect.ValueOfMessage(x.Amount.ProtoReflect())
+		if !f(fd_StoredTrade_amount, value) {
 			return
 		}
 	}
@@ -144,20 +143,14 @@ func (x *fastReflection_StoredTrade) Range(f func(protoreflect.FieldDescriptor, 
 			return
 		}
 	}
-	if x.Quantity != "" {
-		value := protoreflect.ValueOfString(x.Quantity)
-		if !f(fd_StoredTrade_quantity, value) {
-			return
-		}
-	}
 	if x.ReceiverAddress != "" {
 		value := protoreflect.ValueOfString(x.ReceiverAddress)
-		if !f(fd_StoredTrade_receiverAddress, value) {
+		if !f(fd_StoredTrade_receiver_address, value) {
 			return
 		}
 	}
-	if x.Status != "" {
-		value := protoreflect.ValueOfString(x.Status)
+	if x.Status != 0 {
+		value := protoreflect.ValueOfEnum((protoreflect.EnumNumber)(x.Status))
 		if !f(fd_StoredTrade_status, value) {
 			return
 		}
@@ -176,43 +169,43 @@ func (x *fastReflection_StoredTrade) Range(f func(protoreflect.FieldDescriptor, 
 	}
 	if x.CreateDate != "" {
 		value := protoreflect.ValueOfString(x.CreateDate)
-		if !f(fd_StoredTrade_createDate, value) {
+		if !f(fd_StoredTrade_create_date, value) {
 			return
 		}
 	}
 	if x.UpdateDate != "" {
 		value := protoreflect.ValueOfString(x.UpdateDate)
-		if !f(fd_StoredTrade_updateDate, value) {
+		if !f(fd_StoredTrade_update_date, value) {
 			return
 		}
 	}
 	if x.ProcessDate != "" {
 		value := protoreflect.ValueOfString(x.ProcessDate)
-		if !f(fd_StoredTrade_processDate, value) {
+		if !f(fd_StoredTrade_process_date, value) {
 			return
 		}
 	}
 	if x.TradeData != "" {
 		value := protoreflect.ValueOfString(x.TradeData)
-		if !f(fd_StoredTrade_tradeData, value) {
+		if !f(fd_StoredTrade_trade_data, value) {
 			return
 		}
 	}
-	if x.CoinMintingPriceJSON != "" {
-		value := protoreflect.ValueOfString(x.CoinMintingPriceJSON)
-		if !f(fd_StoredTrade_coinMintingPriceJSON, value) {
+	if x.CoinMintingPriceJson != "" {
+		value := protoreflect.ValueOfString(x.CoinMintingPriceJson)
+		if !f(fd_StoredTrade_coin_minting_price_json, value) {
 			return
 		}
 	}
-	if x.ExchangeRateJSON != "" {
-		value := protoreflect.ValueOfString(x.ExchangeRateJSON)
-		if !f(fd_StoredTrade_exchangeRateJSON, value) {
+	if x.ExchangeRateJson != "" {
+		value := protoreflect.ValueOfString(x.ExchangeRateJson)
+		if !f(fd_StoredTrade_exchange_rate_json, value) {
 			return
 		}
 	}
 	if x.BankingSystemData != "" {
 		value := protoreflect.ValueOfString(x.BankingSystemData)
-		if !f(fd_StoredTrade_bankingSystemData, value) {
+		if !f(fd_StoredTrade_banking_system_data, value) {
 			return
 		}
 	}
@@ -237,37 +230,35 @@ func (x *fastReflection_StoredTrade) Range(f func(protoreflect.FieldDescriptor, 
 // a repeated field is populated if it is non-empty.
 func (x *fastReflection_StoredTrade) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "ggezchain.trade.StoredTrade.tradeIndex":
+	case "ggezchain.trade.StoredTrade.trade_index":
 		return x.TradeIndex != uint64(0)
-	case "ggezchain.trade.StoredTrade.tradeType":
-		return x.TradeType != ""
-	case "ggezchain.trade.StoredTrade.coin":
-		return x.Coin != ""
+	case "ggezchain.trade.StoredTrade.trade_type":
+		return x.TradeType != 0
+	case "ggezchain.trade.StoredTrade.amount":
+		return x.Amount != nil
 	case "ggezchain.trade.StoredTrade.price":
 		return x.Price != ""
-	case "ggezchain.trade.StoredTrade.quantity":
-		return x.Quantity != ""
-	case "ggezchain.trade.StoredTrade.receiverAddress":
+	case "ggezchain.trade.StoredTrade.receiver_address":
 		return x.ReceiverAddress != ""
 	case "ggezchain.trade.StoredTrade.status":
-		return x.Status != ""
+		return x.Status != 0
 	case "ggezchain.trade.StoredTrade.maker":
 		return x.Maker != ""
 	case "ggezchain.trade.StoredTrade.checker":
 		return x.Checker != ""
-	case "ggezchain.trade.StoredTrade.createDate":
+	case "ggezchain.trade.StoredTrade.create_date":
 		return x.CreateDate != ""
-	case "ggezchain.trade.StoredTrade.updateDate":
+	case "ggezchain.trade.StoredTrade.update_date":
 		return x.UpdateDate != ""
-	case "ggezchain.trade.StoredTrade.processDate":
+	case "ggezchain.trade.StoredTrade.process_date":
 		return x.ProcessDate != ""
-	case "ggezchain.trade.StoredTrade.tradeData":
+	case "ggezchain.trade.StoredTrade.trade_data":
 		return x.TradeData != ""
-	case "ggezchain.trade.StoredTrade.coinMintingPriceJSON":
-		return x.CoinMintingPriceJSON != ""
-	case "ggezchain.trade.StoredTrade.exchangeRateJSON":
-		return x.ExchangeRateJSON != ""
-	case "ggezchain.trade.StoredTrade.bankingSystemData":
+	case "ggezchain.trade.StoredTrade.coin_minting_price_json":
+		return x.CoinMintingPriceJson != ""
+	case "ggezchain.trade.StoredTrade.exchange_rate_json":
+		return x.ExchangeRateJson != ""
+	case "ggezchain.trade.StoredTrade.banking_system_data":
 		return x.BankingSystemData != ""
 	case "ggezchain.trade.StoredTrade.result":
 		return x.Result != ""
@@ -287,37 +278,35 @@ func (x *fastReflection_StoredTrade) Has(fd protoreflect.FieldDescriptor) bool {
 // Clear is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_StoredTrade) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "ggezchain.trade.StoredTrade.tradeIndex":
+	case "ggezchain.trade.StoredTrade.trade_index":
 		x.TradeIndex = uint64(0)
-	case "ggezchain.trade.StoredTrade.tradeType":
-		x.TradeType = ""
-	case "ggezchain.trade.StoredTrade.coin":
-		x.Coin = ""
+	case "ggezchain.trade.StoredTrade.trade_type":
+		x.TradeType = 0
+	case "ggezchain.trade.StoredTrade.amount":
+		x.Amount = nil
 	case "ggezchain.trade.StoredTrade.price":
 		x.Price = ""
-	case "ggezchain.trade.StoredTrade.quantity":
-		x.Quantity = ""
-	case "ggezchain.trade.StoredTrade.receiverAddress":
+	case "ggezchain.trade.StoredTrade.receiver_address":
 		x.ReceiverAddress = ""
 	case "ggezchain.trade.StoredTrade.status":
-		x.Status = ""
+		x.Status = 0
 	case "ggezchain.trade.StoredTrade.maker":
 		x.Maker = ""
 	case "ggezchain.trade.StoredTrade.checker":
 		x.Checker = ""
-	case "ggezchain.trade.StoredTrade.createDate":
+	case "ggezchain.trade.StoredTrade.create_date":
 		x.CreateDate = ""
-	case "ggezchain.trade.StoredTrade.updateDate":
+	case "ggezchain.trade.StoredTrade.update_date":
 		x.UpdateDate = ""
-	case "ggezchain.trade.StoredTrade.processDate":
+	case "ggezchain.trade.StoredTrade.process_date":
 		x.ProcessDate = ""
-	case "ggezchain.trade.StoredTrade.tradeData":
+	case "ggezchain.trade.StoredTrade.trade_data":
 		x.TradeData = ""
-	case "ggezchain.trade.StoredTrade.coinMintingPriceJSON":
-		x.CoinMintingPriceJSON = ""
-	case "ggezchain.trade.StoredTrade.exchangeRateJSON":
-		x.ExchangeRateJSON = ""
-	case "ggezchain.trade.StoredTrade.bankingSystemData":
+	case "ggezchain.trade.StoredTrade.coin_minting_price_json":
+		x.CoinMintingPriceJson = ""
+	case "ggezchain.trade.StoredTrade.exchange_rate_json":
+		x.ExchangeRateJson = ""
+	case "ggezchain.trade.StoredTrade.banking_system_data":
 		x.BankingSystemData = ""
 	case "ggezchain.trade.StoredTrade.result":
 		x.Result = ""
@@ -337,52 +326,49 @@ func (x *fastReflection_StoredTrade) Clear(fd protoreflect.FieldDescriptor) {
 // of the value; to obtain a mutable reference, use Mutable.
 func (x *fastReflection_StoredTrade) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "ggezchain.trade.StoredTrade.tradeIndex":
+	case "ggezchain.trade.StoredTrade.trade_index":
 		value := x.TradeIndex
 		return protoreflect.ValueOfUint64(value)
-	case "ggezchain.trade.StoredTrade.tradeType":
+	case "ggezchain.trade.StoredTrade.trade_type":
 		value := x.TradeType
-		return protoreflect.ValueOfString(value)
-	case "ggezchain.trade.StoredTrade.coin":
-		value := x.Coin
-		return protoreflect.ValueOfString(value)
+		return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(value))
+	case "ggezchain.trade.StoredTrade.amount":
+		value := x.Amount
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "ggezchain.trade.StoredTrade.price":
 		value := x.Price
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.trade.StoredTrade.quantity":
-		value := x.Quantity
-		return protoreflect.ValueOfString(value)
-	case "ggezchain.trade.StoredTrade.receiverAddress":
+	case "ggezchain.trade.StoredTrade.receiver_address":
 		value := x.ReceiverAddress
 		return protoreflect.ValueOfString(value)
 	case "ggezchain.trade.StoredTrade.status":
 		value := x.Status
-		return protoreflect.ValueOfString(value)
+		return protoreflect.ValueOfEnum((protoreflect.EnumNumber)(value))
 	case "ggezchain.trade.StoredTrade.maker":
 		value := x.Maker
 		return protoreflect.ValueOfString(value)
 	case "ggezchain.trade.StoredTrade.checker":
 		value := x.Checker
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.trade.StoredTrade.createDate":
+	case "ggezchain.trade.StoredTrade.create_date":
 		value := x.CreateDate
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.trade.StoredTrade.updateDate":
+	case "ggezchain.trade.StoredTrade.update_date":
 		value := x.UpdateDate
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.trade.StoredTrade.processDate":
+	case "ggezchain.trade.StoredTrade.process_date":
 		value := x.ProcessDate
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.trade.StoredTrade.tradeData":
+	case "ggezchain.trade.StoredTrade.trade_data":
 		value := x.TradeData
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.trade.StoredTrade.coinMintingPriceJSON":
-		value := x.CoinMintingPriceJSON
+	case "ggezchain.trade.StoredTrade.coin_minting_price_json":
+		value := x.CoinMintingPriceJson
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.trade.StoredTrade.exchangeRateJSON":
-		value := x.ExchangeRateJSON
+	case "ggezchain.trade.StoredTrade.exchange_rate_json":
+		value := x.ExchangeRateJson
 		return protoreflect.ValueOfString(value)
-	case "ggezchain.trade.StoredTrade.bankingSystemData":
+	case "ggezchain.trade.StoredTrade.banking_system_data":
 		value := x.BankingSystemData
 		return protoreflect.ValueOfString(value)
 	case "ggezchain.trade.StoredTrade.result":
@@ -408,37 +394,35 @@ func (x *fastReflection_StoredTrade) Get(descriptor protoreflect.FieldDescriptor
 // Set is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_StoredTrade) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "ggezchain.trade.StoredTrade.tradeIndex":
+	case "ggezchain.trade.StoredTrade.trade_index":
 		x.TradeIndex = value.Uint()
-	case "ggezchain.trade.StoredTrade.tradeType":
-		x.TradeType = value.Interface().(string)
-	case "ggezchain.trade.StoredTrade.coin":
-		x.Coin = value.Interface().(string)
+	case "ggezchain.trade.StoredTrade.trade_type":
+		x.TradeType = (TradeType)(value.Enum())
+	case "ggezchain.trade.StoredTrade.amount":
+		x.Amount = value.Message().Interface().(*v1beta1.Coin)
 	case "ggezchain.trade.StoredTrade.price":
 		x.Price = value.Interface().(string)
-	case "ggezchain.trade.StoredTrade.quantity":
-		x.Quantity = value.Interface().(string)
-	case "ggezchain.trade.StoredTrade.receiverAddress":
+	case "ggezchain.trade.StoredTrade.receiver_address":
 		x.ReceiverAddress = value.Interface().(string)
 	case "ggezchain.trade.StoredTrade.status":
-		x.Status = value.Interface().(string)
+		x.Status = (TradeStatus)(value.Enum())
 	case "ggezchain.trade.StoredTrade.maker":
 		x.Maker = value.Interface().(string)
 	case "ggezchain.trade.StoredTrade.checker":
 		x.Checker = value.Interface().(string)
-	case "ggezchain.trade.StoredTrade.createDate":
+	case "ggezchain.trade.StoredTrade.create_date":
 		x.CreateDate = value.Interface().(string)
-	case "ggezchain.trade.StoredTrade.updateDate":
+	case "ggezchain.trade.StoredTrade.update_date":
 		x.UpdateDate = value.Interface().(string)
-	case "ggezchain.trade.StoredTrade.processDate":
+	case "ggezchain.trade.StoredTrade.process_date":
 		x.ProcessDate = value.Interface().(string)
-	case "ggezchain.trade.StoredTrade.tradeData":
+	case "ggezchain.trade.StoredTrade.trade_data":
 		x.TradeData = value.Interface().(string)
-	case "ggezchain.trade.StoredTrade.coinMintingPriceJSON":
-		x.CoinMintingPriceJSON = value.Interface().(string)
-	case "ggezchain.trade.StoredTrade.exchangeRateJSON":
-		x.ExchangeRateJSON = value.Interface().(string)
-	case "ggezchain.trade.StoredTrade.bankingSystemData":
+	case "ggezchain.trade.StoredTrade.coin_minting_price_json":
+		x.CoinMintingPriceJson = value.Interface().(string)
+	case "ggezchain.trade.StoredTrade.exchange_rate_json":
+		x.ExchangeRateJson = value.Interface().(string)
+	case "ggezchain.trade.StoredTrade.banking_system_data":
 		x.BankingSystemData = value.Interface().(string)
 	case "ggezchain.trade.StoredTrade.result":
 		x.Result = value.Interface().(string)
@@ -462,38 +446,39 @@ func (x *fastReflection_StoredTrade) Set(fd protoreflect.FieldDescriptor, value 
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_StoredTrade) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "ggezchain.trade.StoredTrade.tradeIndex":
-		panic(fmt.Errorf("field tradeIndex of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.tradeType":
-		panic(fmt.Errorf("field tradeType of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.coin":
-		panic(fmt.Errorf("field coin of message ggezchain.trade.StoredTrade is not mutable"))
+	case "ggezchain.trade.StoredTrade.amount":
+		if x.Amount == nil {
+			x.Amount = new(v1beta1.Coin)
+		}
+		return protoreflect.ValueOfMessage(x.Amount.ProtoReflect())
+	case "ggezchain.trade.StoredTrade.trade_index":
+		panic(fmt.Errorf("field trade_index of message ggezchain.trade.StoredTrade is not mutable"))
+	case "ggezchain.trade.StoredTrade.trade_type":
+		panic(fmt.Errorf("field trade_type of message ggezchain.trade.StoredTrade is not mutable"))
 	case "ggezchain.trade.StoredTrade.price":
 		panic(fmt.Errorf("field price of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.quantity":
-		panic(fmt.Errorf("field quantity of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.receiverAddress":
-		panic(fmt.Errorf("field receiverAddress of message ggezchain.trade.StoredTrade is not mutable"))
+	case "ggezchain.trade.StoredTrade.receiver_address":
+		panic(fmt.Errorf("field receiver_address of message ggezchain.trade.StoredTrade is not mutable"))
 	case "ggezchain.trade.StoredTrade.status":
 		panic(fmt.Errorf("field status of message ggezchain.trade.StoredTrade is not mutable"))
 	case "ggezchain.trade.StoredTrade.maker":
 		panic(fmt.Errorf("field maker of message ggezchain.trade.StoredTrade is not mutable"))
 	case "ggezchain.trade.StoredTrade.checker":
 		panic(fmt.Errorf("field checker of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.createDate":
-		panic(fmt.Errorf("field createDate of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.updateDate":
-		panic(fmt.Errorf("field updateDate of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.processDate":
-		panic(fmt.Errorf("field processDate of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.tradeData":
-		panic(fmt.Errorf("field tradeData of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.coinMintingPriceJSON":
-		panic(fmt.Errorf("field coinMintingPriceJSON of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.exchangeRateJSON":
-		panic(fmt.Errorf("field exchangeRateJSON of message ggezchain.trade.StoredTrade is not mutable"))
-	case "ggezchain.trade.StoredTrade.bankingSystemData":
-		panic(fmt.Errorf("field bankingSystemData of message ggezchain.trade.StoredTrade is not mutable"))
+	case "ggezchain.trade.StoredTrade.create_date":
+		panic(fmt.Errorf("field create_date of message ggezchain.trade.StoredTrade is not mutable"))
+	case "ggezchain.trade.StoredTrade.update_date":
+		panic(fmt.Errorf("field update_date of message ggezchain.trade.StoredTrade is not mutable"))
+	case "ggezchain.trade.StoredTrade.process_date":
+		panic(fmt.Errorf("field process_date of message ggezchain.trade.StoredTrade is not mutable"))
+	case "ggezchain.trade.StoredTrade.trade_data":
+		panic(fmt.Errorf("field trade_data of message ggezchain.trade.StoredTrade is not mutable"))
+	case "ggezchain.trade.StoredTrade.coin_minting_price_json":
+		panic(fmt.Errorf("field coin_minting_price_json of message ggezchain.trade.StoredTrade is not mutable"))
+	case "ggezchain.trade.StoredTrade.exchange_rate_json":
+		panic(fmt.Errorf("field exchange_rate_json of message ggezchain.trade.StoredTrade is not mutable"))
+	case "ggezchain.trade.StoredTrade.banking_system_data":
+		panic(fmt.Errorf("field banking_system_data of message ggezchain.trade.StoredTrade is not mutable"))
 	case "ggezchain.trade.StoredTrade.result":
 		panic(fmt.Errorf("field result of message ggezchain.trade.StoredTrade is not mutable"))
 	default:
@@ -509,37 +494,36 @@ func (x *fastReflection_StoredTrade) Mutable(fd protoreflect.FieldDescriptor) pr
 // For lists, maps, and messages, this returns a new, empty, mutable value.
 func (x *fastReflection_StoredTrade) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "ggezchain.trade.StoredTrade.tradeIndex":
+	case "ggezchain.trade.StoredTrade.trade_index":
 		return protoreflect.ValueOfUint64(uint64(0))
-	case "ggezchain.trade.StoredTrade.tradeType":
-		return protoreflect.ValueOfString("")
-	case "ggezchain.trade.StoredTrade.coin":
-		return protoreflect.ValueOfString("")
+	case "ggezchain.trade.StoredTrade.trade_type":
+		return protoreflect.ValueOfEnum(0)
+	case "ggezchain.trade.StoredTrade.amount":
+		m := new(v1beta1.Coin)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "ggezchain.trade.StoredTrade.price":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.trade.StoredTrade.quantity":
-		return protoreflect.ValueOfString("")
-	case "ggezchain.trade.StoredTrade.receiverAddress":
+	case "ggezchain.trade.StoredTrade.receiver_address":
 		return protoreflect.ValueOfString("")
 	case "ggezchain.trade.StoredTrade.status":
-		return protoreflect.ValueOfString("")
+		return protoreflect.ValueOfEnum(0)
 	case "ggezchain.trade.StoredTrade.maker":
 		return protoreflect.ValueOfString("")
 	case "ggezchain.trade.StoredTrade.checker":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.trade.StoredTrade.createDate":
+	case "ggezchain.trade.StoredTrade.create_date":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.trade.StoredTrade.updateDate":
+	case "ggezchain.trade.StoredTrade.update_date":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.trade.StoredTrade.processDate":
+	case "ggezchain.trade.StoredTrade.process_date":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.trade.StoredTrade.tradeData":
+	case "ggezchain.trade.StoredTrade.trade_data":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.trade.StoredTrade.coinMintingPriceJSON":
+	case "ggezchain.trade.StoredTrade.coin_minting_price_json":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.trade.StoredTrade.exchangeRateJSON":
+	case "ggezchain.trade.StoredTrade.exchange_rate_json":
 		return protoreflect.ValueOfString("")
-	case "ggezchain.trade.StoredTrade.bankingSystemData":
+	case "ggezchain.trade.StoredTrade.banking_system_data":
 		return protoreflect.ValueOfString("")
 	case "ggezchain.trade.StoredTrade.result":
 		return protoreflect.ValueOfString("")
@@ -615,19 +599,14 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 		if x.TradeIndex != 0 {
 			n += 1 + runtime.Sov(uint64(x.TradeIndex))
 		}
-		l = len(x.TradeType)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.TradeType != 0 {
+			n += 1 + runtime.Sov(uint64(x.TradeType))
 		}
-		l = len(x.Coin)
-		if l > 0 {
+		if x.Amount != nil {
+			l = options.Size(x.Amount)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		l = len(x.Price)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
-		}
-		l = len(x.Quantity)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
@@ -635,9 +614,8 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.Status)
-		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+		if x.Status != 0 {
+			n += 1 + runtime.Sov(uint64(x.Status))
 		}
 		l = len(x.Maker)
 		if l > 0 {
@@ -663,17 +641,17 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.CoinMintingPriceJSON)
+		l = len(x.CoinMintingPriceJson)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		l = len(x.ExchangeRateJSON)
+		l = len(x.ExchangeRateJson)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		l = len(x.BankingSystemData)
 		if l > 0 {
-			n += 2 + l + runtime.Sov(uint64(l))
+			n += 1 + l + runtime.Sov(uint64(l))
 		}
 		l = len(x.Result)
 		if l > 0 {
@@ -715,91 +693,80 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x1
 			i--
-			dAtA[i] = 0x8a
+			dAtA[i] = 0x82
 		}
 		if len(x.BankingSystemData) > 0 {
 			i -= len(x.BankingSystemData)
 			copy(dAtA[i:], x.BankingSystemData)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.BankingSystemData)))
 			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0x82
-		}
-		if len(x.ExchangeRateJSON) > 0 {
-			i -= len(x.ExchangeRateJSON)
-			copy(dAtA[i:], x.ExchangeRateJSON)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ExchangeRateJSON)))
-			i--
 			dAtA[i] = 0x7a
 		}
-		if len(x.CoinMintingPriceJSON) > 0 {
-			i -= len(x.CoinMintingPriceJSON)
-			copy(dAtA[i:], x.CoinMintingPriceJSON)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.CoinMintingPriceJSON)))
+		if len(x.ExchangeRateJson) > 0 {
+			i -= len(x.ExchangeRateJson)
+			copy(dAtA[i:], x.ExchangeRateJson)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ExchangeRateJson)))
 			i--
 			dAtA[i] = 0x72
+		}
+		if len(x.CoinMintingPriceJson) > 0 {
+			i -= len(x.CoinMintingPriceJson)
+			copy(dAtA[i:], x.CoinMintingPriceJson)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.CoinMintingPriceJson)))
+			i--
+			dAtA[i] = 0x6a
 		}
 		if len(x.TradeData) > 0 {
 			i -= len(x.TradeData)
 			copy(dAtA[i:], x.TradeData)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.TradeData)))
 			i--
-			dAtA[i] = 0x6a
+			dAtA[i] = 0x62
 		}
 		if len(x.ProcessDate) > 0 {
 			i -= len(x.ProcessDate)
 			copy(dAtA[i:], x.ProcessDate)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ProcessDate)))
 			i--
-			dAtA[i] = 0x62
+			dAtA[i] = 0x5a
 		}
 		if len(x.UpdateDate) > 0 {
 			i -= len(x.UpdateDate)
 			copy(dAtA[i:], x.UpdateDate)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.UpdateDate)))
 			i--
-			dAtA[i] = 0x5a
+			dAtA[i] = 0x52
 		}
 		if len(x.CreateDate) > 0 {
 			i -= len(x.CreateDate)
 			copy(dAtA[i:], x.CreateDate)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.CreateDate)))
 			i--
-			dAtA[i] = 0x52
+			dAtA[i] = 0x4a
 		}
 		if len(x.Checker) > 0 {
 			i -= len(x.Checker)
 			copy(dAtA[i:], x.Checker)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Checker)))
 			i--
-			dAtA[i] = 0x4a
+			dAtA[i] = 0x42
 		}
 		if len(x.Maker) > 0 {
 			i -= len(x.Maker)
 			copy(dAtA[i:], x.Maker)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Maker)))
 			i--
-			dAtA[i] = 0x42
-		}
-		if len(x.Status) > 0 {
-			i -= len(x.Status)
-			copy(dAtA[i:], x.Status)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Status)))
-			i--
 			dAtA[i] = 0x3a
+		}
+		if x.Status != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.Status))
+			i--
+			dAtA[i] = 0x30
 		}
 		if len(x.ReceiverAddress) > 0 {
 			i -= len(x.ReceiverAddress)
 			copy(dAtA[i:], x.ReceiverAddress)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ReceiverAddress)))
-			i--
-			dAtA[i] = 0x32
-		}
-		if len(x.Quantity) > 0 {
-			i -= len(x.Quantity)
-			copy(dAtA[i:], x.Quantity)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Quantity)))
 			i--
 			dAtA[i] = 0x2a
 		}
@@ -810,19 +777,24 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x22
 		}
-		if len(x.Coin) > 0 {
-			i -= len(x.Coin)
-			copy(dAtA[i:], x.Coin)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Coin)))
+		if x.Amount != nil {
+			encoded, err := options.Marshal(x.Amount)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.TradeType) > 0 {
-			i -= len(x.TradeType)
-			copy(dAtA[i:], x.TradeType)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.TradeType)))
+		if x.TradeType != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.TradeType))
 			i--
-			dAtA[i] = 0x12
+			dAtA[i] = 0x10
 		}
 		if x.TradeIndex != 0 {
 			i = runtime.EncodeVarint(dAtA, i, uint64(x.TradeIndex))
@@ -898,10 +870,10 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 					}
 				}
 			case 2:
-				if wireType != 2 {
+				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TradeType", wireType)
 				}
-				var stringLen uint64
+				x.TradeType = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -911,29 +883,16 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.TradeType |= TradeType(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.TradeType = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Coin", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
 				}
-				var stringLen uint64
+				var msglen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -943,23 +902,27 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					msglen |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
+				if msglen < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
-				postIndex := iNdEx + intStringLen
+				postIndex := iNdEx + msglen
 				if postIndex < 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
 				}
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Coin = string(dAtA[iNdEx:postIndex])
+				if x.Amount == nil {
+					x.Amount = &v1beta1.Coin{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Amount); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
 				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
@@ -995,38 +958,6 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 5:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Quantity", wireType)
-				}
-				var stringLen uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.Quantity = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 6:
-				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ReceiverAddress", wireType)
 				}
 				var stringLen uint64
@@ -1057,11 +988,11 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 				}
 				x.ReceiverAddress = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 7:
-				if wireType != 2 {
+			case 6:
+				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
 				}
-				var stringLen uint64
+				x.Status = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -1071,25 +1002,12 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
+					x.Status |= TradeStatus(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.Status = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 8:
+			case 7:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Maker", wireType)
 				}
@@ -1121,7 +1039,7 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 				}
 				x.Maker = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 9:
+			case 8:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Checker", wireType)
 				}
@@ -1153,7 +1071,7 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 				}
 				x.Checker = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 10:
+			case 9:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CreateDate", wireType)
 				}
@@ -1185,7 +1103,7 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 				}
 				x.CreateDate = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 11:
+			case 10:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field UpdateDate", wireType)
 				}
@@ -1217,7 +1135,7 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 				}
 				x.UpdateDate = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 12:
+			case 11:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ProcessDate", wireType)
 				}
@@ -1249,7 +1167,7 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 				}
 				x.ProcessDate = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 13:
+			case 12:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TradeData", wireType)
 				}
@@ -1281,9 +1199,41 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 				}
 				x.TradeData = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
+			case 13:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CoinMintingPriceJson", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.CoinMintingPriceJson = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
 			case 14:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CoinMintingPriceJSON", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ExchangeRateJson", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -1311,41 +1261,9 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.CoinMintingPriceJSON = string(dAtA[iNdEx:postIndex])
+				x.ExchangeRateJson = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 15:
-				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ExchangeRateJSON", wireType)
-				}
-				var stringLen uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					stringLen |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				intStringLen := int(stringLen)
-				if intStringLen < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				postIndex := iNdEx + intStringLen
-				if postIndex < 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
-				}
-				if postIndex > l {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-				}
-				x.ExchangeRateJSON = string(dAtA[iNdEx:postIndex])
-				iNdEx = postIndex
-			case 16:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field BankingSystemData", wireType)
 				}
@@ -1377,7 +1295,7 @@ func (x *fastReflection_StoredTrade) ProtoMethods() *protoiface.Methods {
 				}
 				x.BankingSystemData = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 17:
+			case 16:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Result", wireType)
 				}
@@ -1462,23 +1380,22 @@ type StoredTrade struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	TradeIndex           uint64 `protobuf:"varint,1,opt,name=tradeIndex,proto3" json:"tradeIndex,omitempty"`
-	TradeType            string `protobuf:"bytes,2,opt,name=tradeType,proto3" json:"tradeType,omitempty"`
-	Coin                 string `protobuf:"bytes,3,opt,name=coin,proto3" json:"coin,omitempty"`
-	Price                string `protobuf:"bytes,4,opt,name=price,proto3" json:"price,omitempty"`
-	Quantity             string `protobuf:"bytes,5,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	ReceiverAddress      string `protobuf:"bytes,6,opt,name=receiverAddress,proto3" json:"receiverAddress,omitempty"`
-	Status               string `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
-	Maker                string `protobuf:"bytes,8,opt,name=maker,proto3" json:"maker,omitempty"`
-	Checker              string `protobuf:"bytes,9,opt,name=checker,proto3" json:"checker,omitempty"`
-	CreateDate           string `protobuf:"bytes,10,opt,name=createDate,proto3" json:"createDate,omitempty"`
-	UpdateDate           string `protobuf:"bytes,11,opt,name=updateDate,proto3" json:"updateDate,omitempty"`
-	ProcessDate          string `protobuf:"bytes,12,opt,name=processDate,proto3" json:"processDate,omitempty"`
-	TradeData            string `protobuf:"bytes,13,opt,name=tradeData,proto3" json:"tradeData,omitempty"`
-	CoinMintingPriceJSON string `protobuf:"bytes,14,opt,name=coinMintingPriceJSON,proto3" json:"coinMintingPriceJSON,omitempty"`
-	ExchangeRateJSON     string `protobuf:"bytes,15,opt,name=exchangeRateJSON,proto3" json:"exchangeRateJSON,omitempty"`
-	BankingSystemData    string `protobuf:"bytes,16,opt,name=bankingSystemData,proto3" json:"bankingSystemData,omitempty"`
-	Result               string `protobuf:"bytes,17,opt,name=result,proto3" json:"result,omitempty"`
+	TradeIndex           uint64        `protobuf:"varint,1,opt,name=trade_index,json=tradeIndex,proto3" json:"trade_index,omitempty"`
+	TradeType            TradeType     `protobuf:"varint,2,opt,name=trade_type,json=tradeType,proto3,enum=ggezchain.trade.TradeType" json:"trade_type,omitempty"`
+	Amount               *v1beta1.Coin `protobuf:"bytes,3,opt,name=amount,proto3" json:"amount,omitempty"`
+	Price                string        `protobuf:"bytes,4,opt,name=price,proto3" json:"price,omitempty"`
+	ReceiverAddress      string        `protobuf:"bytes,5,opt,name=receiver_address,json=receiverAddress,proto3" json:"receiver_address,omitempty"`
+	Status               TradeStatus   `protobuf:"varint,6,opt,name=status,proto3,enum=ggezchain.trade.TradeStatus" json:"status,omitempty"`
+	Maker                string        `protobuf:"bytes,7,opt,name=maker,proto3" json:"maker,omitempty"`
+	Checker              string        `protobuf:"bytes,8,opt,name=checker,proto3" json:"checker,omitempty"`
+	CreateDate           string        `protobuf:"bytes,9,opt,name=create_date,json=createDate,proto3" json:"create_date,omitempty"`
+	UpdateDate           string        `protobuf:"bytes,10,opt,name=update_date,json=updateDate,proto3" json:"update_date,omitempty"`
+	ProcessDate          string        `protobuf:"bytes,11,opt,name=process_date,json=processDate,proto3" json:"process_date,omitempty"`
+	TradeData            string        `protobuf:"bytes,12,opt,name=trade_data,json=tradeData,proto3" json:"trade_data,omitempty"`
+	CoinMintingPriceJson string        `protobuf:"bytes,13,opt,name=coin_minting_price_json,json=coinMintingPriceJson,proto3" json:"coin_minting_price_json,omitempty"`
+	ExchangeRateJson     string        `protobuf:"bytes,14,opt,name=exchange_rate_json,json=exchangeRateJson,proto3" json:"exchange_rate_json,omitempty"`
+	BankingSystemData    string        `protobuf:"bytes,15,opt,name=banking_system_data,json=bankingSystemData,proto3" json:"banking_system_data,omitempty"`
+	Result               string        `protobuf:"bytes,16,opt,name=result,proto3" json:"result,omitempty"`
 }
 
 func (x *StoredTrade) Reset() {
@@ -1508,30 +1425,23 @@ func (x *StoredTrade) GetTradeIndex() uint64 {
 	return 0
 }
 
-func (x *StoredTrade) GetTradeType() string {
+func (x *StoredTrade) GetTradeType() TradeType {
 	if x != nil {
 		return x.TradeType
 	}
-	return ""
+	return TradeType_TRADE_TYPE_UNSPECIFIED
 }
 
-func (x *StoredTrade) GetCoin() string {
+func (x *StoredTrade) GetAmount() *v1beta1.Coin {
 	if x != nil {
-		return x.Coin
+		return x.Amount
 	}
-	return ""
+	return nil
 }
 
 func (x *StoredTrade) GetPrice() string {
 	if x != nil {
 		return x.Price
-	}
-	return ""
-}
-
-func (x *StoredTrade) GetQuantity() string {
-	if x != nil {
-		return x.Quantity
 	}
 	return ""
 }
@@ -1543,11 +1453,11 @@ func (x *StoredTrade) GetReceiverAddress() string {
 	return ""
 }
 
-func (x *StoredTrade) GetStatus() string {
+func (x *StoredTrade) GetStatus() TradeStatus {
 	if x != nil {
 		return x.Status
 	}
-	return ""
+	return TradeStatus_TRADE_STATUS_UNSPECIFIED
 }
 
 func (x *StoredTrade) GetMaker() string {
@@ -1592,16 +1502,16 @@ func (x *StoredTrade) GetTradeData() string {
 	return ""
 }
 
-func (x *StoredTrade) GetCoinMintingPriceJSON() string {
+func (x *StoredTrade) GetCoinMintingPriceJson() string {
 	if x != nil {
-		return x.CoinMintingPriceJSON
+		return x.CoinMintingPriceJson
 	}
 	return ""
 }
 
-func (x *StoredTrade) GetExchangeRateJSON() string {
+func (x *StoredTrade) GetExchangeRateJson() string {
 	if x != nil {
-		return x.ExchangeRateJSON
+		return x.ExchangeRateJson
 	}
 	return ""
 }
@@ -1626,53 +1536,62 @@ var file_ggezchain_trade_stored_trade_proto_rawDesc = []byte{
 	0x0a, 0x22, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x74, 0x72, 0x61, 0x64,
 	0x65, 0x2f, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x5f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e,
-	0x74, 0x72, 0x61, 0x64, 0x65, 0x22, 0xa9, 0x04, 0x0a, 0x0b, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x64,
-	0x54, 0x72, 0x61, 0x64, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x74, 0x72, 0x61, 0x64, 0x65, 0x49, 0x6e,
-	0x64, 0x65, 0x78, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x74, 0x72, 0x61, 0x64, 0x65,
-	0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x72, 0x61, 0x64, 0x65, 0x54, 0x79,
-	0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x74, 0x72, 0x61, 0x64, 0x65, 0x54,
-	0x79, 0x70, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x69, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x04, 0x63, 0x6f, 0x69, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65,
-	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x12, 0x1a, 0x0a,
-	0x08, 0x71, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x08, 0x71, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x28, 0x0a, 0x0f, 0x72, 0x65, 0x63,
-	0x65, 0x69, 0x76, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x06, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x0f, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72,
-	0x65, 0x73, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x07, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x6d,
-	0x61, 0x6b, 0x65, 0x72, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6d, 0x61, 0x6b, 0x65,
-	0x72, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x65, 0x72, 0x18, 0x09, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x65, 0x72, 0x12, 0x1e, 0x0a, 0x0a, 0x63,
-	0x72, 0x65, 0x61, 0x74, 0x65, 0x44, 0x61, 0x74, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x44, 0x61, 0x74, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x75,
-	0x70, 0x64, 0x61, 0x74, 0x65, 0x44, 0x61, 0x74, 0x65, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x0a, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x44, 0x61, 0x74, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x70,
-	0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x44, 0x61, 0x74, 0x65, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x0b, 0x70, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x44, 0x61, 0x74, 0x65, 0x12, 0x1c, 0x0a,
-	0x09, 0x74, 0x72, 0x61, 0x64, 0x65, 0x44, 0x61, 0x74, 0x61, 0x18, 0x0d, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x09, 0x74, 0x72, 0x61, 0x64, 0x65, 0x44, 0x61, 0x74, 0x61, 0x12, 0x32, 0x0a, 0x14, 0x63,
+	0x74, 0x72, 0x61, 0x64, 0x65, 0x1a, 0x1e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2f, 0x62, 0x61,
+	0x73, 0x65, 0x2f, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2f, 0x63, 0x6f, 0x69, 0x6e, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x2f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x22, 0xf4, 0x04, 0x0a, 0x0b, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x54, 0x72, 0x61,
+	0x64, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x74, 0x72, 0x61, 0x64, 0x65, 0x5f, 0x69, 0x6e, 0x64, 0x65,
+	0x78, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x74, 0x72, 0x61, 0x64, 0x65, 0x49, 0x6e,
+	0x64, 0x65, 0x78, 0x12, 0x39, 0x0a, 0x0a, 0x74, 0x72, 0x61, 0x64, 0x65, 0x5f, 0x74, 0x79, 0x70,
+	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1a, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68,
+	0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x54, 0x72, 0x61, 0x64, 0x65, 0x54,
+	0x79, 0x70, 0x65, 0x52, 0x09, 0x74, 0x72, 0x61, 0x64, 0x65, 0x54, 0x79, 0x70, 0x65, 0x12, 0x31,
+	0x0a, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19,
+	0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x62,
+	0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x52, 0x06, 0x61, 0x6d, 0x6f, 0x75, 0x6e,
+	0x74, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x12, 0x29, 0x0a, 0x10, 0x72, 0x65, 0x63, 0x65, 0x69,
+	0x76, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x05, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0f, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x72, 0x41, 0x64, 0x64, 0x72, 0x65,
+	0x73, 0x73, 0x12, 0x34, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x06, 0x20, 0x01,
+	0x28, 0x0e, 0x32, 0x1c, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74,
+	0x72, 0x61, 0x64, 0x65, 0x2e, 0x54, 0x72, 0x61, 0x64, 0x65, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73,
+	0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x6d, 0x61, 0x6b, 0x65,
+	0x72, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6d, 0x61, 0x6b, 0x65, 0x72, 0x12, 0x18,
+	0x0a, 0x07, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x65, 0x72, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x07, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x65, 0x72, 0x12, 0x1f, 0x0a, 0x0b, 0x63, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x5f, 0x64, 0x61, 0x74, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x63,
+	0x72, 0x65, 0x61, 0x74, 0x65, 0x44, 0x61, 0x74, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x75, 0x70, 0x64,
+	0x61, 0x74, 0x65, 0x5f, 0x64, 0x61, 0x74, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a,
+	0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x44, 0x61, 0x74, 0x65, 0x12, 0x21, 0x0a, 0x0c, 0x70, 0x72,
+	0x6f, 0x63, 0x65, 0x73, 0x73, 0x5f, 0x64, 0x61, 0x74, 0x65, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x0b, 0x70, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x44, 0x61, 0x74, 0x65, 0x12, 0x1d, 0x0a,
+	0x0a, 0x74, 0x72, 0x61, 0x64, 0x65, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x0c, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x09, 0x74, 0x72, 0x61, 0x64, 0x65, 0x44, 0x61, 0x74, 0x61, 0x12, 0x35, 0x0a, 0x17,
+	0x63, 0x6f, 0x69, 0x6e, 0x5f, 0x6d, 0x69, 0x6e, 0x74, 0x69, 0x6e, 0x67, 0x5f, 0x70, 0x72, 0x69,
+	0x63, 0x65, 0x5f, 0x6a, 0x73, 0x6f, 0x6e, 0x18, 0x0d, 0x20, 0x01, 0x28, 0x09, 0x52, 0x14, 0x63,
 	0x6f, 0x69, 0x6e, 0x4d, 0x69, 0x6e, 0x74, 0x69, 0x6e, 0x67, 0x50, 0x72, 0x69, 0x63, 0x65, 0x4a,
-	0x53, 0x4f, 0x4e, 0x18, 0x0e, 0x20, 0x01, 0x28, 0x09, 0x52, 0x14, 0x63, 0x6f, 0x69, 0x6e, 0x4d,
-	0x69, 0x6e, 0x74, 0x69, 0x6e, 0x67, 0x50, 0x72, 0x69, 0x63, 0x65, 0x4a, 0x53, 0x4f, 0x4e, 0x12,
-	0x2a, 0x0a, 0x10, 0x65, 0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x61, 0x74, 0x65, 0x4a,
-	0x53, 0x4f, 0x4e, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09, 0x52, 0x10, 0x65, 0x78, 0x63, 0x68, 0x61,
-	0x6e, 0x67, 0x65, 0x52, 0x61, 0x74, 0x65, 0x4a, 0x53, 0x4f, 0x4e, 0x12, 0x2c, 0x0a, 0x11, 0x62,
-	0x61, 0x6e, 0x6b, 0x69, 0x6e, 0x67, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x61, 0x74, 0x61,
-	0x18, 0x10, 0x20, 0x01, 0x28, 0x09, 0x52, 0x11, 0x62, 0x61, 0x6e, 0x6b, 0x69, 0x6e, 0x67, 0x53,
-	0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x61, 0x74, 0x61, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x73,
-	0x75, 0x6c, 0x74, 0x18, 0x11, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c,
-	0x74, 0x42, 0xa6, 0x01, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x42, 0x10, 0x53, 0x74, 0x6f, 0x72, 0x65,
-	0x64, 0x54, 0x72, 0x61, 0x64, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x20, 0x63,
-	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x73, 0x64, 0x6b, 0x2e, 0x69, 0x6f, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x74, 0x72, 0x61, 0x64, 0x65, 0xa2,
-	0x02, 0x03, 0x47, 0x54, 0x58, 0xaa, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69,
-	0x6e, 0x2e, 0x54, 0x72, 0x61, 0x64, 0x65, 0xca, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0xe2, 0x02, 0x1b, 0x47, 0x67, 0x65, 0x7a,
-	0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d,
-	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x54, 0x72, 0x61, 0x64, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x73, 0x6f, 0x6e, 0x12, 0x2c, 0x0a, 0x12, 0x65, 0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x5f,
+	0x72, 0x61, 0x74, 0x65, 0x5f, 0x6a, 0x73, 0x6f, 0x6e, 0x18, 0x0e, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x10, 0x65, 0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x61, 0x74, 0x65, 0x4a, 0x73, 0x6f,
+	0x6e, 0x12, 0x2e, 0x0a, 0x13, 0x62, 0x61, 0x6e, 0x6b, 0x69, 0x6e, 0x67, 0x5f, 0x73, 0x79, 0x73,
+	0x74, 0x65, 0x6d, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09, 0x52, 0x11,
+	0x62, 0x61, 0x6e, 0x6b, 0x69, 0x6e, 0x67, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x61, 0x74,
+	0x61, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x10, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x42, 0xb7, 0x01, 0x0a, 0x13, 0x63, 0x6f,
+	0x6d, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64,
+	0x65, 0x42, 0x10, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x54, 0x72, 0x61, 0x64, 0x65, 0x50, 0x72,
+	0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x31, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x47, 0x47, 0x45, 0x5a, 0x4c, 0x61, 0x62, 0x73, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63,
+	0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0x2f, 0x74, 0x72, 0x61, 0x64, 0x65, 0xa2, 0x02, 0x03, 0x47, 0x54, 0x58, 0xaa, 0x02,
+	0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x54, 0x72, 0x61, 0x64, 0x65,
+	0xca, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61,
+	0x64, 0x65, 0xe2, 0x02, 0x1b, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54,
+	0x72, 0x61, 0x64, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61,
+	0xea, 0x02, 0x10, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x54, 0x72,
+	0x61, 0x64, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1689,14 +1608,20 @@ func file_ggezchain_trade_stored_trade_proto_rawDescGZIP() []byte {
 
 var file_ggezchain_trade_stored_trade_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_ggezchain_trade_stored_trade_proto_goTypes = []interface{}{
-	(*StoredTrade)(nil), // 0: ggezchain.trade.StoredTrade
+	(*StoredTrade)(nil),  // 0: ggezchain.trade.StoredTrade
+	(TradeType)(0),       // 1: ggezchain.trade.TradeType
+	(*v1beta1.Coin)(nil), // 2: cosmos.base.v1beta1.Coin
+	(TradeStatus)(0),     // 3: ggezchain.trade.TradeStatus
 }
 var file_ggezchain_trade_stored_trade_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: ggezchain.trade.StoredTrade.trade_type:type_name -> ggezchain.trade.TradeType
+	2, // 1: ggezchain.trade.StoredTrade.amount:type_name -> cosmos.base.v1beta1.Coin
+	3, // 2: ggezchain.trade.StoredTrade.status:type_name -> ggezchain.trade.TradeStatus
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_ggezchain_trade_stored_trade_proto_init() }
@@ -1704,6 +1629,7 @@ func file_ggezchain_trade_stored_trade_proto_init() {
 	if File_ggezchain_trade_stored_trade_proto != nil {
 		return
 	}
+	file_ggezchain_trade_trade_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_ggezchain_trade_stored_trade_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*StoredTrade); i {

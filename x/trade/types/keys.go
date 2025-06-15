@@ -11,9 +11,7 @@ const (
 	MemStoreKey = "mem_trade"
 )
 
-var (
-	ParamsKey = []byte("p_trade")
-)
+var ParamsKey = []byte("p_trade")
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)
@@ -24,19 +22,35 @@ const (
 )
 
 const (
-	Pending             = "Pending"
-	Failed              = "Failed"
-	Rejected            = "Rejected"
-	Canceled            = "Canceled"
-	Completed           = "Completed"
-	CoinsStuckOnModule  = "Coins Stuck On Module"
-	CoinsStuckOnAccount = "Coins Stuck On Account"
-	Confirm             = "Confirm"
-	Reject              = "Reject"
-	Buy                 = "buy"
-	Sell                = "sell"
-	CreateTrade         = "CreateTrade"
-	ProcessTrade        = "ProcessTrade"
-	DefaultCoinDenom    = "ugz"
-	ACLFilePath         = "/.ggezchain/config/chain_acl.json"
+	DefaultDenom               = "uggz"
+	TradeCreatedSuccessfully   = "trade created successfully"
+	TradeProcessedSuccessfully = "trade processed successfully"
+	TradeIsCanceled            = "trade is canceled"
+)
+
+const (
+	StatusNil       = TradeStatus_TRADE_STATUS_UNSPECIFIED
+	StatusPending   = TradeStatus_TRADE_STATUS_PENDING
+	StatusCanceled  = TradeStatus_TRADE_STATUS_CANCELED
+	StatusProcessed = TradeStatus_TRADE_STATUS_PROCESSED
+	StatusRejected  = TradeStatus_TRADE_STATUS_REJECTED
+	StatusFailed    = TradeStatus_TRADE_STATUS_FAILED
+)
+
+const (
+	ProcessTypeUnspecified = ProcessType_PROCESS_TYPE_UNSPECIFIED
+	ProcessTypeConfirm     = ProcessType_PROCESS_TYPE_CONFIRM
+	ProcessTypeReject      = ProcessType_PROCESS_TYPE_REJECT
+)
+
+const (
+	TradeTypeUnspecified = TradeType_TRADE_TYPE_UNSPECIFIED
+	TradeTypeBuy         = TradeType_TRADE_TYPE_BUY
+	TradeTypeSell        = TradeType_TRADE_TYPE_SELL
+)
+
+const (
+	TxTypeUnspecified  int32 = 0
+	TxTypeCreateTrade  int32 = 1
+	TxTypeProcessTrade int32 = 2
 )

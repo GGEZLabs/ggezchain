@@ -32,7 +32,10 @@ import (
 	"cosmossdk.io/x/nft"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	aclmodulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/acl/module"
 	trademodulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/trade/module"
+	_ "github.com/GGEZLabs/ggezchain/x/acl/module" // import for side-effects
+	aclmoduletypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	_ "github.com/GGEZLabs/ggezchain/x/trade/module" // import for side-effects
 	trademoduletypes "github.com/GGEZLabs/ggezchain/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -56,7 +59,6 @@ import (
 	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
-	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
 var (
@@ -94,6 +96,7 @@ var (
 		circuittypes.ModuleName,
 		// chain modules
 		trademoduletypes.ModuleName,
+		aclmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
@@ -120,6 +123,7 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		trademoduletypes.ModuleName,
+		aclmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
@@ -140,6 +144,7 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		trademoduletypes.ModuleName,
+		aclmoduletypes.ModuleName,
 		wasmtypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
@@ -284,7 +289,7 @@ var (
 			},
 			{
 				Name:   govtypes.ModuleName,
-				Config: appconfig.WrapAny(&govmodulev1.Module{MaxMetadataLen: 500000}),
+				Config: appconfig.WrapAny(&govmodulev1.Module{MaxMetadataLen: 10200}),
 			},
 			{
 				Name:   crisistypes.ModuleName,
@@ -301,6 +306,10 @@ var (
 			{
 				Name:   trademoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&trademodulev1.Module{}),
+			},
+			{
+				Name:   aclmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&aclmodulev1.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

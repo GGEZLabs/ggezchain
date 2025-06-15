@@ -1,75 +1,84 @@
 package types
 
 import (
+	"encoding/json"
 	"strconv"
+	"strings"
+	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 var _ sdk.Msg = &MsgCreateTrade{}
 
-func NewMsgCreateTrade(creator string, tradeType string, coin string, price string, quantity string, receiverAddress string, tradeData string, bankingSystemData string, coinMintingPriceJSON string, exchangeRateJSON string) *MsgCreateTrade {
+func NewMsgCreateTrade(creator string, tradeType TradeType, amount *sdk.Coin, price string, receiverAddress string, tradeData string, bankingSystemData string, coinMintingPriceJson string, exchangeRateJson string) *MsgCreateTrade {
 	return &MsgCreateTrade{
 		Creator:              creator,
 		TradeType:            tradeType,
-		Coin:                 coin,
+		Amount:               amount,
 		Price:                price,
-		Quantity:             quantity,
 		ReceiverAddress:      receiverAddress,
 		TradeData:            tradeData,
 		BankingSystemData:    bankingSystemData,
-		CoinMintingPriceJSON: coinMintingPriceJSON,
-		ExchangeRateJSON:     exchangeRateJSON,
+		CoinMintingPriceJson: coinMintingPriceJson,
+		ExchangeRateJson:     exchangeRateJson,
 	}
 }
 
 func (msg *MsgCreateTrade) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return ErrInvalidCreatorAddress
+		return sdkerrors.ErrInvalidAddress.Wrapf("invalid creator address (%s)", err)
 	}
 
-	_, err = sdk.AccAddressFromBech32(msg.ReceiverAddress)
-	if err != nil {
-		return ErrInvalidReceiverAddress
-	}
-
-	if msg.Coin != "ugz" {
-		return ErrInvalidCoinDenom
-	}
-
-	if msg.TradeType != Buy && msg.TradeType != Sell {
+	// Validate trade type
+	if msg.TradeType != TradeTypeBuy &&
+		msg.TradeType != TradeTypeSell {
 		return ErrInvalidTradeType
 	}
 
-	if msg.TradeData == "" {
+	// Validate amount
+	if !msg.Amount.IsValid() {
+		return sdkerrors.ErrInvalidRequest.Wrapf("invalid amount: %s", msg.Amount.String())
+	}
+
+	if msg.Amount.IsZero() {
+		return sdkerrors.ErrInvalidRequest.Wrapf("zero amount not allowed: %s", msg.Amount.String())
+	}
+
+	if msg.Amount.Denom != DefaultDenom {
+		return sdkerrors.ErrInvalidRequest.Wrapf("invalid denom expected: %s, got: %s ", DefaultDenom, msg.Amount.Denom)
+	}
+
+	// Validate price
+	if strings.TrimSpace(msg.Price) == "" {
+		return ErrInvalidTradePrice
+	}
+
+	coinPrice, err := strconv.ParseFloat(msg.Price, 64)
+	if err != nil {
+		return ErrInvalidTradePrice.Wrapf(err.Error())
+	}
+
+	if coinPrice <= 0 {
+		return ErrInvalidTradePrice
+	}
+
+	// Validate receiver address
+	_, err = sdk.AccAddressFromBech32(msg.ReceiverAddress)
+	if err != nil {
+		return sdkerrors.ErrInvalidAddress.Wrapf("invalid receiver address (%s)", err)
+	}
+
+	// Validate trade data
+	if !json.Valid([]byte(msg.TradeData)) {
 		return ErrInvalidTradeData
 	}
 
-	if msg.Quantity == "" {
-		return ErrInvalidTradeQuantity
-	}
-
-	Quantity, err := strconv.ParseInt(msg.Quantity, 10, 64)
-	if err != nil {
-		return ErrInvalidTradeQuantity
-	}
-
-	if Quantity <= 0 {
-		return ErrInvalidTradeQuantity
-	}
-
-	if msg.Price == "" {
-		return ErrInvalidTradePrice
-	}
-
-	CoinPrice, err := strconv.ParseFloat(msg.Price, 32)
-	if err != nil {
-		return ErrInvalidTradePrice
-	}
-
-	if CoinPrice <= 0 {
-		return ErrInvalidTradePrice
+	// Validate banking system data
+	if !json.Valid([]byte(msg.BankingSystemData)) {
+		return ErrInvalidBankingSystemData
 	}
 
 	// to check data should be send
@@ -81,8 +90,12 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 	// 	return ErrInvalidExchangeRateJSON
 	// }
 
-	if msg.BankingSystemData == "" {
-		return ErrInvalidBankingSystemData
+	if msg.CreateDate != "" {
+		_, err = time.Parse(time.RFC3339, msg.CreateDate)
+		if err != nil {
+			return sdkerrors.ErrInvalidRequest.Wrapf("invalid create_date format: %s, date format should be like: %s", msg.CreateDate, time.RFC3339)
+		}
 	}
+
 	return nil
 }

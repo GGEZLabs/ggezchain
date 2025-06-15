@@ -3,10 +3,9 @@ package keeper_test
 import (
 	"testing"
 
+	"github.com/GGEZLabs/ggezchain/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
-
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
 )
 
 func TestMsgUpdateParams(t *testing.T) {

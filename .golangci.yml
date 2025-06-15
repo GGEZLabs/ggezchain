@@ -1,0 +1,71 @@
+run:
+  tests: true
+  timeout: 10m
+  allow-parallel-runners: true
+
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - canonicalheader
+    - durationcheck
+    - errcheck
+    - errname
+    - copyloopvar
+    - fatcontext
+    - gci
+    - goconst
+    - gochecksumtype
+    - gocritic
+    - gofumpt
+    - goheader
+    - gomodguard
+    - goprintffuncname
+    - gosimple
+    - govet
+    - importas
+    - ineffassign
+    - makezero
+    - misspell
+    - nakedret
+    - nilnil
+    - nolintlint
+    - promlinter
+    - staticcheck
+    - stylecheck
+    - usetesting
+    - testableexamples
+    - testifylint
+    - thelper
+    - tparallel
+    - typecheck
+    - unconvert
+    - unused
+    - whitespace
+    - unparam
+    - revive
+    - usestdlibvars
+    - zerologlint
+
+linters-settings:
+  revive:
+    rules:
+      - name: function-result-limit
+        severity: warning
+        disabled: false
+        arguments: [5]
+
+issues:
+  exclude-files:
+    - ".*\\.pb\\.gw\\.go$"
+  exclude-rules:
+    - linters:
+        - stylecheck
+      text: "ST1003:" # requires identifiers with "id" to be "ID".
+    - linters:
+        - stylecheck
+      text: "ST1005:" # punctuation in error messages
+  max-issues-per-linter: 10000
+  max-same-issues: 10000

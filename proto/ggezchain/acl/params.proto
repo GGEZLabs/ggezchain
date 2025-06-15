@@ -1,0 +1,14 @@
+syntax = "proto3";
+package ggezchain.acl;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/GGEZLabs/ggezchain/x/acl/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "ggezchain/x/acl/Params";
+  option (gogoproto.equal) = true;
+
+  }
