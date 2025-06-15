@@ -6,7 +6,6 @@ import (
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	aclsimulation "github.com/GGEZLabs/ggezchain/x/acl/simulation"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
@@ -34,6 +33,22 @@ const (
 	opWeightMsgUpdateAuthority = "op_weight_msg_update_authority"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgUpdateAuthority int = 100
+
+	opWeightMsgInit = "op_weight_msg_init_acl_admin"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgInit int = 100
+
+	opWeightMsgAddAdmin = "op_weight_msg_add_acl_admin"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAddAdmin int = 100
+
+	opWeightMsgDeleteAdmin = "op_weight_msg_delete_acl_admin"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteAdmin int = 100
+
+	opWeightMsgUpdateSuperAdmin = "op_weight_msg_update_super_admin"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateSuperAdmin int = 100
 
 	// this line is used by starport scaffolding # simapp/module/const
 )
@@ -91,6 +106,50 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		aclsimulation.SimulateMsgUpdateAuthority(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
+	var weightMsgInit int
+	simState.AppParams.GetOrGenerate(opWeightMsgInit, &weightMsgInit, nil,
+		func(_ *rand.Rand) {
+			weightMsgInit = defaultWeightMsgInit
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgInit,
+		aclsimulation.SimulateMsgInit(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgAddAdmin int
+	simState.AppParams.GetOrGenerate(opWeightMsgAddAdmin, &weightMsgAddAdmin, nil,
+		func(_ *rand.Rand) {
+			weightMsgAddAdmin = defaultWeightMsgAddAdmin
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAddAdmin,
+		aclsimulation.SimulateMsgAddAdmin(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteAdmin int
+	simState.AppParams.GetOrGenerate(opWeightMsgDeleteAdmin, &weightMsgDeleteAdmin, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteAdmin = defaultWeightMsgDeleteAdmin
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteAdmin,
+		aclsimulation.SimulateMsgDeleteAdmin(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateSuperAdmin int
+	simState.AppParams.GetOrGenerate(opWeightMsgUpdateSuperAdmin, &weightMsgUpdateSuperAdmin, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateSuperAdmin = defaultWeightMsgUpdateSuperAdmin
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateSuperAdmin,
+		aclsimulation.SimulateMsgUpdateSuperAdmin(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -120,6 +179,38 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 			defaultWeightMsgUpdateAuthority,
 			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 				aclsimulation.SimulateMsgUpdateAuthority(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgInit,
+			defaultWeightMsgInit,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				aclsimulation.SimulateMsgInit(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgAddAdmin,
+			defaultWeightMsgAddAdmin,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				aclsimulation.SimulateMsgAddAdmin(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgDeleteAdmin,
+			defaultWeightMsgDeleteAdmin,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				aclsimulation.SimulateMsgDeleteAdmin(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgUpdateSuperAdmin,
+			defaultWeightMsgUpdateSuperAdmin,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				aclsimulation.SimulateMsgUpdateSuperAdmin(am.accountKeeper, am.bankKeeper, am.keeper)
 				return nil
 			},
 		),

@@ -35,11 +35,6 @@ func TestValidateAccessDefinitionList(t *testing.T) {
 			err:                     ErrInvalidModuleName,
 		},
 		{
-			name:                    "at least one of is_maker or is_checker must be true",
-			accessDefinitionListStr: `[{"module":"module1","is_maker":false,"is_checker":false}]`,
-			err:                     ErrRequireMakerOrChecker,
-		},
-		{
 			name:                    "all good",
 			accessDefinitionListStr: `[{"module":"module1","is_maker":false,"is_checker":true},{"module":"module2","is_maker":true,"is_checker":true}]`,
 			expectedOutput: []*AccessDefinition{
@@ -57,7 +52,7 @@ func TestValidateAccessDefinitionList(t *testing.T) {
 				return
 			}
 			require.NoError(t, err)
-			require.Equal(t, tt.expectedLen, len(accessDefinitions))
+			require.Len(t, accessDefinitions, tt.expectedLen)
 			require.Equal(t, tt.expectedOutput, accessDefinitions)
 		})
 	}
@@ -80,11 +75,7 @@ func TestValidateSingleAccessDefinition(t *testing.T) {
 			accessDefinitionStr: `{"module":"","is_maker":true,"is_checker":true}`,
 			err:                 ErrInvalidModuleName,
 		},
-		{
-			name:                "at least one of is_maker or is_checker must be true",
-			accessDefinitionStr: `{"module":"module1","is_maker":false,"is_checker":false}`,
-			err:                 ErrRequireMakerOrChecker,
-		},
+
 		{
 			name:                "all good",
 			accessDefinitionStr: `{"module":"module1","is_maker":false,"is_checker":true}`,
@@ -495,11 +486,6 @@ func TestValidateAndExtractModuleNames(t *testing.T) {
 			err:                 ErrInvalidModuleName,
 		},
 		{
-			name:                "at least one of is_maker or is_checker must be true",
-			addAccessDefinition: `[{"module":"module1","is_maker":false,"is_checker":false}]`,
-			err:                 ErrRequireMakerOrChecker,
-		},
-		{
 			name:                "return one module",
 			addAccessDefinition: `[{"module":"module1","is_maker":false,"is_checker":true}]`,
 			expectedOutput:      []string{"module1"},
@@ -522,7 +508,7 @@ func TestValidateAndExtractModuleNames(t *testing.T) {
 			}
 			require.NoError(t, err)
 			require.Equal(t, tt.expectedOutput, modules)
-			require.Equal(t, tt.expectedLen, len(modules))
+			require.Len(t, modules, tt.expectedLen)
 		})
 	}
 }
@@ -546,12 +532,6 @@ func TestValidateConflictBetweenAccessDefinition(t *testing.T) {
 			updateAccessDefinition: `{"module":"","is_maker":true,"is_checker":true}`,
 			removeList:             []string{""},
 			err:                    ErrInvalidModuleName,
-		},
-		{
-			name:                   "at least one of is_maker or is_checker must be true for update access definition",
-			updateAccessDefinition: `{"module":"module1","is_maker":false,"is_checker":false}`,
-			removeList:             []string{""},
-			err:                    ErrRequireMakerOrChecker,
 		},
 		{
 			name:                   "update and remove same module",
@@ -582,12 +562,6 @@ func TestValidateConflictBetweenAccessDefinition(t *testing.T) {
 			addAccessDefinition: `[{"module":"module1","is_maker":true,"is_checker":true},{"module":"module1","is_maker":true,"is_checker":true}]`,
 			removeList:          []string{""},
 			err:                 ErrInvalidModuleName,
-		},
-		{
-			name:                "at least one of is_maker or is_checker must be true for add access definition",
-			addAccessDefinition: `[{"module":"module1","is_maker":false,"is_checker":false}]`,
-			removeList:          []string{""},
-			err:                 ErrRequireMakerOrChecker,
 		},
 		{
 			name:                "add and remove same module",
@@ -623,50 +597,50 @@ func TestValidateConflictBetweenAccessDefinition(t *testing.T) {
 
 func TestValidateJSONFormat(t *testing.T) {
 	tests := []struct {
-		name          string
-		jsonStr       string
-		fieldName     string
-		expectedError bool
-		errMsg        string
+		name      string
+		jsonStr   string
+		fieldName string
+		expErr    bool
+		expErrMsg string
 	}{
 		{
-			name:          "invalid JSON format for field updateAccessDefinition",
-			jsonStr:       `{"module":"module1","is_maker":true "is_checker":true}`,
-			fieldName:     "updateAccessDefinition",
-			expectedError: true,
-			errMsg:        "invalid JSON format for field updateAccessDefinition",
+			name:      "invalid JSON format for field updateAccessDefinition",
+			jsonStr:   `{"module":"module1","is_maker":true "is_checker":true}`,
+			fieldName: "updateAccessDefinition",
+			expErr:    true,
+			expErrMsg: "invalid JSON format for field updateAccessDefinition",
 		},
 		{
-			name:          "invalid JSON format for field addAccessDefinition",
-			jsonStr:       `[{"module":"module1","is_maker":true "is_checker":true}]`,
-			fieldName:     "addAccessDefinition",
-			expectedError: true,
-			errMsg:        "invalid JSON format for field addAccessDefinition",
+			name:      "invalid JSON format for field addAccessDefinition",
+			jsonStr:   `[{"module":"module1","is_maker":true "is_checker":true}]`,
+			fieldName: "addAccessDefinition",
+			expErr:    true,
+			expErrMsg: "invalid JSON format for field addAccessDefinition",
 		},
 		{
-			name:          "empty string",
-			jsonStr:       "",
-			fieldName:     "updateAccessDefinition",
-			expectedError: false,
+			name:      "empty string",
+			jsonStr:   "",
+			fieldName: "updateAccessDefinition",
+			expErr:    false,
 		},
 		{
-			name:          "valid JSON format for field updateAccessDefinition",
-			jsonStr:       `{"module":"module1","is_maker":true, "is_checker":true}`,
-			fieldName:     "updateAccessDefinition",
-			expectedError: false,
+			name:      "valid JSON format for field updateAccessDefinition",
+			jsonStr:   `{"module":"module1","is_maker":true, "is_checker":true}`,
+			fieldName: "updateAccessDefinition",
+			expErr:    false,
 		},
 		{
-			name:          "valid JSON format for field addAccessDefinition",
-			jsonStr:       `[{"module":"module1","is_maker":true, "is_checker":true}]`,
-			fieldName:     "addAccessDefinition",
-			expectedError: false,
+			name:      "valid JSON format for field addAccessDefinition",
+			jsonStr:   `[{"module":"module1","is_maker":true, "is_checker":true}]`,
+			fieldName: "addAccessDefinition",
+			expErr:    false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := validateJSONFormat(tt.jsonStr, tt.fieldName)
-			if tt.expectedError {
-				require.Contains(t, err.Error(), tt.errMsg)
+			if tt.expErr {
+				require.Contains(t, err.Error(), tt.expErrMsg)
 				return
 			}
 			require.NoError(t, err)
@@ -676,46 +650,46 @@ func TestValidateJSONFormat(t *testing.T) {
 
 func TestValidateDeletedModules(t *testing.T) {
 	tests := []struct {
-		name          string
-		modules       []string
-		expectedError bool
-		errMsg        string
+		name      string
+		modules   []string
+		expErr    bool
+		expErrMsg string
 	}{
 		{
-			name:          "empty module name",
-			modules:       []string{""},
-			expectedError: true,
-			errMsg:        "module name cannot be empty",
+			name:      "empty module name",
+			modules:   []string{""},
+			expErr:    true,
+			expErrMsg: "module name cannot be empty",
 		},
 		{
-			name:          "white space module name",
-			modules:       []string{"    "},
-			expectedError: true,
-			errMsg:        "module name cannot be empty",
+			name:      "white space module name",
+			modules:   []string{"    "},
+			expErr:    true,
+			expErrMsg: "module name cannot be empty",
 		},
 		{
-			name:          "duplicate module name",
-			modules:       []string{"module1", "module1"},
-			expectedError: true,
-			errMsg:        "module1 module(s) is duplicates",
+			name:      "duplicate module name",
+			modules:   []string{"module1", "module1"},
+			expErr:    true,
+			expErrMsg: "module1 module(s) is duplicates",
 		},
 		{
-			name:          "two duplicate module name",
-			modules:       []string{"module1", "module1", "module2", "module2"},
-			expectedError: true,
-			errMsg:        "module1, module2 module(s) is duplicates",
+			name:      "two duplicate module name",
+			modules:   []string{"module1", "module1", "module2", "module2"},
+			expErr:    true,
+			expErrMsg: "module1, module2 module(s) is duplicates",
 		},
 		{
-			name:          "all good",
-			modules:       []string{"module1", "module2"},
-			expectedError: false,
+			name:    "all good",
+			modules: []string{"module1", "module2"},
+			expErr:  false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := ValidateDeletedModules(tt.modules)
-			if tt.expectedError {
-				require.Contains(t, err.Error(), tt.errMsg)
+			if tt.expErr {
+				require.Contains(t, err.Error(), tt.expErrMsg)
 				return
 			}
 			require.NoError(t, err)

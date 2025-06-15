@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetAccessDefinitionsString(t *testing.T) {
+func TestAccessDefinitionsJSON(t *testing.T) {
 	t.Run("nil AccessDefinitions", func(t *testing.T) {
 		acl := AclAuthority{
 			AccessDefinitions: nil,

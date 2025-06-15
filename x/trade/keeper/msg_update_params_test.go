@@ -4,9 +4,8 @@ import (
 	"testing"
 
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	"github.com/stretchr/testify/require"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgUpdateParams(t *testing.T) {

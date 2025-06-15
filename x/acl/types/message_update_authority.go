@@ -2,7 +2,6 @@ package types
 
 import (
 	errorsmod "cosmossdk.io/errors"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -33,7 +32,7 @@ func (msg *MsgUpdateAuthority) ValidateBasic() error {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid auth-address (%s)", err)
 	}
 
-	// check if none of the flags provided
+	// Check if none of the flags provided
 	hasUpdate := msg.NewName != "" ||
 		msg.OverwriteAccessDefinitions != "" ||
 		msg.AddAccessDefinitions != "" ||
@@ -45,7 +44,7 @@ func (msg *MsgUpdateAuthority) ValidateBasic() error {
 		return ErrNoUpdateFlags
 	}
 
-	// if OverwriteAccessDefinitions passed ignores other access definition flags
+	// If OverwriteAccessDefinitions passed ignores other access definition flags
 	if msg.OverwriteAccessDefinitions != "" {
 		if msg.ClearAllAccessDefinitions || msg.UpdateAccessDefinition != "" || msg.AddAccessDefinitions != "" || len(msg.DeleteAccessDefinitions) > 0 {
 			return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "overwrite-access-definitions cannot be combined with other access definition flags")
@@ -53,7 +52,7 @@ func (msg *MsgUpdateAuthority) ValidateBasic() error {
 		return validateJSONFormat(msg.OverwriteAccessDefinitions, "overwrite-access-definitions")
 	}
 
-	// if ClearAllAccessDefinitions is true ignores other access definition flags
+	// If ClearAllAccessDefinitions is true ignores other access definition flags
 	if msg.ClearAllAccessDefinitions {
 		if msg.UpdateAccessDefinition != "" || msg.AddAccessDefinitions != "" || len(msg.DeleteAccessDefinitions) > 0 {
 			return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "clear-all-access-definitions cannot be combined with other access definition flags")

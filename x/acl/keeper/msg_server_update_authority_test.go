@@ -5,9 +5,8 @@ import (
 
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
-	"github.com/stretchr/testify/require"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgUpdateAuthority(t *testing.T) {
@@ -24,7 +23,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 		},
 	}
 	k.SetAclAuthority(ctx, aclAuthority)
-	require.NoError(t, k.SetParams(ctx, types.Params{Admin: admin}))
+	k.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
 	wctx := sdk.UnwrapSDKContext(ctx)
 
 	testCases := []struct {
@@ -70,7 +69,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 				OverwriteAccessDefinitions: `[{"module":"trade","is_maker":true "is_checker":true}]`,
 			},
 			expErr:    true,
-			expErrMsg: "invalid AccessDefinitionList format",
+			expErrMsg: "invalid access definition list format",
 		},
 		{
 			name: "invalid overwrite access definitions (empty module)",
@@ -93,16 +92,6 @@ func TestMsgUpdateAuthority(t *testing.T) {
 			expErrMsg: "module1 module(s) is duplicates",
 		},
 		{
-			name: "invalid overwrite access definitions (at least one of is_maker or is_checker must be true)",
-			input: &types.MsgUpdateAuthority{
-				Creator:                    admin,
-				AuthAddress:                alice,
-				OverwriteAccessDefinitions: `[{"module":"module1","is_maker":false,"is_checker":false}]`,
-			},
-			expErr:    true,
-			expErrMsg: "at least one of is_maker or is_checker must be true",
-		},
-		{
 			name: "invalid update access definitions format",
 			input: &types.MsgUpdateAuthority{
 				Creator:                admin,
@@ -110,7 +99,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 				UpdateAccessDefinition: `{"module":"trade","is_maker":true "is_checker":true}`,
 			},
 			expErr:    true,
-			expErrMsg: "invalid AccessDefinitionObject format",
+			expErrMsg: "invalid access definition object format",
 		},
 		{
 			name: "invalid add access definitions format",
@@ -120,7 +109,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 				AddAccessDefinitions: `[{"module":"trade","is_maker":true "is_checker":true}]`,
 			},
 			expErr:    true,
-			expErrMsg: "invalid AccessDefinitionList format",
+			expErrMsg: "invalid access definition list format",
 		},
 		{
 			name: "invalid delete access definitions (module not exist)",

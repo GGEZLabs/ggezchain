@@ -3,10 +3,8 @@ package keeper
 import (
 	"context"
 
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
-
 	errorsmod "cosmossdk.io/errors"
-
+	"github.com/GGEZLabs/ggezchain/x/acl/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

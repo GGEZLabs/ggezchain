@@ -1,0 +1,10 @@
+syntax = "proto3";
+package ggezchain.acl;
+
+option go_package = "github.com/GGEZLabs/ggezchain/x/acl/types";
+
+message AclAdmin {
+  string address = 1; 
+  
+}
+

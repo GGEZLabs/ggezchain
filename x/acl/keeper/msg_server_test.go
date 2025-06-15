@@ -10,8 +10,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func setupMsgServer(t testing.TB) (keeper.Keeper, types.MsgServer, context.Context) {
-	k, ctx := keepertest.AclKeeper(t)
+func setupMsgServer(tb testing.TB) (keeper.Keeper, types.MsgServer, context.Context) {
+	tb.Helper()
+	k, ctx := keepertest.AclKeeper(tb)
 	return k, keeper.NewMsgServerImpl(k), ctx
 }
 

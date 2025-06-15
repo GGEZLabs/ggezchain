@@ -73,7 +73,7 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 		accessDefinitionListStr string
 		expectedOutput          []*types.AccessDefinition
 		expectedLen             int
-		expectError             bool
+		expErr                  bool
 		expErrMsg               string
 	}{
 		{
@@ -83,7 +83,7 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 				Name:    "Alice",
 			},
 			accessDefinitionListStr: `[]`,
-			expectError:             true,
+			expErr:                  true,
 			expErrMsg:               "access definition list is empty",
 		},
 		{
@@ -93,8 +93,8 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 				Name:    "Alice",
 			},
 			accessDefinitionListStr: `[{"module":"module4","is_maker":true "is_checker":true}]`,
-			expectError:             true,
-			expErrMsg:               "invalid AccessDefinitionList format",
+			expErr:                  true,
+			expErrMsg:               "invalid access definition list format",
 		},
 		{
 			name: "empty module name",
@@ -103,7 +103,7 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 				Name:    "Alice",
 			},
 			accessDefinitionListStr: `[{"module":"","is_maker":true,"is_checker":true}]`,
-			expectError:             true,
+			expErr:                  true,
 			expErrMsg:               "invalid module name",
 		},
 		{
@@ -113,18 +113,8 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 				Name:    "Alice",
 			},
 			accessDefinitionListStr: `[{"module":"module1","is_maker":true,"is_checker":true},{"module":"module1","is_maker":true,"is_checker":true}]`,
-			expectError:             true,
+			expErr:                  true,
 			expErrMsg:               "invalid module name",
-		},
-		{
-			name: "at least one of is_maker or is_checker must be true",
-			inputAclAuthority: types.AclAuthority{
-				Address: addr,
-				Name:    "Alice",
-			},
-			accessDefinitionListStr: `[{"module":"module5","is_maker":false,"is_checker":false}]`,
-			expectError:             true,
-			expErrMsg:               "at least one of is_maker or is_checker must be true",
 		},
 		{
 			name: "all good",
@@ -138,19 +128,19 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 				{Module: "module3", IsMaker: false, IsChecker: true},
 			},
 			expectedLen: 2,
-			expectError: false,
+			expErr:      false,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			aclAuthority, err := keeper.OverwriteAccessDefinitionList(tc.inputAclAuthority, tc.accessDefinitionListStr)
-			if tc.expectError {
+			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, tc.expectedLen, len(aclAuthority.AccessDefinitions))
+				require.Len(t, aclAuthority.AccessDefinitions, tc.expectedLen)
 				require.Equal(t, tc.expectedOutput, aclAuthority.AccessDefinitions)
 			}
 		})
@@ -165,7 +155,7 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 		inputAclAuthority          types.AclAuthority
 		singleAccessDefinitionsStr string
 		expectedOutput             []*types.AccessDefinition
-		expectError                bool
+		expErr                     bool
 		expErrMsg                  string
 	}{
 		{
@@ -176,8 +166,8 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 				AccessDefinitions: []*types.AccessDefinition{},
 			},
 			singleAccessDefinitionsStr: `{"module":"module1","is_maker":true "is_checker":false}`,
-			expectError:                true,
-			expErrMsg:                  "invalid AccessDefinitionObject format",
+			expErr:                     true,
+			expErrMsg:                  "invalid access definition object format",
 		},
 		{
 			name: "update empty module",
@@ -187,21 +177,8 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 				AccessDefinitions: []*types.AccessDefinition{},
 			},
 			singleAccessDefinitionsStr: `{"module":"","is_maker":true ,"is_checker":false}`,
-			expectError:                true,
+			expErr:                     true,
 			expErrMsg:                  "invalid module name",
-		},
-		{
-			name: "at least one of is_maker or is_checker must be true",
-			inputAclAuthority: types.AclAuthority{
-				Address: addr,
-				Name:    "Alice",
-				AccessDefinitions: []*types.AccessDefinition{
-					{Module: "module1", IsMaker: false, IsChecker: false},
-				},
-			},
-			singleAccessDefinitionsStr: `{"module":"module1","is_maker":false ,"is_checker":false}`,
-			expectError:                true,
-			expErrMsg:                  "at least one of is_maker or is_checker must be true",
 		},
 		{
 			name: "fail when module does not exist in current ACL list",
@@ -213,7 +190,7 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 				},
 			},
 			singleAccessDefinitionsStr: `{"module":"module2","is_maker":true,"is_checker":false}`,
-			expectError:                true,
+			expErr:                     true,
 			expErrMsg:                  "module not exist",
 		},
 		{
@@ -229,19 +206,19 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 			expectedOutput: []*types.AccessDefinition{
 				{Module: "module1", IsMaker: true, IsChecker: false},
 			},
-			expectError: false,
+			expErr: false,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			aclAuthority, err := keeper.UpdateAccessDefinitions(tc.inputAclAuthority, tc.singleAccessDefinitionsStr)
-			if tc.expectError {
+			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, aclAuthority.AccessDefinitions, tc.expectedOutput)
+				require.Equal(t, tc.expectedOutput, aclAuthority.AccessDefinitions)
 			}
 		})
 	}
@@ -256,7 +233,7 @@ func TestAddAccessDefinitions(t *testing.T) {
 		accessDefinitionsListStr string
 		expectedOutput           []*types.AccessDefinition
 		expectedLen              int
-		expectError              bool
+		expErr                   bool
 		expErrMsg                string
 	}{
 		{
@@ -266,7 +243,7 @@ func TestAddAccessDefinitions(t *testing.T) {
 				Name:    "Alice",
 			},
 			accessDefinitionsListStr: `[]`,
-			expectError:              true,
+			expErr:                   true,
 			expErrMsg:                "access definition list is empty",
 		},
 		{
@@ -276,8 +253,8 @@ func TestAddAccessDefinitions(t *testing.T) {
 				Name:    "Alice",
 			},
 			accessDefinitionsListStr: `[{"module":"module4","is_maker":true "is_checker":true}]`,
-			expectError:              true,
-			expErrMsg:                "invalid AccessDefinitionList format",
+			expErr:                   true,
+			expErrMsg:                "invalid access definition list format",
 		},
 		{
 			name: "empty module name",
@@ -286,7 +263,7 @@ func TestAddAccessDefinitions(t *testing.T) {
 				Name:    "Alice",
 			},
 			accessDefinitionsListStr: `[{"module":"","is_maker":true,"is_checker":true}]`,
-			expectError:              true,
+			expErr:                   true,
 			expErrMsg:                "invalid module name",
 		},
 		{
@@ -296,18 +273,8 @@ func TestAddAccessDefinitions(t *testing.T) {
 				Name:    "Alice",
 			},
 			accessDefinitionsListStr: `[{"module":"module1","is_maker":true,"is_checker":true},{"module":"module1","is_maker":true,"is_checker":true}]`,
-			expectError:              true,
+			expErr:                   true,
 			expErrMsg:                "invalid module name",
-		},
-		{
-			name: "at least one of is_maker or is_checker must be true",
-			inputAclAuthority: types.AclAuthority{
-				Address: addr,
-				Name:    "Alice",
-			},
-			accessDefinitionsListStr: `[{"module":"module5","is_maker":false,"is_checker":false}]`,
-			expectError:              true,
-			expErrMsg:                "at least one of is_maker or is_checker must be true",
 		},
 		{
 			name: "add existing module",
@@ -319,7 +286,7 @@ func TestAddAccessDefinitions(t *testing.T) {
 				},
 			},
 			accessDefinitionsListStr: `[{"module":"module1","is_maker":true,"is_checker":true}]`,
-			expectError:              true,
+			expErr:                   true,
 			expErrMsg:                "module already exist",
 		},
 		{
@@ -338,19 +305,19 @@ func TestAddAccessDefinitions(t *testing.T) {
 				{Module: "module3", IsMaker: true, IsChecker: true},
 			},
 			expectedLen: 3,
-			expectError: false,
+			expErr:      false,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			aclAuthority, err := keeper.AddAccessDefinitions(tc.inputAclAuthority, tc.accessDefinitionsListStr)
-			if tc.expectError {
+			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, tc.expectedLen, len(aclAuthority.AccessDefinitions))
+				require.Len(t, aclAuthority.AccessDefinitions, tc.expectedLen)
 				require.Equal(t, tc.expectedOutput, aclAuthority.AccessDefinitions)
 			}
 		})
@@ -366,7 +333,7 @@ func TestDeleteAccessDefinitions(t *testing.T) {
 		moduleNames       []string
 		expectedOutput    []*types.AccessDefinition
 		expectedLen       int
-		expectError       bool
+		expErr            bool
 		expErrMsg         string
 	}{
 		{
@@ -376,7 +343,7 @@ func TestDeleteAccessDefinitions(t *testing.T) {
 				Name:    "Alice",
 			},
 			moduleNames: []string{},
-			expectError: true,
+			expErr:      true,
 			expErrMsg:   "invalid module name",
 		},
 		{
@@ -386,7 +353,7 @@ func TestDeleteAccessDefinitions(t *testing.T) {
 				Name:    "Alice",
 			},
 			moduleNames: []string{"module1"},
-			expectError: true,
+			expErr:      true,
 			expErrMsg:   "access definition list is empty",
 		},
 
@@ -401,7 +368,7 @@ func TestDeleteAccessDefinitions(t *testing.T) {
 			},
 			moduleNames: []string{"module2"},
 			expectedLen: 0,
-			expectError: true,
+			expErr:      true,
 			expErrMsg:   "module not exist",
 		},
 		{
@@ -422,19 +389,19 @@ func TestDeleteAccessDefinitions(t *testing.T) {
 				{Module: "module4", IsMaker: true, IsChecker: false},
 			},
 			expectedLen: 2,
-			expectError: false,
+			expErr:      false,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			aclAuthority, err := keeper.DeleteAccessDefinitions(tc.inputAclAuthority, tc.moduleNames)
-			if tc.expectError {
+			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t, tc.expectedLen, len(aclAuthority.AccessDefinitions))
+				require.Len(t, aclAuthority.AccessDefinitions, tc.expectedLen)
 				require.Equal(t, tc.expectedOutput, aclAuthority.AccessDefinitions)
 			}
 		})
@@ -486,7 +453,7 @@ func TestClearAllAccessDefinitions(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			aclAuthority := keeper.ClearAllAccessDefinitions(tc.inputAclAuthority)
-			require.Equal(t, tc.expectedLen, len(aclAuthority.AccessDefinitions))
+			require.Len(t, aclAuthority.AccessDefinitions, tc.expectedLen)
 		})
 	}
 }

@@ -5,9 +5,8 @@ import (
 
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
-	"github.com/stretchr/testify/require"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgAddAuthority(t *testing.T) {
@@ -22,7 +21,7 @@ func TestMsgAddAuthority(t *testing.T) {
 		AccessDefinitions: []*types.AccessDefinition{},
 	}
 	k.SetAclAuthority(ctx, aclAuthority)
-	require.NoError(t, k.SetParams(ctx, types.Params{Admin: admin}))
+	k.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
 	wctx := sdk.UnwrapSDKContext(ctx)
 
 	testCases := []struct {
@@ -62,7 +61,7 @@ func TestMsgAddAuthority(t *testing.T) {
 				AccessDefinitions: `[{"module":"trade","is_maker":true "is_checker":true}]`,
 			},
 			expErr:    true,
-			expErrMsg: "invalid AccessDefinitionList format",
+			expErrMsg: "invalid access definition list format",
 		},
 		{
 			name: "empty access definition list",
@@ -96,17 +95,6 @@ func TestMsgAddAuthority(t *testing.T) {
 			},
 			expErr:    true,
 			expErrMsg: "invalid module name",
-		},
-		{
-			name: "at least one of is_maker or is_checker must be true",
-			input: &types.MsgAddAuthority{
-				Creator:           admin,
-				AuthAddress:       bob,
-				Name:              "Bob",
-				AccessDefinitions: `[{"module":"module1","is_maker":false,"is_checker":false}]`,
-			},
-			expErr:    true,
-			expErrMsg: "at least one of is_maker or is_checker must be true",
 		},
 		{
 			name: "all good",

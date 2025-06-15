@@ -2,21 +2,16 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
-	"path/filepath"
 	"testing"
 	"time"
 
+	"cosmossdk.io/log"
+	sdkmath "cosmossdk.io/math"
 	abci "github.com/cometbft/cometbft/abci/types"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttypes "github.com/cometbft/cometbft/types"
 	dbm "github.com/cosmos/cosmos-db"
-	"github.com/stretchr/testify/require"
-
-	"cosmossdk.io/log"
-	sdkmath "cosmossdk.io/math"
-
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
 	"github.com/cosmos/cosmos-sdk/server"
 	"github.com/cosmos/cosmos-sdk/testutil/mock"
@@ -24,6 +19,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/stretchr/testify/require"
 )
 
 // DefaultConsensusParams defines the default Tendermint consensus params used in
@@ -52,29 +48,6 @@ func setup(withGenesis bool, invCheckPeriod uint) (*App, GenesisState) {
 	tmpDir, err := os.MkdirTemp("", "ggezchain_test_")
 	if err != nil {
 		panic(err)
-	}
-
-	// Create the config directory inside tmpDir
-	configDir := filepath.Join(tmpDir, "config")
-	if err := os.MkdirAll(configDir, 0o755); err != nil {
-		panic(fmt.Sprintf("failed to create config directory: %v", err))
-	}
-
-	// Create the chain_acl.json file inside configDir
-	aclFilePath := filepath.Join(configDir, "chain_acl.json")
-
-	userHomeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(fmt.Sprintf("failed to get user home directory: %v", err))
-	}
-	chainAclPath := userHomeDir + "/ggezchain/chain_acl.json"
-	chainAclContent, err := os.ReadFile(chainAclPath)
-	if err != nil {
-		panic(fmt.Sprintf("failed to read chain_acl.json: %v, make sure that is exist in this path: %s", err, chainAclPath))
-	}
-
-	if err := os.WriteFile(aclFilePath, []byte(chainAclContent), 0o644); err != nil {
-		panic(fmt.Sprintf("failed to create chain_acl.json: %v", err))
 	}
 
 	appOptions := make(simtestutil.AppOptionsMap, 0)
@@ -161,16 +134,26 @@ func SetupWithGenesisAccounts(genAccs []authtypes.GenesisAccount, balances ...ba
 		panic(err)
 	}
 
-	app.InitChain(
+	_, err = app.InitChain(
 		&abci.RequestInitChain{
 			Validators:      []abci.ValidatorUpdate{},
 			ConsensusParams: DefaultConsensusParams,
 			AppStateBytes:   stateBytes,
 		},
 	)
+	if err != nil {
+		panic(err)
+	}
 
-	app.Commit()
-	app.FinalizeBlock(&abci.RequestFinalizeBlock{Height: app.LastBlockHeight() + 1})
+	_, err = app.Commit()
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = app.FinalizeBlock(&abci.RequestFinalizeBlock{Height: app.LastBlockHeight() + 1})
+	if err != nil {
+		panic(err)
+	}
 
 	return app
 }

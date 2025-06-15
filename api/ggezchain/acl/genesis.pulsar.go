@@ -2,18 +2,16 @@
 package acl
 
 import (
-	fmt "fmt"
-	io "io"
-	reflect "reflect"
-	sync "sync"
-
 	_ "cosmossdk.io/api/amino"
-
+	fmt "fmt"
 	runtime "github.com/cosmos/cosmos-proto/runtime"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	io "io"
+	reflect "reflect"
+	sync "sync"
 )
 
 var _ protoreflect.List = (*_GenesisState_2_list)(nil)
@@ -67,10 +65,63 @@ func (x *_GenesisState_2_list) IsValid() bool {
 	return x.list != nil
 }
 
+var _ protoreflect.List = (*_GenesisState_3_list)(nil)
+
+type _GenesisState_3_list struct {
+	list *[]*AclAdmin
+}
+
+func (x *_GenesisState_3_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_GenesisState_3_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
+}
+
+func (x *_GenesisState_3_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*AclAdmin)
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_GenesisState_3_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*AclAdmin)
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_GenesisState_3_list) AppendMutable() protoreflect.Value {
+	v := new(AclAdmin)
+	*x.list = append(*x.list, v)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_GenesisState_3_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_GenesisState_3_list) NewElement() protoreflect.Value {
+	v := new(AclAdmin)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_GenesisState_3_list) IsValid() bool {
+	return x.list != nil
+}
+
 var (
 	md_GenesisState                    protoreflect.MessageDescriptor
 	fd_GenesisState_params             protoreflect.FieldDescriptor
 	fd_GenesisState_acl_authority_list protoreflect.FieldDescriptor
+	fd_GenesisState_acl_admin_list     protoreflect.FieldDescriptor
+	fd_GenesisState_super_admin        protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -78,6 +129,8 @@ func init() {
 	md_GenesisState = File_ggezchain_acl_genesis_proto.Messages().ByName("GenesisState")
 	fd_GenesisState_params = md_GenesisState.Fields().ByName("params")
 	fd_GenesisState_acl_authority_list = md_GenesisState.Fields().ByName("acl_authority_list")
+	fd_GenesisState_acl_admin_list = md_GenesisState.Fields().ByName("acl_admin_list")
+	fd_GenesisState_super_admin = md_GenesisState.Fields().ByName("super_admin")
 }
 
 var _ protoreflect.Message = (*fastReflection_GenesisState)(nil)
@@ -100,21 +153,17 @@ func (x *GenesisState) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var (
-	_fastReflection_GenesisState_messageType fastReflection_GenesisState_messageType
-	_                                        protoreflect.MessageType = fastReflection_GenesisState_messageType{}
-)
+var _fastReflection_GenesisState_messageType fastReflection_GenesisState_messageType
+var _ protoreflect.MessageType = fastReflection_GenesisState_messageType{}
 
 type fastReflection_GenesisState_messageType struct{}
 
 func (x fastReflection_GenesisState_messageType) Zero() protoreflect.Message {
 	return (*fastReflection_GenesisState)(nil)
 }
-
 func (x fastReflection_GenesisState_messageType) New() protoreflect.Message {
 	return new(fastReflection_GenesisState)
 }
-
 func (x fastReflection_GenesisState_messageType) Descriptor() protoreflect.MessageDescriptor {
 	return md_GenesisState
 }
@@ -161,6 +210,18 @@ func (x *fastReflection_GenesisState) Range(f func(protoreflect.FieldDescriptor,
 			return
 		}
 	}
+	if len(x.AclAdminList) != 0 {
+		value := protoreflect.ValueOfList(&_GenesisState_3_list{list: &x.AclAdminList})
+		if !f(fd_GenesisState_acl_admin_list, value) {
+			return
+		}
+	}
+	if x.SuperAdmin != nil {
+		value := protoreflect.ValueOfMessage(x.SuperAdmin.ProtoReflect())
+		if !f(fd_GenesisState_super_admin, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -180,6 +241,10 @@ func (x *fastReflection_GenesisState) Has(fd protoreflect.FieldDescriptor) bool 
 		return x.Params != nil
 	case "ggezchain.acl.GenesisState.acl_authority_list":
 		return len(x.AclAuthorityList) != 0
+	case "ggezchain.acl.GenesisState.acl_admin_list":
+		return len(x.AclAdminList) != 0
+	case "ggezchain.acl.GenesisState.super_admin":
+		return x.SuperAdmin != nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.GenesisState"))
@@ -200,6 +265,10 @@ func (x *fastReflection_GenesisState) Clear(fd protoreflect.FieldDescriptor) {
 		x.Params = nil
 	case "ggezchain.acl.GenesisState.acl_authority_list":
 		x.AclAuthorityList = nil
+	case "ggezchain.acl.GenesisState.acl_admin_list":
+		x.AclAdminList = nil
+	case "ggezchain.acl.GenesisState.super_admin":
+		x.SuperAdmin = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.GenesisState"))
@@ -225,6 +294,15 @@ func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescripto
 		}
 		listValue := &_GenesisState_2_list{list: &x.AclAuthorityList}
 		return protoreflect.ValueOfList(listValue)
+	case "ggezchain.acl.GenesisState.acl_admin_list":
+		if len(x.AclAdminList) == 0 {
+			return protoreflect.ValueOfList(&_GenesisState_3_list{})
+		}
+		listValue := &_GenesisState_3_list{list: &x.AclAdminList}
+		return protoreflect.ValueOfList(listValue)
+	case "ggezchain.acl.GenesisState.super_admin":
+		value := x.SuperAdmin
+		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.GenesisState"))
@@ -251,6 +329,12 @@ func (x *fastReflection_GenesisState) Set(fd protoreflect.FieldDescriptor, value
 		lv := value.List()
 		clv := lv.(*_GenesisState_2_list)
 		x.AclAuthorityList = *clv.list
+	case "ggezchain.acl.GenesisState.acl_admin_list":
+		lv := value.List()
+		clv := lv.(*_GenesisState_3_list)
+		x.AclAdminList = *clv.list
+	case "ggezchain.acl.GenesisState.super_admin":
+		x.SuperAdmin = value.Message().Interface().(*SuperAdmin)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.GenesisState"))
@@ -282,6 +366,17 @@ func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) p
 		}
 		value := &_GenesisState_2_list{list: &x.AclAuthorityList}
 		return protoreflect.ValueOfList(value)
+	case "ggezchain.acl.GenesisState.acl_admin_list":
+		if x.AclAdminList == nil {
+			x.AclAdminList = []*AclAdmin{}
+		}
+		value := &_GenesisState_3_list{list: &x.AclAdminList}
+		return protoreflect.ValueOfList(value)
+	case "ggezchain.acl.GenesisState.super_admin":
+		if x.SuperAdmin == nil {
+			x.SuperAdmin = new(SuperAdmin)
+		}
+		return protoreflect.ValueOfMessage(x.SuperAdmin.ProtoReflect())
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.GenesisState"))
@@ -301,6 +396,12 @@ func (x *fastReflection_GenesisState) NewField(fd protoreflect.FieldDescriptor) 
 	case "ggezchain.acl.GenesisState.acl_authority_list":
 		list := []*AclAuthority{}
 		return protoreflect.ValueOfList(&_GenesisState_2_list{list: &list})
+	case "ggezchain.acl.GenesisState.acl_admin_list":
+		list := []*AclAdmin{}
+		return protoreflect.ValueOfList(&_GenesisState_3_list{list: &list})
+	case "ggezchain.acl.GenesisState.super_admin":
+		m := new(SuperAdmin)
+		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.acl.GenesisState"))
@@ -380,6 +481,16 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
+		if len(x.AclAdminList) > 0 {
+			for _, e := range x.AclAdminList {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
+		}
+		if x.SuperAdmin != nil {
+			l = options.Size(x.SuperAdmin)
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -408,6 +519,36 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.SuperAdmin != nil {
+			encoded, err := options.Marshal(x.SuperAdmin)
+			if err != nil {
+				return protoiface.MarshalOutput{
+					NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+					Buf:               input.Buf,
+				}, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+			i--
+			dAtA[i] = 0x22
+		}
+		if len(x.AclAdminList) > 0 {
+			for iNdEx := len(x.AclAdminList) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.AclAdminList[iNdEx])
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0x1a
+			}
 		}
 		if len(x.AclAuthorityList) > 0 {
 			for iNdEx := len(x.AclAuthorityList) - 1; iNdEx >= 0; iNdEx-- {
@@ -558,6 +699,76 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
+			case 3:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AclAdminList", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.AclAdminList = append(x.AclAdminList, &AclAdmin{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.AclAdminList[len(x.AclAdminList)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			case 4:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SuperAdmin", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.SuperAdmin == nil {
+					x.SuperAdmin = &SuperAdmin{}
+				}
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.SuperAdmin); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -615,6 +826,8 @@ type GenesisState struct {
 	// params defines all the parameters of the module.
 	Params           *Params         `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
 	AclAuthorityList []*AclAuthority `protobuf:"bytes,2,rep,name=acl_authority_list,json=aclAuthorityList,proto3" json:"acl_authority_list,omitempty"`
+	AclAdminList     []*AclAdmin     `protobuf:"bytes,3,rep,name=acl_admin_list,json=aclAdminList,proto3" json:"acl_admin_list,omitempty"`
+	SuperAdmin       *SuperAdmin     `protobuf:"bytes,4,opt,name=super_admin,json=superAdmin,proto3" json:"super_admin,omitempty"`
 }
 
 func (x *GenesisState) Reset() {
@@ -651,6 +864,20 @@ func (x *GenesisState) GetAclAuthorityList() []*AclAuthority {
 	return nil
 }
 
+func (x *GenesisState) GetAclAdminList() []*AclAdmin {
+	if x != nil {
+		return x.AclAdminList
+	}
+	return nil
+}
+
+func (x *GenesisState) GetSuperAdmin() *SuperAdmin {
+	if x != nil {
+		return x.SuperAdmin
+	}
+	return nil
+}
+
 var File_ggezchain_acl_genesis_proto protoreflect.FileDescriptor
 
 var file_ggezchain_acl_genesis_proto_rawDesc = []byte{
@@ -663,28 +890,40 @@ var file_ggezchain_acl_genesis_proto_rawDesc = []byte{
 	0x2f, 0x61, 0x63, 0x6c, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x1a, 0x21, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x63, 0x6c,
 	0x2f, 0x61, 0x63, 0x6c, 0x5f, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x22, 0x99, 0x01, 0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73,
+	0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1d, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f,
+	0x61, 0x63, 0x6c, 0x2f, 0x61, 0x63, 0x6c, 0x5f, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61,
+	0x63, 0x6c, 0x2f, 0x73, 0x75, 0x70, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x22, 0xa4, 0x02, 0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73,
 	0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x38, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69,
 	0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x42, 0x09, 0xc8, 0xde,
 	0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12,
-	0x4f, 0x0a, 0x12, 0x61, 0x63, 0x6c, 0x5f, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79,
+	0x54, 0x0a, 0x12, 0x61, 0x63, 0x6c, 0x5f, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79,
 	0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x67, 0x67,
 	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x41, 0x63, 0x6c, 0x41,
-	0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x10,
-	0x61, 0x63, 0x6c, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x4c, 0x69, 0x73, 0x74,
-	0x42, 0xa7, 0x01, 0x0a, 0x11, 0x63, 0x6f, 0x6d, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61,
-	0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x42, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x50,
-	0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x2f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
-	0x6f, 0x6d, 0x2f, 0x47, 0x47, 0x45, 0x5a, 0x4c, 0x61, 0x62, 0x73, 0x2f, 0x67, 0x67, 0x65, 0x7a,
-	0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x2f, 0x61, 0x63, 0x6c, 0xa2, 0x02, 0x03, 0x47, 0x41, 0x58, 0xaa, 0x02, 0x0d,
-	0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x41, 0x63, 0x6c, 0xca, 0x02, 0x0d,
-	0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x41, 0x63, 0x6c, 0xe2, 0x02, 0x19,
-	0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x41, 0x63, 0x6c, 0x5c, 0x47, 0x50,
-	0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x47, 0x67, 0x65, 0x7a,
-	0x63, 0x68, 0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x41, 0x63, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7,
+	0xb0, 0x2a, 0x01, 0x52, 0x10, 0x61, 0x63, 0x6c, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x69, 0x74,
+	0x79, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x48, 0x0a, 0x0e, 0x61, 0x63, 0x6c, 0x5f, 0x61, 0x64, 0x6d,
+	0x69, 0x6e, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x17, 0x2e,
+	0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x41, 0x63,
+	0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a,
+	0x01, 0x52, 0x0c, 0x61, 0x63, 0x6c, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x4c, 0x69, 0x73, 0x74, 0x12,
+	0x3a, 0x0a, 0x0b, 0x73, 0x75, 0x70, 0x65, 0x72, 0x5f, 0x61, 0x64, 0x6d, 0x69, 0x6e, 0x18, 0x04,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x2e, 0x61, 0x63, 0x6c, 0x2e, 0x53, 0x75, 0x70, 0x65, 0x72, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x52,
+	0x0a, 0x73, 0x75, 0x70, 0x65, 0x72, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x42, 0xa7, 0x01, 0x0a, 0x11,
+	0x63, 0x6f, 0x6d, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x61, 0x63,
+	0x6c, 0x42, 0x0c, 0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50,
+	0x01, 0x5a, 0x2f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x47, 0x47,
+	0x45, 0x5a, 0x4c, 0x61, 0x62, 0x73, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x2f, 0x61, 0x70, 0x69, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61,
+	0x63, 0x6c, 0xa2, 0x02, 0x03, 0x47, 0x41, 0x58, 0xaa, 0x02, 0x0d, 0x47, 0x67, 0x65, 0x7a, 0x63,
+	0x68, 0x61, 0x69, 0x6e, 0x2e, 0x41, 0x63, 0x6c, 0xca, 0x02, 0x0d, 0x47, 0x67, 0x65, 0x7a, 0x63,
+	0x68, 0x61, 0x69, 0x6e, 0x5c, 0x41, 0x63, 0x6c, 0xe2, 0x02, 0x19, 0x47, 0x67, 0x65, 0x7a, 0x63,
+	0x68, 0x61, 0x69, 0x6e, 0x5c, 0x41, 0x63, 0x6c, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61,
+	0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0e, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x3a, 0x3a, 0x41, 0x63, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -699,22 +938,24 @@ func file_ggezchain_acl_genesis_proto_rawDescGZIP() []byte {
 	return file_ggezchain_acl_genesis_proto_rawDescData
 }
 
-var (
-	file_ggezchain_acl_genesis_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-	file_ggezchain_acl_genesis_proto_goTypes  = []interface{}{
-		(*GenesisState)(nil), // 0: ggezchain.acl.GenesisState
-		(*Params)(nil),       // 1: ggezchain.acl.Params
-		(*AclAuthority)(nil), // 2: ggezchain.acl.AclAuthority
-	}
-)
+var file_ggezchain_acl_genesis_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_ggezchain_acl_genesis_proto_goTypes = []interface{}{
+	(*GenesisState)(nil), // 0: ggezchain.acl.GenesisState
+	(*Params)(nil),       // 1: ggezchain.acl.Params
+	(*AclAuthority)(nil), // 2: ggezchain.acl.AclAuthority
+	(*AclAdmin)(nil),     // 3: ggezchain.acl.AclAdmin
+	(*SuperAdmin)(nil),   // 4: ggezchain.acl.SuperAdmin
+}
 var file_ggezchain_acl_genesis_proto_depIdxs = []int32{
 	1, // 0: ggezchain.acl.GenesisState.params:type_name -> ggezchain.acl.Params
 	2, // 1: ggezchain.acl.GenesisState.acl_authority_list:type_name -> ggezchain.acl.AclAuthority
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	3, // 2: ggezchain.acl.GenesisState.acl_admin_list:type_name -> ggezchain.acl.AclAdmin
+	4, // 3: ggezchain.acl.GenesisState.super_admin:type_name -> ggezchain.acl.SuperAdmin
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_ggezchain_acl_genesis_proto_init() }
@@ -724,6 +965,8 @@ func file_ggezchain_acl_genesis_proto_init() {
 	}
 	file_ggezchain_acl_params_proto_init()
 	file_ggezchain_acl_acl_authority_proto_init()
+	file_ggezchain_acl_acl_admin_proto_init()
+	file_ggezchain_acl_super_admin_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_ggezchain_acl_genesis_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GenesisState); i {

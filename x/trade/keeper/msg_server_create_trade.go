@@ -2,66 +2,71 @@ package keeper
 
 import (
 	"context"
-	"strconv"
+	"fmt"
 	"time"
 
+	errorsmod "cosmossdk.io/errors"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade) (*types.MsgCreateTradeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	validateTradeDataErr := k.ValidateTradeData(msg.TradeData)
-	if validateTradeDataErr != nil {
-		return nil, validateTradeDataErr
+	hasPermission, err := k.HasPermission(ctx, msg.Creator, types.TxTypeCreateTrade)
+	if err != nil {
+		return nil, err
 	}
 
-	isAllowed, _ := k.IsAddressAllowed(ctx, msg.Creator, types.CreateTrade)
-	if !isAllowed {
+	if !hasPermission {
 		return nil, types.ErrInvalidMakerPermission
 	}
-	currentTime := ctx.BlockTime().UTC()
-	formattedDate := currentTime.Format(time.RFC3339)
 
-	err := msg.ValidateReceiverAndCreatorAddress()
+	err = types.ValidateTradeData(msg.TradeData)
 	if err != nil {
 		return nil, err
 	}
 
 	tradeIndex, found := k.Keeper.GetTradeIndex(ctx)
 	if !found {
-		panic("Trade Index not found")
+		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "trade with index %d not found", tradeIndex.NextId)
+	}
+
+	currentDateTime := ctx.BlockTime()
+	createDateTime := currentDateTime.Format(time.RFC3339)
+
+	if msg.CreateDate != "" {
+		if err = types.ValidateDate(currentDateTime, msg.CreateDate); err != nil {
+			return nil, err
+		}
+		createDateTime = msg.CreateDate
 	}
 
 	newIndex := tradeIndex.NextId
-	status := types.Pending
+	status := types.StatusPending
 
 	storedTrade := types.StoredTrade{
 		TradeIndex:           newIndex,
 		Status:               status,
-		CreateDate:           formattedDate,
-		UpdateDate:           formattedDate,
+		CreateDate:           createDateTime,
+		UpdateDate:           createDateTime,
 		TradeType:            msg.TradeType,
-		Coin:                 msg.Coin,
+		Amount:               msg.Amount,
 		Price:                msg.Price,
-		Quantity:             msg.Quantity,
 		ReceiverAddress:      msg.ReceiverAddress,
 		Maker:                msg.Creator,
-		Checker:              "",
-		ProcessDate:          formattedDate,
+		ProcessDate:          createDateTime,
 		TradeData:            msg.TradeData,
 		BankingSystemData:    msg.BankingSystemData,
-		CoinMintingPriceJSON: msg.CoinMintingPriceJSON,
-		ExchangeRateJSON:     msg.ExchangeRateJSON,
-		Result:               types.ErrTradeCreatedSuccessfully.Error(),
+		CoinMintingPriceJson: msg.CoinMintingPriceJson,
+		ExchangeRateJson:     msg.ExchangeRateJson,
+		Result:               types.TradeCreatedSuccessfully,
 	}
 
 	storedTempTrade := types.StoredTempTrade{
-		TradeIndex:     newIndex,
-		TempTradeIndex: newIndex,
-		CreateDate:     formattedDate,
+		TradeIndex: newIndex,
+		CreateDate: createDateTime,
 	}
 
 	k.Keeper.SetStoredTrade(ctx, storedTrade)
@@ -71,22 +76,13 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 
 	k.Keeper.SetTradeIndex(ctx, tradeIndex)
 
-	err = k.Keeper.CancelExpiredPendingTrades(ctx)
-
-	if err != nil {
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				types.EventTypeCancelExpiredPendingTradesError,
-				sdk.NewAttribute(types.AttributeKeyError, err.Error()),
-			),
-		)
-	}
+	k.Keeper.CancelExpiredPendingTrades(ctx)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeCreateTrade,
-			sdk.NewAttribute(types.AttributeKeyTradeIndex, strconv.FormatUint(newIndex, 10)),
-			sdk.NewAttribute(types.AttributeKeyStatus, status),
+			sdk.NewAttribute(types.AttributeKeyTradeIndex, fmt.Sprintf("%d", newIndex)),
+			sdk.NewAttribute(types.AttributeKeyStatus, status.String()),
 		),
 	)
 

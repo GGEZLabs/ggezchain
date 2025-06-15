@@ -11,3 +11,4 @@ build/
 *.ign
 coverage.txt
 dist
+exclusive.lock

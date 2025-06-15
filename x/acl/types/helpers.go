@@ -10,9 +10,9 @@ import (
 
 // ValidateAccessDefinitionList takes a JSON string of access definitions, validates it,
 // and returns a structured slice of AccessDefinition or an error if invalid.
-func ValidateAccessDefinitionList(AccessDefinitionListStr string) ([]*AccessDefinition, error) {
+func ValidateAccessDefinitionList(accessDefinitionListStr string) ([]*AccessDefinition, error) {
 	var accessDefinitionList []*AccessDefinition
-	if err := json.Unmarshal([]byte(AccessDefinitionListStr), &accessDefinitionList); err != nil {
+	if err := json.Unmarshal([]byte(accessDefinitionListStr), &accessDefinitionList); err != nil {
 		return nil, ErrInvalidAccessDefinitionList
 	}
 
@@ -21,6 +21,7 @@ func ValidateAccessDefinitionList(AccessDefinitionListStr string) ([]*AccessDefi
 	}
 
 	seenModules := make(map[string]bool)
+	var duplicateModules []string
 
 	for _, accessDefinition := range accessDefinitionList {
 		accessDefinition.Module = strings.ToLower(strings.TrimSpace(accessDefinition.Module))
@@ -28,16 +29,15 @@ func ValidateAccessDefinitionList(AccessDefinitionListStr string) ([]*AccessDefi
 		if accessDefinition.Module == "" {
 			return nil, ErrInvalidModuleName.Wrapf("empty module not allowed")
 		}
-		// todo: put duplicate modules on array and return all duplicate module at same time
+
 		if seenModules[accessDefinition.Module] {
-			return nil, ErrInvalidModuleName.Wrapf("%s module(s) is duplicates", accessDefinition.Module)
+			duplicateModules = append(duplicateModules, accessDefinition.Module)
 		}
 		seenModules[accessDefinition.Module] = true
+	}
 
-		// todo: check if that condition necessary
-		if !accessDefinition.IsMaker && !accessDefinition.IsChecker {
-			return nil, ErrRequireMakerOrChecker.Wrapf("module %s", accessDefinition.Module)
-		}
+	if len(duplicateModules) > 0 {
+		return nil, ErrInvalidModuleName.Wrapf("%s module(s) is duplicates", strings.Join(duplicateModules, ", "))
 	}
 
 	return accessDefinitionList, nil
@@ -56,17 +56,12 @@ func ValidateSingleAccessDefinition(accessDefinitionStr string) (*AccessDefiniti
 	if accessDefinition.Module == "" {
 		return nil, ErrInvalidModuleName.Wrapf("empty module not allowed")
 	}
-
-	if !accessDefinition.IsMaker && !accessDefinition.IsChecker {
-		return nil, ErrRequireMakerOrChecker.Wrapf("module %s", accessDefinition.Module)
-	}
-
 	return &accessDefinition, nil
 }
 
-// GetUpdatedAccessDefinitionList finds a module by name (case-insensitive) and updates its roles in-place within the current list.
+// GetUpdatedAccessDefinitionList finds a module by name (case-insensitive)
+// and updates its roles in-place within the current list.
 func GetUpdatedAccessDefinitionList(currentList []*AccessDefinition, update *AccessDefinition) []*AccessDefinition {
-	// todo:
 	for _, m := range currentList {
 		if strings.EqualFold(m.Module, update.Module) {
 			m.IsMaker = update.IsMaker
@@ -149,7 +144,7 @@ func ValidateDeleteAccessDefinition(moduleNames []string, accessDefinitions []*A
 		currentModules[module.Module] = struct{}{}
 	}
 
-	// check if module not exist in current modules
+	// Check if module not exist in current modules
 	var missingModules []string
 	for name := range modulesToRemove {
 		if _, exists := currentModules[name]; !exists {
@@ -240,7 +235,7 @@ func validateModuleOverlap(modules, removedModules []string) error {
 	}
 
 	var overlaps []string
-	// check if any added/updated module exists in the removed set
+	// Check if any added/updated module exists in the removed set
 	for _, module := range modules {
 		if _, exists := removedSet[module]; exists {
 			overlaps = append(overlaps, module)

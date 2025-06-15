@@ -3,12 +3,16 @@ package trade
 import (
 	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // InitGenesis initializes the module's state from a provided genesis state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
+	err := genState.Validate()
+	if err != nil {
+		panic(err)
+	}
+
 	// Set if defined
 	k.SetTradeIndex(ctx, genState.TradeIndex)
 	// Set all the storedTrade

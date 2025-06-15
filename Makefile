@@ -1,5 +1,23 @@
 #!/usr/bin/make -f
 
+include scripts/makefiles/lint.mk
+
+.DEFAULT_GOAL := help
+help:
+	@echo "Available commands:"
+	@echo ""
+	@echo "Usage:"
+	@echo "    make [command]"
+	@echo ""
+	@echo "  make install               Install ggezchaind binary"
+	@echo "  make build                 Build ggezchaind binary"
+	@echo "  make lint                  Show available lint commands"
+	@echo "  make test                  Run unit tests"
+	@echo "  make test-e2e              Run e2e tests"
+	@echo "  make mocks                 Generate mock files"
+	@echo "  make proto-gen             Generate proto"
+	@echo ""
+
 VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
 COMMIT := $(shell git log -1 --format='%H')
 LEDGER_ENABLED ?= true
@@ -77,9 +95,6 @@ ldflags := $(strip $(ldflags))
 
 BUILD_FLAGS := -tags "$(build_tags_comma_sep)" -ldflags '$(ldflags)' -trimpath
 
-# The below include contains the tools and runsim targets.
-include contrib/devtools/Makefile
-
 all: install lint test
 
 build: go.sum
@@ -87,34 +102,21 @@ ifeq ($(OS),Windows_NT)
 	$(error wasmd server not supported. Use "make build-windows-client" for client)
 	exit 1
 else
-	go build -mod=readonly $(BUILD_FLAGS) -o build/ggezchaind ./cmd/ggezchaind
+	go build -mod=readonly $(BUILD_FLAGS) -o $(OUTPUT_DIR)/ggezchaind ./cmd/ggezchaind
 endif
 
-build-all: clean
-	@echo "Building production binaries..."
-	@mkdir -p $(OUTPUT_DIR)
-
-	@for platform in $(PLATFORMS); do \
-		OS=$$(echo $$platform | cut -d '/' -f1); \
-		ARCH=$$(echo $$platform | cut -d '/' -f2); \
-		OUTPUT_NAME=$(OUTPUT_DIR)/$(APPNAME)d-$(VERSION)-$$OS-$$ARCH; \
-		echo "Building for $$OS/$$ARCH..."; \
-		GOOS=$$OS GOARCH=$$ARCH go build $(BUILD_FLAGS) -o $$OUTPUT_NAME ./cmd/$(APPNAME)d; \
-		chmod +x $$OUTPUT_NAME; \
-		tar -czvf $$OUTPUT_NAME.tar.gz -C $(OUTPUT_DIR) $$(basename $$OUTPUT_NAME); \
-	done
-
-	@echo "Generating checksum files..."
-	@cd $(OUTPUT_DIR) && sha256sum * > checksums.txt
-
-	@echo "Build complete. Binaries and checksums are available in '$(OUTPUT_DIR)'."
-
-
 build-windows-client: go.sum
-	GOOS=windows GOARCH=amd64 go build -mod=readonly $(BUILD_FLAGS) -o build/ggezchaind.exe ./cmd/ggezchaind
+	GOOS=windows GOARCH=amd64 go build -mod=readonly $(BUILD_FLAGS) -o $(OUTPUT_DIR)/ggezchaind.exe ./cmd/ggezchaind
 
 install: go.sum
 	go install -mod=readonly $(BUILD_FLAGS) ./cmd/ggezchaind
+
+build-image:
+	docker build -f Dockerfile -t ggezlabs/ggezchain .
+
+mocks:
+	@go install go.uber.org/mock/mockgen@v0.5.0
+	sh ./scripts/mockgen.sh
 
 ########################################
 ### Tools & dependencies
@@ -131,43 +133,49 @@ go.sum: go.mod
 clean:
 	rm -rf $(OUTPUT_DIR)/*
 
-.PHONY: all install \
-	go-mod-cache clean build build-all \
-    build-windows-client
+.PHONY: all build  build-windows-client \
+		install build-image mocks\
+	    go-mod-cache clean \
+   
 
 ########################################
 ### Testing
 ########################################
+PACKAGES_E2E=$(shell cd tests/e2e && go list ./... | grep '/e2e')
+PACKAGES_UNIT=$(shell go list ./... | grep -v -e '/tests/e2e')
 
-test-all: test-race test-cover test
+test-all: test test-race test-cover
 
 test:
-	@VERSION=$(VERSION) go test -mod=readonly -tags='ledger test_ledger_mock' ./...
+	@VERSION=$(VERSION) go test -mod=readonly -tags='ledger test_ledger_mock'  $(PACKAGES_UNIT)
 
 test-race:
-	@VERSION=$(VERSION) go test -mod=readonly -race -tags='ledger test_ledger_mock' ./...
+	@VERSION=$(VERSION) go test -mod=readonly -race -tags='ledger test_ledger_mock'  $(PACKAGES_UNIT)
 
 test-cover:
-	@go test -mod=readonly -timeout 30m -race -coverprofile=coverage.txt -covermode=atomic -tags='ledger test_ledger_mock' ./...
+	@go test -mod=readonly -timeout 30m -race -coverprofile=coverage.txt -covermode=atomic -tags='ledger test_ledger_mock' $(PACKAGES_UNIT)
+
+test-e2e: build-image
+	@VERSION=$(VERSION) go test -mod=readonly -timeout=35m -v $(PACKAGES_E2E)
 
 benchmark:
-	@go test -mod=readonly -bench=. ./...
+	@go test -mod=readonly -bench=. $(PACKAGES_UNIT)
 
-.PHONY: test test-all \
-	test test-race \
-	test-cover benchmark
+.PHONY: test-all test \
+	test-race test-cover\
+	test-e2e benchmark
 
 ###############################################################################
 ###                                Linting                                  ###
 ###############################################################################
 
-golangci_lint_cmd=golangci-lint
-golangci_version=v1.61.0
+# golangci_lint_cmd=golangci-lint
+# golangci_version=v1.61.0
 
-lint:
-	@echo "--> Running linter"
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(golangci_version)
-	@$(golangci_lint_cmd) run ./... --timeout 15m
+# lint:
+# 	@echo "--> Running linter"
+# 	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(golangci_version)
+# 	@$(golangci_lint_cmd) run ./... --timeout 15m
 
 format-tools:
 	go install mvdan.cc/gofumpt@v0.4.0
@@ -182,7 +190,7 @@ format: format-tools
 mod-tidy:
 	go mod tidy
 
-.PHONY: format-tools lint format mod-tidy
+.PHONY: format-tools format mod-tidy lint
 
 
 ###############################################################################
@@ -193,7 +201,7 @@ CURRENT_GID := $(shell id -g)
 
 protoVer=0.13.2
 protoImageName=ghcr.io/cosmos/proto-builder:$(protoVer)
-protoImage=sudo "$(DOCKER)" run -e BUF_CACHE_DIR=/tmp/buf --rm -v "$(CURDIR)":/workspace:rw --user ${CURRENT_UID}:${CURRENT_GID} --workdir /workspace $(protoImageName)
+protoImage="$(DOCKER)" run -e BUF_CACHE_DIR=/tmp/buf --rm -v "$(CURDIR)":/workspace:rw --user ${CURRENT_UID}:${CURRENT_GID} --workdir /workspace $(protoImageName)
 
 proto-gen:
 	@echo "Generating protobuf files..."

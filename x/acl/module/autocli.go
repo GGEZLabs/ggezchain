@@ -1,9 +1,8 @@
 package acl
 
 import (
-	modulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/acl"
-
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
+	modulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/acl"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.
@@ -15,18 +14,34 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				{
 					RpcMethod: "Params",
 					Use:       "params",
-					Short:     "Shows the parameters of the module",
-				},
-				{
-					RpcMethod: "AclAuthorityAll",
-					Use:       "list-acl-authority",
-					Short:     "List all aclAuthority",
+					Short:     "Query the parameters of the module",
 				},
 				{
 					RpcMethod:      "AclAuthority",
-					Use:            "show-acl-authority [id]",
-					Short:          "Shows a aclAuthority",
+					Use:            "acl-authority [address]",
+					Short:          "Query an acl-authority by address",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
+				},
+				{
+					RpcMethod: "AclAuthorityAll",
+					Use:       "acl-authorities",
+					Short:     "Query all acl-authorities",
+				},
+				{
+					RpcMethod:      "AclAdmin",
+					Use:            "admin [address]",
+					Short:          "Query an admin by address",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "address"}},
+				},
+				{
+					RpcMethod: "AclAdminAll",
+					Use:       "admins",
+					Short:     "Query all admins",
+				},
+				{
+					RpcMethod: "SuperAdmin",
+					Use:       "super-admin",
+					Short:     "Query a super-admin",
 				},
 				// this line is used by ignite scaffolding # autocli/query
 			},
@@ -100,10 +115,34 @@ ggezchaind tx acl update-authority ggezauthaddress... --update-access-definition
 Delete one or more specific access definition (by module name):
 ggezchaind tx acl update-authority ggezauthaddress... --delete-access-definitions 'module2,module1' --from ggezaddress...
 
-Clear all access definition. Default is false ()
+Clear all access definition. (Default is false)
 ggezchaind tx acl update-authority ggezauthaddress... --clear-all-access-definitions --from ggezaddress...
 
 `,
+				},
+				{
+					RpcMethod:      "Init",
+					Use:            "init [super-admin]",
+					Short:          "Initializes the super-admin. Can only be called once.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "super_admin"}},
+				},
+				{
+					RpcMethod:      "AddAdmin",
+					Use:            "add-admin [admins]",
+					Short:          "Add one or more admin. Only a super admin can perform this action.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
+				},
+				{
+					RpcMethod:      "DeleteAdmin",
+					Use:            "delete-admin [admins]",
+					Short:          "Delete one or more admin. Only a super admin can perform this action.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins"}},
+				},
+				{
+					RpcMethod:      "UpdateSuperAdmin",
+					Use:            "update-super-admin [new-super-admin]",
+					Short:          "Update super admin. Only a super admin can perform this action.",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "new_super_admin"}},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

@@ -9,8 +9,8 @@ deps:
   - remote: buf.build
     owner: cosmos
     repository: cosmos-sdk
-    commit: 05419252bcc241ea8023acf1ed4cadc5
-    digest: shake256:1e54a48c19a8b59d35e0a7efa76402939f515f2d8005df099856f24c37c20a52800308f025abb8cffcd014d437b49707388aaca4865d9d063d8f25d5d4eb77d5
+    commit: 34ac2e8322d44db08830e553ad21b93c
+    digest: shake256:b0dd0de5ef770147002e290a9e9f8de8cc8727cbf932628892fbb9027d5ebec5c2a63c0e340e4ef7af72369ecdf51221dcc385ce2137afaa72532228f6999d74
   - remote: buf.build
     owner: cosmos
     repository: gogo-proto
@@ -19,8 +19,8 @@ deps:
   - remote: buf.build
     owner: cosmos
     repository: ibc
-    commit: d36f8a9d78034378bae26a8ebfd291cb
-    digest: shake256:12816035a3657aaf6edf901648033789b1c84bd5588213818fdeb8a7f2652a3ce4b916254b16c6131bbb985e4b5eb0fe3872a7213668ecf54d2b04b760e9c120
+    commit: be4750124cb54616b8f78e09e5cdfdfc
+    digest: shake256:c305a1f87aa3729f2f38967cb65bdf789da9f04b876860da09938b15f301110e9725dc33881c7fce97c57aae4cca4d81ac03ef3ff5394ad5cd64f39f62f3a1c2
   - remote: buf.build
     owner: cosmos
     repository: ics23
@@ -29,8 +29,8 @@ deps:
   - remote: buf.build
     owner: cosmwasm
     repository: wasmd
-    commit: 384011a4f0244c11a099f1dd7ac78372
-    digest: shake256:a826e79e71b5e436fe64333ee6cf0c8f0875359370c1168cab6cbe543e19dbe332a52313a16911a28798550f794fb8a8d977a14b0499a77b6151affaa8fd992b
+    commit: 3c30b822226c4bea96d5fad293a6e010
+    digest: shake256:6c4ea55d553dbad8f7ac9b5d91f2a784742a1d75783e690b69edd5a72bf31abbcbb7556fa4da6f38de22d58f3211e738f9b37bc39fc502d8d8a7b290e3235bb7
   - remote: buf.build
     owner: googleapis
     repository: googleapis
@@ -39,10 +39,5 @@ deps:
   - remote: buf.build
     owner: protocolbuffers
     repository: wellknowntypes
-    commit: 7727a3b7399540398e5736b9916f0faa
-    digest: shake256:74c046f009811965d227acd11bb2c6259bf387759d4230b95405e402a2ed4212d6f4babab690407d07bc81095c3917c4ae9144195ddfb081525c9aec58e51173
-  - remote: buf.build
-    owner: tendermint
-    repository: tendermint
-    commit: 33ed361a90514289beabf3189e1d7665
-    digest: shake256:038267e06294714fd883610626554b04a127b576b4e253befb4206cb72d5d3c1eeccacd4b9ec8e3fb891f7c14e1cb0f770c077d2989638995b0a61c85afedb1d
+    commit: 3ddd61d1f53d485abd3d3a2b47a62b8e
+    digest: shake256:9e6799d56700d0470c3723a2fd027e8b4a41a07085a0c90c58e05f6c0038fac9b7a0170acd7692707a849983b1b8189aa33e7b73f91d68157f7136823115546b

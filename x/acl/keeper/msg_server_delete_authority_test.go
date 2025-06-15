@@ -5,9 +5,8 @@ import (
 
 	"github.com/GGEZLabs/ggezchain/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/x/acl/types"
-	"github.com/stretchr/testify/require"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMsgDeleteAuthority(t *testing.T) {
@@ -21,7 +20,7 @@ func TestMsgDeleteAuthority(t *testing.T) {
 		AccessDefinitions: []*types.AccessDefinition{},
 	}
 	k.SetAclAuthority(ctx, aclAuthority)
-	require.NoError(t, k.SetParams(ctx, types.Params{Admin: admin}))
+	k.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
 	wctx := sdk.UnwrapSDKContext(ctx)
 
 	testCases := []struct {
