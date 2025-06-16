@@ -11,15 +11,23 @@ import (
 
 func TestMsgDeleteAuthority(t *testing.T) {
 	k, ms, ctx := setupMsgServer(t)
+	superAdmin := sample.AccAddress()
 	admin := sample.AccAddress()
 	alice := sample.AccAddress()
 	bob := sample.AccAddress()
-	aclAuthority := types.AclAuthority{
+	aclAuthorityAlice := types.AclAuthority{
 		Address:           alice,
 		Name:              "Alice",
 		AccessDefinitions: []*types.AccessDefinition{},
 	}
-	k.SetAclAuthority(ctx, aclAuthority)
+	aclAuthorityBob := types.AclAuthority{
+		Address:           bob,
+		Name:              "Bob",
+		AccessDefinitions: []*types.AccessDefinition{},
+	}
+	k.SetSuperAdmin(ctx,types.SuperAdmin{Admin: superAdmin})
+	k.SetAclAuthority(ctx, aclAuthorityAlice)
+	k.SetAclAuthority(ctx, aclAuthorityBob)
 	k.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
 	wctx := sdk.UnwrapSDKContext(ctx)
 
@@ -42,16 +50,25 @@ func TestMsgDeleteAuthority(t *testing.T) {
 			name: "authority not found",
 			input: &types.MsgDeleteAuthority{
 				Creator:     admin,
-				AuthAddress: bob,
+				AuthAddress: sample.AccAddress(),
 			},
 			expErr:    true,
 			expErrMsg: "authority address does not exist",
 		},
 		{
-			name: "all good",
+			name: "delete authority by super admin",
+			input: &types.MsgDeleteAuthority{
+				Creator:     superAdmin,
+				AuthAddress: alice,
+			},
+			expErr:    false,
+			expErrMsg: "",
+		},
+		{
+			name: "delete authority by admin",
 			input: &types.MsgDeleteAuthority{
 				Creator:     admin,
-				AuthAddress: alice,
+				AuthAddress: bob,
 			},
 			expErr:    false,
 			expErrMsg: "",

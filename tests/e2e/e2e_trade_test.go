@@ -63,12 +63,12 @@ func (s *IntegrationTestSuite) testTrade() {
 			ggzSupply, err := querySupplyOf(chainEndpoint, tradetypes.DefaultDenom)
 			s.Require().NoError(err)
 
-			s.Require().Equal(int64(1000000), ggzSupply.Amount.Int64())
+			s.Require().Equal(int64(100000), ggzSupply.Amount.Int64())
 
 			receiverAddressBalance, err := getSpecificBalance(chainEndpoint, admin1.String(), tradetypes.DefaultDenom)
 			s.Require().NoError(err)
 
-			s.Require().Equal(int64(1000000), receiverAddressBalance.Amount.Int64())
+			s.Require().Equal(int64(100000), receiverAddressBalance.Amount.Int64())
 
 			return len(storedTempTrades.StoredTempTrade) == 0
 		},

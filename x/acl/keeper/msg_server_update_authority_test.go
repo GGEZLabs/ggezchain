@@ -11,6 +11,7 @@ import (
 
 func TestMsgUpdateAuthority(t *testing.T) {
 	k, ms, ctx := setupMsgServer(t)
+	superAdmin := sample.AccAddress()
 	admin := sample.AccAddress()
 	alice := sample.AccAddress()
 	bob := sample.AccAddress()
@@ -22,6 +23,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 			{Module: "module2", IsMaker: true, IsChecker: false},
 		},
 	}
+	k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: superAdmin})
 	k.SetAclAuthority(ctx, aclAuthority)
 	k.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
 	wctx := sdk.UnwrapSDKContext(ctx)
@@ -209,6 +211,15 @@ func TestMsgUpdateAuthority(t *testing.T) {
 			name: "clear all access definitions",
 			input: &types.MsgUpdateAuthority{
 				Creator:                   admin,
+				AuthAddress:               alice,
+				ClearAllAccessDefinitions: true,
+			},
+			expErr: false,
+		},
+		{
+			name: "use super admin",
+			input: &types.MsgUpdateAuthority{
+				Creator:                   superAdmin,
 				AuthAddress:               alice,
 				ClearAllAccessDefinitions: true,
 			},

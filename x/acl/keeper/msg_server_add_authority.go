@@ -11,7 +11,7 @@ import (
 func (k msgServer) AddAuthority(goCtx context.Context, msg *types.MsgAddAuthority) (*types.MsgAddAuthorityResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.IsAdmin(ctx, msg.Creator) {
+	if !k.IsAdmin(ctx, msg.Creator) && !k.IsSuperAdmin(ctx, msg.Creator){
 		return nil, types.ErrUnauthorized
 	}
 
