@@ -15,7 +15,7 @@ import (
 func (k Keeper) HasPermission(ctx sdk.Context, address string, msgType int32) (bool, error) {
 	authority, found := k.aclKeeper.GetAclAuthority(ctx, address)
 	if !found {
-		return false, acltypes.ErrAuthorityAddressNotExist.Wrapf("unauthorized account %s", address)
+		return false, acltypes.ErrAuthorityAddressDoesNotExist.Wrapf("unauthorized account %s", address)
 	}
 
 	for _, ad := range authority.AccessDefinitions {
@@ -45,15 +45,15 @@ func (k Keeper) HasPermission(ctx sdk.Context, address string, msgType int32) (b
 
 // MintOrBurnCoins processes a trade by minting coins for a 'buy' or burning coins for a 'sell',
 // handling transfers and rollbacks on failure.
-func (k Keeper) MintOrBurnCoins(ctx sdk.Context, tradeData types.StoredTrade) (types.TradeStatus, error) {
-	receiverAddress, err := sdk.AccAddressFromBech32(tradeData.ReceiverAddress)
+func (k Keeper) MintOrBurnCoins(ctx sdk.Context, storedTrade types.StoredTrade) (types.TradeStatus, error) {
+	receiverAddress, err := sdk.AccAddressFromBech32(storedTrade.ReceiverAddress)
 	if err != nil {
 		return types.StatusFailed, types.ErrInvalidReceiverAddress.Wrap(err.Error())
 	}
 
-	coins := sdk.NewCoins(*tradeData.Amount)
+	coins := sdk.NewCoins(*storedTrade.Amount)
 
-	switch tradeData.TradeType {
+	switch storedTrade.TradeType {
 	case types.TradeTypeBuy:
 		// Mint coins to module account
 		if err = k.bankKeeper.MintCoins(ctx, types.ModuleName, coins); err != nil {

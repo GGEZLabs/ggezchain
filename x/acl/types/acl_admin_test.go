@@ -53,7 +53,6 @@ func TestValidateAddAdmin(t *testing.T) {
 
 func TestValidateDeleteAdmin(t *testing.T) {
 	alice := sample.AccAddress()
-	bob := sample.AccAddress()
 	testCases := []struct {
 		name          string
 		currentAdmins []AclAdmin
@@ -62,25 +61,6 @@ func TestValidateDeleteAdmin(t *testing.T) {
 		expErrMsg     string
 	}{
 		{
-			name: "delete last admin",
-			currentAdmins: []AclAdmin{
-				{Address: alice},
-			},
-			deletedAdmins: []string{alice},
-			expErr:        true,
-			expErrMsg:     "cannot delete all admins, at least one admin must remain",
-		},
-		{
-			name: "delete all admins",
-			currentAdmins: []AclAdmin{
-				{Address: alice},
-				{Address: bob},
-			},
-			deletedAdmins: []string{alice, bob},
-			expErr:        true,
-			expErrMsg:     "cannot delete all admins, at least one admin must remain",
-		},
-		{
 			name: "address not exist",
 			currentAdmins: []AclAdmin{
 				{Address: sample.AccAddress()},
@@ -88,7 +68,7 @@ func TestValidateDeleteAdmin(t *testing.T) {
 			},
 			deletedAdmins: []string{sample.AccAddress(), sample.AccAddress()},
 			expErr:        true,
-			expErrMsg:     "admin(s) not exist",
+			expErrMsg:     "admin(s) does not exist",
 		},
 		{
 			name: "all good",

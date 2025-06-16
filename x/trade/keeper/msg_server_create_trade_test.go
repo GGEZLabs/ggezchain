@@ -3,11 +3,9 @@ package keeper_test
 import (
 	"time"
 
-	sdkmath "cosmossdk.io/math"
 	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (suite *KeeperTestSuite) TestCreateTrade() {
@@ -85,15 +83,9 @@ func (suite *KeeperTestSuite) TestCreateTradeWithInvalidMakerPermission() {
 	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:   testutil.Bob,
-		TradeType: types.TradeTypeBuy,
-		Amount: &sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(100000),
-		},
-		Price:             "0.001",
+		Creator:           testutil.Bob,
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(),
+		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
 		BankingSystemData: "{}",
 	})
 
@@ -105,20 +97,14 @@ func (suite *KeeperTestSuite) TestCreateTradeAuthorityAddressNotExist() {
 	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:   testutil.Eve,
-		TradeType: types.TradeTypeBuy,
-		Amount: &sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(100000),
-		},
-		Price:             "0.001",
+		Creator:           testutil.Eve,
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(),
+		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
 		BankingSystemData: "{}",
 	})
 
 	suite.Require().Nil(createResponse)
-	suite.Require().ErrorIs(err, acltypes.ErrAuthorityAddressNotExist)
+	suite.Require().ErrorIs(err, acltypes.ErrAuthorityAddressDoesNotExist)
 	suite.Require().Contains(err.Error(), "unauthorized account")
 }
 
@@ -126,15 +112,9 @@ func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
 	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:   testutil.Carol, // Dose not has permission for trade module
-		TradeType: types.TradeTypeBuy,
-		Amount: &sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(100000),
-		},
-		Price:             "0.001",
+		Creator:           testutil.Carol, // Dose not has permission for trade module
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(),
+		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
 		BankingSystemData: "{}",
 	})
 
@@ -146,15 +126,9 @@ func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
 func (suite *KeeperTestSuite) TestCreateTradeWithInvalidTradeData() {
 	suite.setupTest()
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:   testutil.Alice,
-		TradeType: types.TradeTypeBuy,
-		Amount: &sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(100000),
-		},
-		Price:             "0.001",
+		Creator:           testutil.Alice,
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":0,"trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		TradeData:         `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":1,"trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 		BankingSystemData: "{}",
 	})
 
@@ -195,15 +169,9 @@ func (suite *KeeperTestSuite) TestCreateTrades() {
 func (suite *KeeperTestSuite) TestCreateTradeWithInvalidCreateDate() {
 	suite.setupTest()
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:   testutil.Alice,
-		TradeType: types.TradeTypeBuy,
-		Amount: &sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(100000),
-		},
-		Price:             "0.001",
+		Creator:           testutil.Alice,
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(),
+		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
 		BankingSystemData: "{}",
 		CreateDate:        "2023-05-06",
 	})
@@ -232,15 +200,9 @@ func (suite *KeeperTestSuite) TestCreateTradeWithCreateDateInFuture() {
 	}, true).AnyTimes()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:   testutil.Alice,
-		TradeType: types.TradeTypeBuy,
-		Amount: &sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(100000),
-		},
-		Price:             "0.001",
+		Creator:           testutil.Alice,
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(),
+		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
 		BankingSystemData: "{}",
 		CreateDate:        "2050-05-11T08:44:00Z",
 	})
@@ -269,15 +231,9 @@ func (suite *KeeperTestSuite) TestCreateTradeWithValidCreateDate() {
 	}, true).AnyTimes()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:   testutil.Alice,
-		TradeType: types.TradeTypeBuy,
-		Amount: &sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(100000),
-		},
-		Price:             "0.001",
+		Creator:           testutil.Alice,
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(),
+		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
 		BankingSystemData: "{}",
 		CreateDate:        "2024-05-11T08:44:00Z",
 	})

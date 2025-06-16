@@ -4,7 +4,6 @@ import (
 	"testing"
 	"time"
 
-	"cosmossdk.io/math"
 	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
 	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
 	"github.com/GGEZLabs/ggezchain/x/trade/types"
@@ -32,7 +31,7 @@ func TestCreateTrade(t *testing.T) {
 			req: types.MsgCreateTrade{
 				Creator: testutil.Eve,
 			},
-			expErrMsg: "authority address not exist",
+			expErrMsg: "authority address does not exist",
 		},
 		{
 			name:      "no permission for module",
@@ -55,7 +54,7 @@ func TestCreateTrade(t *testing.T) {
 			exceptErr: true,
 			req: types.MsgCreateTrade{
 				Creator:   testutil.Alice,
-				TradeData: `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":1,"trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":162075000000000,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+				TradeData: `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":1,"trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			},
 			expErrMsg: "invalid trade info",
 		},
@@ -92,11 +91,8 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 
 	_, err := msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
-		types.TradeTypeBuy,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
-		"0.001",
 		testutil.Alice,
-		types.GetSampleTradeData(),
+		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
 		"",
 		"",
@@ -106,11 +102,8 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
-		types.TradeTypeBuy,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
-		"0.001",
 		testutil.Alice,
-		types.GetSampleTradeData(),
+		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
 		"",
 		"",
@@ -120,11 +113,8 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
-		types.TradeTypeBuy,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
-		"0.001",
 		testutil.Alice,
-		types.GetSampleTradeData(),
+		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
 		"",
 		"",
@@ -156,11 +146,8 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
-		types.TradeTypeBuy,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
-		"0.001",
 		testutil.Alice,
-		types.GetSampleTradeData(),
+		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
 		"",
 		"",
@@ -191,11 +178,8 @@ func TestProcessTrade(t *testing.T) {
 	// Create trades
 	_, err := msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
-		types.TradeTypeBuy,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
-		"0.001",
 		testutil.Alice,
-		types.GetSampleTradeData(),
+		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
 		"",
 		"",
@@ -205,11 +189,8 @@ func TestProcessTrade(t *testing.T) {
 
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
-		types.TradeTypeBuy,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
-		"0.001",
 		testutil.Alice,
-		types.GetSampleTradeData(),
+		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
 		"",
 		"",
@@ -218,11 +199,8 @@ func TestProcessTrade(t *testing.T) {
 	assert.NilError(t, err)
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
-		types.TradeTypeBuy,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
-		"0.001",
 		testutil.Alice,
-		types.GetSampleTradeData(),
+		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
 		"",
 		"",
@@ -242,7 +220,7 @@ func TestProcessTrade(t *testing.T) {
 			req: types.MsgProcessTrade{
 				Creator: testutil.Eve,
 			},
-			expErrMsg: "authority address not exist",
+			expErrMsg: "authority address does not exist",
 		},
 		{
 			name:      "no permission for module",
@@ -302,18 +280,7 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	setAclAuthority(f.ctx, f.aclKeeper)
 
 	// Trade 1
-	_, err := msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
-		testutil.Alice,
-		types.TradeTypeBuy,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(500000000)},
-		"0.001",
-		testutil.Alice,
-		types.GetSampleTradeData(),
-		"{}",
-		"",
-		"",
-	),
-	)
+	_, err := msgServer.CreateTrade(f.ctx, types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeBuy, 500000000))
 	assert.NilError(t, err)
 
 	_, err = msgServer.ProcessTrade(f.ctx, &types.MsgProcessTrade{
@@ -337,18 +304,8 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	assert.Assert(t, balance.Amount.Int64() == 500000000)
 
 	// Trade 2
-	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
-		testutil.Alice,
-		types.TradeTypeSell,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(700000000)},
-		"0.001",
-		testutil.Alice,
-		types.GetSampleTradeData(),
-		"{}",
-		"",
-		"",
-	),
-	)
+	_, err = msgServer.CreateTrade(f.ctx, types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeSell, 700000000))
+
 	assert.NilError(t, err)
 
 	_, err = msgServer.ProcessTrade(f.ctx, &types.MsgProcessTrade{
@@ -372,18 +329,7 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	assert.Assert(t, balance.Amount.Int64() == 500000000)
 
 	// Trade 3
-	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
-		testutil.Alice,
-		types.TradeTypeSell,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(700000000)},
-		"0.001",
-		testutil.Alice,
-		types.GetSampleTradeData(),
-		"{}",
-		"",
-		"",
-	),
-	)
+	_, err = msgServer.CreateTrade(f.ctx, types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeSell, 700000000))
 	assert.NilError(t, err)
 
 	_, err = msgServer.ProcessTrade(f.ctx, &types.MsgProcessTrade{
@@ -407,18 +353,7 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	assert.Assert(t, balance.Amount.Int64() == 500000000)
 
 	// Trade 4
-	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
-		testutil.Alice,
-		types.TradeTypeSell,
-		&sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000000)},
-		"0.001",
-		testutil.Alice,
-		types.GetSampleTradeData(),
-		"{}",
-		"",
-		"",
-	),
-	)
+	_, err = msgServer.CreateTrade(f.ctx, types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeSell, 100000000))
 	assert.NilError(t, err)
 
 	_, err = msgServer.ProcessTrade(f.ctx, &types.MsgProcessTrade{

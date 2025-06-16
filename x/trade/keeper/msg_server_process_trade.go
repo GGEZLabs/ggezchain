@@ -23,12 +23,12 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 		return nil, types.ErrInvalidCheckerPermission
 	}
 
-	tradeData, found := k.Keeper.GetStoredTrade(ctx, msg.TradeIndex)
+	st, found := k.Keeper.GetStoredTrade(ctx, msg.TradeIndex)
 	if !found {
 		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "trade with index %d not found", msg.TradeIndex)
 	}
 
-	err = msg.Validate(tradeData.Status, tradeData.Maker)
+	err = msg.Validate(st.Status, st.Maker)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 	formattedDate := currentTime.Format(time.RFC3339)
 
 	result := types.TradeProcessedSuccessfully
-	status := tradeData.Status
+	status := st.Status
 	var storedTrade types.StoredTrade
 
 	if msg.ProcessType == types.ProcessTypeReject {
@@ -45,44 +45,44 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 
 		storedTrade = types.StoredTrade{
 			TradeIndex:           msg.TradeIndex,
-			TradeType:            tradeData.TradeType,
-			Amount:               tradeData.Amount,
-			Price:                tradeData.Price,
-			ReceiverAddress:      tradeData.ReceiverAddress,
+			TradeType:            st.TradeType,
+			Amount:               st.Amount,
+			Price:                st.Price,
+			ReceiverAddress:      st.ReceiverAddress,
 			Status:               status,
-			Maker:                tradeData.Maker,
+			Maker:                st.Maker,
 			Checker:              msg.Creator,
 			UpdateDate:           formattedDate,
-			CreateDate:           tradeData.CreateDate,
+			CreateDate:           st.CreateDate,
 			ProcessDate:          formattedDate,
-			TradeData:            tradeData.TradeData,
-			BankingSystemData:    tradeData.BankingSystemData,
-			CoinMintingPriceJson: tradeData.CoinMintingPriceJson,
-			ExchangeRateJson:     tradeData.ExchangeRateJson,
+			TradeData:            st.TradeData,
+			BankingSystemData:    st.BankingSystemData,
+			CoinMintingPriceJson: st.CoinMintingPriceJson,
+			ExchangeRateJson:     st.ExchangeRateJson,
 			Result:               result,
 		}
 	} else if msg.ProcessType == types.ProcessTypeConfirm {
-		status, err = k.MintOrBurnCoins(ctx, tradeData)
+		status, err = k.MintOrBurnCoins(ctx, st)
 		if err != nil {
 			result = err.Error()
 		}
 
 		storedTrade = types.StoredTrade{
 			TradeIndex:           msg.TradeIndex,
-			TradeType:            tradeData.TradeType,
-			Amount:               tradeData.Amount,
-			Price:                tradeData.Price,
-			ReceiverAddress:      tradeData.ReceiverAddress,
+			TradeType:            st.TradeType,
+			Amount:               st.Amount,
+			Price:                st.Price,
+			ReceiverAddress:      st.ReceiverAddress,
 			Status:               status,
-			Maker:                tradeData.Maker,
+			Maker:                st.Maker,
 			Checker:              msg.Creator,
-			CreateDate:           tradeData.CreateDate,
+			CreateDate:           st.CreateDate,
 			UpdateDate:           formattedDate,
 			ProcessDate:          formattedDate,
-			TradeData:            tradeData.TradeData,
-			BankingSystemData:    tradeData.BankingSystemData,
-			CoinMintingPriceJson: tradeData.CoinMintingPriceJson,
-			ExchangeRateJson:     tradeData.ExchangeRateJson,
+			TradeData:            st.TradeData,
+			BankingSystemData:    st.BankingSystemData,
+			CoinMintingPriceJson: st.CoinMintingPriceJson,
+			ExchangeRateJson:     st.ExchangeRateJson,
 			Result:               result,
 		}
 	}
@@ -96,9 +96,9 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 			sdk.NewAttribute(types.AttributeKeyTradeIndex, fmt.Sprintf("%d", msg.TradeIndex)),
 			sdk.NewAttribute(types.AttributeKeyStatus, status.String()),
 			sdk.NewAttribute(types.AttributeKeyChecker, msg.Creator),
-			sdk.NewAttribute(types.AttributeKeyMaker, tradeData.Maker),
-			sdk.NewAttribute(types.AttributeKeyTradeData, tradeData.TradeData),
-			sdk.NewAttribute(types.AttributeKeyCreateDate, tradeData.CreateDate),
+			sdk.NewAttribute(types.AttributeKeyMaker, st.Maker),
+			sdk.NewAttribute(types.AttributeKeyTradeData, st.TradeData),
+			sdk.NewAttribute(types.AttributeKeyCreateDate, st.CreateDate),
 			sdk.NewAttribute(types.AttributeKeyUpdateDate, formattedDate),
 			sdk.NewAttribute(types.AttributeKeyProcessDate, formattedDate),
 			sdk.NewAttribute(types.AttributeKeyResult, result),

@@ -130,7 +130,8 @@ func (gs GenesisState) ValidateStoredTrade() error {
 			return fmt.Errorf("invalid process_date format, trade_index: %d", elem.TradeIndex)
 		}
 
-		if err := ValidateTradeData(elem.TradeData); err != nil {
+		_, err = ValidateTradeData(elem.TradeData)
+		if err != nil {
 			return fmt.Errorf("invalid trade_data, error: %s, trade_index: %d", err, elem.TradeIndex)
 		}
 

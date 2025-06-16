@@ -2,6 +2,7 @@ syntax = "proto3";
 package ggezchain.trade;
 
 import "ggezchain/trade/trade.proto";
+import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
 
@@ -21,7 +22,7 @@ message TradeInfo {
   string issuer = 8;
   uint64 no_shares = 9;
   double price = 10;
-  uint64 quantity = 11;
+  cosmos.base.v1beta1.Coin quantity = 11;
   string segment = 12;
   double share_price = 13;
   string ticker = 14;

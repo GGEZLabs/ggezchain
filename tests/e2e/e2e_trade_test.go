@@ -21,7 +21,7 @@ func (s *IntegrationTestSuite) testTrade() {
 	fees := sdk.NewCoin(uggez1Denom, math.NewInt(1))
 
 	// Create trade
-	s.execCreateTrade(s.chainA, 0, "buy", "1000000uggz", "0.001", admin1.String(), tradetypes.GetSampleTradeData(), `{}`, `{}`, `{}`, admin1.String(), ggezHomePath, fees.String())
+	s.execCreateTrade(s.chainA, 0, admin1.String(), tradetypes.GetSampleTradeData(tradetypes.TradeTypeBuy), `{}`, `{}`, `{}`, admin1.String(), ggezHomePath, fees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -63,12 +63,12 @@ func (s *IntegrationTestSuite) testTrade() {
 			ggzSupply, err := querySupplyOf(chainEndpoint, tradetypes.DefaultDenom)
 			s.Require().NoError(err)
 
-			s.Require().Equal(int64(1000000), ggzSupply.Amount.Int64())
+			s.Require().Equal(int64(100000), ggzSupply.Amount.Int64())
 
 			receiverAddressBalance, err := getSpecificBalance(chainEndpoint, admin1.String(), tradetypes.DefaultDenom)
 			s.Require().NoError(err)
 
-			s.Require().Equal(int64(1000000), receiverAddressBalance.Amount.Int64())
+			s.Require().Equal(int64(100000), receiverAddressBalance.Amount.Int64())
 
 			return len(storedTempTrades.StoredTempTrade) == 0
 		},

@@ -23,7 +23,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		return nil, types.ErrInvalidMakerPermission
 	}
 
-	err = types.ValidateTradeData(msg.TradeData)
+	td, err := types.ValidateTradeData(msg.TradeData)
 	if err != nil {
 		return nil, err
 	}
@@ -51,9 +51,9 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		Status:               status,
 		CreateDate:           createDateTime,
 		UpdateDate:           createDateTime,
-		TradeType:            msg.TradeType,
-		Amount:               msg.Amount,
-		Price:                msg.Price,
+		TradeType:            td.TradeInfo.TradeType,
+		Amount:               td.TradeInfo.Quantity,
+		Price:                fmt.Sprint(td.TradeInfo.Price),
 		ReceiverAddress:      msg.ReceiverAddress,
 		Maker:                msg.Creator,
 		ProcessDate:          createDateTime,

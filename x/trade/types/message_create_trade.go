@@ -2,8 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"strconv"
-	"strings"
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -12,12 +10,9 @@ import (
 
 var _ sdk.Msg = &MsgCreateTrade{}
 
-func NewMsgCreateTrade(creator string, tradeType TradeType, amount *sdk.Coin, price string, receiverAddress string, tradeData string, bankingSystemData string, coinMintingPriceJson string, exchangeRateJson string) *MsgCreateTrade {
+func NewMsgCreateTrade(creator string, receiverAddress string, tradeData string, bankingSystemData string, coinMintingPriceJson string, exchangeRateJson string) *MsgCreateTrade {
 	return &MsgCreateTrade{
 		Creator:              creator,
-		TradeType:            tradeType,
-		Amount:               amount,
-		Price:                price,
 		ReceiverAddress:      receiverAddress,
 		TradeData:            tradeData,
 		BankingSystemData:    bankingSystemData,
@@ -30,39 +25,6 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.ErrInvalidAddress.Wrapf("invalid creator address (%s)", err)
-	}
-
-	// Validate trade type
-	if msg.TradeType != TradeTypeBuy &&
-		msg.TradeType != TradeTypeSell {
-		return ErrInvalidTradeType
-	}
-
-	// Validate amount
-	if !msg.Amount.IsValid() {
-		return sdkerrors.ErrInvalidRequest.Wrapf("invalid amount: %s", msg.Amount.String())
-	}
-
-	if msg.Amount.IsZero() {
-		return sdkerrors.ErrInvalidRequest.Wrapf("zero amount not allowed: %s", msg.Amount.String())
-	}
-
-	if msg.Amount.Denom != DefaultDenom {
-		return sdkerrors.ErrInvalidRequest.Wrapf("invalid denom expected: %s, got: %s ", DefaultDenom, msg.Amount.Denom)
-	}
-
-	// Validate price
-	if strings.TrimSpace(msg.Price) == "" {
-		return ErrInvalidTradePrice
-	}
-
-	coinPrice, err := strconv.ParseFloat(msg.Price, 64)
-	if err != nil {
-		return ErrInvalidTradePrice.Wrapf(err.Error())
-	}
-
-	if coinPrice <= 0 {
-		return ErrInvalidTradePrice
 	}
 
 	// Validate receiver address

@@ -11,6 +11,7 @@ import (
 )
 
 func TestGenesisState_Validate(t *testing.T) {
+	td := types.GetSampleTradeData(types.TradeTypeBuy)
 	tests := []struct {
 		desc      string
 		genState  *types.GenesisState
@@ -41,7 +42,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						CreateDate:        "2023-05-11T08:44:00Z",
 						UpdateDate:        "2023-05-11T08:44:00Z",
 						ProcessDate:       "2023-05-11T08:44:00Z",
-						TradeData:         types.GetSampleTradeData(),
+						TradeData:         td,
 						BankingSystemData: "{}",
 					},
 				},
@@ -73,7 +74,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						CreateDate:        "2023-05-11T08:44:00Z",
 						UpdateDate:        "2023-05-11T08:44:00Z",
 						ProcessDate:       "2023-05-11T08:44:00Z",
-						TradeData:         types.GetSampleTradeData(),
+						TradeData:         td,
 						BankingSystemData: "{}",
 					},
 					{
@@ -88,7 +89,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						CreateDate:        "2023-05-11T08:44:00Z",
 						UpdateDate:        "2023-05-11T08:44:00Z",
 						ProcessDate:       "2023-05-11T08:44:00Z",
-						TradeData:         types.GetSampleTradeData(),
+						TradeData:         td,
 						BankingSystemData: "{}",
 					},
 				},
@@ -398,7 +399,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						CreateDate:        "2023-05-11T08:44:00Z",
 						UpdateDate:        "2023-05-11T08:44:00Z",
 						ProcessDate:       "2023-05-11T08:44:00Z",
-						TradeData:         types.GetSampleTradeData(),
+						TradeData:         td,
 						BankingSystemData: "",
 					},
 				},
@@ -483,6 +484,7 @@ func TestGenesisState_Validate(t *testing.T) {
 }
 
 func TestGenesisState_ValidateStoredTrade(t *testing.T) {
+	td := types.GetSampleTradeData(types.TradeTypeBuy)
 	tests := []struct {
 		desc      string
 		genState  *types.GenesisState
@@ -505,7 +507,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 						CreateDate:        "2023-05-11T08:44:00Z",
 						UpdateDate:        "2023-05-11T08:44:00Z",
 						ProcessDate:       "2023-05-11T08:44:00Z",
-						TradeData:         types.GetSampleTradeData(),
+						TradeData:         td,
 						BankingSystemData: "{}",
 					},
 				},
@@ -528,7 +530,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 						CreateDate:        "2023-05-11T08:44:00Z",
 						UpdateDate:        "2023-05-11T08:44:00Z",
 						ProcessDate:       "2023-05-11T08:44:00Z",
-						TradeData:         types.GetSampleTradeData(),
+						TradeData:         td,
 						BankingSystemData: "{}",
 					},
 					{
@@ -543,7 +545,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 						CreateDate:        "2023-05-11T08:44:00Z",
 						UpdateDate:        "2023-05-11T08:44:00Z",
 						ProcessDate:       "2023-05-11T08:44:00Z",
-						TradeData:         types.GetSampleTradeData(),
+						TradeData:         td,
 						BankingSystemData: "{}",
 					},
 				},
@@ -791,7 +793,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 						CreateDate:        "2023-05-11T08:44:00Z",
 						UpdateDate:        "2023-05-11T08:44:00Z",
 						ProcessDate:       "2023-05-11T08:44:00Z",
-						TradeData:         types.GetSampleTradeData(),
+						TradeData:         td,
 						BankingSystemData: "",
 					},
 				},
