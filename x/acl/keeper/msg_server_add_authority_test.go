@@ -21,7 +21,7 @@ func TestMsgAddAuthority(t *testing.T) {
 		Name:              "Alice",
 		AccessDefinitions: []*types.AccessDefinition{},
 	}
-	k.SetSuperAdmin(ctx,types.SuperAdmin{Admin: superAdmin})
+	k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: superAdmin})
 	k.SetAclAuthority(ctx, aclAuthority)
 	k.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
 	wctx := sdk.UnwrapSDKContext(ctx)

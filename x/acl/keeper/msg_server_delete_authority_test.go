@@ -25,7 +25,7 @@ func TestMsgDeleteAuthority(t *testing.T) {
 		Name:              "Bob",
 		AccessDefinitions: []*types.AccessDefinition{},
 	}
-	k.SetSuperAdmin(ctx,types.SuperAdmin{Admin: superAdmin})
+	k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: superAdmin})
 	k.SetAclAuthority(ctx, aclAuthorityAlice)
 	k.SetAclAuthority(ctx, aclAuthorityBob)
 	k.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
