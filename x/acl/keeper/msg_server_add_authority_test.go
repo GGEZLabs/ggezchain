@@ -72,7 +72,7 @@ func TestMsgAddAuthority(t *testing.T) {
 				AccessDefinitions: `[]`,
 			},
 			expErr:    true,
-			expErrMsg: "access definition list is empty",
+			expErrMsg: "access definition list is required and cannot be empty",
 		},
 		{
 			name: "add empty module",

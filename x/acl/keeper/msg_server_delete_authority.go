@@ -16,7 +16,7 @@ func (k msgServer) DeleteAuthority(goCtx context.Context, msg *types.MsgDeleteAu
 
 	_, found := k.GetAclAuthority(ctx, msg.AuthAddress)
 	if !found {
-		return nil, types.ErrAuthorityAddressNotExist
+		return nil, types.ErrAuthorityAddressDoesNotExist
 	}
 
 	k.RemoveAclAuthority(ctx, msg.AuthAddress)

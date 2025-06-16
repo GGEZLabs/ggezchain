@@ -45,7 +45,7 @@ func TestMsgDeleteAuthority(t *testing.T) {
 				AuthAddress: bob,
 			},
 			expErr:    true,
-			expErrMsg: "authority address not exist",
+			expErrMsg: "authority address does not exist",
 		},
 		{
 			name: "all good",

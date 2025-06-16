@@ -32,7 +32,7 @@ func TestCreateTrade(t *testing.T) {
 			req: types.MsgCreateTrade{
 				Creator: testutil.Eve,
 			},
-			expErrMsg: "authority address not exist",
+			expErrMsg: "authority address does not exist",
 		},
 		{
 			name:      "no permission for module",
@@ -242,7 +242,7 @@ func TestProcessTrade(t *testing.T) {
 			req: types.MsgProcessTrade{
 				Creator: testutil.Eve,
 			},
-			expErrMsg: "authority address not exist",
+			expErrMsg: "authority address does not exist",
 		},
 		{
 			name:      "no permission for module",

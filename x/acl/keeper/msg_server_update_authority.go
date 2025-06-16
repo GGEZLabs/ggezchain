@@ -16,7 +16,7 @@ func (k msgServer) UpdateAuthority(goCtx context.Context, msg *types.MsgUpdateAu
 
 	aclAuthority, found := k.GetAclAuthority(ctx, msg.AuthAddress)
 	if !found {
-		return nil, types.ErrAuthorityAddressNotExist
+		return nil, types.ErrAuthorityAddressDoesNotExist
 	}
 
 	if msg.NewName != "" {

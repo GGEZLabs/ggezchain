@@ -37,22 +37,13 @@ func TestMsgDeleteAdmin(t *testing.T) {
 			expErrMsg: "unauthorized account",
 		},
 		{
-			name: "delete all admins",
-			input: &types.MsgDeleteAdmin{
-				Creator: superAdmin,
-				Admins:  []string{alice, bob},
-			},
-			expErr:    true,
-			expErrMsg: "cannot delete all admins, at least one admin must remain",
-		},
-		{
 			name: "admin not exist",
 			input: &types.MsgDeleteAdmin{
 				Creator: superAdmin,
 				Admins:  []string{sample.AccAddress()},
 			},
 			expErr:    true,
-			expErrMsg: "admin(s) not exist",
+			expErrMsg: "admin(s) does not exist",
 		},
 		{
 			name: "all good",

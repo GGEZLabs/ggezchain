@@ -118,7 +118,7 @@ func (suite *KeeperTestSuite) TestCreateTradeAuthorityAddressNotExist() {
 	})
 
 	suite.Require().Nil(createResponse)
-	suite.Require().ErrorIs(err, acltypes.ErrAuthorityAddressNotExist)
+	suite.Require().ErrorIs(err, acltypes.ErrAuthorityAddressDoesNotExist)
 	suite.Require().Contains(err.Error(), "unauthorized account")
 }
 

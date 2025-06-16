@@ -15,7 +15,7 @@ import (
 func (k Keeper) HasPermission(ctx sdk.Context, address string, msgType int32) (bool, error) {
 	authority, found := k.aclKeeper.GetAclAuthority(ctx, address)
 	if !found {
-		return false, acltypes.ErrAuthorityAddressNotExist.Wrapf("unauthorized account %s", address)
+		return false, acltypes.ErrAuthorityAddressDoesNotExist.Wrapf("unauthorized account %s", address)
 	}
 
 	for _, ad := range authority.AccessDefinitions {

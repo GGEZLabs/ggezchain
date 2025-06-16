@@ -49,7 +49,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 				AuthAddress: bob,
 			},
 			expErr:    true,
-			expErrMsg: "authority address not exist",
+			expErrMsg: "authority address does not exist",
 		},
 		{
 			name: "empty access definition list",
@@ -59,7 +59,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 				OverwriteAccessDefinitions: `[]`,
 			},
 			expErr:    true,
-			expErrMsg: "access definition list is empty",
+			expErrMsg: "access definition list is required and cannot be empty",
 		},
 		{
 			name: "invalid overwrite access definitions format",
@@ -89,7 +89,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 				OverwriteAccessDefinitions: `[{"module":"module1","is_maker":false,"is_checker":true},{"module":"module1","is_maker":false,"is_checker":true}]`,
 			},
 			expErr:    true,
-			expErrMsg: "module1 module(s) is duplicates",
+			expErrMsg: "duplicate module names found: module1",
 		},
 		{
 			name: "invalid update access definitions format",
@@ -119,7 +119,7 @@ func TestMsgUpdateAuthority(t *testing.T) {
 				DeleteAccessDefinitions: []string{"trade"},
 			},
 			expErr:    true,
-			expErrMsg: "module not exist",
+			expErrMsg: "module name does not exist",
 		},
 		{
 			name: "invalid delete access definitions (empty module)",

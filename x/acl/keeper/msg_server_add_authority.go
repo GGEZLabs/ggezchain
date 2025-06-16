@@ -17,7 +17,7 @@ func (k msgServer) AddAuthority(goCtx context.Context, msg *types.MsgAddAuthorit
 
 	_, found := k.GetAclAuthority(ctx, msg.AuthAddress)
 	if found {
-		return nil, types.ErrAuthorityAddressExist
+		return nil, types.ErrAuthorityAddressExists
 	}
 
 	accessDefinitions, err := types.ValidateAccessDefinitionList(msg.AccessDefinitions)
