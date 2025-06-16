@@ -21,7 +21,7 @@ func (s *IntegrationTestSuite) testTrade() {
 	fees := sdk.NewCoin(uggez1Denom, math.NewInt(1))
 
 	// Create trade
-	s.execCreateTrade(s.chainA, 0, "buy", "1000000uggz", "0.001", admin1.String(), tradetypes.GetSampleTradeData(), `{}`, `{}`, `{}`, admin1.String(), ggezHomePath, fees.String())
+	s.execCreateTrade(s.chainA, 0, admin1.String(), tradetypes.GetSampleTradeData(tradetypes.TradeTypeBuy), `{}`, `{}`, `{}`, admin1.String(), ggezHomePath, fees.String())
 
 	s.Require().Eventually(
 		func() bool {

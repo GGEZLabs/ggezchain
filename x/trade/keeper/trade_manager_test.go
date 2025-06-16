@@ -130,9 +130,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 		}
 
 		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
-		if err != nil {
-			panic(err.Error())
-		}
+		suite.Require().NoErrorf(err, "invalid receiver address: %s", err)
 
 		suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, receiverAddress, types.ModuleName, sdk.Coins{
 			{
@@ -165,9 +163,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 			}).Return(nil).Times(1)
 
 		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
-		if err != nil {
-			panic(err.Error())
-		}
+		suite.Require().NoErrorf(err, "invalid receiver address: %s", err)
 
 		suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName,
 			receiverAddress,
@@ -204,9 +200,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 		}
 
 		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
-		if err != nil {
-			panic(err.Error())
-		}
+		suite.Require().NoErrorf(err, "invalid receiver address: %s", err)
 
 		suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, receiverAddress,
 			types.ModuleName,
@@ -259,9 +253,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 			}).Return(nil).Times(1)
 
 		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
-		if err != nil {
-			panic(err.Error())
-		}
+		suite.Require().NoErrorf(err, "invalid receiver address: %s", err)
 
 		suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName,
 			receiverAddress,
@@ -298,9 +290,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 		}
 
 		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
-		if err != nil {
-			panic(err.Error())
-		}
+		suite.Require().NoErrorf(err, "invalid receiver address: %s", err)
 
 		suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, receiverAddress,
 			types.ModuleName,
@@ -327,9 +317,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 		}
 
 		receiverAddress, err := sdk.AccAddressFromBech32(testutil.Alice)
-		if err != nil {
-			panic(err.Error())
-		}
+		suite.Require().NoErrorf(err, "invalid receiver address: %s", err)
 
 		suite.bankKeeper.EXPECT().SendCoinsFromAccountToModule(suite.ctx, receiverAddress,
 			types.ModuleName,

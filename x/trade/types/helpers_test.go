@@ -10,6 +10,8 @@ import (
 
 func TestValidateDate(t *testing.T) {
 	blockTime := time.Now()
+	year := time.Now().Year() + 5
+	futureDate := time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC).Format(time.RFC3339)
 	tests := []struct {
 		name      string
 		dateStr   string
@@ -23,7 +25,7 @@ func TestValidateDate(t *testing.T) {
 		},
 		{
 			name:      "Invalid date (future date)",
-			dateStr:   "2025-06-13T00:00:00Z",
+			dateStr:   futureDate,
 			expErr:    true,
 			expErrMsg: "cannot be in the future",
 		},
