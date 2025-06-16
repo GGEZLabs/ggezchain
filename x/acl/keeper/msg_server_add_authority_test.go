@@ -11,6 +11,7 @@ import (
 
 func TestMsgAddAuthority(t *testing.T) {
 	k, ms, ctx := setupMsgServer(t)
+	superAdmin := sample.AccAddress()
 	admin := sample.AccAddress()
 	alice := sample.AccAddress()
 	bob := sample.AccAddress()
@@ -20,6 +21,7 @@ func TestMsgAddAuthority(t *testing.T) {
 		Name:              "Alice",
 		AccessDefinitions: []*types.AccessDefinition{},
 	}
+	k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: superAdmin})
 	k.SetAclAuthority(ctx, aclAuthority)
 	k.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
 	wctx := sdk.UnwrapSDKContext(ctx)
@@ -72,7 +74,7 @@ func TestMsgAddAuthority(t *testing.T) {
 				AccessDefinitions: `[]`,
 			},
 			expErr:    true,
-			expErrMsg: "access definition list is empty",
+			expErrMsg: "access definition list is required and cannot be empty",
 		},
 		{
 			name: "add empty module",
@@ -97,11 +99,22 @@ func TestMsgAddAuthority(t *testing.T) {
 			expErrMsg: "invalid module name",
 		},
 		{
-			name: "all good",
+			name: "add authority by super admin",
 			input: &types.MsgAddAuthority{
-				Creator:           admin,
+				Creator:           superAdmin,
 				AuthAddress:       bob,
 				Name:              "Bob",
+				AccessDefinitions: sampleAccessDefinitions,
+			},
+			expErr:    false,
+			expErrMsg: "",
+		},
+		{
+			name: "add authority by admin",
+			input: &types.MsgAddAuthority{
+				Creator:           admin,
+				AuthAddress:       sample.AccAddress(),
+				Name:              "Carol",
 				AccessDefinitions: sampleAccessDefinitions,
 			},
 			expErr:    false,

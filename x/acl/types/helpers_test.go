@@ -261,7 +261,7 @@ func TestValidateUpdateAccessDefinition(t *testing.T) {
 				},
 			},
 			updatedModule: "module2",
-			err:           ErrModuleNotExist,
+			err:           ErrModuleDoesNotExist,
 		},
 		{
 			name: "empty module",
@@ -271,7 +271,7 @@ func TestValidateUpdateAccessDefinition(t *testing.T) {
 				},
 			},
 			updatedModule: "",
-			err:           ErrModuleNotExist,
+			err:           ErrModuleDoesNotExist,
 		},
 		{
 			name: "empty access definition list",
@@ -279,7 +279,7 @@ func TestValidateUpdateAccessDefinition(t *testing.T) {
 				AccessDefinitions: []*AccessDefinition{},
 			},
 			updatedModule: "module1",
-			err:           ErrModuleNotExist,
+			err:           ErrModuleDoesNotExist,
 		},
 		{
 			name: "all good",
@@ -314,13 +314,13 @@ func TestValidateAddAccessDefinition(t *testing.T) {
 			name:           "duplicate module",
 			currentModules: []string{"module1", "module2"},
 			newModules:     []string{"module1"},
-			err:            ErrModuleExist,
+			err:            ErrModuleExists,
 		},
 		{
 			name:           "multiple duplicate modules",
 			currentModules: []string{"module1", "module2", "module3"},
 			newModules:     []string{"module1", "module3"},
-			err:            ErrModuleExist,
+			err:            ErrModuleExists,
 		},
 		{
 			name:           "all good",
@@ -368,7 +368,7 @@ func TestValidateDeleteAccessDefinition(t *testing.T) {
 				{Module: "module2", IsMaker: true, IsChecker: false},
 				{Module: "module3", IsMaker: true, IsChecker: false},
 			},
-			err: ErrModuleNotExist,
+			err: ErrModuleDoesNotExist,
 		},
 		{
 			name:        "remove one module",

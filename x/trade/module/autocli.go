@@ -56,12 +56,9 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod: "CreateTrade",
-					Use:       "create-trade [trade-type] [amount] [price] [receiver-address] [trade-data] [banking-system-data] [coin-minting-price-json] [exchange-rate-json]",
+					Use:       "create-trade [receiver-address] [trade-data] [banking-system-data] [coin-minting-price-json] [exchange-rate-json]",
 					Short:     "Send a create-trade tx",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
-						{ProtoField: "trade_type"},
-						{ProtoField: "amount"},
-						{ProtoField: "price"},
 						{ProtoField: "receiver_address"},
 						{ProtoField: "trade_data"},
 						{ProtoField: "banking_system_data"},

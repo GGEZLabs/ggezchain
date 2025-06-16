@@ -8,20 +8,23 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func GetSampleTradeData() string {
+func GetSampleTradeData(tradeType TradeType) string {
 	tradeData := TradeData{
 		TradeInfo: &TradeInfo{
 			AssetHolderId: 2,
 			AssetId:       789,
-			TradeType:     TradeTypeBuy,
+			TradeType:     tradeType,
 			TradeValue:    100.50,
 			Currency:      "USD",
 			Exchange:      "NYSE",
 			FundName:      "TechFund",
 			Issuer:        "CompanyA",
 			NoShares:      1000,
-			Price:         50.25,
-			Quantity:      10,
+			Price:         0.001,
+			Quantity: &sdk.Coin{
+				Denom:  DefaultDenom,
+				Amount: math.NewInt(100000),
+			},
 			Segment:       "Technology",
 			SharePrice:    49.50,
 			Ticker:        "TECH",
@@ -38,7 +41,7 @@ func GetSampleTradeData() string {
 
 	tradeDataJSON, err := json.Marshal(tradeData)
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 	return string(tradeDataJSON)
 }
@@ -53,7 +56,7 @@ func GetBaseStoredTrade() StoredTrade {
 		Price:                "0.001",
 		ReceiverAddress:      testutil.Alice,
 		Maker:                testutil.Alice,
-		TradeData:            GetSampleTradeData(),
+		TradeData:            GetSampleTradeData(TradeTypeBuy),
 		BankingSystemData:    "{}",
 		CoinMintingPriceJson: "",
 		ExchangeRateJson:     "",
@@ -67,11 +70,8 @@ func GetBaseStoredTrade() StoredTrade {
 func GetSampleMsgCreateTrade() *MsgCreateTrade {
 	return NewMsgCreateTrade(
 		testutil.Alice,
-		TradeTypeBuy,
-		&sdk.Coin{Denom: DefaultDenom, Amount: math.NewInt(100000)},
-		"0.001",
 		testutil.Alice,
-		GetSampleTradeData(),
+		GetSampleTradeData(TradeTypeBuy),
 		"{}",
 		"",
 		"",
@@ -80,16 +80,24 @@ func GetSampleMsgCreateTrade() *MsgCreateTrade {
 
 // GetMsgCreateTradeWithTypeAndAmount get sample create trade message specified with trade type and amount
 func GetMsgCreateTradeWithTypeAndAmount(tradeType TradeType, amount int64) *MsgCreateTrade {
+	tdStr := GetSampleTradeData(TradeTypeBuy)
+	var td TradeData
+	if err := json.Unmarshal([]byte(tdStr), &td); err != nil {
+		panic(err)
+	}
+
+	td.TradeInfo.TradeType = tradeType
+	td.TradeInfo.Quantity.Amount = math.NewInt(amount)
+
+	tdBytes, err := json.Marshal(td)
+	if err != nil {
+		panic(err)
+	}
+
 	return &MsgCreateTrade{
-		Creator:   testutil.Alice,
-		TradeType: tradeType,
-		Amount: &sdk.Coin{
-			Denom:  DefaultDenom,
-			Amount: math.NewInt(amount),
-		},
-		Price:             "0.001",
+		Creator:           testutil.Alice,
 		ReceiverAddress:   testutil.Alice,
-		TradeData:         GetSampleTradeData(),
+		TradeData:         string(tdBytes),
 		BankingSystemData: "{}",
 	}
 }
@@ -100,7 +108,6 @@ func GetSampleStoredTrade(tradeIndex uint64) StoredTrade {
 	sampleStoredTrade := GetBaseStoredTrade()
 	sampleStoredTrade.TradeIndex = tradeIndex
 	sampleStoredTrade.Status = StatusPending
-	sampleStoredTrade.Checker = ""
 	sampleStoredTrade.Result = TradeCreatedSuccessfully
 
 	return sampleStoredTrade

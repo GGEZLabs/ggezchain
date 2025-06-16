@@ -17,13 +17,13 @@ service Msg {
   // UpdateParams defines a (governance) operation for updating the module
   // parameters. The authority defaults to the x/gov module account.
   rpc UpdateParams     (MsgUpdateParams    ) returns (MsgUpdateParamsResponse    );
-  rpc AddAuthority     (MsgAddAuthority    ) returns (MsgAddAuthorityResponse    );
-  rpc DeleteAuthority  (MsgDeleteAuthority ) returns (MsgDeleteAuthorityResponse );
-  rpc UpdateAuthority  (MsgUpdateAuthority ) returns (MsgUpdateAuthorityResponse );
   rpc Init             (MsgInit            ) returns (MsgInitResponse            );
+  rpc UpdateSuperAdmin (MsgUpdateSuperAdmin) returns (MsgUpdateSuperAdminResponse);
   rpc AddAdmin         (MsgAddAdmin        ) returns (MsgAddAdminResponse        );
   rpc DeleteAdmin      (MsgDeleteAdmin     ) returns (MsgDeleteAdminResponse     );
-  rpc UpdateSuperAdmin (MsgUpdateSuperAdmin) returns (MsgUpdateSuperAdminResponse);
+  rpc AddAuthority     (MsgAddAuthority    ) returns (MsgAddAuthorityResponse    );
+  rpc UpdateAuthority  (MsgUpdateAuthority ) returns (MsgUpdateAuthorityResponse );
+  rpc DeleteAuthority  (MsgDeleteAuthority ) returns (MsgDeleteAuthorityResponse );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -43,38 +43,6 @@ message MsgUpdateParams {
 // MsgUpdateParams message.
 message MsgUpdateParamsResponse {}
 
-message MsgAddAuthority {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator            = 1;
-  string auth_address       = 2;
-  string name               = 3;
-  string access_definitions = 4;
-}
-
-message MsgAddAuthorityResponse {}
-
-message MsgDeleteAuthority {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator      = 1;
-  string auth_address = 2;
-}
-
-message MsgDeleteAuthorityResponse {}
-
-message MsgUpdateAuthority {
-  option (cosmos.msg.v1.signer) = "creator";
-           string creator                      = 1;
-           string auth_address                 = 2;
-           string new_name                     = 3;
-           string overwrite_access_definitions = 4;
-           string add_access_definitions       = 5;
-           string update_access_definition     = 6;
-  repeated string delete_access_definitions    = 7;
-           bool   clear_all_access_definitions = 8;
-}
-
-message MsgUpdateAuthorityResponse {}
-
 message MsgInit {
   option (cosmos.msg.v1.signer) = "creator";
   string creator     = 1;
@@ -82,6 +50,14 @@ message MsgInit {
 }
 
 message MsgInitResponse {}
+
+message MsgUpdateSuperAdmin {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator         = 1;
+  string new_super_admin = 2;
+}
+
+message MsgUpdateSuperAdminResponse {}
 
 message MsgAddAdmin {
   option (cosmos.msg.v1.signer) = "creator";
@@ -99,11 +75,35 @@ message MsgDeleteAdmin {
 
 message MsgDeleteAdminResponse {}
 
-message MsgUpdateSuperAdmin {
+message MsgAddAuthority {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator         = 1;
-  string new_super_admin = 2;
+  string creator            = 1;
+  string auth_address       = 2;
+  string name               = 3;
+  string access_definitions = 4;
 }
 
-message MsgUpdateSuperAdminResponse {}
+message MsgAddAuthorityResponse {}
+
+message MsgUpdateAuthority {
+  option (cosmos.msg.v1.signer) = "creator";
+           string creator                      = 1;
+           string auth_address                 = 2;
+           string new_name                     = 3;
+           string overwrite_access_definitions = 4;
+           string add_access_definitions       = 5;
+           string update_access_definition     = 6;
+  repeated string delete_access_definitions    = 7;
+           bool   clear_all_access_definitions = 8;
+}
+
+message MsgUpdateAuthorityResponse {}
+
+message MsgDeleteAuthority {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator      = 1;
+  string auth_address = 2;
+}
+
+message MsgDeleteAuthorityResponse {}
 

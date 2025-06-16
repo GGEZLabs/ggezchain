@@ -11,13 +11,13 @@ import (
 func (k msgServer) AddAuthority(goCtx context.Context, msg *types.MsgAddAuthority) (*types.MsgAddAuthorityResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if !k.IsAdmin(ctx, msg.Creator) {
+	if !k.IsAdmin(ctx, msg.Creator) && !k.IsSuperAdmin(ctx, msg.Creator) {
 		return nil, types.ErrUnauthorized
 	}
 
 	_, found := k.GetAclAuthority(ctx, msg.AuthAddress)
 	if found {
-		return nil, types.ErrAuthorityAddressExist
+		return nil, types.ErrAuthorityAddressExists
 	}
 
 	accessDefinitions, err := types.ValidateAccessDefinitionList(msg.AccessDefinitions)

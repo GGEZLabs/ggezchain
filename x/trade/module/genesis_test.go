@@ -14,9 +14,9 @@ import (
 )
 
 func TestGenesis(t *testing.T) {
+	td := types.GetSampleTradeData(types.TradeTypeBuy)
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
-
 		TradeIndex: types.TradeIndex{
 			NextId: 3,
 		},
@@ -33,7 +33,7 @@ func TestGenesis(t *testing.T) {
 				CreateDate:        "2023-05-11T08:44:00Z",
 				UpdateDate:        "2023-05-11T08:44:00Z",
 				ProcessDate:       "2023-05-11T08:44:00Z",
-				TradeData:         types.GetSampleTradeData(),
+				TradeData:         td,
 				BankingSystemData: "{}",
 			},
 			{
@@ -48,7 +48,7 @@ func TestGenesis(t *testing.T) {
 				CreateDate:        "2023-05-11T08:44:00Z",
 				UpdateDate:        "2023-05-11T08:44:00Z",
 				ProcessDate:       "2023-05-11T08:44:00Z",
-				TradeData:         types.GetSampleTradeData(),
+				TradeData:         td,
 				BankingSystemData: "{}",
 			},
 		},

@@ -1126,7 +1126,7 @@ func (s *IntegrationTestSuite) execUpdateAclAuthority(c *chain, valIdx int, auth
 }
 
 func (s *IntegrationTestSuite) execCreateTrade(c *chain, valIdx int,
-	tradeType, amount, price, receiverAddress, tradeData, bankingSystemData, coinMintingPriceJson, exchangeRateJson,
+	receiverAddress, tradeData, bankingSystemData, coinMintingPriceJson, exchangeRateJson,
 	from, home, createTradeFees string,
 ) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
@@ -1139,9 +1139,6 @@ func (s *IntegrationTestSuite) execCreateTrade(c *chain, valIdx int,
 		txCommand,
 		tradetypes.ModuleName,
 		"create-trade",
-		tradeType,
-		amount,
-		price,
 		receiverAddress,
 		tradeData,
 		bankingSystemData,

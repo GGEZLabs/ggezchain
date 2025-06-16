@@ -27,7 +27,7 @@ func ValidateAccessDefinitionList(accessDefinitionListStr string) ([]*AccessDefi
 		accessDefinition.Module = strings.ToLower(strings.TrimSpace(accessDefinition.Module))
 
 		if accessDefinition.Module == "" {
-			return nil, ErrInvalidModuleName.Wrapf("empty module not allowed")
+			return nil, ErrInvalidModuleName.Wrapf("missing required parameter: module")
 		}
 
 		if seenModules[accessDefinition.Module] {
@@ -37,7 +37,7 @@ func ValidateAccessDefinitionList(accessDefinitionListStr string) ([]*AccessDefi
 	}
 
 	if len(duplicateModules) > 0 {
-		return nil, ErrInvalidModuleName.Wrapf("%s module(s) is duplicates", strings.Join(duplicateModules, ", "))
+		return nil, ErrInvalidModuleName.Wrapf("duplicate module names found: %s", strings.Join(duplicateModules, ", "))
 	}
 
 	return accessDefinitionList, nil
@@ -54,7 +54,7 @@ func ValidateSingleAccessDefinition(accessDefinitionStr string) (*AccessDefiniti
 	accessDefinition.Module = strings.ToLower(strings.TrimSpace(accessDefinition.Module))
 
 	if accessDefinition.Module == "" {
-		return nil, ErrInvalidModuleName.Wrapf("empty module not allowed")
+		return nil, ErrInvalidModuleName.Wrapf("missing required parameter: module")
 	}
 	return &accessDefinition, nil
 }
@@ -92,7 +92,7 @@ func GetAuthorityModules(accessDefinitionList []*AccessDefinition) []string {
 func ValidateUpdateAccessDefinition(aclAuthority AclAuthority, updatedModule string) error {
 	modules := GetAuthorityModules(aclAuthority.AccessDefinitions)
 	if !hasModule(modules, updatedModule) {
-		return ErrModuleNotExist.Wrapf("%s module not exist", updatedModule)
+		return ErrModuleDoesNotExist.Wrapf("%s module not exist", updatedModule)
 	}
 	return nil
 }
@@ -112,7 +112,7 @@ func ValidateAddAccessDefinition(currentModules, newModules []string) error {
 	}
 
 	if len(duplicates) > 0 {
-		return ErrModuleExist.Wrapf("%s module(s) already exist", strings.Join(duplicates, ", "))
+		return ErrModuleExists.Wrapf("%s module(s) already exist", strings.Join(duplicates, ", "))
 	}
 
 	return nil
@@ -153,7 +153,7 @@ func ValidateDeleteAccessDefinition(moduleNames []string, accessDefinitions []*A
 	}
 
 	if len(missingModules) > 0 {
-		return nil, ErrModuleNotExist.Wrapf("%s module(s) not found", strings.Join(missingModules, ", "))
+		return nil, ErrModuleDoesNotExist.Wrapf("%s module(s) not found", strings.Join(missingModules, ", "))
 	}
 
 	updatedList := make([]*AccessDefinition, 0, len(accessDefinitions)-len(modulesToRemove))
