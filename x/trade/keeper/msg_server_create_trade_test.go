@@ -112,7 +112,7 @@ func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
 	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Carol, // Dose not has permission for trade module
+		Creator:           testutil.Carol, // Does not has permission for trade module
 		ReceiverAddress:   testutil.Alice,
 		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
 		BankingSystemData: "{}",

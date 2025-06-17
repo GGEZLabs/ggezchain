@@ -57,19 +57,19 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				{
 					RpcMethod:      "AddAuthority",
 					Use:            "add-authority [auth-address] [name] [access-definitions]",
-					Short:          "Add a new authority with specific access definition. Must have admin authority to do so.",
+					Short:          "Add a new authority with specific access definition. Must have authority to do so.",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "auth_address"}, {ProtoField: "name"}, {ProtoField: "access_definitions"}},
 				},
 				{
 					RpcMethod:      "DeleteAuthority",
 					Use:            "delete-authority [auth-address]",
-					Short:          "Delete an existing authority. Must have admin authority to do so.",
+					Short:          "Delete an existing authority. Must have authority to do so.",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "auth_address"}},
 				},
 				{
 					RpcMethod:      "UpdateAuthority",
 					Use:            "update-authority [auth-address]",
-					Short:          "Modify the name or access definition of an existing authority. Must have admin authority to do so.",
+					Short:          "Modify the name or access definition of an existing authority. Must have authority to do so.",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "auth_address"}},
 					FlagOptions: map[string]*autocliv1.FlagOptions{
 						"new_name": {
