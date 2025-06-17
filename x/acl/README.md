@@ -10,23 +10,23 @@ and enforces maker-checker principles where applicable.
 
 - [Abstract](#abstract)
 - [State](#state)
-  - [SuperAdmin](#superAdmin)
+  - [SuperAdmin](#superadmin)
   - [Admin](#admin)
-  - [AclAuthority](#aclAuthority)
+  - [AclAuthority](#aclauthority)
 - [Messages](#messages)
-  - [MsgInit](#msgInit)
-  - [MsgUpdateSuperAdmin](#msgUpdateSuperAdmin)
-  - [MsgAddAdmin](#MsgAddAdmin)
-  - [MsgDeleteAdmin](#MsgDeleteAdmin)
-  - [MsgAddAuthority](#MsgAddAuthority)
-  - [MsgUpdateAuthority](#MsgUpdateAuthority)
-  - [MsgDeleteAuthority](#MsgDeleteAuthority)
+  - [MsgInit](#msginit)
+  - [MsgUpdateSuperAdmin](#msgupdatesuperadmin)
+  - [MsgAddAdmin](#msgaddadmin)
+  - [MsgDeleteAdmin](#msgdeleteadmin)
+  - [MsgAddAuthority](#msgaddauthority)
+  - [MsgUpdateAuthority](#msgupdateauthority)
+  - [MsgDeleteAuthority](#msgdeleteauthority)
 - [Events](#events)
-    - [Message Events](#message-events)
+  - [Message Events](#message-events)
 - [Client](#client)
-    - [CLI](#cli)
-    - [Query](#query)
-    - [Transactions](#transactions)
+  - [CLI](#cli)
+  - [Query](#query)
+  - [Transactions](#transactions)
 ---
 
 ## State
@@ -173,9 +173,12 @@ This message is expected to fail if:
 * authority address does not exist.
 
 ---
+
 ## Events
 
 The `acl` module emits the following events:
+
+### Message Events
 
 ### MsgInit
 

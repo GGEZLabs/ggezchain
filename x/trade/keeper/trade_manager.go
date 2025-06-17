@@ -136,7 +136,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 
 		ctx.EventManager().EmitEvent(
 			sdk.NewEvent(
-				types.EventTypeCancelExpiredPendingTrades,
+				types.EventTypeCanceledTrades,
 				attributes...,
 			),
 		)

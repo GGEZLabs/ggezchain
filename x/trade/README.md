@@ -13,18 +13,19 @@ Next is a list of features the module currently supports:
 
 - [Abstract](#abstract)
 - [State](#state)
-  - [TradeIndex](#tradeIndex)
-  - [StoredTrade](#storedTrade)
-  - [StoredTempTrade](#storedTempTrade)
+  - [TradeIndex](#tradeindex)
+  - [StoredTrade](#storedtrade)
+  - [StoredTempTrade](#storedtemptrade)
 - [Messages](#messages)
-  - [MsgCreateTrade](#msgCreateTrade)
-  - [MsgProcessTrade](#msgProcessTrade)
+  - [MsgCreateTrade](#msgcreatetrade)
+  - [MsgProcessTrade](#msgprocesstrade)
 - [Events](#events)
-    - [Message Events](#message-events)
+  - [Message Events](#message-events)
+  - [Keeper Events](#keeper-events)
 - [Client](#client)
-    - [CLI](#cli)
-    - [Query](#query)
-    - [Transactions](#transactions)
+  - [CLI](#cli)
+  - [Query](#query)
+  - [Transactions](#transactions)
 ---
 
 ## State
@@ -85,9 +86,12 @@ This message is expected to fail if:
 * the `StoredTrade` is not in a pending state.
 
 ---
+
 ## Events
 
 The `trade` module emits the following events:
+
+### Message Events
 
 ### MsgCreateTrade
 
@@ -109,6 +113,24 @@ The `trade` module emits the following events:
 | process_trade | update_date   | {updateDate}    |
 | process_trade | process_da    | {processDate}   |
 | process_trade | result        | {result}        |
+
+
+### Keeper Events
+
+### CancelExpiredPendingTrades
+
+```json
+{
+  "type": "canceled_trades",
+  "attributes": [
+    {
+      "key": "trade_index",
+      "value": "{{trade_index}}",
+      "index": true
+    },
+  ]
+}
+```
 
 ---
 
