@@ -25,8 +25,8 @@ func (k Keeper) OverwriteAccessDefinitionList(aclAuthority types.AclAuthority, a
 	return aclAuthority, nil
 }
 
-// UpdateAccessDefinitions update specific module permission
-func (k Keeper) UpdateAccessDefinitions(aclAuthority types.AclAuthority, singleAccessDefinitionsStr string) (types.AclAuthority, error) {
+// UpdateAccessDefinition update specific module permission
+func (k Keeper) UpdateAccessDefinition(aclAuthority types.AclAuthority, singleAccessDefinitionsStr string) (types.AclAuthority, error) {
 	updatedAccessDefinitions, err := types.ValidateSingleAccessDefinition(singleAccessDefinitionsStr)
 	if err != nil {
 		return types.AclAuthority{}, err

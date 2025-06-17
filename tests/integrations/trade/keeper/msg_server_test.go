@@ -42,7 +42,7 @@ func TestCreateTrade(t *testing.T) {
 			expErrMsg: "no permission for module trade",
 		},
 		{
-			name:      "dose not has maker permission",
+			name:      "does not has maker permission",
 			exceptErr: true,
 			req: types.MsgCreateTrade{
 				Creator: testutil.Bob,

@@ -212,7 +212,7 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			aclAuthority, err := keeper.UpdateAccessDefinitions(tc.inputAclAuthority, tc.singleAccessDefinitionsStr)
+			aclAuthority, err := keeper.UpdateAccessDefinition(tc.inputAclAuthority, tc.singleAccessDefinitionsStr)
 			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)

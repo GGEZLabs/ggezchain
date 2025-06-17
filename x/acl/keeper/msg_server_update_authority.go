@@ -48,7 +48,7 @@ func (k msgServer) UpdateAuthority(goCtx context.Context, msg *types.MsgUpdateAu
 		}
 
 		if msg.UpdateAccessDefinition != "" {
-			aclAuthority, err = k.UpdateAccessDefinitions(aclAuthority, msg.UpdateAccessDefinition)
+			aclAuthority, err = k.UpdateAccessDefinition(aclAuthority, msg.UpdateAccessDefinition)
 			if err != nil {
 				return nil, err
 			}
