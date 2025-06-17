@@ -53,7 +53,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		UpdateDate:           createDateTime,
 		TradeType:            td.TradeInfo.TradeType,
 		Amount:               td.TradeInfo.Quantity,
-		Price:                fmt.Sprint(td.TradeInfo.Price),
+		Price:                types.FormatPrice(td.TradeInfo.Price),
 		ReceiverAddress:      msg.ReceiverAddress,
 		Maker:                msg.Creator,
 		ProcessDate:          createDateTime,
