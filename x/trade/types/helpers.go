@@ -1,6 +1,8 @@
 package types
 
 import (
+	"fmt"
+	"strings"
 	"time"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -21,4 +23,10 @@ func ValidateDate(blockTime time.Time, dateStr string) error {
 	}
 
 	return nil
+}
+
+// FormatPrice convert a float to a decimal string
+func FormatPrice(price float64) string {
+	str := fmt.Sprintf("%.12f", price)
+	return strings.TrimRight(strings.TrimRight(str, "0"), ".")
 }
