@@ -186,6 +186,8 @@ func (suite *KeeperTestSuite) TestCreateTradeWithCreateDateInFuture() {
 	blockTime := time.Now().UTC()
 	suite.ctx = suite.ctx.WithBlockHeight(blockHeight).WithBlockTime(blockTime)
 
+	futureDate := time.Date(blockTime.Year() + 5, 1, 1, 0, 0, 0, 0, time.UTC).Format(time.RFC3339)
+	
 	// Use EXPECT after update context
 	suite.aclKeeper.EXPECT().GetAclAuthority(suite.ctx, testutil.Alice).Return(acltypes.AclAuthority{
 		Address: testutil.Alice,
@@ -204,7 +206,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithCreateDateInFuture() {
 		ReceiverAddress:   testutil.Alice,
 		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
 		BankingSystemData: "{}",
-		CreateDate:        "2050-05-11T08:44:00Z",
+		CreateDate:        futureDate,
 	})
 
 	suite.Require().Nil(createResponse)

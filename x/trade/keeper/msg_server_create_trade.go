@@ -43,6 +43,8 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		createDateTime = msg.CreateDate
 	}
 
+	k.Keeper.CancelExpiredPendingTrades(ctx)
+
 	newIndex := tradeIndex.NextId
 	status := types.StatusPending
 
@@ -73,10 +75,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	k.Keeper.SetStoredTempTrade(ctx, storedTempTrade)
 
 	tradeIndex.NextId++
-
 	k.Keeper.SetTradeIndex(ctx, tradeIndex)
-
-	k.Keeper.CancelExpiredPendingTrades(ctx)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
