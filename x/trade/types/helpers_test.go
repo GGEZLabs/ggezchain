@@ -61,13 +61,13 @@ func TestFormatPrice(t *testing.T) {
 		{123.456, "123.456"},
 		{123.456000, "123.456"},
 		{123.000000000000, "123"},
-		{1e-13, "0"},              
+		{1e-13, "0"},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.expected, func(t *testing.T) {
 			price := types.FormatPrice(tt.input)
-			require.Equal(t,tt.expected, price)
+			require.Equal(t, tt.expected, price)
 		})
 	}
 }
