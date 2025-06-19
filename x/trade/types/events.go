@@ -4,7 +4,7 @@ package types
 const (
 	EventTypeCreateTrade                     = "create_trade"
 	EventTypeProcessTrade                    = "process_trade"
-	EventTypeCancelExpiredPendingTrades      = "canceled_trades"
+	EventTypeCanceledTrades                  = "canceled_trades"
 	EventTypeCancelExpiredPendingTradesError = "canceled_trades_error"
 
 	AttributeKeyTradeIndex  = "trade_index"
