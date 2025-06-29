@@ -117,11 +117,11 @@ func (x *_GenesisState_4_list) IsValid() bool {
 }
 
 var (
-	md_GenesisState                        protoreflect.MessageDescriptor
-	fd_GenesisState_params                 protoreflect.FieldDescriptor
-	fd_GenesisState_trade_index            protoreflect.FieldDescriptor
-	fd_GenesisState_stored_trade_list      protoreflect.FieldDescriptor
-	fd_GenesisState_stored_temp_trade_list protoreflect.FieldDescriptor
+	md_GenesisState                    protoreflect.MessageDescriptor
+	fd_GenesisState_params             protoreflect.FieldDescriptor
+	fd_GenesisState_trade_index        protoreflect.FieldDescriptor
+	fd_GenesisState_stored_trades      protoreflect.FieldDescriptor
+	fd_GenesisState_stored_temp_trades protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -129,8 +129,8 @@ func init() {
 	md_GenesisState = File_ggezchain_trade_genesis_proto.Messages().ByName("GenesisState")
 	fd_GenesisState_params = md_GenesisState.Fields().ByName("params")
 	fd_GenesisState_trade_index = md_GenesisState.Fields().ByName("trade_index")
-	fd_GenesisState_stored_trade_list = md_GenesisState.Fields().ByName("stored_trade_list")
-	fd_GenesisState_stored_temp_trade_list = md_GenesisState.Fields().ByName("stored_temp_trade_list")
+	fd_GenesisState_stored_trades = md_GenesisState.Fields().ByName("stored_trades")
+	fd_GenesisState_stored_temp_trades = md_GenesisState.Fields().ByName("stored_temp_trades")
 }
 
 var _ protoreflect.Message = (*fastReflection_GenesisState)(nil)
@@ -210,15 +210,15 @@ func (x *fastReflection_GenesisState) Range(f func(protoreflect.FieldDescriptor,
 			return
 		}
 	}
-	if len(x.StoredTradeList) != 0 {
-		value := protoreflect.ValueOfList(&_GenesisState_3_list{list: &x.StoredTradeList})
-		if !f(fd_GenesisState_stored_trade_list, value) {
+	if len(x.StoredTrades) != 0 {
+		value := protoreflect.ValueOfList(&_GenesisState_3_list{list: &x.StoredTrades})
+		if !f(fd_GenesisState_stored_trades, value) {
 			return
 		}
 	}
-	if len(x.StoredTempTradeList) != 0 {
-		value := protoreflect.ValueOfList(&_GenesisState_4_list{list: &x.StoredTempTradeList})
-		if !f(fd_GenesisState_stored_temp_trade_list, value) {
+	if len(x.StoredTempTrades) != 0 {
+		value := protoreflect.ValueOfList(&_GenesisState_4_list{list: &x.StoredTempTrades})
+		if !f(fd_GenesisState_stored_temp_trades, value) {
 			return
 		}
 	}
@@ -241,10 +241,10 @@ func (x *fastReflection_GenesisState) Has(fd protoreflect.FieldDescriptor) bool 
 		return x.Params != nil
 	case "ggezchain.trade.GenesisState.trade_index":
 		return x.TradeIndex != nil
-	case "ggezchain.trade.GenesisState.stored_trade_list":
-		return len(x.StoredTradeList) != 0
-	case "ggezchain.trade.GenesisState.stored_temp_trade_list":
-		return len(x.StoredTempTradeList) != 0
+	case "ggezchain.trade.GenesisState.stored_trades":
+		return len(x.StoredTrades) != 0
+	case "ggezchain.trade.GenesisState.stored_temp_trades":
+		return len(x.StoredTempTrades) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.GenesisState"))
@@ -265,10 +265,10 @@ func (x *fastReflection_GenesisState) Clear(fd protoreflect.FieldDescriptor) {
 		x.Params = nil
 	case "ggezchain.trade.GenesisState.trade_index":
 		x.TradeIndex = nil
-	case "ggezchain.trade.GenesisState.stored_trade_list":
-		x.StoredTradeList = nil
-	case "ggezchain.trade.GenesisState.stored_temp_trade_list":
-		x.StoredTempTradeList = nil
+	case "ggezchain.trade.GenesisState.stored_trades":
+		x.StoredTrades = nil
+	case "ggezchain.trade.GenesisState.stored_temp_trades":
+		x.StoredTempTrades = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.GenesisState"))
@@ -291,17 +291,17 @@ func (x *fastReflection_GenesisState) Get(descriptor protoreflect.FieldDescripto
 	case "ggezchain.trade.GenesisState.trade_index":
 		value := x.TradeIndex
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
-	case "ggezchain.trade.GenesisState.stored_trade_list":
-		if len(x.StoredTradeList) == 0 {
+	case "ggezchain.trade.GenesisState.stored_trades":
+		if len(x.StoredTrades) == 0 {
 			return protoreflect.ValueOfList(&_GenesisState_3_list{})
 		}
-		listValue := &_GenesisState_3_list{list: &x.StoredTradeList}
+		listValue := &_GenesisState_3_list{list: &x.StoredTrades}
 		return protoreflect.ValueOfList(listValue)
-	case "ggezchain.trade.GenesisState.stored_temp_trade_list":
-		if len(x.StoredTempTradeList) == 0 {
+	case "ggezchain.trade.GenesisState.stored_temp_trades":
+		if len(x.StoredTempTrades) == 0 {
 			return protoreflect.ValueOfList(&_GenesisState_4_list{})
 		}
-		listValue := &_GenesisState_4_list{list: &x.StoredTempTradeList}
+		listValue := &_GenesisState_4_list{list: &x.StoredTempTrades}
 		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
@@ -327,14 +327,14 @@ func (x *fastReflection_GenesisState) Set(fd protoreflect.FieldDescriptor, value
 		x.Params = value.Message().Interface().(*Params)
 	case "ggezchain.trade.GenesisState.trade_index":
 		x.TradeIndex = value.Message().Interface().(*TradeIndex)
-	case "ggezchain.trade.GenesisState.stored_trade_list":
+	case "ggezchain.trade.GenesisState.stored_trades":
 		lv := value.List()
 		clv := lv.(*_GenesisState_3_list)
-		x.StoredTradeList = *clv.list
-	case "ggezchain.trade.GenesisState.stored_temp_trade_list":
+		x.StoredTrades = *clv.list
+	case "ggezchain.trade.GenesisState.stored_temp_trades":
 		lv := value.List()
 		clv := lv.(*_GenesisState_4_list)
-		x.StoredTempTradeList = *clv.list
+		x.StoredTempTrades = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.GenesisState"))
@@ -365,17 +365,17 @@ func (x *fastReflection_GenesisState) Mutable(fd protoreflect.FieldDescriptor) p
 			x.TradeIndex = new(TradeIndex)
 		}
 		return protoreflect.ValueOfMessage(x.TradeIndex.ProtoReflect())
-	case "ggezchain.trade.GenesisState.stored_trade_list":
-		if x.StoredTradeList == nil {
-			x.StoredTradeList = []*StoredTrade{}
+	case "ggezchain.trade.GenesisState.stored_trades":
+		if x.StoredTrades == nil {
+			x.StoredTrades = []*StoredTrade{}
 		}
-		value := &_GenesisState_3_list{list: &x.StoredTradeList}
+		value := &_GenesisState_3_list{list: &x.StoredTrades}
 		return protoreflect.ValueOfList(value)
-	case "ggezchain.trade.GenesisState.stored_temp_trade_list":
-		if x.StoredTempTradeList == nil {
-			x.StoredTempTradeList = []*StoredTempTrade{}
+	case "ggezchain.trade.GenesisState.stored_temp_trades":
+		if x.StoredTempTrades == nil {
+			x.StoredTempTrades = []*StoredTempTrade{}
 		}
-		value := &_GenesisState_4_list{list: &x.StoredTempTradeList}
+		value := &_GenesisState_4_list{list: &x.StoredTempTrades}
 		return protoreflect.ValueOfList(value)
 	default:
 		if fd.IsExtension() {
@@ -396,10 +396,10 @@ func (x *fastReflection_GenesisState) NewField(fd protoreflect.FieldDescriptor) 
 	case "ggezchain.trade.GenesisState.trade_index":
 		m := new(TradeIndex)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
-	case "ggezchain.trade.GenesisState.stored_trade_list":
+	case "ggezchain.trade.GenesisState.stored_trades":
 		list := []*StoredTrade{}
 		return protoreflect.ValueOfList(&_GenesisState_3_list{list: &list})
-	case "ggezchain.trade.GenesisState.stored_temp_trade_list":
+	case "ggezchain.trade.GenesisState.stored_temp_trades":
 		list := []*StoredTempTrade{}
 		return protoreflect.ValueOfList(&_GenesisState_4_list{list: &list})
 	default:
@@ -479,14 +479,14 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 			l = options.Size(x.TradeIndex)
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if len(x.StoredTradeList) > 0 {
-			for _, e := range x.StoredTradeList {
+		if len(x.StoredTrades) > 0 {
+			for _, e := range x.StoredTrades {
 				l = options.Size(e)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
-		if len(x.StoredTempTradeList) > 0 {
-			for _, e := range x.StoredTempTradeList {
+		if len(x.StoredTempTrades) > 0 {
+			for _, e := range x.StoredTempTrades {
 				l = options.Size(e)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
@@ -520,9 +520,9 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if len(x.StoredTempTradeList) > 0 {
-			for iNdEx := len(x.StoredTempTradeList) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.StoredTempTradeList[iNdEx])
+		if len(x.StoredTempTrades) > 0 {
+			for iNdEx := len(x.StoredTempTrades) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.StoredTempTrades[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -536,9 +536,9 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				dAtA[i] = 0x22
 			}
 		}
-		if len(x.StoredTradeList) > 0 {
-			for iNdEx := len(x.StoredTradeList) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.StoredTradeList[iNdEx])
+		if len(x.StoredTrades) > 0 {
+			for iNdEx := len(x.StoredTrades) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.StoredTrades[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -703,7 +703,7 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 3:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field StoredTradeList", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field StoredTrades", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -730,14 +730,14 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.StoredTradeList = append(x.StoredTradeList, &StoredTrade{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.StoredTradeList[len(x.StoredTradeList)-1]); err != nil {
+				x.StoredTrades = append(x.StoredTrades, &StoredTrade{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.StoredTrades[len(x.StoredTrades)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
 			case 4:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field StoredTempTradeList", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field StoredTempTrades", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -764,8 +764,8 @@ func (x *fastReflection_GenesisState) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.StoredTempTradeList = append(x.StoredTempTradeList, &StoredTempTrade{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.StoredTempTradeList[len(x.StoredTempTradeList)-1]); err != nil {
+				x.StoredTempTrades = append(x.StoredTempTrades, &StoredTempTrade{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.StoredTempTrades[len(x.StoredTempTrades)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -824,10 +824,10 @@ type GenesisState struct {
 	unknownFields protoimpl.UnknownFields
 
 	// params defines all the parameters of the module.
-	Params              *Params            `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
-	TradeIndex          *TradeIndex        `protobuf:"bytes,2,opt,name=trade_index,json=tradeIndex,proto3" json:"trade_index,omitempty"`
-	StoredTradeList     []*StoredTrade     `protobuf:"bytes,3,rep,name=stored_trade_list,json=storedTradeList,proto3" json:"stored_trade_list,omitempty"`
-	StoredTempTradeList []*StoredTempTrade `protobuf:"bytes,4,rep,name=stored_temp_trade_list,json=storedTempTradeList,proto3" json:"stored_temp_trade_list,omitempty"`
+	Params           *Params            `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
+	TradeIndex       *TradeIndex        `protobuf:"bytes,2,opt,name=trade_index,json=tradeIndex,proto3" json:"trade_index,omitempty"`
+	StoredTrades     []*StoredTrade     `protobuf:"bytes,3,rep,name=stored_trades,json=storedTrades,proto3" json:"stored_trades,omitempty"`
+	StoredTempTrades []*StoredTempTrade `protobuf:"bytes,4,rep,name=stored_temp_trades,json=storedTempTrades,proto3" json:"stored_temp_trades,omitempty"`
 }
 
 func (x *GenesisState) Reset() {
@@ -864,16 +864,16 @@ func (x *GenesisState) GetTradeIndex() *TradeIndex {
 	return nil
 }
 
-func (x *GenesisState) GetStoredTradeList() []*StoredTrade {
+func (x *GenesisState) GetStoredTrades() []*StoredTrade {
 	if x != nil {
-		return x.StoredTradeList
+		return x.StoredTrades
 	}
 	return nil
 }
 
-func (x *GenesisState) GetStoredTempTradeList() []*StoredTempTrade {
+func (x *GenesisState) GetStoredTempTrades() []*StoredTempTrade {
 	if x != nil {
-		return x.StoredTempTradeList
+		return x.StoredTempTrades
 	}
 	return nil
 }
@@ -895,7 +895,7 @@ var file_ggezchain_trade_genesis_proto_rawDesc = []byte{
 	0x65, 0x64, 0x5f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x27,
 	0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2f,
 	0x73, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x5f, 0x74, 0x65, 0x6d, 0x70, 0x5f, 0x74, 0x72, 0x61, 0x64,
-	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xca, 0x02, 0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65,
+	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xbc, 0x02, 0x0a, 0x0c, 0x47, 0x65, 0x6e, 0x65,
 	0x73, 0x69, 0x73, 0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x3a, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61,
 	0x6d, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63,
 	0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d,
@@ -904,31 +904,30 @@ var file_ggezchain_trade_genesis_proto_rawDesc = []byte{
 	0x64, 0x65, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x67, 0x67, 0x65, 0x7a,
 	0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x54, 0x72, 0x61, 0x64,
 	0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a,
-	0x01, 0x52, 0x0a, 0x74, 0x72, 0x61, 0x64, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x53, 0x0a,
-	0x11, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x5f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x5f, 0x6c, 0x69,
-	0x73, 0x74, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63,
-	0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x65,
-	0x64, 0x54, 0x72, 0x61, 0x64, 0x65, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a,
-	0x01, 0x52, 0x0f, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x54, 0x72, 0x61, 0x64, 0x65, 0x4c, 0x69,
-	0x73, 0x74, 0x12, 0x60, 0x0a, 0x16, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x5f, 0x74, 0x65, 0x6d,
-	0x70, 0x5f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x5f, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x04, 0x20, 0x03,
-	0x28, 0x0b, 0x32, 0x20, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74,
-	0x72, 0x61, 0x64, 0x65, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x54, 0x65, 0x6d, 0x70, 0x54,
-	0x72, 0x61, 0x64, 0x65, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52,
-	0x13, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x54, 0x65, 0x6d, 0x70, 0x54, 0x72, 0x61, 0x64, 0x65,
-	0x4c, 0x69, 0x73, 0x74, 0x42, 0xb3, 0x01, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x67, 0x67, 0x65,
-	0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x42, 0x0c, 0x47, 0x65,
-	0x6e, 0x65, 0x73, 0x69, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x31, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x47, 0x47, 0x45, 0x5a, 0x4c, 0x61, 0x62,
-	0x73, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x74, 0x72, 0x61, 0x64, 0x65, 0xa2,
-	0x02, 0x03, 0x47, 0x54, 0x58, 0xaa, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69,
-	0x6e, 0x2e, 0x54, 0x72, 0x61, 0x64, 0x65, 0xca, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0xe2, 0x02, 0x1b, 0x47, 0x67, 0x65, 0x7a,
-	0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d,
-	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x54, 0x72, 0x61, 0x64, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x01, 0x52, 0x0a, 0x74, 0x72, 0x61, 0x64, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x4c, 0x0a,
+	0x0d, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x5f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x73, 0x18, 0x03,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x54, 0x72, 0x61,
+	0x64, 0x65, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8, 0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x0c, 0x73,
+	0x74, 0x6f, 0x72, 0x65, 0x64, 0x54, 0x72, 0x61, 0x64, 0x65, 0x73, 0x12, 0x59, 0x0a, 0x12, 0x73,
+	0x74, 0x6f, 0x72, 0x65, 0x64, 0x5f, 0x74, 0x65, 0x6d, 0x70, 0x5f, 0x74, 0x72, 0x61, 0x64, 0x65,
+	0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68,
+	0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x64,
+	0x54, 0x65, 0x6d, 0x70, 0x54, 0x72, 0x61, 0x64, 0x65, 0x42, 0x09, 0xc8, 0xde, 0x1f, 0x00, 0xa8,
+	0xe7, 0xb0, 0x2a, 0x01, 0x52, 0x10, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x64, 0x54, 0x65, 0x6d, 0x70,
+	0x54, 0x72, 0x61, 0x64, 0x65, 0x73, 0x42, 0xb3, 0x01, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x67,
+	0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x42, 0x0c,
+	0x47, 0x65, 0x6e, 0x65, 0x73, 0x69, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x31,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x47, 0x47, 0x45, 0x5a, 0x4c,
+	0x61, 0x62, 0x73, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70,
+	0x69, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x74, 0x72, 0x61, 0x64,
+	0x65, 0xa2, 0x02, 0x03, 0x47, 0x54, 0x58, 0xaa, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68,
+	0x61, 0x69, 0x6e, 0x2e, 0x54, 0x72, 0x61, 0x64, 0x65, 0xca, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a,
+	0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0xe2, 0x02, 0x1b, 0x47, 0x67,
+	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0x5c, 0x47, 0x50,
+	0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x47, 0x67, 0x65, 0x7a,
+	0x63, 0x68, 0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x54, 0x72, 0x61, 0x64, 0x65, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -954,8 +953,8 @@ var file_ggezchain_trade_genesis_proto_goTypes = []interface{}{
 var file_ggezchain_trade_genesis_proto_depIdxs = []int32{
 	1, // 0: ggezchain.trade.GenesisState.params:type_name -> ggezchain.trade.Params
 	2, // 1: ggezchain.trade.GenesisState.trade_index:type_name -> ggezchain.trade.TradeIndex
-	3, // 2: ggezchain.trade.GenesisState.stored_trade_list:type_name -> ggezchain.trade.StoredTrade
-	4, // 3: ggezchain.trade.GenesisState.stored_temp_trade_list:type_name -> ggezchain.trade.StoredTempTrade
+	3, // 2: ggezchain.trade.GenesisState.stored_trades:type_name -> ggezchain.trade.StoredTrade
+	4, // 3: ggezchain.trade.GenesisState.stored_temp_trades:type_name -> ggezchain.trade.StoredTempTrade
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

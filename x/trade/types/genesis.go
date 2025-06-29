@@ -19,8 +19,8 @@ func DefaultGenesis() *GenesisState {
 		TradeIndex: TradeIndex{
 			NextId: DefaultIndex,
 		},
-		StoredTradeList:     []StoredTrade{},
-		StoredTempTradeList: []StoredTempTrade{},
+		StoredTrades:     []StoredTrade{},
+		StoredTempTrades: []StoredTempTrade{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -51,7 +51,7 @@ func (gs GenesisState) Validate() error {
 func (gs GenesisState) ValidateStoredTrade() error {
 	storedTradeIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.StoredTradeList {
+	for _, elem := range gs.StoredTrades {
 		if elem.TradeIndex <= 0 {
 			return fmt.Errorf("trade_index must be more than 0")
 		}
@@ -63,9 +63,8 @@ func (gs GenesisState) ValidateStoredTrade() error {
 		}
 		storedTradeIndexMap[index] = struct{}{}
 
-		if elem.TradeType != TradeTypeBuy &&
-			elem.TradeType != TradeTypeSell {
-			return fmt.Errorf("trade_type must be buy or sell, trade_index: %d", elem.TradeIndex)
+		if !elem.TradeType.IsValid() {
+			return fmt.Errorf("invalid trade_type, trade_index: %d", elem.TradeIndex)
 		}
 
 		if !elem.Amount.IsValid() {
@@ -145,7 +144,7 @@ func (gs GenesisState) ValidateStoredTrade() error {
 func (gs GenesisState) ValidateStoredTempTrade() error {
 	storedTradeIndexMap := make(map[string]struct{}) // tradeIndex
 
-	for _, elem := range gs.StoredTempTradeList {
+	for _, elem := range gs.StoredTempTrades {
 		if elem.TradeIndex <= 0 {
 			return fmt.Errorf("trade_index must be more than 0")
 		}

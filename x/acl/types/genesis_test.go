@@ -19,7 +19,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set admins without super admin",
 			genState: &types.GenesisState{
-				AclAdminList: []types.AclAdmin{
+				AclAdmins: []types.AclAdmin{
 					{
 						Address: sample.AccAddress(),
 					},
@@ -27,7 +27,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Address: sample.AccAddress(),
 					},
 				},
-				AclAuthorityList: []types.AclAuthority{},
+				AclAuthorities: []types.AclAuthority{},
 			},
 			expErr:    true,
 			expErrMsg: "cannot initialize admins or authorities without a super admin",
@@ -35,7 +35,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set authorities without super admin",
 			genState: &types.GenesisState{
-				AclAdminList: []types.AclAdmin{
+				AclAdmins: []types.AclAdmin{
 					{
 						Address: sample.AccAddress(),
 					},
@@ -43,7 +43,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						Address: sample.AccAddress(),
 					},
 				},
-				AclAuthorityList: []types.AclAuthority{},
+				AclAuthorities: []types.AclAuthority{},
 			},
 			expErr:    true,
 			expErrMsg: "cannot initialize admins or authorities without a super admin",
@@ -54,7 +54,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				SuperAdmin: &types.SuperAdmin{
 					Admin: sample.AccAddress(),
 				},
-				AclAuthorityList: []types.AclAuthority{
+				AclAuthorities: []types.AclAuthority{
 					{
 						Address: sample.AccAddress(),
 						Name:    "Alice",
@@ -85,12 +85,12 @@ func TestGenesisState_Validate(t *testing.T) {
 				SuperAdmin: &types.SuperAdmin{
 					Admin: sample.AccAddress(),
 				},
-				AclAdminList: []types.AclAdmin{
+				AclAdmins: []types.AclAdmin{
 					{
 						Address: sample.AccAddress(),
 					},
 				},
-				AclAuthorityList: []types.AclAuthority{
+				AclAuthorities: []types.AclAuthority{
 					{
 						Address: duplicateAddress,
 						Name:    "Alice",
@@ -110,12 +110,12 @@ func TestGenesisState_Validate(t *testing.T) {
 				SuperAdmin: &types.SuperAdmin{
 					Admin: sample.AccAddress(),
 				},
-				AclAdminList: []types.AclAdmin{
+				AclAdmins: []types.AclAdmin{
 					{
 						Address: sample.AccAddress(),
 					},
 				},
-				AclAuthorityList: []types.AclAuthority{
+				AclAuthorities: []types.AclAuthority{
 					{
 						Address: "invalid_address",
 					},
@@ -133,7 +133,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				SuperAdmin: &types.SuperAdmin{
 					Admin: sample.AccAddress(),
 				},
-				AclAdminList: []types.AclAdmin{
+				AclAdmins: []types.AclAdmin{
 					{
 						Address: duplicateAddress,
 					},
@@ -151,7 +151,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				SuperAdmin: &types.SuperAdmin{
 					Admin: sample.AccAddress(),
 				},
-				AclAdminList: []types.AclAdmin{
+				AclAdmins: []types.AclAdmin{
 					{
 						Address: "invalid_address",
 					},
@@ -174,7 +174,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				SuperAdmin: &types.SuperAdmin{
 					Admin: sample.AccAddress(),
 				},
-				AclAuthorityList: []types.AclAuthority{
+				AclAuthorities: []types.AclAuthority{
 					{
 						Address: sample.AccAddress(),
 						Name:    "Alice",
@@ -195,7 +195,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				Params: types.DefaultParams(),
-				AclAdminList: []types.AclAdmin{
+				AclAdmins: []types.AclAdmin{
 					{
 						Address: sample.AccAddress(),
 					},
@@ -233,7 +233,7 @@ func TestGenesisState_ValidateAclAuthority(t *testing.T) {
 		{
 			desc: "duplicated aclAuthority",
 			genState: &types.GenesisState{
-				AclAuthorityList: []types.AclAuthority{
+				AclAuthorities: []types.AclAuthority{
 					{
 						Address: duplicateAddress,
 						Name:    "Alice",
@@ -250,7 +250,7 @@ func TestGenesisState_ValidateAclAuthority(t *testing.T) {
 		{
 			desc: "invalid aclAuthority address",
 			genState: &types.GenesisState{
-				AclAuthorityList: []types.AclAuthority{
+				AclAuthorities: []types.AclAuthority{
 					{
 						Address: "invalid_address",
 					},
@@ -265,7 +265,7 @@ func TestGenesisState_ValidateAclAuthority(t *testing.T) {
 		{
 			desc: "duplicate access definition module",
 			genState: &types.GenesisState{
-				AclAuthorityList: []types.AclAuthority{
+				AclAuthorities: []types.AclAuthority{
 					{
 						Address: sample.AccAddress(),
 						Name:    "Alice",
@@ -283,7 +283,7 @@ func TestGenesisState_ValidateAclAuthority(t *testing.T) {
 		// {
 		// 	desc: "must have at least one role",
 		// 	genState: &types.GenesisState{
-		// 		AclAuthorityList: []types.AclAuthority{
+		// 		AclAuthorities: []types.AclAuthority{
 		// 			{
 		// 				Address: sample.AccAddress(),
 		// 				Name:    "Alice",
@@ -300,7 +300,7 @@ func TestGenesisState_ValidateAclAuthority(t *testing.T) {
 		{
 			desc: "valid aclAuthority",
 			genState: &types.GenesisState{
-				AclAuthorityList: []types.AclAuthority{
+				AclAuthorities: []types.AclAuthority{
 					{
 						Address: sample.AccAddress(),
 						Name:    "Alice",
@@ -350,7 +350,7 @@ func TestGenesisState_ValidateAclAdmin(t *testing.T) {
 		{
 			desc: "duplicated aclAdmin",
 			genState: &types.GenesisState{
-				AclAdminList: []types.AclAdmin{
+				AclAdmins: []types.AclAdmin{
 					{
 						Address: duplicateAddress,
 					},
@@ -365,7 +365,7 @@ func TestGenesisState_ValidateAclAdmin(t *testing.T) {
 		{
 			desc: "invalid aclAdmin address",
 			genState: &types.GenesisState{
-				AclAdminList: []types.AclAdmin{
+				AclAdmins: []types.AclAdmin{
 					{
 						Address: "invalid_address",
 					},
@@ -380,7 +380,7 @@ func TestGenesisState_ValidateAclAdmin(t *testing.T) {
 		{
 			desc: "valid aclAdmin",
 			genState: &types.GenesisState{
-				AclAdminList: []types.AclAdmin{
+				AclAdmins: []types.AclAdmin{
 					{
 						Address: sample.AccAddress(),
 					},

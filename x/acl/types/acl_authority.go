@@ -2,9 +2,9 @@ package types
 
 import "encoding/json"
 
-// AccessDefinitionsJSON returns the JSON-encoded string of the AccessDefinitions field.
+// AccessDefinitionsJson returns the JSON-encoded string of the AccessDefinitions field.
 // If the field is nil or marshalling fails, it returns an empty JSON array "[]"
-func (acl *AclAuthority) AccessDefinitionsJSON() string {
+func (acl *AclAuthority) AccessDefinitionsJson() string {
 	if acl.AccessDefinitions == nil {
 		return "[]"
 	}

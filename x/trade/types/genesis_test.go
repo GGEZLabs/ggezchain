@@ -29,7 +29,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:        1,
 						TradeType:         types.TradeTypeBuy,
@@ -46,7 +46,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						BankingSystemData: "{}",
 					},
 				},
-				StoredTempTradeList: []types.StoredTempTrade{
+				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
 						CreateDate: "2023-05-11T08:44:00Z",
@@ -61,7 +61,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 1,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:        1,
 						TradeType:         types.TradeTypeBuy,
@@ -103,7 +103,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 1,
 				},
-				StoredTempTradeList: []types.StoredTempTrade{
+				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
 						CreateDate: "2023-05-11T08:44:00Z",
@@ -123,7 +123,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 0,
 					},
@@ -138,7 +138,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeUnspecified,
@@ -146,7 +146,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 			},
 			expErr:    true,
-			expErrMsg: "trade_type must be buy or sell",
+			expErrMsg: "invalid trade_type",
 		},
 		{
 			desc: "invalid amount",
@@ -154,7 +154,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeBuy,
@@ -171,7 +171,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeBuy,
@@ -188,7 +188,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeBuy,
@@ -206,7 +206,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -225,7 +225,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -245,7 +245,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -266,7 +266,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -288,7 +288,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -311,7 +311,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -335,7 +335,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -360,7 +360,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -386,7 +386,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:        1,
 						TradeType:         types.TradeTypeBuy,
@@ -413,7 +413,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTempTradeList: []types.StoredTempTrade{
+				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 0,
 					},
@@ -428,7 +428,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTempTradeList: []types.StoredTempTrade{
+				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
 						CreateDate: "2023-05-11T08:44:00Z",
@@ -448,7 +448,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				TradeIndex: types.TradeIndex{
 					NextId: 2,
 				},
-				StoredTempTradeList: []types.StoredTempTrade{
+				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
 						CreateDate: "2023-05-11T08:4",
@@ -494,7 +494,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "valid storedTrade list",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:        1,
 						TradeType:         types.TradeTypeBuy,
@@ -517,7 +517,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "duplicated storedTrade",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:        1,
 						TradeType:         types.TradeTypeBuy,
@@ -556,7 +556,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid trade_index",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 0,
 					},
@@ -568,7 +568,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid trade_type",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeUnspecified,
@@ -576,12 +576,12 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 				},
 			},
 			expErr:    true,
-			expErrMsg: "trade_type must be buy or sell",
+			expErrMsg: "invalid trade_type",
 		},
 		{
 			desc: "invalid amount",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeBuy,
@@ -595,7 +595,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid denom",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeBuy,
@@ -609,7 +609,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid price",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeBuy,
@@ -624,7 +624,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid receiver_address",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -640,7 +640,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid status",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -657,7 +657,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid maker address",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -675,7 +675,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid checker address",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -694,7 +694,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid create_date",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -714,7 +714,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid update_date",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -735,7 +735,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid process_date",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -757,7 +757,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid trade_data",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:      1,
 						TradeType:       types.TradeTypeBuy,
@@ -780,7 +780,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 		{
 			desc: "invalid banking_system_data",
 			genState: &types.GenesisState{
-				StoredTradeList: []types.StoredTrade{
+				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:        1,
 						TradeType:         types.TradeTypeBuy,
@@ -825,7 +825,7 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 		{
 			desc: "valid storedTempTrade list",
 			genState: &types.GenesisState{
-				StoredTempTradeList: []types.StoredTempTrade{
+				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
 						CreateDate: "2023-05-11T08:44:00Z",
@@ -841,7 +841,7 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 		{
 			desc: "invalid trade_index",
 			genState: &types.GenesisState{
-				StoredTempTradeList: []types.StoredTempTrade{
+				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 0,
 					},
@@ -853,7 +853,7 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 		{
 			desc: "duplicate trade_index",
 			genState: &types.GenesisState{
-				StoredTempTradeList: []types.StoredTempTrade{
+				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
 						CreateDate: "2023-05-11T08:44:00Z",
@@ -870,7 +870,7 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 		{
 			desc: "invalid create_date",
 			genState: &types.GenesisState{
-				StoredTempTradeList: []types.StoredTempTrade{
+				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
 						CreateDate: "2023-05-11T08:4",
@@ -897,10 +897,10 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 func TestDefaultGenesisState_ExpectedInitialNextId(t *testing.T) {
 	require.EqualValues(t,
 		&types.GenesisState{
-			StoredTradeList:     []types.StoredTrade{},
-			TradeIndex:          types.TradeIndex{NextId: 1},
-			Params:              types.Params{},
-			StoredTempTradeList: []types.StoredTempTrade{},
+			StoredTrades:     []types.StoredTrade{},
+			TradeIndex:       types.TradeIndex{NextId: 1},
+			Params:           types.Params{},
+			StoredTempTrades: []types.StoredTempTrade{},
 		},
 		types.DefaultGenesis())
 }
