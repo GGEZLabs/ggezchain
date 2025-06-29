@@ -142,7 +142,7 @@ func TestValidateTradeData(t *testing.T) {
 			name:      "invalid trade_type",
 			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":0,"trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
-			expErrMsg: "trade_type must be BUY or SELL",
+			expErrMsg: "invalid trade_type",
 		},
 		{
 			name:      "invalid trade_net_value",

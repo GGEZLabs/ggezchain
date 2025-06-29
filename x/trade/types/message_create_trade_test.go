@@ -52,22 +52,6 @@ func TestMsgCreateTrade_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidAddress,
 		},
 		{
-			name: "create trade with invalid receiver address",
-			msg: MsgCreateTrade{
-				Creator:         sample.AccAddress(),
-				ReceiverAddress: "invalid_address",
-			},
-			err: sdkerrors.ErrInvalidAddress,
-		},
-		{
-			name: "create trade with invalid receiver address (empty)",
-			msg: MsgCreateTrade{
-				Creator:         sample.AccAddress(),
-				ReceiverAddress: "",
-			},
-			err: sdkerrors.ErrInvalidAddress,
-		},
-		{
 			name: "create trade with invalid trade data",
 			msg: MsgCreateTrade{
 				Creator:         sample.AccAddress(),

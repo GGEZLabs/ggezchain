@@ -146,7 +146,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				},
 			},
 			expErr:    true,
-			expErrMsg: "trade_type must be buy or sell",
+			expErrMsg: "invalid trade_type",
 		},
 		{
 			desc: "invalid amount",
@@ -576,7 +576,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 				},
 			},
 			expErr:    true,
-			expErrMsg: "trade_type must be buy or sell",
+			expErrMsg: "invalid trade_type",
 		},
 		{
 			desc: "invalid amount",

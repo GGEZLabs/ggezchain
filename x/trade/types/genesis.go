@@ -63,9 +63,8 @@ func (gs GenesisState) ValidateStoredTrade() error {
 		}
 		storedTradeIndexMap[index] = struct{}{}
 
-		if elem.TradeType != TradeTypeBuy &&
-			elem.TradeType != TradeTypeSell {
-			return fmt.Errorf("trade_type must be buy or sell, trade_index: %d", elem.TradeIndex)
+		if !elem.TradeType.IsValid() {
+			return fmt.Errorf("invalid trade_type, trade_index: %d", elem.TradeIndex)
 		}
 
 		if !elem.Amount.IsValid() {

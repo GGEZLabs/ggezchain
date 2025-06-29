@@ -76,7 +76,7 @@ func (k msgServer) UpdateAuthority(goCtx context.Context, msg *types.MsgUpdateAu
 			types.EventTypeUpdateAuthority,
 			sdk.NewAttribute(types.AttributeKeyAuthorityAddress, aclAuthority.Address),
 			sdk.NewAttribute(types.AttributeKeyName, aclAuthority.Name),
-			sdk.NewAttribute(types.AttributeKeyAccessDefinitions, aclAuthority.AccessDefinitionsJSON()),
+			sdk.NewAttribute(types.AttributeKeyAccessDefinitions, aclAuthority.AccessDefinitionsJson()),
 		),
 	)
 

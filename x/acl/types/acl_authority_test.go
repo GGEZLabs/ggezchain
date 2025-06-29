@@ -7,12 +7,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAccessDefinitionsJSON(t *testing.T) {
+func TestAccessDefinitionsJson(t *testing.T) {
 	t.Run("nil AccessDefinitions", func(t *testing.T) {
 		acl := AclAuthority{
 			AccessDefinitions: nil,
 		}
-		result := acl.AccessDefinitionsJSON()
+		result := acl.AccessDefinitionsJson()
 		require.Equal(t, "[]", result)
 	})
 
@@ -20,7 +20,7 @@ func TestAccessDefinitionsJSON(t *testing.T) {
 		acl := AclAuthority{
 			AccessDefinitions: []*AccessDefinition{},
 		}
-		result := acl.AccessDefinitionsJSON()
+		result := acl.AccessDefinitionsJson()
 		require.Equal(t, "[]", result)
 	})
 
@@ -31,7 +31,7 @@ func TestAccessDefinitionsJSON(t *testing.T) {
 			},
 		}
 		expected, _ := json.Marshal(acl.AccessDefinitions)
-		result := acl.AccessDefinitionsJSON()
+		result := acl.AccessDefinitionsJson()
 		require.Equal(t, string(expected), result)
 	})
 
@@ -43,7 +43,7 @@ func TestAccessDefinitionsJSON(t *testing.T) {
 			},
 		}
 		expected, _ := json.Marshal(acl.AccessDefinitions)
-		result := acl.AccessDefinitionsJSON()
+		result := acl.AccessDefinitionsJson()
 		require.Equal(t, string(expected), result)
 	})
 }

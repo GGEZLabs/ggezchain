@@ -36,77 +36,60 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 	currentTime := ctx.BlockTime()
 	formattedDate := currentTime.Format(time.RFC3339)
 
-	result := types.TradeProcessedSuccessfully
-	status := st.Status
-	var storedTrade types.StoredTrade
+	st.Checker = msg.Creator
+	st.UpdateDate = formattedDate
+	st.ProcessDate = formattedDate
 
-	if msg.ProcessType == types.ProcessTypeReject {
-		status = types.StatusRejected
+	defaultResult := types.TradeProcessedSuccessfully
+	var finalStatus types.TradeStatus
+	var finalResult string
 
-		storedTrade = types.StoredTrade{
-			TradeIndex:           msg.TradeIndex,
-			TradeType:            st.TradeType,
-			Amount:               st.Amount,
-			Price:                st.Price,
-			ReceiverAddress:      st.ReceiverAddress,
-			Status:               status,
-			Maker:                st.Maker,
-			Checker:              msg.Creator,
-			UpdateDate:           formattedDate,
-			CreateDate:           st.CreateDate,
-			ProcessDate:          formattedDate,
-			TradeData:            st.TradeData,
-			BankingSystemData:    st.BankingSystemData,
-			CoinMintingPriceJson: st.CoinMintingPriceJson,
-			ExchangeRateJson:     st.ExchangeRateJson,
-			Result:               result,
-		}
-	} else if msg.ProcessType == types.ProcessTypeConfirm {
-		status, err = k.MintOrBurnCoins(ctx, st)
-		if err != nil {
-			result = err.Error()
+	switch msg.ProcessType {
+	case types.ProcessTypeReject:
+		finalStatus = types.StatusRejected
+		finalResult = defaultResult
+
+	case types.ProcessTypeConfirm:
+		if st.TradeType == types.TradeTypeSplit || st.TradeType == types.TradeTypeReinvestment {
+			finalStatus = types.StatusProcessed
+			finalResult = defaultResult
+		} else {
+			status, err := k.MintOrBurnCoins(ctx, st)
+			if err != nil {
+				finalResult = err.Error()
+			} else {
+				finalResult = defaultResult
+			}
+			finalStatus = status
 		}
 
-		storedTrade = types.StoredTrade{
-			TradeIndex:           msg.TradeIndex,
-			TradeType:            st.TradeType,
-			Amount:               st.Amount,
-			Price:                st.Price,
-			ReceiverAddress:      st.ReceiverAddress,
-			Status:               status,
-			Maker:                st.Maker,
-			Checker:              msg.Creator,
-			CreateDate:           st.CreateDate,
-			UpdateDate:           formattedDate,
-			ProcessDate:          formattedDate,
-			TradeData:            st.TradeData,
-			BankingSystemData:    st.BankingSystemData,
-			CoinMintingPriceJson: st.CoinMintingPriceJson,
-			ExchangeRateJson:     st.ExchangeRateJson,
-			Result:               result,
-		}
+	default:
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "unsupported process type: %v", msg.ProcessType)
 	}
 
-	k.Keeper.SetStoredTrade(ctx, storedTrade)
+	st.Status = finalStatus
+	st.Result = finalResult
+
+	k.Keeper.SetStoredTrade(ctx, st)
 	k.RemoveStoredTempTrade(ctx, msg.TradeIndex)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeProcessTrade,
 			sdk.NewAttribute(types.AttributeKeyTradeIndex, fmt.Sprintf("%d", msg.TradeIndex)),
-			sdk.NewAttribute(types.AttributeKeyStatus, status.String()),
+			sdk.NewAttribute(types.AttributeKeyStatus, st.Status.String()),
 			sdk.NewAttribute(types.AttributeKeyChecker, msg.Creator),
 			sdk.NewAttribute(types.AttributeKeyMaker, st.Maker),
 			sdk.NewAttribute(types.AttributeKeyTradeData, st.TradeData),
 			sdk.NewAttribute(types.AttributeKeyCreateDate, st.CreateDate),
 			sdk.NewAttribute(types.AttributeKeyUpdateDate, formattedDate),
 			sdk.NewAttribute(types.AttributeKeyProcessDate, formattedDate),
-			sdk.NewAttribute(types.AttributeKeyResult, result),
+			sdk.NewAttribute(types.AttributeKeyResult, st.Result),
 		),
 	)
 
 	return &types.MsgProcessTradeResponse{
 		TradeIndex: msg.TradeIndex,
-		Status:     status,
+		Status:     st.Status,
 	}, nil
 }

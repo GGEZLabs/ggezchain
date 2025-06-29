@@ -27,12 +27,6 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 		return sdkerrors.ErrInvalidAddress.Wrapf("invalid creator address (%s)", err)
 	}
 
-	// Validate receiver address
-	_, err = sdk.AccAddressFromBech32(msg.ReceiverAddress)
-	if err != nil {
-		return sdkerrors.ErrInvalidAddress.Wrapf("invalid receiver address (%s)", err)
-	}
-
 	// Validate trade data
 	if !json.Valid([]byte(msg.TradeData)) {
 		return ErrInvalidTradeData
@@ -43,7 +37,7 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 		return ErrInvalidBankingSystemData
 	}
 
-	// to check data should be send
+	// todo: check data should be send
 	// if msg.CoinMintingPriceJSON == "" {
 	// 	return ErrInvalidCoinMintingPriceJSON
 	// }

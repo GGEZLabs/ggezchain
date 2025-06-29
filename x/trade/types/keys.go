@@ -44,9 +44,12 @@ const (
 )
 
 const (
-	TradeTypeUnspecified = TradeType_TRADE_TYPE_UNSPECIFIED
-	TradeTypeBuy         = TradeType_TRADE_TYPE_BUY
-	TradeTypeSell        = TradeType_TRADE_TYPE_SELL
+	TradeTypeUnspecified  = TradeType_TRADE_TYPE_UNSPECIFIED
+	TradeTypeBuy          = TradeType_TRADE_TYPE_BUY
+	TradeTypeSell         = TradeType_TRADE_TYPE_SELL
+	TradeTypeSplit        = TradeType_TRADE_TYPE_SPLIT
+	TradeTypeReinvestment = TradeType_TRADE_TYPE_REINVESTMENT
+	TradeTypeDividends    = TradeType_TRADE_TYPE_DIVIDENDS
 )
 
 const (
