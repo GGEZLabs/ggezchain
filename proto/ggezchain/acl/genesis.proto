@@ -15,9 +15,9 @@ option go_package = "github.com/GGEZLabs/ggezchain/x/acl/types";
 message GenesisState {
   
   // params defines all the parameters of the module.
-           Params       params             = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  repeated AclAuthority acl_authority_list = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  repeated AclAdmin     acl_admin_list     = 3 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-           SuperAdmin   super_admin        = 4 ;
+           Params       params          = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated AclAuthority acl_authorities = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated AclAdmin     acl_admins      = 3 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           SuperAdmin   super_admin     = 4 ;
 }
 

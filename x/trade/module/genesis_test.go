@@ -20,7 +20,7 @@ func TestGenesis(t *testing.T) {
 		TradeIndex: types.TradeIndex{
 			NextId: 3,
 		},
-		StoredTradeList: []types.StoredTrade{
+		StoredTrades: []types.StoredTrade{
 			{
 				TradeIndex:        1,
 				TradeType:         types.TradeTypeBuy,
@@ -52,7 +52,7 @@ func TestGenesis(t *testing.T) {
 				BankingSystemData: "{}",
 			},
 		},
-		StoredTempTradeList: []types.StoredTempTrade{
+		StoredTempTrades: []types.StoredTempTrade{
 			{
 				TradeIndex: 1,
 				CreateDate: "2023-05-11T08:44:00Z",
@@ -74,7 +74,7 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.Equal(t, genesisState.TradeIndex, got.TradeIndex)
-	require.ElementsMatch(t, genesisState.StoredTradeList, got.StoredTradeList)
-	require.ElementsMatch(t, genesisState.StoredTempTradeList, got.StoredTempTradeList)
+	require.ElementsMatch(t, genesisState.StoredTrades, got.StoredTrades)
+	require.ElementsMatch(t, genesisState.StoredTempTrades, got.StoredTempTrades)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

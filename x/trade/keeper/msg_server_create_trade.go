@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -28,6 +29,15 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		return nil, err
 	}
 
+	// Validate receiver address if trade type not split or reinvestment
+	if td.TradeInfo.TradeType != types.TradeTypeSplit &&
+		td.TradeInfo.TradeType != types.TradeTypeReinvestment {
+		_, err = sdk.AccAddressFromBech32(msg.ReceiverAddress)
+		if err != nil {
+			return nil, sdkerrors.ErrInvalidAddress.Wrapf("invalid receiver address (%s)", err)
+		}
+	}
+
 	tradeIndex, found := k.Keeper.GetTradeIndex(ctx)
 	if !found {
 		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "trade with index %d not found", tradeIndex.NextId)
@@ -46,24 +56,40 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	k.Keeper.CancelExpiredPendingTrades(ctx)
 
 	newIndex := tradeIndex.NextId
-	status := types.StatusPending
+	tradeType := td.TradeInfo.TradeType
+	formattedPrice := types.FormatPrice(td.TradeInfo.Price)
 
 	storedTrade := types.StoredTrade{
 		TradeIndex:           newIndex,
-		Status:               status,
+		Status:               types.StatusPending,
 		CreateDate:           createDateTime,
 		UpdateDate:           createDateTime,
-		TradeType:            td.TradeInfo.TradeType,
-		Amount:               td.TradeInfo.Quantity,
-		Price:                types.FormatPrice(td.TradeInfo.Price),
-		ReceiverAddress:      msg.ReceiverAddress,
+		TradeType:            tradeType,
+		Price:                formattedPrice,
 		Maker:                msg.Creator,
 		ProcessDate:          createDateTime,
-		TradeData:            msg.TradeData,
 		BankingSystemData:    msg.BankingSystemData,
 		CoinMintingPriceJson: msg.CoinMintingPriceJson,
 		ExchangeRateJson:     msg.ExchangeRateJson,
 		Result:               types.TradeCreatedSuccessfully,
+	}
+
+	switch tradeType {
+	case types.TradeTypeSplit, types.TradeTypeReinvestment:
+		td.TradeInfo.Quantity = nil
+		storedTrade.Amount = nil
+		storedTrade.ReceiverAddress = ""
+
+		tdBytes, err := json.Marshal(td)
+		if err != nil {
+			return nil, errorsmod.Wrapf(sdkerrors.ErrJSONMarshal, "failed to marshal trade data: %s", err)
+		}
+		storedTrade.TradeData = string(tdBytes)
+
+	default:
+		storedTrade.Amount = td.TradeInfo.Quantity
+		storedTrade.ReceiverAddress = msg.ReceiverAddress
+		storedTrade.TradeData = msg.TradeData
 	}
 
 	storedTempTrade := types.StoredTempTrade{
@@ -81,12 +107,12 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		sdk.NewEvent(
 			types.EventTypeCreateTrade,
 			sdk.NewAttribute(types.AttributeKeyTradeIndex, fmt.Sprintf("%d", newIndex)),
-			sdk.NewAttribute(types.AttributeKeyStatus, status.String()),
+			sdk.NewAttribute(types.AttributeKeyStatus, types.StatusPending.String()),
 		),
 	)
 
 	return &types.MsgCreateTradeResponse{
 		TradeIndex: newIndex,
-		Status:     status,
+		Status:     types.StatusPending,
 	}, nil
 }

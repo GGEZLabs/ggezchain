@@ -37,7 +37,7 @@ func (k msgServer) AddAuthority(goCtx context.Context, msg *types.MsgAddAuthorit
 			types.EventTypeAddAuthority,
 			sdk.NewAttribute(types.AttributeKeyAuthorityAddress, aclAuthority.Address),
 			sdk.NewAttribute(types.AttributeKeyName, aclAuthority.Name),
-			sdk.NewAttribute(types.AttributeKeyAccessDefinitions, aclAuthority.AccessDefinitionsJSON()),
+			sdk.NewAttribute(types.AttributeKeyAccessDefinitions, aclAuthority.AccessDefinitionsJson()),
 		),
 	)
 	return &types.MsgAddAuthorityResponse{}, nil
