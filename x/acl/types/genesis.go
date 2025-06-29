@@ -12,9 +12,9 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		AclAuthorityList: []AclAuthority{},
-		AclAdminList:     []AclAdmin{},
-		SuperAdmin:       nil,
+		AclAuthorities: []AclAuthority{},
+		AclAdmins:      []AclAdmin{},
+		SuperAdmin:     nil,
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -24,13 +24,13 @@ func DefaultGenesis() *GenesisState {
 // failure.
 func (gs GenesisState) Validate() error {
 	if gs.SuperAdmin == nil {
-		if len(gs.AclAdminList) > 0 || len(gs.AclAuthorityList) > 0 {
+		if len(gs.AclAdmins) > 0 || len(gs.AclAuthorities) > 0 {
 			return fmt.Errorf("cannot initialize admins or authorities without a super admin: super admin must be set")
 		}
 		return nil
 	}
 
-	if len(gs.AclAdminList) == 0 && len(gs.AclAuthorityList) > 0 {
+	if len(gs.AclAdmins) == 0 && len(gs.AclAuthorities) > 0 {
 		return fmt.Errorf("cannot initialize authorities without admin: admin must be set")
 	}
 
@@ -56,7 +56,7 @@ func (gs GenesisState) Validate() error {
 func (gs GenesisState) ValidateAclAuthority() error {
 	aclAuthorityIndexMap := make(map[string]struct{})
 
-	for _, authority := range gs.AclAuthorityList {
+	for _, authority := range gs.AclAuthorities {
 		// Validate address format
 		if _, err := sdk.AccAddressFromBech32(authority.Address); err != nil {
 			return fmt.Errorf("invalid address for aclAuthority: %s, error: %w", authority.Address, err)
@@ -91,7 +91,7 @@ func (gs GenesisState) ValidateAclAuthority() error {
 func (gs GenesisState) ValidateAclAdmin() error {
 	aclAdminIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.AclAdminList {
+	for _, elem := range gs.AclAdmins {
 		// Validate address format
 		if _, err := sdk.AccAddressFromBech32(elem.Address); err != nil {
 			return fmt.Errorf("invalid address for aclAdmin: %s, error: %w", elem.Address, err)

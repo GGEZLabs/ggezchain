@@ -17,7 +17,7 @@ message GenesisState {
   // params defines all the parameters of the module.
            Params          params                 = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
            TradeIndex      trade_index            = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  repeated StoredTrade     stored_trade_list      = 3 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
-  repeated StoredTempTrade stored_temp_trade_list = 4 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated StoredTrade     stored_trades      = 3 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated StoredTempTrade stored_temp_trades = 4 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
 

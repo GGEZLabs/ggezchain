@@ -16,11 +16,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// Set if defined
 	k.SetTradeIndex(ctx, genState.TradeIndex)
 	// Set all the storedTrade
-	for _, elem := range genState.StoredTradeList {
+	for _, elem := range genState.StoredTrades {
 		k.SetStoredTrade(ctx, elem)
 	}
 	// Set all the storedTempTrade
-	for _, elem := range genState.StoredTempTradeList {
+	for _, elem := range genState.StoredTempTrades {
 		k.SetStoredTempTrade(ctx, elem)
 	}
 	// this line is used by starport scaffolding # genesis/module/init
@@ -39,8 +39,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	if found {
 		genesis.TradeIndex = tradeIndex
 	}
-	genesis.StoredTradeList = k.GetAllStoredTrade(ctx)
-	genesis.StoredTempTradeList = k.GetAllStoredTempTrade(ctx)
+	genesis.StoredTrades = k.GetAllStoredTrade(ctx)
+	genesis.StoredTempTrades = k.GetAllStoredTempTrade(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

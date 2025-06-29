@@ -15,7 +15,7 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
-		AclAuthorityList: []types.AclAuthority{
+		AclAuthorities: []types.AclAuthority{
 			{
 				Address: sample.AccAddress(),
 				Name:    "Alice",
@@ -33,7 +33,7 @@ func TestGenesis(t *testing.T) {
 				},
 			},
 		},
-		AclAdminList: []types.AclAdmin{
+		AclAdmins: []types.AclAdmin{
 			{
 				Address: sample.AccAddress(),
 			},
@@ -55,8 +55,8 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
 
-	require.ElementsMatch(t, genesisState.AclAuthorityList, got.AclAuthorityList)
-	require.ElementsMatch(t, genesisState.AclAdminList, got.AclAdminList)
+	require.ElementsMatch(t, genesisState.AclAuthorities, got.AclAuthorities)
+	require.ElementsMatch(t, genesisState.AclAdmins, got.AclAdmins)
 	require.Equal(t, genesisState.SuperAdmin, got.SuperAdmin)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

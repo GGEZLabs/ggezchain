@@ -14,11 +14,11 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	}
 
 	// Set all the aclAuthority
-	for _, elem := range genState.AclAuthorityList {
+	for _, elem := range genState.AclAuthorities {
 		k.SetAclAuthority(ctx, elem)
 	}
 	// Set all the aclAdmin
-	for _, elem := range genState.AclAdminList {
+	for _, elem := range genState.AclAdmins {
 		k.SetAclAdmin(ctx, elem)
 	}
 	// Set if defined
@@ -37,8 +37,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 	genesis.Params = k.GetParams(ctx)
 
-	genesis.AclAuthorityList = k.GetAllAclAuthority(ctx)
-	genesis.AclAdminList = k.GetAllAclAdmin(ctx)
+	genesis.AclAuthorities = k.GetAllAclAuthority(ctx)
+	genesis.AclAdmins = k.GetAllAclAdmin(ctx)
 	// Get all superAdmin
 	superAdmin, found := k.GetSuperAdmin(ctx)
 	if found {
