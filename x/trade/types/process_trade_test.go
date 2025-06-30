@@ -3,7 +3,7 @@ package types
 import (
 	"testing"
 
-	"github.com/GGEZLabs/ggezchain/testutil/sample"
+	"github.com/GGEZLabs/ggezchain/v2/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 

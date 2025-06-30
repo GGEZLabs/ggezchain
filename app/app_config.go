@@ -32,12 +32,12 @@ import (
 	"cosmossdk.io/x/nft"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	aclmodulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/acl/module"
-	trademodulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/trade/module"
-	_ "github.com/GGEZLabs/ggezchain/x/acl/module" // import for side-effects
-	aclmoduletypes "github.com/GGEZLabs/ggezchain/x/acl/types"
-	_ "github.com/GGEZLabs/ggezchain/x/trade/module" // import for side-effects
-	trademoduletypes "github.com/GGEZLabs/ggezchain/x/trade/types"
+	aclmodulev1 "github.com/GGEZLabs/ggezchain/v2/api/ggezchain/acl/module"
+	trademodulev1 "github.com/GGEZLabs/ggezchain/v2/api/ggezchain/trade/module"
+	_ "github.com/GGEZLabs/ggezchain/v2/x/acl/module" // import for side-effects
+	aclmoduletypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
+	_ "github.com/GGEZLabs/ggezchain/v2/x/trade/module" // import for side-effects
+	trademoduletypes "github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
