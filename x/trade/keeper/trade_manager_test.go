@@ -372,13 +372,13 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 		storedTrade := types.StoredTrade{
 			TradeIndex:  1,
 			Status:      types.StatusPending,
-			CreateDate:  "2023-05-11T08:44:00Z",
+			TxDate:      "2023-05-11T08:44:00Z",
 			ProcessDate: "2023-05-11T08:44:00Z",
 		}
 
 		storedTempTrade := types.StoredTempTrade{
 			TradeIndex: 1,
-			CreateDate: "2023-05-06",
+			TxDate:     "2023-05-06",
 		}
 
 		suite.tradeKeeper.SetStoredTrade(ctx, storedTrade)
@@ -404,7 +404,7 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 
 		storedTempTrade := types.StoredTempTrade{
 			TradeIndex: 1,
-			CreateDate: "2023-05-11T08:44:00Z",
+			TxDate:     "2023-05-11T08:44:00Z",
 		}
 
 		suite.tradeKeeper.SetStoredTrade(ctx, storedTrade)
@@ -457,25 +457,25 @@ func generateStoredTrades(expiredCount, notExpiredCount int) ([]types.StoredTrad
 	tradeIndex := uint64(1)
 
 	createStoredTrade := func(isExpired bool) (types.StoredTrade, types.StoredTempTrade) {
-		var createDate, processDate string
+		var txDate, processDate string
 		if isExpired {
-			createDate = generateRandomPastDate()
-			processDate = createDate
+			txDate = generateRandomPastDate()
+			processDate = txDate
 		} else {
-			createDate = time.Now().UTC().Format(time.RFC3339)
-			processDate = createDate
+			txDate = time.Now().UTC().Format(time.RFC3339)
+			processDate = txDate
 		}
 
 		st := types.StoredTrade{
 			TradeIndex:  tradeIndex,
 			Status:      types.StatusPending,
-			CreateDate:  createDate,
 			UpdateDate:  "",
 			ProcessDate: processDate,
+			TxDate:      txDate,
 		}
 		temp := types.StoredTempTrade{
 			TradeIndex: tradeIndex,
-			CreateDate: createDate,
+			TxDate:     txDate,
 		}
 		tradeIndex++
 		return st, temp

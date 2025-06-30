@@ -156,7 +156,7 @@ func (gs GenesisState) ValidateStoredTempTrade() error {
 		}
 		storedTradeIndexMap[index] = struct{}{}
 
-		_, err := time.Parse(time.RFC3339, elem.CreateDate)
+		_, err := time.Parse(time.RFC3339, elem.TxDate)
 		if err != nil {
 			return fmt.Errorf("invalid create_date format, trade_index: %d", elem.TradeIndex)
 		}

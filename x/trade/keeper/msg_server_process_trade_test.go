@@ -97,7 +97,7 @@ func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
 	suite.Require().True(found)
 	suite.Require().EqualValues(types.StoredTempTrade{
 		TradeIndex: 1,
-		CreateDate: types.GetSampleStoredTrade(indexes[0]).CreateDate,
+		TxDate:     types.GetSampleStoredTrade(indexes[0]).TxDate,
 	}, tempTrade)
 
 	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
@@ -123,7 +123,7 @@ func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
 	suite.Require().False(found)
 	suite.Require().EqualValues(types.StoredTempTrade{
 		TradeIndex: 0,
-		CreateDate: "",
+		TxDate:     "",
 	}, tempTrade)
 }
 
@@ -185,7 +185,7 @@ func (suite *KeeperTestSuite) TestTempTradeAfterRejectTrade() {
 	suite.Require().False(found)
 	suite.Require().EqualValues(types.StoredTempTrade{
 		TradeIndex: 0,
-		CreateDate: "",
+		TxDate:     "",
 	}, tempTrade)
 }
 
