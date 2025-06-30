@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

@@ -19,9 +19,9 @@ import (
 	_ "cosmossdk.io/x/upgrade"    // import for side-effects
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	"github.com/GGEZLabs/ggezchain/docs"
-	aclmodulekeeper "github.com/GGEZLabs/ggezchain/x/acl/keeper"
-	trademodulekeeper "github.com/GGEZLabs/ggezchain/x/trade/keeper"
+	"github.com/GGEZLabs/ggezchain/v2/docs"
+	aclmodulekeeper "github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
+	trademodulekeeper "github.com/GGEZLabs/ggezchain/v2/x/trade/keeper"
 	abci "github.com/cometbft/cometbft/abci/types"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	dbm "github.com/cosmos/cosmos-db"

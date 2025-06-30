@@ -4,11 +4,11 @@ import (
 	"testing"
 
 	"cosmossdk.io/math"
-	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
-	"github.com/GGEZLabs/ggezchain/testutil/nullify"
-	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	trade "github.com/GGEZLabs/ggezchain/x/trade/module"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	keepertest "github.com/GGEZLabs/ggezchain/v2/testutil/keeper"
+	"github.com/GGEZLabs/ggezchain/v2/testutil/nullify"
+	"github.com/GGEZLabs/ggezchain/v2/testutil/sample"
+	trade "github.com/GGEZLabs/ggezchain/v2/x/trade/module"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )

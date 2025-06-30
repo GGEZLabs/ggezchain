@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/GGEZLabs/ggezchain/app"
+	"github.com/GGEZLabs/ggezchain/v2/app"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	"github.com/stretchr/testify/require"
 )

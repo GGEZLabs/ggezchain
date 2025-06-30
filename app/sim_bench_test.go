@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/GGEZLabs/ggezchain/app"
+	"github.com/GGEZLabs/ggezchain/v2/app"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/server"

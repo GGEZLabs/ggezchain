@@ -5,7 +5,7 @@ import (
 
 	"cosmossdk.io/store/prefix"
 	storetypes "cosmossdk.io/store/types"
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 )
 

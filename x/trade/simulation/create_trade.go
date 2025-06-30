@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"time"
 
-	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
-	"github.com/GGEZLabs/ggezchain/x/trade/keeper"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/keeper"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"

@@ -3,9 +3,9 @@ package acl
 import (
 	"math/rand"
 
-	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	aclsimulation "github.com/GGEZLabs/ggezchain/x/acl/simulation"
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/GGEZLabs/ggezchain/v2/testutil/sample"
+	aclsimulation "github.com/GGEZLabs/ggezchain/v2/x/acl/simulation"
+	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"

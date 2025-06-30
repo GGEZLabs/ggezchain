@@ -3,7 +3,7 @@ package keeper
 import (
 	"strings"
 
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 )
 
 // UpdateAclAuthorityName update authority name

@@ -13,7 +13,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	types "github.com/GGEZLabs/ggezchain/x/acl/types"
+	types "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	types0 "github.com/cosmos/cosmos-sdk/types"
 	gomock "go.uber.org/mock/gomock"
 )

@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"cosmossdk.io/x/feegrant"
-	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
-	tradetypes "github.com/GGEZLabs/ggezchain/x/trade/types"
+	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
+	tradetypes "github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"

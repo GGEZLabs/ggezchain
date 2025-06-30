@@ -5,8 +5,8 @@ import (
 	"os"
 
 	clienthelpers "cosmossdk.io/client/v2/helpers"
-	"github.com/GGEZLabs/ggezchain/app"
-	"github.com/GGEZLabs/ggezchain/cmd/ggezchaind/cmd"
+	"github.com/GGEZLabs/ggezchain/v2/app"
+	"github.com/GGEZLabs/ggezchain/v2/cmd/ggezchaind/cmd"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 )
 

@@ -5,8 +5,8 @@ import (
 
 	storetypes "cosmossdk.io/store/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	"github.com/GGEZLabs/ggezchain/app/upgrade/v2_0_0"
-	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/GGEZLabs/ggezchain/v2/app/upgrade/v2_0_0"
+	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 )
 

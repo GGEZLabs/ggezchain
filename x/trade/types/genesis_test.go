@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"cosmossdk.io/math"
-	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	"github.com/GGEZLabs/ggezchain/v2/testutil/sample"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
