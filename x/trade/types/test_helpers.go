@@ -60,6 +60,7 @@ func GetBaseStoredTrade() StoredTrade {
 		BankingSystemData:    "{}",
 		CoinMintingPriceJson: "",
 		ExchangeRateJson:     "",
+		TxDate:               "0001-01-01T00:00:00Z",
 		CreateDate:           "0001-01-01T00:00:00Z",
 		ProcessDate:          "0001-01-01T00:00:00Z",
 		UpdateDate:           "0001-01-01T00:00:00Z",

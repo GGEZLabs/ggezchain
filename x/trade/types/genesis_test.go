@@ -49,7 +49,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
-						CreateDate: "2023-05-11T08:44:00Z",
+						TxDate:     "2023-05-11T08:44:00Z",
 					},
 				},
 			},
@@ -106,11 +106,11 @@ func TestGenesisState_Validate(t *testing.T) {
 				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
-						CreateDate: "2023-05-11T08:44:00Z",
+						TxDate:     "2023-05-11T08:44:00Z",
 					},
 					{
 						TradeIndex: 1,
-						CreateDate: "2023-05-11T08:44:00Z",
+						TxDate:     "2023-05-11T08:44:00Z",
 					},
 				},
 			},
@@ -431,11 +431,11 @@ func TestGenesisState_Validate(t *testing.T) {
 				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
-						CreateDate: "2023-05-11T08:44:00Z",
+						TxDate:     "2023-05-11T08:44:00Z",
 					},
 					{
 						TradeIndex: 1,
-						CreateDate: "2023-05-12T08:44:00Z",
+						TxDate:     "2023-05-12T08:44:00Z",
 					},
 				},
 			},
@@ -451,7 +451,7 @@ func TestGenesisState_Validate(t *testing.T) {
 				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
-						CreateDate: "2023-05-11T08:4",
+						TxDate:     "2023-05-11T08:4",
 					},
 				},
 			},
@@ -828,11 +828,11 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
-						CreateDate: "2023-05-11T08:44:00Z",
+						TxDate:     "2023-05-11T08:44:00Z",
 					},
 					{
 						TradeIndex: 2,
-						CreateDate: "2023-05-11T10:44:00Z",
+						TxDate:     "2023-05-11T10:44:00Z",
 					},
 				},
 			},
@@ -856,11 +856,11 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
-						CreateDate: "2023-05-11T08:44:00Z",
+						TxDate:     "2023-05-11T08:44:00Z",
 					},
 					{
 						TradeIndex: 1,
-						CreateDate: "2023-05-12T08:44:00Z",
+						TxDate:     "2023-05-12T08:44:00Z",
 					},
 				},
 			},
@@ -873,7 +873,7 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 				StoredTempTrades: []types.StoredTempTrade{
 					{
 						TradeIndex: 1,
-						CreateDate: "2023-05-11T08:4",
+						TxDate:     "2023-05-11T08:4",
 					},
 				},
 			},

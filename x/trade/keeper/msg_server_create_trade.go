@@ -44,6 +44,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	}
 
 	currentDateTime := ctx.BlockTime()
+	formattedDateTime := currentDateTime.Format(time.RFC3339)
 	createDateTime := currentDateTime.Format(time.RFC3339)
 
 	if msg.CreateDate != "" {
@@ -62,12 +63,13 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	storedTrade := types.StoredTrade{
 		TradeIndex:           newIndex,
 		Status:               types.StatusPending,
+		TxDate:               formattedDateTime,
 		CreateDate:           createDateTime,
-		UpdateDate:           createDateTime,
+		UpdateDate:           formattedDateTime,
 		TradeType:            tradeType,
 		Price:                formattedPrice,
 		Maker:                msg.Creator,
-		ProcessDate:          createDateTime,
+		ProcessDate:          formattedDateTime,
 		BankingSystemData:    msg.BankingSystemData,
 		CoinMintingPriceJson: msg.CoinMintingPriceJson,
 		ExchangeRateJson:     msg.ExchangeRateJson,
@@ -94,7 +96,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 
 	storedTempTrade := types.StoredTempTrade{
 		TradeIndex: newIndex,
-		CreateDate: createDateTime,
+		TxDate:     formattedDateTime,
 	}
 
 	k.Keeper.SetStoredTrade(ctx, storedTrade)
