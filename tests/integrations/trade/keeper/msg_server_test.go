@@ -131,17 +131,17 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 	// update create date
 	f.tradeKeeper.SetStoredTempTrade(f.ctx, types.StoredTempTrade{
 		TradeIndex: allTempTrades[0].TradeIndex,
-		CreateDate: "2025-05-02T16:06:05Z",
+		TxDate:     "2025-05-02T16:06:05Z",
 	})
 
 	f.tradeKeeper.SetStoredTempTrade(f.ctx, types.StoredTempTrade{
 		TradeIndex: allTempTrades[1].TradeIndex,
-		CreateDate: "2025-05-01T18:09:05Z",
+		TxDate:     "2025-05-01T18:09:05Z",
 	})
 
 	f.tradeKeeper.SetStoredTempTrade(f.ctx, types.StoredTempTrade{
 		TradeIndex: allTempTrades[2].TradeIndex,
-		CreateDate: "2025-05-05T20:04:05Z",
+		TxDate:     "2025-05-05T20:04:05Z",
 	})
 
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(

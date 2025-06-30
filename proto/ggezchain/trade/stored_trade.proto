@@ -15,13 +15,14 @@ message StoredTrade {
   TradeStatus status = 6; 
   string maker = 7; 
   string checker = 8; 
-  string create_date = 9; 
-  string update_date = 10; 
-  string process_date = 11; 
-  string trade_data = 12; 
-  string coin_minting_price_json = 13; 
-  string exchange_rate_json = 14; 
-  string banking_system_data = 15; 
-  string result = 16; 
+  string tx_date = 9; 
+  string create_date = 10; 
+  string update_date = 11; 
+  string process_date = 12; 
+  string trade_data = 13; 
+  string coin_minting_price_json = 14; 
+  string exchange_rate_json = 15; 
+  string banking_system_data = 16; 
+  string result = 17; 
 }
 

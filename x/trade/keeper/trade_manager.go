@@ -102,8 +102,8 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 	currentDate := ctx.BlockTime()
 
 	for i := range allStoredTempTrade {
-		createDate := allStoredTempTrade[i].CreateDate
-		formattedCreateDate, err := time.Parse(time.RFC3339, createDate)
+		txDate := allStoredTempTrade[i].TxDate
+		formattedTxDate, err := time.Parse(time.RFC3339, txDate)
 		if err != nil {
 			k.logger.Error("an error occurred while canceling expired trades",
 				"trade_index", allStoredTempTrade[i].TradeIndex,
@@ -111,7 +111,7 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 				"module", types.ModuleName)
 			continue
 		}
-		differenceTime := currentDate.Sub(formattedCreateDate)
+		differenceTime := currentDate.Sub(formattedTxDate)
 		totalDays := int(differenceTime.Hours() / 24)
 
 		if totalDays >= 1 {

@@ -43,7 +43,7 @@ func (suite *KeeperTestSuite) TestIfTempTradeSaved() {
 	suite.Require().True(found)
 	suite.Require().EqualValues(types.StoredTempTrade{
 		TradeIndex: indexes[0],
-		CreateDate: types.GetSampleStoredTrade(indexes[0]).CreateDate,
+		TxDate:     types.GetSampleStoredTrade(indexes[0]).TxDate,
 	}, tempTrade)
 }
 
@@ -75,7 +75,7 @@ func (suite *KeeperTestSuite) TestGetAllStoredTempTrade() {
 	allTempTrades := keeper.GetAllStoredTempTrade(suite.ctx)
 	suite.Require().EqualValues(types.StoredTempTrade{
 		TradeIndex: indexes[0],
-		CreateDate: types.GetSampleStoredTrade(indexes[0]).CreateDate,
+		TxDate:     types.GetSampleStoredTrade(indexes[0]).TxDate,
 	}, allTempTrades[0])
 }
 
@@ -149,7 +149,7 @@ func (suite *KeeperTestSuite) TestCreateTrades() {
 		suite.Require().True(found)
 		suite.Require().EqualValues(types.StoredTempTrade{
 			TradeIndex: tradeIndex,
-			CreateDate: tempTrade.CreateDate,
+			TxDate:     tempTrade.TxDate,
 		}, tempTrade)
 	}
 
