@@ -3,7 +3,7 @@ package keeper_test
 import (
 	"testing"
 
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )

@@ -4,11 +4,11 @@ import (
 	"context"
 	"testing"
 
-	keepertest "github.com/GGEZLabs/ggezchain/testutil/keeper"
-	"github.com/GGEZLabs/ggezchain/testutil/nullify"
-	"github.com/GGEZLabs/ggezchain/testutil/sample"
-	"github.com/GGEZLabs/ggezchain/x/acl/keeper"
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	keepertest "github.com/GGEZLabs/ggezchain/v2/testutil/keeper"
+	"github.com/GGEZLabs/ggezchain/v2/testutil/nullify"
+	"github.com/GGEZLabs/ggezchain/v2/testutil/sample"
+	"github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
+	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/stretchr/testify/require"
 )
 

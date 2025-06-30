@@ -2,7 +2,7 @@ package acl
 
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
-	modulev1 "github.com/GGEZLabs/ggezchain/api/ggezchain/acl"
+	modulev1 "github.com/GGEZLabs/ggezchain/v2/api/ggezchain/acl"
 )
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.

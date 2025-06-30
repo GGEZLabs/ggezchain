@@ -5,7 +5,7 @@ import (
 
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
-	"github.com/GGEZLabs/ggezchain/x/acl/types"
+	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

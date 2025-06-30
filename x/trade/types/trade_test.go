@@ -3,7 +3,7 @@ package types_test
 import (
 	"testing"
 
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	"github.com/stretchr/testify/require"
 )
 

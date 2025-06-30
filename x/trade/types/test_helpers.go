@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"cosmossdk.io/math"
-	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

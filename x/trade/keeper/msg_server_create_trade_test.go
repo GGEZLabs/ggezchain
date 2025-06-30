@@ -3,9 +3,9 @@ package keeper_test
 import (
 	"time"
 
-	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
-	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/testutil"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 )
 
 func (suite *KeeperTestSuite) TestCreateTrade() {

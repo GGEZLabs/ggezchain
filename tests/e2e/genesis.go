@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"cosmossdk.io/math"
-	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
-	tradetypes "github.com/GGEZLabs/ggezchain/x/trade/types"
+	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
+	tradetypes "github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/server"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"

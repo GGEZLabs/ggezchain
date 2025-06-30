@@ -9,8 +9,8 @@ import (
 
 	"cosmossdk.io/math"
 	evidencetypes "cosmossdk.io/x/evidence/types"
-	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
-	tradetypes "github.com/GGEZLabs/ggezchain/x/trade/types"
+	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
+	tradetypes "github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	authvesting "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"

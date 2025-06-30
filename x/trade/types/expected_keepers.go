@@ -3,7 +3,7 @@ package types
 import (
 	"context"
 
-	acltypes "github.com/GGEZLabs/ggezchain/x/acl/types"
+	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

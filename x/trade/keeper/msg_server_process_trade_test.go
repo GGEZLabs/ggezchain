@@ -2,8 +2,8 @@ package keeper_test
 
 import (
 	sdkmath "cosmossdk.io/math"
-	"github.com/GGEZLabs/ggezchain/x/trade/testutil"
-	"github.com/GGEZLabs/ggezchain/x/trade/types"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/testutil"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	gomock "go.uber.org/mock/gomock"
