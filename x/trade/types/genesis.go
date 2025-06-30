@@ -63,7 +63,7 @@ func (gs GenesisState) ValidateStoredTrade() error {
 		}
 		storedTradeIndexMap[index] = struct{}{}
 
-		if !elem.TradeType.IsValid() {
+		if !elem.TradeType.IsTypeValid() {
 			return fmt.Errorf("invalid trade_type, trade_index: %d", elem.TradeIndex)
 		}
 
@@ -96,11 +96,7 @@ func (gs GenesisState) ValidateStoredTrade() error {
 			return fmt.Errorf("invalid receiver_address for trade_index %d, address %s, error: %w", elem.TradeIndex, elem.ReceiverAddress, err)
 		}
 
-		if elem.Status != StatusProcessed &&
-			elem.Status != StatusRejected &&
-			elem.Status != StatusFailed &&
-			elem.Status != StatusCanceled &&
-			elem.Status != StatusPending {
+		if !elem.Status.IsStatusValid() {
 			return fmt.Errorf("invalid status, trade_index: %d", elem.TradeIndex)
 		}
 
