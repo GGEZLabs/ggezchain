@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -67,6 +66,9 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		CreateDate:           createDateTime,
 		UpdateDate:           formattedDateTime,
 		TradeType:            tradeType,
+		Amount:               td.TradeInfo.Quantity,
+		TradeData:            msg.TradeData,
+		ReceiverAddress:      msg.ReceiverAddress,
 		Price:                formattedPrice,
 		Maker:                msg.Creator,
 		ProcessDate:          formattedDateTime,
@@ -76,22 +78,9 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		Result:               types.TradeCreatedSuccessfully,
 	}
 
-	switch tradeType {
-	case types.TradeTypeSplit, types.TradeTypeReinvestment:
-		td.TradeInfo.Quantity = nil
-		storedTrade.Amount = nil
+	if td.TradeInfo.TradeType == types.TradeTypeSplit ||
+		td.TradeInfo.TradeType == types.TradeTypeReinvestment {
 		storedTrade.ReceiverAddress = ""
-
-		tdBytes, err := json.Marshal(td)
-		if err != nil {
-			return nil, errorsmod.Wrapf(sdkerrors.ErrJSONMarshal, "failed to marshal trade data: %s", err)
-		}
-		storedTrade.TradeData = string(tdBytes)
-
-	default:
-		storedTrade.Amount = td.TradeInfo.Quantity
-		storedTrade.ReceiverAddress = msg.ReceiverAddress
-		storedTrade.TradeData = msg.TradeData
 	}
 
 	storedTempTrade := types.StoredTempTrade{
