@@ -496,3 +496,34 @@ func (suite *KeeperTestSuite) TestBalancesAfterProcessTrade() {
 
 	suite.Require().Equal(sdkmath.NewInt(2000000000000), finalBalance.Amount)
 }
+
+func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeSplit() {
+	suite.setupTest()
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:           testutil.Alice,
+		ReceiverAddress:   testutil.Alice,
+		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"currency":"USD","exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":1,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		BankingSystemData: "{}",
+	})
+	suite.Require().NoError(err)
+
+	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  createResponse.TradeIndex,
+	})
+	suite.Require().NoError(err)
+	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+		TradeIndex: createResponse.TradeIndex,
+		Status:     types.StatusProcessed,
+	}, *processResponse)
+
+	suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
+		Denom:  types.DefaultDenom,
+		Amount: sdkmath.NewInt(0),
+	}).Times(1)
+
+	supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
+	suite.Require().Equal(sdkmath.NewInt(0), supply.Amount)
+}
