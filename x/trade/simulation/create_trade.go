@@ -46,7 +46,10 @@ func SimulateMsgCreateTrade(
 			return simtypes.NoOpMsg(types.ModuleName, "MsgCreateTrade", "create date is future date"), nil, nil
 		}
 
-		tradeData := types.GetSampleTradeData(randomTradeType(r))
+		tradeType := randomTradeType(r)
+		receiverAddress := simAccount.Address.String()
+		tradeData := types.GetSampleTradeData(tradeType)
+
 		var td types.TradeData
 		if err := json.Unmarshal([]byte(tradeData), &td); err != nil {
 			panic(err)
@@ -55,7 +58,7 @@ func SimulateMsgCreateTrade(
 		if td.TradeInfo.TradeType == types.TradeTypeSplit ||
 			td.TradeInfo.TradeType == types.TradeTypeReinvestment {
 			td.TradeInfo.Quantity = &sdk.Coin{Denom: "", Amount: math.NewInt(0)}
-
+			receiverAddress = ""
 			tdBytes, err := json.Marshal(td)
 			if err != nil {
 				panic(err)
@@ -65,7 +68,7 @@ func SimulateMsgCreateTrade(
 
 		msg := &types.MsgCreateTrade{
 			Creator:              simAccount.Address.String(),
-			ReceiverAddress:      simAccount.Address.String(),
+			ReceiverAddress:      receiverAddress,
 			TradeData:            tradeData,
 			BankingSystemData:    `{}`,
 			CoinMintingPriceJson: `{}`,
