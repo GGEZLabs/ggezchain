@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestIsValid(t *testing.T) {
+func TestIsTypeValid(t *testing.T) {
 	tests := []struct {
 		name      string
 		tradeType types.TradeType
@@ -36,7 +36,7 @@ func TestIsValid(t *testing.T) {
 		{
 			name:      "trade type dividends",
 			tradeType: types.TradeTypeDividends,
-			valid:     true,
+			valid:     false,
 		},
 		{
 			name:      "trade type unspecified",
@@ -46,7 +46,52 @@ func TestIsValid(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			valid := tt.tradeType.IsValid()
+			valid := tt.tradeType.IsTypeValid()
+			require.Equal(t, tt.valid, valid)
+		})
+	}
+}
+
+func TestIsStatusValid(t *testing.T) {
+	tests := []struct {
+		name      string
+		tradeType types.TradeStatus
+		valid     bool
+	}{
+		{
+			name:      "trade status processed",
+			tradeType: types.StatusProcessed,
+			valid:     true,
+		},
+		{
+			name:      "trade status rejected",
+			tradeType: types.StatusRejected,
+			valid:     true,
+		},
+		{
+			name:      "trade status failed",
+			tradeType: types.StatusFailed,
+			valid:     true,
+		},
+		{
+			name:      "trade status canceled",
+			tradeType: types.StatusCanceled,
+			valid:     true,
+		},
+		{
+			name:      "trade status pending",
+			tradeType: types.StatusPending,
+			valid:     true,
+		},
+		{
+			name:      "trade status nil",
+			tradeType: types.StatusNil,
+			valid:     false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			valid := tt.tradeType.IsStatusValid()
 			require.Equal(t, tt.valid, valid)
 		})
 	}

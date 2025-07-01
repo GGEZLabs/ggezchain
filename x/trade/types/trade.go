@@ -1,13 +1,26 @@
 package types
 
-// IsValid check if a trade type is valid
-func (tt TradeType) IsValid() bool {
+// IsTypeValid check if a trade type is valid
+func (tt TradeType) IsTypeValid() bool {
 	switch tt {
 	case TradeTypeBuy,
 		TradeTypeSell,
 		TradeTypeSplit,
-		TradeTypeReinvestment,
-		TradeTypeDividends:
+		TradeTypeReinvestment:
+		return true
+	default:
+		return false
+	}
+}
+
+// IsValid check if a trade status is valid
+func (tt TradeStatus) IsStatusValid() bool {
+	switch tt {
+	case StatusProcessed,
+		StatusRejected,
+		StatusFailed,
+		StatusCanceled,
+		StatusPending:
 		return true
 	default:
 		return false

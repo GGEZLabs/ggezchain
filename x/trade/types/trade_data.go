@@ -60,7 +60,7 @@ func ValidateTradeData(tradeData string) (TradeData, error) {
 	if td.TradeInfo.TradeNetValue <= 0 {
 		return td, ErrInvalidTradeInfo.Wrapf("trade_net_value must be greater than 0, got: %f", td.TradeInfo.TradeNetValue)
 	}
-	if !td.TradeInfo.TradeType.IsValid() {
+	if !td.TradeInfo.TradeType.IsTypeValid() {
 		return td, ErrInvalidTradeInfo.Wrap("invalid trade_type")
 	}
 
@@ -76,7 +76,11 @@ func ValidateTradeData(tradeData string) (TradeData, error) {
 		if td.TradeInfo.Quantity.Denom != DefaultDenom {
 			return td, ErrInvalidTradeInfo.Wrapf("invalid denom expected: %s, got: %s ", DefaultDenom, td.TradeInfo.Quantity.Denom)
 		}
+	} else if !td.TradeInfo.Quantity.Amount.IsZero() || td.TradeInfo.Quantity.Denom != "" {
+		return td, ErrInvalidTradeInfo.Wrapf("invalid quantity: quantity must be zero for trade type %s, got: %s",
+			td.TradeInfo.TradeType.String(), td.TradeInfo.Quantity.String())
 	}
+
 	if strings.TrimSpace(td.Brokerage.Country) == "" {
 		return td, ErrInvalidTradeBrokerage.Wrap("brokerage country must not be empty or whitespace")
 	}
