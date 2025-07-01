@@ -4,7 +4,7 @@ package ggezchain.acl;
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/GGEZLabs/ggezchain/x/acl/types";
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/acl/types";
 
 // Params defines the parameters for the module.
 message Params {

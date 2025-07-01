@@ -4,7 +4,7 @@ package ggezchain.trade;
 import "ggezchain/trade/trade.proto";
 import "cosmos/base/v1beta1/coin.proto";
 
-option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/trade/types";
 
 message TradeData {
   TradeInfo trade_info = 1;
