@@ -11,7 +11,7 @@ import "ggezchain/trade/trade_index.proto";
 import "ggezchain/trade/stored_trade.proto";
 import "ggezchain/trade/stored_temp_trade.proto";
 
-option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/trade/types";
 
 // Query defines the gRPC querier service.
 service Query {
