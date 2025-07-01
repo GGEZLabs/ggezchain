@@ -56,14 +56,14 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod: "CreateTrade",
-					Use:       "create-trade [receiver-address] [trade-data] [banking-system-data] [coin-minting-price-json] [exchange-rate-json]",
+					Use:       "create-trade [trade-data] [banking-system-data] [coin-minting-price-json] [exchange-rate-json] [receiver-address]",
 					Short:     "Create the StoredTrade. Must have authority to do so.",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
-						{ProtoField: "receiver_address"},
 						{ProtoField: "trade_data"},
 						{ProtoField: "banking_system_data"},
 						{ProtoField: "coin_minting_price_json"},
 						{ProtoField: "exchange_rate_json"},
+						{ProtoField: "receiver_address", Optional: true},
 					},
 					FlagOptions: map[string]*autocliv1.FlagOptions{
 						"create_date": {

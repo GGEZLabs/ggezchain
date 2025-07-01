@@ -1,7 +1,7 @@
 syntax = "proto3";
 package ggezchain.trade;
 
-option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/trade/types";
 
 enum TradeStatus {
     // TRADE_STATUS_UNSPECIFIED defines the default trade status.

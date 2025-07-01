@@ -4,7 +4,7 @@ package ggezchain.trade;
 import "cosmos/base/v1beta1/coin.proto";
 import "ggezchain/trade/trade.proto";
 
-option go_package = "github.com/GGEZLabs/ggezchain/x/trade/types";
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/trade/types";
 
 message StoredTrade {
   uint64 trade_index = 1; 

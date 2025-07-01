@@ -35,6 +35,8 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		if err != nil {
 			return nil, sdkerrors.ErrInvalidAddress.Wrapf("invalid receiver address (%s)", err)
 		}
+	} else if msg.ReceiverAddress != "" {
+		return nil, sdkerrors.ErrInvalidRequest.Wrapf("receiver address must not be set for trade type %s", td.TradeInfo.TradeType.String())
 	}
 
 	tradeIndex, found := k.Keeper.GetTradeIndex(ctx)

@@ -3,7 +3,7 @@ package ggezchain.acl;
 
 import "ggezchain/acl/access_definition.proto";
 
-option go_package = "github.com/GGEZLabs/ggezchain/x/acl/types";
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/acl/types";
 
 message AclAuthority {
            string           address            = 1; 

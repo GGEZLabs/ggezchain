@@ -8,7 +8,7 @@ import "cosmos_proto/cosmos.proto";
 import "gogoproto/gogo.proto";
 import "ggezchain/acl/params.proto";
 
-option go_package = "github.com/GGEZLabs/ggezchain/x/acl/types";
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/acl/types";
 
 // Msg defines the Msg service.
 service Msg {
