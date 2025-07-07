@@ -11,16 +11,18 @@ import (
 func GetSampleTradeData(tradeType TradeType) string {
 	tradeData := TradeData{
 		TradeInfo: &TradeInfo{
-			AssetHolderId: 2,
-			AssetId:       789,
-			TradeType:     tradeType,
-			TradeValue:    100.50,
-			Currency:      "USD",
-			Exchange:      "NYSE",
-			FundName:      "TechFund",
-			Issuer:        "CompanyA",
-			NoShares:      1000,
-			Price:         0.001,
+			AssetHolderId:      2,
+			AssetId:            789,
+			TradeType:          tradeType,
+			TradeValue:         100.50,
+			BaseCurrency:       "USD",
+			SettlementCurrency: "USD",
+			ExchangeRate:       1,
+			Exchange:           "NYSE",
+			FundName:           "TechFund",
+			Issuer:             "CompanyA",
+			NoShares:           1000,
+			Price:              0.001,
 			Quantity: &sdk.Coin{
 				Denom:  DefaultDenom,
 				Amount: math.NewInt(100000),

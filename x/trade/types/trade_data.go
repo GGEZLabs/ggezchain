@@ -24,8 +24,14 @@ func ValidateTradeData(tradeData string) (TradeData, error) {
 	if td.TradeInfo.TradeValue <= 0 {
 		return td, ErrInvalidTradeInfo.Wrapf("trade_value must be greater than 0, got: %f", td.TradeInfo.TradeValue)
 	}
-	if strings.TrimSpace(td.TradeInfo.Currency) == "" {
-		return td, ErrInvalidTradeInfo.Wrap("currency must not be empty or whitespace")
+	if strings.TrimSpace(td.TradeInfo.BaseCurrency) == "" {
+		return td, ErrInvalidTradeInfo.Wrap("base_currency must not be empty or whitespace")
+	}
+	if strings.TrimSpace(td.TradeInfo.SettlementCurrency) == "" {
+		return td, ErrInvalidTradeInfo.Wrap("settlement_currency must not be empty or whitespace")
+	}
+	if td.TradeInfo.ExchangeRate <= 0 {
+		return td, ErrInvalidTradeInfo.Wrapf("exchange_rate must be greater than 0, got: %f", td.TradeInfo.ExchangeRate)
 	}
 	if strings.TrimSpace(td.TradeInfo.Exchange) == "" {
 		return td, ErrInvalidTradeInfo.Wrap("exchange must not be empty or whitespace")
