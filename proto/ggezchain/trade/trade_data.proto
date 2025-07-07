@@ -16,19 +16,21 @@ message TradeInfo {
   uint64 asset_id = 2;
   TradeType trade_type = 3;
   double trade_value = 4;
-  string currency = 5;
-  string exchange = 6;
-  string fund_name = 7;
-  string issuer = 8;
-  uint64 no_shares = 9;
-  double price = 10;
-  cosmos.base.v1beta1.Coin quantity = 11;
-  string segment = 12;
-  double share_price = 13;
-  string ticker = 14;
-  double trade_fee = 15;
-  double trade_net_price = 16;
-  double trade_net_value = 17;
+  string base_currency = 5;
+  string settlement_currency = 6;
+  double exchange_rate = 7;
+  string exchange = 8;
+  string fund_name = 9;
+  string issuer = 10;
+  uint64 no_shares = 11;
+  double price = 12;
+  cosmos.base.v1beta1.Coin quantity = 13;
+  string segment = 14;
+  double share_price = 15;
+  string ticker = 16;
+  double trade_fee = 17;
+  double trade_net_price = 18;
+  double trade_net_value = 19;
 }
 
 message Brokerage {
