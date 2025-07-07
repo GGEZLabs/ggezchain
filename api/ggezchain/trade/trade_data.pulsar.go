@@ -530,24 +530,26 @@ func (x *fastReflection_TradeData) ProtoMethods() *protoiface.Methods {
 }
 
 var (
-	md_TradeInfo                 protoreflect.MessageDescriptor
-	fd_TradeInfo_asset_holder_id protoreflect.FieldDescriptor
-	fd_TradeInfo_asset_id        protoreflect.FieldDescriptor
-	fd_TradeInfo_trade_type      protoreflect.FieldDescriptor
-	fd_TradeInfo_trade_value     protoreflect.FieldDescriptor
-	fd_TradeInfo_currency        protoreflect.FieldDescriptor
-	fd_TradeInfo_exchange        protoreflect.FieldDescriptor
-	fd_TradeInfo_fund_name       protoreflect.FieldDescriptor
-	fd_TradeInfo_issuer          protoreflect.FieldDescriptor
-	fd_TradeInfo_no_shares       protoreflect.FieldDescriptor
-	fd_TradeInfo_price           protoreflect.FieldDescriptor
-	fd_TradeInfo_quantity        protoreflect.FieldDescriptor
-	fd_TradeInfo_segment         protoreflect.FieldDescriptor
-	fd_TradeInfo_share_price     protoreflect.FieldDescriptor
-	fd_TradeInfo_ticker          protoreflect.FieldDescriptor
-	fd_TradeInfo_trade_fee       protoreflect.FieldDescriptor
-	fd_TradeInfo_trade_net_price protoreflect.FieldDescriptor
-	fd_TradeInfo_trade_net_value protoreflect.FieldDescriptor
+	md_TradeInfo                     protoreflect.MessageDescriptor
+	fd_TradeInfo_asset_holder_id     protoreflect.FieldDescriptor
+	fd_TradeInfo_asset_id            protoreflect.FieldDescriptor
+	fd_TradeInfo_trade_type          protoreflect.FieldDescriptor
+	fd_TradeInfo_trade_value         protoreflect.FieldDescriptor
+	fd_TradeInfo_base_currency       protoreflect.FieldDescriptor
+	fd_TradeInfo_settlement_currency protoreflect.FieldDescriptor
+	fd_TradeInfo_exchange_rate       protoreflect.FieldDescriptor
+	fd_TradeInfo_exchange            protoreflect.FieldDescriptor
+	fd_TradeInfo_fund_name           protoreflect.FieldDescriptor
+	fd_TradeInfo_issuer              protoreflect.FieldDescriptor
+	fd_TradeInfo_no_shares           protoreflect.FieldDescriptor
+	fd_TradeInfo_price               protoreflect.FieldDescriptor
+	fd_TradeInfo_quantity            protoreflect.FieldDescriptor
+	fd_TradeInfo_segment             protoreflect.FieldDescriptor
+	fd_TradeInfo_share_price         protoreflect.FieldDescriptor
+	fd_TradeInfo_ticker              protoreflect.FieldDescriptor
+	fd_TradeInfo_trade_fee           protoreflect.FieldDescriptor
+	fd_TradeInfo_trade_net_price     protoreflect.FieldDescriptor
+	fd_TradeInfo_trade_net_value     protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -557,7 +559,9 @@ func init() {
 	fd_TradeInfo_asset_id = md_TradeInfo.Fields().ByName("asset_id")
 	fd_TradeInfo_trade_type = md_TradeInfo.Fields().ByName("trade_type")
 	fd_TradeInfo_trade_value = md_TradeInfo.Fields().ByName("trade_value")
-	fd_TradeInfo_currency = md_TradeInfo.Fields().ByName("currency")
+	fd_TradeInfo_base_currency = md_TradeInfo.Fields().ByName("base_currency")
+	fd_TradeInfo_settlement_currency = md_TradeInfo.Fields().ByName("settlement_currency")
+	fd_TradeInfo_exchange_rate = md_TradeInfo.Fields().ByName("exchange_rate")
 	fd_TradeInfo_exchange = md_TradeInfo.Fields().ByName("exchange")
 	fd_TradeInfo_fund_name = md_TradeInfo.Fields().ByName("fund_name")
 	fd_TradeInfo_issuer = md_TradeInfo.Fields().ByName("issuer")
@@ -661,9 +665,21 @@ func (x *fastReflection_TradeInfo) Range(f func(protoreflect.FieldDescriptor, pr
 			return
 		}
 	}
-	if x.Currency != "" {
-		value := protoreflect.ValueOfString(x.Currency)
-		if !f(fd_TradeInfo_currency, value) {
+	if x.BaseCurrency != "" {
+		value := protoreflect.ValueOfString(x.BaseCurrency)
+		if !f(fd_TradeInfo_base_currency, value) {
+			return
+		}
+	}
+	if x.SettlementCurrency != "" {
+		value := protoreflect.ValueOfString(x.SettlementCurrency)
+		if !f(fd_TradeInfo_settlement_currency, value) {
+			return
+		}
+	}
+	if x.ExchangeRate != float64(0) || math.Signbit(x.ExchangeRate) {
+		value := protoreflect.ValueOfFloat64(x.ExchangeRate)
+		if !f(fd_TradeInfo_exchange_rate, value) {
 			return
 		}
 	}
@@ -762,8 +778,12 @@ func (x *fastReflection_TradeInfo) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.TradeType != 0
 	case "ggezchain.trade.TradeInfo.trade_value":
 		return x.TradeValue != float64(0) || math.Signbit(x.TradeValue)
-	case "ggezchain.trade.TradeInfo.currency":
-		return x.Currency != ""
+	case "ggezchain.trade.TradeInfo.base_currency":
+		return x.BaseCurrency != ""
+	case "ggezchain.trade.TradeInfo.settlement_currency":
+		return x.SettlementCurrency != ""
+	case "ggezchain.trade.TradeInfo.exchange_rate":
+		return x.ExchangeRate != float64(0) || math.Signbit(x.ExchangeRate)
 	case "ggezchain.trade.TradeInfo.exchange":
 		return x.Exchange != ""
 	case "ggezchain.trade.TradeInfo.fund_name":
@@ -812,8 +832,12 @@ func (x *fastReflection_TradeInfo) Clear(fd protoreflect.FieldDescriptor) {
 		x.TradeType = 0
 	case "ggezchain.trade.TradeInfo.trade_value":
 		x.TradeValue = float64(0)
-	case "ggezchain.trade.TradeInfo.currency":
-		x.Currency = ""
+	case "ggezchain.trade.TradeInfo.base_currency":
+		x.BaseCurrency = ""
+	case "ggezchain.trade.TradeInfo.settlement_currency":
+		x.SettlementCurrency = ""
+	case "ggezchain.trade.TradeInfo.exchange_rate":
+		x.ExchangeRate = float64(0)
 	case "ggezchain.trade.TradeInfo.exchange":
 		x.Exchange = ""
 	case "ggezchain.trade.TradeInfo.fund_name":
@@ -866,9 +890,15 @@ func (x *fastReflection_TradeInfo) Get(descriptor protoreflect.FieldDescriptor) 
 	case "ggezchain.trade.TradeInfo.trade_value":
 		value := x.TradeValue
 		return protoreflect.ValueOfFloat64(value)
-	case "ggezchain.trade.TradeInfo.currency":
-		value := x.Currency
+	case "ggezchain.trade.TradeInfo.base_currency":
+		value := x.BaseCurrency
 		return protoreflect.ValueOfString(value)
+	case "ggezchain.trade.TradeInfo.settlement_currency":
+		value := x.SettlementCurrency
+		return protoreflect.ValueOfString(value)
+	case "ggezchain.trade.TradeInfo.exchange_rate":
+		value := x.ExchangeRate
+		return protoreflect.ValueOfFloat64(value)
 	case "ggezchain.trade.TradeInfo.exchange":
 		value := x.Exchange
 		return protoreflect.ValueOfString(value)
@@ -933,8 +963,12 @@ func (x *fastReflection_TradeInfo) Set(fd protoreflect.FieldDescriptor, value pr
 		x.TradeType = (TradeType)(value.Enum())
 	case "ggezchain.trade.TradeInfo.trade_value":
 		x.TradeValue = value.Float()
-	case "ggezchain.trade.TradeInfo.currency":
-		x.Currency = value.Interface().(string)
+	case "ggezchain.trade.TradeInfo.base_currency":
+		x.BaseCurrency = value.Interface().(string)
+	case "ggezchain.trade.TradeInfo.settlement_currency":
+		x.SettlementCurrency = value.Interface().(string)
+	case "ggezchain.trade.TradeInfo.exchange_rate":
+		x.ExchangeRate = value.Float()
 	case "ggezchain.trade.TradeInfo.exchange":
 		x.Exchange = value.Interface().(string)
 	case "ggezchain.trade.TradeInfo.fund_name":
@@ -992,8 +1026,12 @@ func (x *fastReflection_TradeInfo) Mutable(fd protoreflect.FieldDescriptor) prot
 		panic(fmt.Errorf("field trade_type of message ggezchain.trade.TradeInfo is not mutable"))
 	case "ggezchain.trade.TradeInfo.trade_value":
 		panic(fmt.Errorf("field trade_value of message ggezchain.trade.TradeInfo is not mutable"))
-	case "ggezchain.trade.TradeInfo.currency":
-		panic(fmt.Errorf("field currency of message ggezchain.trade.TradeInfo is not mutable"))
+	case "ggezchain.trade.TradeInfo.base_currency":
+		panic(fmt.Errorf("field base_currency of message ggezchain.trade.TradeInfo is not mutable"))
+	case "ggezchain.trade.TradeInfo.settlement_currency":
+		panic(fmt.Errorf("field settlement_currency of message ggezchain.trade.TradeInfo is not mutable"))
+	case "ggezchain.trade.TradeInfo.exchange_rate":
+		panic(fmt.Errorf("field exchange_rate of message ggezchain.trade.TradeInfo is not mutable"))
 	case "ggezchain.trade.TradeInfo.exchange":
 		panic(fmt.Errorf("field exchange of message ggezchain.trade.TradeInfo is not mutable"))
 	case "ggezchain.trade.TradeInfo.fund_name":
@@ -1037,8 +1075,12 @@ func (x *fastReflection_TradeInfo) NewField(fd protoreflect.FieldDescriptor) pro
 		return protoreflect.ValueOfEnum(0)
 	case "ggezchain.trade.TradeInfo.trade_value":
 		return protoreflect.ValueOfFloat64(float64(0))
-	case "ggezchain.trade.TradeInfo.currency":
+	case "ggezchain.trade.TradeInfo.base_currency":
 		return protoreflect.ValueOfString("")
+	case "ggezchain.trade.TradeInfo.settlement_currency":
+		return protoreflect.ValueOfString("")
+	case "ggezchain.trade.TradeInfo.exchange_rate":
+		return protoreflect.ValueOfFloat64(float64(0))
 	case "ggezchain.trade.TradeInfo.exchange":
 		return protoreflect.ValueOfString("")
 	case "ggezchain.trade.TradeInfo.fund_name":
@@ -1145,9 +1187,16 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 		if x.TradeValue != 0 || math.Signbit(x.TradeValue) {
 			n += 9
 		}
-		l = len(x.Currency)
+		l = len(x.BaseCurrency)
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.SettlementCurrency)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.ExchangeRate != 0 || math.Signbit(x.ExchangeRate) {
+			n += 9
 		}
 		l = len(x.Exchange)
 		if l > 0 {
@@ -1180,10 +1229,10 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 		}
 		l = len(x.Ticker)
 		if l > 0 {
-			n += 1 + l + runtime.Sov(uint64(l))
+			n += 2 + l + runtime.Sov(uint64(l))
 		}
 		if x.TradeFee != 0 || math.Signbit(x.TradeFee) {
-			n += 9
+			n += 10
 		}
 		if x.TradeNetPrice != 0 || math.Signbit(x.TradeNetPrice) {
 			n += 10
@@ -1226,7 +1275,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x1
 			i--
-			dAtA[i] = 0x89
+			dAtA[i] = 0x99
 		}
 		if x.TradeNetPrice != 0 || math.Signbit(x.TradeNetPrice) {
 			i -= 8
@@ -1234,33 +1283,37 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x1
 			i--
-			dAtA[i] = 0x81
+			dAtA[i] = 0x91
 		}
 		if x.TradeFee != 0 || math.Signbit(x.TradeFee) {
 			i -= 8
 			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.TradeFee))))
 			i--
-			dAtA[i] = 0x79
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0x89
 		}
 		if len(x.Ticker) > 0 {
 			i -= len(x.Ticker)
 			copy(dAtA[i:], x.Ticker)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Ticker)))
 			i--
-			dAtA[i] = 0x72
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0x82
 		}
 		if x.SharePrice != 0 || math.Signbit(x.SharePrice) {
 			i -= 8
 			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.SharePrice))))
 			i--
-			dAtA[i] = 0x69
+			dAtA[i] = 0x79
 		}
 		if len(x.Segment) > 0 {
 			i -= len(x.Segment)
 			copy(dAtA[i:], x.Segment)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Segment)))
 			i--
-			dAtA[i] = 0x62
+			dAtA[i] = 0x72
 		}
 		if x.Quantity != nil {
 			encoded, err := options.Marshal(x.Quantity)
@@ -1274,44 +1327,57 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 			copy(dAtA[i:], encoded)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
-			dAtA[i] = 0x5a
+			dAtA[i] = 0x6a
 		}
 		if x.Price != 0 || math.Signbit(x.Price) {
 			i -= 8
 			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.Price))))
 			i--
-			dAtA[i] = 0x51
+			dAtA[i] = 0x61
 		}
 		if x.NoShares != 0 {
 			i = runtime.EncodeVarint(dAtA, i, uint64(x.NoShares))
 			i--
-			dAtA[i] = 0x48
+			dAtA[i] = 0x58
 		}
 		if len(x.Issuer) > 0 {
 			i -= len(x.Issuer)
 			copy(dAtA[i:], x.Issuer)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Issuer)))
 			i--
-			dAtA[i] = 0x42
+			dAtA[i] = 0x52
 		}
 		if len(x.FundName) > 0 {
 			i -= len(x.FundName)
 			copy(dAtA[i:], x.FundName)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.FundName)))
 			i--
-			dAtA[i] = 0x3a
+			dAtA[i] = 0x4a
 		}
 		if len(x.Exchange) > 0 {
 			i -= len(x.Exchange)
 			copy(dAtA[i:], x.Exchange)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Exchange)))
 			i--
+			dAtA[i] = 0x42
+		}
+		if x.ExchangeRate != 0 || math.Signbit(x.ExchangeRate) {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.ExchangeRate))))
+			i--
+			dAtA[i] = 0x39
+		}
+		if len(x.SettlementCurrency) > 0 {
+			i -= len(x.SettlementCurrency)
+			copy(dAtA[i:], x.SettlementCurrency)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.SettlementCurrency)))
+			i--
 			dAtA[i] = 0x32
 		}
-		if len(x.Currency) > 0 {
-			i -= len(x.Currency)
-			copy(dAtA[i:], x.Currency)
-			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Currency)))
+		if len(x.BaseCurrency) > 0 {
+			i -= len(x.BaseCurrency)
+			copy(dAtA[i:], x.BaseCurrency)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.BaseCurrency)))
 			i--
 			dAtA[i] = 0x2a
 		}
@@ -1455,7 +1521,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				x.TradeValue = float64(math.Float64frombits(v))
 			case 5:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Currency", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field BaseCurrency", wireType)
 				}
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
@@ -1483,9 +1549,52 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Currency = string(dAtA[iNdEx:postIndex])
+				x.BaseCurrency = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 6:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SettlementCurrency", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.SettlementCurrency = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 7:
+				if wireType != 1 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ExchangeRate", wireType)
+				}
+				var v uint64
+				if (iNdEx + 8) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				x.ExchangeRate = float64(math.Float64frombits(v))
+			case 8:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Exchange", wireType)
 				}
@@ -1517,7 +1626,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				}
 				x.Exchange = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 7:
+			case 9:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field FundName", wireType)
 				}
@@ -1549,7 +1658,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				}
 				x.FundName = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 8:
+			case 10:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Issuer", wireType)
 				}
@@ -1581,7 +1690,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				}
 				x.Issuer = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 9:
+			case 11:
 				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field NoShares", wireType)
 				}
@@ -1600,7 +1709,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 						break
 					}
 				}
-			case 10:
+			case 12:
 				if wireType != 1 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Price", wireType)
 				}
@@ -1611,7 +1720,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
 				iNdEx += 8
 				x.Price = float64(math.Float64frombits(v))
-			case 11:
+			case 13:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Quantity", wireType)
 				}
@@ -1647,7 +1756,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
-			case 12:
+			case 14:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Segment", wireType)
 				}
@@ -1679,7 +1788,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				}
 				x.Segment = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 13:
+			case 15:
 				if wireType != 1 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field SharePrice", wireType)
 				}
@@ -1690,7 +1799,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
 				iNdEx += 8
 				x.SharePrice = float64(math.Float64frombits(v))
-			case 14:
+			case 16:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Ticker", wireType)
 				}
@@ -1722,7 +1831,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				}
 				x.Ticker = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
-			case 15:
+			case 17:
 				if wireType != 1 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TradeFee", wireType)
 				}
@@ -1733,7 +1842,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
 				iNdEx += 8
 				x.TradeFee = float64(math.Float64frombits(v))
-			case 16:
+			case 18:
 				if wireType != 1 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TradeNetPrice", wireType)
 				}
@@ -1744,7 +1853,7 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
 				iNdEx += 8
 				x.TradeNetPrice = float64(math.Float64frombits(v))
-			case 17:
+			case 19:
 				if wireType != 1 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field TradeNetValue", wireType)
 				}
@@ -2399,23 +2508,25 @@ type TradeInfo struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AssetHolderId uint64        `protobuf:"varint,1,opt,name=asset_holder_id,json=assetHolderId,proto3" json:"asset_holder_id,omitempty"`
-	AssetId       uint64        `protobuf:"varint,2,opt,name=asset_id,json=assetId,proto3" json:"asset_id,omitempty"`
-	TradeType     TradeType     `protobuf:"varint,3,opt,name=trade_type,json=tradeType,proto3,enum=ggezchain.trade.TradeType" json:"trade_type,omitempty"`
-	TradeValue    float64       `protobuf:"fixed64,4,opt,name=trade_value,json=tradeValue,proto3" json:"trade_value,omitempty"`
-	Currency      string        `protobuf:"bytes,5,opt,name=currency,proto3" json:"currency,omitempty"`
-	Exchange      string        `protobuf:"bytes,6,opt,name=exchange,proto3" json:"exchange,omitempty"`
-	FundName      string        `protobuf:"bytes,7,opt,name=fund_name,json=fundName,proto3" json:"fund_name,omitempty"`
-	Issuer        string        `protobuf:"bytes,8,opt,name=issuer,proto3" json:"issuer,omitempty"`
-	NoShares      uint64        `protobuf:"varint,9,opt,name=no_shares,json=noShares,proto3" json:"no_shares,omitempty"`
-	Price         float64       `protobuf:"fixed64,10,opt,name=price,proto3" json:"price,omitempty"`
-	Quantity      *v1beta1.Coin `protobuf:"bytes,11,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	Segment       string        `protobuf:"bytes,12,opt,name=segment,proto3" json:"segment,omitempty"`
-	SharePrice    float64       `protobuf:"fixed64,13,opt,name=share_price,json=sharePrice,proto3" json:"share_price,omitempty"`
-	Ticker        string        `protobuf:"bytes,14,opt,name=ticker,proto3" json:"ticker,omitempty"`
-	TradeFee      float64       `protobuf:"fixed64,15,opt,name=trade_fee,json=tradeFee,proto3" json:"trade_fee,omitempty"`
-	TradeNetPrice float64       `protobuf:"fixed64,16,opt,name=trade_net_price,json=tradeNetPrice,proto3" json:"trade_net_price,omitempty"`
-	TradeNetValue float64       `protobuf:"fixed64,17,opt,name=trade_net_value,json=tradeNetValue,proto3" json:"trade_net_value,omitempty"`
+	AssetHolderId      uint64        `protobuf:"varint,1,opt,name=asset_holder_id,json=assetHolderId,proto3" json:"asset_holder_id,omitempty"`
+	AssetId            uint64        `protobuf:"varint,2,opt,name=asset_id,json=assetId,proto3" json:"asset_id,omitempty"`
+	TradeType          TradeType     `protobuf:"varint,3,opt,name=trade_type,json=tradeType,proto3,enum=ggezchain.trade.TradeType" json:"trade_type,omitempty"`
+	TradeValue         float64       `protobuf:"fixed64,4,opt,name=trade_value,json=tradeValue,proto3" json:"trade_value,omitempty"`
+	BaseCurrency       string        `protobuf:"bytes,5,opt,name=base_currency,json=baseCurrency,proto3" json:"base_currency,omitempty"`
+	SettlementCurrency string        `protobuf:"bytes,6,opt,name=settlement_currency,json=settlementCurrency,proto3" json:"settlement_currency,omitempty"`
+	ExchangeRate       float64       `protobuf:"fixed64,7,opt,name=exchange_rate,json=exchangeRate,proto3" json:"exchange_rate,omitempty"`
+	Exchange           string        `protobuf:"bytes,8,opt,name=exchange,proto3" json:"exchange,omitempty"`
+	FundName           string        `protobuf:"bytes,9,opt,name=fund_name,json=fundName,proto3" json:"fund_name,omitempty"`
+	Issuer             string        `protobuf:"bytes,10,opt,name=issuer,proto3" json:"issuer,omitempty"`
+	NoShares           uint64        `protobuf:"varint,11,opt,name=no_shares,json=noShares,proto3" json:"no_shares,omitempty"`
+	Price              float64       `protobuf:"fixed64,12,opt,name=price,proto3" json:"price,omitempty"`
+	Quantity           *v1beta1.Coin `protobuf:"bytes,13,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Segment            string        `protobuf:"bytes,14,opt,name=segment,proto3" json:"segment,omitempty"`
+	SharePrice         float64       `protobuf:"fixed64,15,opt,name=share_price,json=sharePrice,proto3" json:"share_price,omitempty"`
+	Ticker             string        `protobuf:"bytes,16,opt,name=ticker,proto3" json:"ticker,omitempty"`
+	TradeFee           float64       `protobuf:"fixed64,17,opt,name=trade_fee,json=tradeFee,proto3" json:"trade_fee,omitempty"`
+	TradeNetPrice      float64       `protobuf:"fixed64,18,opt,name=trade_net_price,json=tradeNetPrice,proto3" json:"trade_net_price,omitempty"`
+	TradeNetValue      float64       `protobuf:"fixed64,19,opt,name=trade_net_value,json=tradeNetValue,proto3" json:"trade_net_value,omitempty"`
 }
 
 func (x *TradeInfo) Reset() {
@@ -2466,11 +2577,25 @@ func (x *TradeInfo) GetTradeValue() float64 {
 	return 0
 }
 
-func (x *TradeInfo) GetCurrency() string {
+func (x *TradeInfo) GetBaseCurrency() string {
 	if x != nil {
-		return x.Currency
+		return x.BaseCurrency
 	}
 	return ""
+}
+
+func (x *TradeInfo) GetSettlementCurrency() string {
+	if x != nil {
+		return x.SettlementCurrency
+	}
+	return ""
+}
+
+func (x *TradeInfo) GetExchangeRate() float64 {
+	if x != nil {
+		return x.ExchangeRate
+	}
+	return 0
 }
 
 func (x *TradeInfo) GetExchange() string {
@@ -2626,7 +2751,7 @@ var file_ggezchain_trade_trade_data_proto_rawDesc = []byte{
 	0x6b, 0x65, 0x72, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67,
 	0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x42,
 	0x72, 0x6f, 0x6b, 0x65, 0x72, 0x61, 0x67, 0x65, 0x52, 0x09, 0x62, 0x72, 0x6f, 0x6b, 0x65, 0x72,
-	0x61, 0x67, 0x65, 0x22, 0xc1, 0x04, 0x0a, 0x09, 0x54, 0x72, 0x61, 0x64, 0x65, 0x49, 0x6e, 0x66,
+	0x61, 0x67, 0x65, 0x22, 0xa0, 0x05, 0x0a, 0x09, 0x54, 0x72, 0x61, 0x64, 0x65, 0x49, 0x6e, 0x66,
 	0x6f, 0x12, 0x26, 0x0a, 0x0f, 0x61, 0x73, 0x73, 0x65, 0x74, 0x5f, 0x68, 0x6f, 0x6c, 0x64, 0x65,
 	0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0d, 0x61, 0x73, 0x73, 0x65,
 	0x74, 0x48, 0x6f, 0x6c, 0x64, 0x65, 0x72, 0x49, 0x64, 0x12, 0x19, 0x0a, 0x08, 0x61, 0x73, 0x73,
@@ -2637,49 +2762,55 @@ var file_ggezchain_trade_trade_data_proto_rawDesc = []byte{
 	0x54, 0x79, 0x70, 0x65, 0x52, 0x09, 0x74, 0x72, 0x61, 0x64, 0x65, 0x54, 0x79, 0x70, 0x65, 0x12,
 	0x1f, 0x0a, 0x0b, 0x74, 0x72, 0x61, 0x64, 0x65, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x04,
 	0x20, 0x01, 0x28, 0x01, 0x52, 0x0a, 0x74, 0x72, 0x61, 0x64, 0x65, 0x56, 0x61, 0x6c, 0x75, 0x65,
-	0x12, 0x1a, 0x0a, 0x08, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x18, 0x05, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x08, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x12, 0x1a, 0x0a, 0x08,
-	0x65, 0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08,
-	0x65, 0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x66, 0x75, 0x6e, 0x64,
-	0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x66, 0x75, 0x6e,
-	0x64, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x69, 0x73, 0x73, 0x75, 0x65, 0x72, 0x18,
-	0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x69, 0x73, 0x73, 0x75, 0x65, 0x72, 0x12, 0x1b, 0x0a,
-	0x09, 0x6e, 0x6f, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x09, 0x20, 0x01, 0x28, 0x04,
-	0x52, 0x08, 0x6e, 0x6f, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72,
-	0x69, 0x63, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x01, 0x52, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65,
-	0x12, 0x35, 0x0a, 0x08, 0x71, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x0b, 0x20, 0x01,
-	0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65,
-	0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x52, 0x08, 0x71,
-	0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x65, 0x67, 0x6d, 0x65,
-	0x6e, 0x74, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x73, 0x65, 0x67, 0x6d, 0x65, 0x6e,
-	0x74, 0x12, 0x1f, 0x0a, 0x0b, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65,
-	0x18, 0x0d, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0a, 0x73, 0x68, 0x61, 0x72, 0x65, 0x50, 0x72, 0x69,
-	0x63, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x74, 0x69, 0x63, 0x6b, 0x65, 0x72, 0x18, 0x0e, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x06, 0x74, 0x69, 0x63, 0x6b, 0x65, 0x72, 0x12, 0x1b, 0x0a, 0x09, 0x74, 0x72,
-	0x61, 0x64, 0x65, 0x5f, 0x66, 0x65, 0x65, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x01, 0x52, 0x08, 0x74,
-	0x72, 0x61, 0x64, 0x65, 0x46, 0x65, 0x65, 0x12, 0x26, 0x0a, 0x0f, 0x74, 0x72, 0x61, 0x64, 0x65,
-	0x5f, 0x6e, 0x65, 0x74, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x10, 0x20, 0x01, 0x28, 0x01,
-	0x52, 0x0d, 0x74, 0x72, 0x61, 0x64, 0x65, 0x4e, 0x65, 0x74, 0x50, 0x72, 0x69, 0x63, 0x65, 0x12,
-	0x26, 0x0a, 0x0f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x5f, 0x6e, 0x65, 0x74, 0x5f, 0x76, 0x61, 0x6c,
-	0x75, 0x65, 0x18, 0x11, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0d, 0x74, 0x72, 0x61, 0x64, 0x65, 0x4e,
-	0x65, 0x74, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x4d, 0x0a, 0x09, 0x42, 0x72, 0x6f, 0x6b, 0x65,
-	0x72, 0x61, 0x67, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x18, 0x0a, 0x07,
-	0x63, 0x6f, 0x75, 0x6e, 0x74, 0x72, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63,
-	0x6f, 0x75, 0x6e, 0x74, 0x72, 0x79, 0x42, 0xb5, 0x01, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x67,
-	0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x42, 0x0e,
-	0x54, 0x72, 0x61, 0x64, 0x65, 0x44, 0x61, 0x74, 0x61, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01,
-	0x5a, 0x31, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x47, 0x47, 0x45,
-	0x5a, 0x4c, 0x61, 0x62, 0x73, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f,
-	0x61, 0x70, 0x69, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x74, 0x72,
-	0x61, 0x64, 0x65, 0xa2, 0x02, 0x03, 0x47, 0x54, 0x58, 0xaa, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a,
-	0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x54, 0x72, 0x61, 0x64, 0x65, 0xca, 0x02, 0x0f, 0x47, 0x67,
-	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0xe2, 0x02, 0x1b,
-	0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0x5c,
-	0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x47, 0x67,
-	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x54, 0x72, 0x61, 0x64, 0x65, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x12, 0x23, 0x0a, 0x0d, 0x62, 0x61, 0x73, 0x65, 0x5f, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63,
+	0x79, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x62, 0x61, 0x73, 0x65, 0x43, 0x75, 0x72,
+	0x72, 0x65, 0x6e, 0x63, 0x79, 0x12, 0x2f, 0x0a, 0x13, 0x73, 0x65, 0x74, 0x74, 0x6c, 0x65, 0x6d,
+	0x65, 0x6e, 0x74, 0x5f, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x18, 0x06, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x12, 0x73, 0x65, 0x74, 0x74, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x43, 0x75,
+	0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x12, 0x23, 0x0a, 0x0d, 0x65, 0x78, 0x63, 0x68, 0x61, 0x6e,
+	0x67, 0x65, 0x5f, 0x72, 0x61, 0x74, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0c, 0x65,
+	0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x61, 0x74, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x65,
+	0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x65,
+	0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x66, 0x75, 0x6e, 0x64, 0x5f,
+	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x66, 0x75, 0x6e, 0x64,
+	0x4e, 0x61, 0x6d, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x69, 0x73, 0x73, 0x75, 0x65, 0x72, 0x18, 0x0a,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x69, 0x73, 0x73, 0x75, 0x65, 0x72, 0x12, 0x1b, 0x0a, 0x09,
+	0x6e, 0x6f, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x08, 0x6e, 0x6f, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x69,
+	0x63, 0x65, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x01, 0x52, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x12,
+	0x35, 0x0a, 0x08, 0x71, 0x75, 0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x0d, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e,
+	0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x52, 0x08, 0x71, 0x75,
+	0x61, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x65, 0x67, 0x6d, 0x65, 0x6e,
+	0x74, 0x18, 0x0e, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x73, 0x65, 0x67, 0x6d, 0x65, 0x6e, 0x74,
+	0x12, 0x1f, 0x0a, 0x0b, 0x73, 0x68, 0x61, 0x72, 0x65, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18,
+	0x0f, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0a, 0x73, 0x68, 0x61, 0x72, 0x65, 0x50, 0x72, 0x69, 0x63,
+	0x65, 0x12, 0x16, 0x0a, 0x06, 0x74, 0x69, 0x63, 0x6b, 0x65, 0x72, 0x18, 0x10, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x06, 0x74, 0x69, 0x63, 0x6b, 0x65, 0x72, 0x12, 0x1b, 0x0a, 0x09, 0x74, 0x72, 0x61,
+	0x64, 0x65, 0x5f, 0x66, 0x65, 0x65, 0x18, 0x11, 0x20, 0x01, 0x28, 0x01, 0x52, 0x08, 0x74, 0x72,
+	0x61, 0x64, 0x65, 0x46, 0x65, 0x65, 0x12, 0x26, 0x0a, 0x0f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x5f,
+	0x6e, 0x65, 0x74, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x12, 0x20, 0x01, 0x28, 0x01, 0x52,
+	0x0d, 0x74, 0x72, 0x61, 0x64, 0x65, 0x4e, 0x65, 0x74, 0x50, 0x72, 0x69, 0x63, 0x65, 0x12, 0x26,
+	0x0a, 0x0f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x5f, 0x6e, 0x65, 0x74, 0x5f, 0x76, 0x61, 0x6c, 0x75,
+	0x65, 0x18, 0x13, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0d, 0x74, 0x72, 0x61, 0x64, 0x65, 0x4e, 0x65,
+	0x74, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x4d, 0x0a, 0x09, 0x42, 0x72, 0x6f, 0x6b, 0x65, 0x72,
+	0x61, 0x67, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63,
+	0x6f, 0x75, 0x6e, 0x74, 0x72, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x6f,
+	0x75, 0x6e, 0x74, 0x72, 0x79, 0x42, 0xb5, 0x01, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x67, 0x67,
+	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x42, 0x0e, 0x54,
+	0x72, 0x61, 0x64, 0x65, 0x44, 0x61, 0x74, 0x61, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a,
+	0x31, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x47, 0x47, 0x45, 0x5a,
+	0x4c, 0x61, 0x62, 0x73, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61,
+	0x70, 0x69, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x74, 0x72, 0x61,
+	0x64, 0x65, 0xa2, 0x02, 0x03, 0x47, 0x54, 0x58, 0xaa, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63,
+	0x68, 0x61, 0x69, 0x6e, 0x2e, 0x54, 0x72, 0x61, 0x64, 0x65, 0xca, 0x02, 0x0f, 0x47, 0x67, 0x65,
+	0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0xe2, 0x02, 0x1b, 0x47,
+	0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0x5c, 0x47,
+	0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x47, 0x67, 0x65,
+	0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x3a, 0x3a, 0x54, 0x72, 0x61, 0x64, 0x65, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
