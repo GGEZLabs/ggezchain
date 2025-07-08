@@ -36,7 +36,7 @@ func TestIsTypeValid(t *testing.T) {
 		{
 			name:      "trade type dividends",
 			tradeType: types.TradeTypeDividends,
-			valid:     false,
+			valid:     true,
 		},
 		{
 			name:      "trade type unspecified",
