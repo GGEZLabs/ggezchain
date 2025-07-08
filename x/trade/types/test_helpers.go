@@ -11,18 +11,18 @@ import (
 func GetSampleTradeData(tradeType TradeType) string {
 	tradeData := TradeData{
 		TradeInfo: &TradeInfo{
-			AssetHolderId:      2,
-			AssetId:            789,
-			TradeType:          tradeType,
-			TradeValue:         100.50,
-			BaseCurrency:       "USD",
-			SettlementCurrency: "USD",
-			ExchangeRate:       1,
-			Exchange:           "NYSE",
-			FundName:           "TechFund",
-			Issuer:             "CompanyA",
-			NoShares:           1000,
-			Price:              0.001,
+			AssetHolderId:       2,
+			AssetId:             789,
+			TradeType:           tradeType,
+			TradeValue:          100.50,
+			BaseCurrency:        "USD",
+			SettlementCurrency:  "USD",
+			ExchangeRate:        1,
+			Exchange:            "NYSE",
+			FundName:            "TechFund",
+			Issuer:              "CompanyA",
+			NoShares:            1000,
+			CoinMintingPriceUsd: 0.001,
 			Quantity: &sdk.Coin{
 				Denom:  DefaultDenom,
 				Amount: math.NewInt(100000),
@@ -41,11 +41,45 @@ func GetSampleTradeData(tradeType TradeType) string {
 		},
 	}
 
-	tradeDataJSON, err := json.Marshal(tradeData)
+	tradeDataBytes, err := json.Marshal(tradeData)
 	if err != nil {
 		panic(err)
 	}
-	return string(tradeDataJSON)
+	return string(tradeDataBytes)
+}
+
+func GetSampleExchangeRateJson() string {
+	exchangeRate := []ExchangeRateJson{
+		{
+			FromCurrency:    "USD",
+			ToCurrency:      "EUR",
+			OriginalAmount:  1,
+			ConvertedAmount: 0.85,
+			CurrencyRate:    0.85,
+			Timestamp:       "2025-07-08T00:00:00Z",
+		},
+	}
+
+	exchangeRateBytes, err := json.Marshal(exchangeRate)
+	if err != nil {
+		panic(err)
+	}
+	return string(exchangeRateBytes)
+}
+
+func GetSampleCoinMintingPriceJson() string {
+	coinMintingPrice := []CoinMintingPriceJson{
+		{
+			CurrencyCode: "USD",
+			MintingPrice: 0.001,
+		},
+	}
+
+	coinMintingPriceBytes, err := json.Marshal(coinMintingPrice)
+	if err != nil {
+		panic(err)
+	}
+	return string(coinMintingPriceBytes)
 }
 
 func GetBaseStoredTrade() StoredTrade {
@@ -55,13 +89,13 @@ func GetBaseStoredTrade() StoredTrade {
 			Denom:  DefaultDenom,
 			Amount: math.NewInt(100000),
 		},
-		Price:                "0.001",
+		CoinMintingPriceUsd:  "0.001",
 		ReceiverAddress:      testutil.Alice,
 		Maker:                testutil.Alice,
 		TradeData:            GetSampleTradeData(TradeTypeBuy),
 		BankingSystemData:    "{}",
-		CoinMintingPriceJson: "",
-		ExchangeRateJson:     "",
+		ExchangeRateJson:     GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: GetSampleCoinMintingPriceJson(),
 		TxDate:               "0001-01-01T00:00:00Z",
 		CreateDate:           "0001-01-01T00:00:00Z",
 		ProcessDate:          "0001-01-01T00:00:00Z",
@@ -76,8 +110,8 @@ func GetSampleMsgCreateTrade() *MsgCreateTrade {
 		testutil.Alice,
 		GetSampleTradeData(TradeTypeBuy),
 		"{}",
-		"",
-		"",
+		GetSampleCoinMintingPriceJson(),
+		GetSampleExchangeRateJson(),
 	)
 }
 
@@ -98,10 +132,12 @@ func GetMsgCreateTradeWithTypeAndAmount(tradeType TradeType, amount int64) *MsgC
 	}
 
 	return &MsgCreateTrade{
-		Creator:           testutil.Alice,
-		ReceiverAddress:   testutil.Alice,
-		TradeData:         string(tdBytes),
-		BankingSystemData: "{}",
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            string(tdBytes),
+		BankingSystemData:    "{}",
+		CoinMintingPriceJson: GetSampleCoinMintingPriceJson(),
+		ExchangeRateJson:     GetSampleExchangeRateJson(),
 	}
 }
 

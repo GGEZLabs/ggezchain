@@ -28,6 +28,16 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		return nil, err
 	}
 
+	err = types.ValidateCoinMintingPriceJson(msg.CoinMintingPriceJson)
+	if err != nil {
+		return nil, err
+	}
+
+	err = types.ValidateExchangeRateJson(msg.ExchangeRateJson)
+	if err != nil {
+		return nil, err
+	}
+
 	// Validate receiver address if trade type not split or reinvestment
 	if td.TradeInfo.TradeType != types.TradeTypeSplit &&
 		td.TradeInfo.TradeType != types.TradeTypeReinvestment {
@@ -59,7 +69,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 
 	newIndex := tradeIndex.NextId
 	tradeType := td.TradeInfo.TradeType
-	formattedPrice := types.FormatPrice(td.TradeInfo.Price)
+	formattedPrice := types.FormatPrice(td.TradeInfo.CoinMintingPriceUsd)
 
 	storedTrade := types.StoredTrade{
 		TradeIndex:           newIndex,
@@ -71,7 +81,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		Amount:               td.TradeInfo.Quantity,
 		TradeData:            msg.TradeData,
 		ReceiverAddress:      msg.ReceiverAddress,
-		Price:                formattedPrice,
+		CoinMintingPriceUsd:  formattedPrice,
 		Maker:                msg.Creator,
 		ProcessDate:          formattedDateTime,
 		BankingSystemData:    msg.BankingSystemData,

@@ -54,7 +54,7 @@ func TestCreateTrade(t *testing.T) {
 			exceptErr: true,
 			req: types.MsgCreateTrade{
 				Creator:   testutil.Alice,
-				TradeData: `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":1,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+				TradeData: `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":1,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			},
 			expErrMsg: "invalid trade info",
 		},
@@ -94,8 +94,8 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 		testutil.Alice,
 		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
-		"",
-		"",
+		types.GetSampleCoinMintingPriceJson(),
+		types.GetSampleExchangeRateJson(),
 	),
 	)
 	assert.NilError(t, err)
@@ -105,8 +105,8 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 		testutil.Alice,
 		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
-		"",
-		"",
+		types.GetSampleCoinMintingPriceJson(),
+		types.GetSampleExchangeRateJson(),
 	),
 	)
 	assert.NilError(t, err)
@@ -116,8 +116,8 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 		testutil.Alice,
 		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
-		"",
-		"",
+		types.GetSampleCoinMintingPriceJson(),
+		types.GetSampleExchangeRateJson(),
 	),
 	)
 	assert.NilError(t, err)
@@ -149,8 +149,8 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 		testutil.Alice,
 		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
-		"",
-		"",
+		types.GetSampleCoinMintingPriceJson(),
+		types.GetSampleExchangeRateJson(),
 	),
 	)
 	assert.NilError(t, err)
@@ -181,8 +181,8 @@ func TestProcessTrade(t *testing.T) {
 		testutil.Alice,
 		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
-		"",
-		"",
+		types.GetSampleCoinMintingPriceJson(),
+		types.GetSampleExchangeRateJson(),
 	),
 	)
 	assert.NilError(t, err)
@@ -192,8 +192,8 @@ func TestProcessTrade(t *testing.T) {
 		testutil.Alice,
 		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
-		"",
-		"",
+		types.GetSampleCoinMintingPriceJson(),
+		types.GetSampleExchangeRateJson(),
 	),
 	)
 	assert.NilError(t, err)
@@ -202,8 +202,8 @@ func TestProcessTrade(t *testing.T) {
 		testutil.Alice,
 		types.GetSampleTradeData(types.TradeTypeBuy),
 		"{}",
-		"",
-		"",
+		types.GetSampleCoinMintingPriceJson(),
+		types.GetSampleExchangeRateJson(),
 	),
 	)
 	assert.NilError(t, err)
