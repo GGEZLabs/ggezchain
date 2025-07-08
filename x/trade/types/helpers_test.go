@@ -71,3 +71,115 @@ func TestFormatPrice(t *testing.T) {
 		})
 	}
 }
+
+func TestValidateExchangeRateJson(t *testing.T) {
+	tests := []struct {
+		name             string
+		exchangeRateJson string
+		expErr           bool
+		expErrMsg        string
+	}{
+		{
+			name:             "all good",
+			exchangeRateJson: types.GetSampleExchangeRateJson(),
+			expErr:           false,
+		},
+		{
+			name:             "Invalid json format",
+			exchangeRateJson: `{"from_currency":"USD","to_currency":"EUR","original_amount":1,"converted_amount":0.85,"currency_rate":0.85,"timestamp":"2025-07-08T10:59:59Z"}`,
+			expErr:           true,
+			expErrMsg:        "invalid exchange rate json format",
+		},
+		{
+			name:             "Invalid from_currency",
+			exchangeRateJson: `[{"from_currency":"","to_currency":"EUR","original_amount":1,"converted_amount":0.85,"currency_rate":0.85,"timestamp":"2025-07-08T10:59:59Z"}]`,
+			expErr:           true,
+			expErrMsg:        "from_currency must not be empty or whitespace at index: 0",
+		},
+		{
+			name:             "Invalid to_currency",
+			exchangeRateJson: `[{"from_currency":"USD","to_currency":"","original_amount":1,"converted_amount":0.85,"currency_rate":0.85,"timestamp":"2025-07-08T10:59:59Z"}]`,
+			expErr:           true,
+			expErrMsg:        "to_currency must not be empty or whitespace at index: 0",
+		},
+		{
+			name:             "Invalid original_amount",
+			exchangeRateJson: `[{"from_currency":"USD","to_currency":"EUR","original_amount":0,"converted_amount":0.85,"currency_rate":0.85,"timestamp":"2025-07-08T10:59:59Z"}]`,
+			expErr:           true,
+			expErrMsg:        "original_amount must be greater than 0",
+		},
+		{
+			name:             "Invalid converted_amount",
+			exchangeRateJson: `[{"from_currency":"USD","to_currency":"EUR","original_amount":1,"converted_amount":0,"currency_rate":0.85,"timestamp":"2025-07-08T10:59:59Z"}]`,
+			expErr:           true,
+			expErrMsg:        "converted_amount must be greater than 0",
+		},
+		{
+			name:             "Invalid currency_rate",
+			exchangeRateJson: `[{"from_currency":"USD","to_currency":"EUR","original_amount":1,"converted_amount":0.85,"currency_rate":0,"timestamp":"2025-07-08T10:59:59Z"}]`,
+			expErr:           true,
+			expErrMsg:        "currency_rate must be greater than 0",
+		},
+		{
+			name:             "Invalid timestamp",
+			exchangeRateJson: `[{"from_currency":"USD","to_currency":"EUR","original_amount":1,"converted_amount":0.85,"currency_rate":0.85,"timestamp":"2025-07-0810:59:59Z"}]`,
+			expErr:           true,
+			expErrMsg:        "invalid timestamp format at index: 0",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := types.ValidateExchangeRateJson(tt.exchangeRateJson)
+			if tt.expErr {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), tt.expErrMsg)
+			} else {
+				require.NoError(t, err)
+			}
+		})
+	}
+}
+
+func TestValidateCoinMintingPriceJson(t *testing.T) {
+	tests := []struct {
+		name                 string
+		coinMintingPriceJson string
+		expErr               bool
+		expErrMsg            string
+	}{
+		{
+			name:                 "all good",
+			coinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+			expErr:               false,
+		},
+		{
+			name:                 "Invalid json format",
+			coinMintingPriceJson: `{"currency_code":"USD","minting_price":1}`,
+			expErr:               true,
+			expErrMsg:            "invalid coin minting price json format",
+		},
+		{
+			name:                 "Invalid currency_code",
+			coinMintingPriceJson: `[{"currency_code":"","minting_price":1}]`,
+			expErr:               true,
+			expErrMsg:            "currency_code must not be empty or whitespace at index: 0",
+		},
+		{
+			name:                 "Invalid minting_price",
+			coinMintingPriceJson: `[{"currency_code":"USD","minting_price":0}]`,
+			expErr:               true,
+			expErrMsg:            "minting_price must be greater than 0",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := types.ValidateCoinMintingPriceJson(tt.coinMintingPriceJson)
+			if tt.expErr {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), tt.expErrMsg)
+			} else {
+				require.NoError(t, err)
+			}
+		})
+	}
+}

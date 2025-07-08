@@ -2,11 +2,1149 @@
 package trade
 
 import (
+	binary "encoding/binary"
+	fmt "fmt"
+	runtime "github.com/cosmos/cosmos-proto/runtime"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoiface "google.golang.org/protobuf/runtime/protoiface"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	io "io"
+	math "math"
 	reflect "reflect"
 	sync "sync"
 )
+
+var (
+	md_ExchangeRateJson                  protoreflect.MessageDescriptor
+	fd_ExchangeRateJson_from_currency    protoreflect.FieldDescriptor
+	fd_ExchangeRateJson_to_currency      protoreflect.FieldDescriptor
+	fd_ExchangeRateJson_original_amount  protoreflect.FieldDescriptor
+	fd_ExchangeRateJson_converted_amount protoreflect.FieldDescriptor
+	fd_ExchangeRateJson_currency_rate    protoreflect.FieldDescriptor
+	fd_ExchangeRateJson_timestamp        protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_ggezchain_trade_trade_proto_init()
+	md_ExchangeRateJson = File_ggezchain_trade_trade_proto.Messages().ByName("ExchangeRateJson")
+	fd_ExchangeRateJson_from_currency = md_ExchangeRateJson.Fields().ByName("from_currency")
+	fd_ExchangeRateJson_to_currency = md_ExchangeRateJson.Fields().ByName("to_currency")
+	fd_ExchangeRateJson_original_amount = md_ExchangeRateJson.Fields().ByName("original_amount")
+	fd_ExchangeRateJson_converted_amount = md_ExchangeRateJson.Fields().ByName("converted_amount")
+	fd_ExchangeRateJson_currency_rate = md_ExchangeRateJson.Fields().ByName("currency_rate")
+	fd_ExchangeRateJson_timestamp = md_ExchangeRateJson.Fields().ByName("timestamp")
+}
+
+var _ protoreflect.Message = (*fastReflection_ExchangeRateJson)(nil)
+
+type fastReflection_ExchangeRateJson ExchangeRateJson
+
+func (x *ExchangeRateJson) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_ExchangeRateJson)(x)
+}
+
+func (x *ExchangeRateJson) slowProtoReflect() protoreflect.Message {
+	mi := &file_ggezchain_trade_trade_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_ExchangeRateJson_messageType fastReflection_ExchangeRateJson_messageType
+var _ protoreflect.MessageType = fastReflection_ExchangeRateJson_messageType{}
+
+type fastReflection_ExchangeRateJson_messageType struct{}
+
+func (x fastReflection_ExchangeRateJson_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_ExchangeRateJson)(nil)
+}
+func (x fastReflection_ExchangeRateJson_messageType) New() protoreflect.Message {
+	return new(fastReflection_ExchangeRateJson)
+}
+func (x fastReflection_ExchangeRateJson_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_ExchangeRateJson
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_ExchangeRateJson) Descriptor() protoreflect.MessageDescriptor {
+	return md_ExchangeRateJson
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_ExchangeRateJson) Type() protoreflect.MessageType {
+	return _fastReflection_ExchangeRateJson_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_ExchangeRateJson) New() protoreflect.Message {
+	return new(fastReflection_ExchangeRateJson)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_ExchangeRateJson) Interface() protoreflect.ProtoMessage {
+	return (*ExchangeRateJson)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_ExchangeRateJson) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.FromCurrency != "" {
+		value := protoreflect.ValueOfString(x.FromCurrency)
+		if !f(fd_ExchangeRateJson_from_currency, value) {
+			return
+		}
+	}
+	if x.ToCurrency != "" {
+		value := protoreflect.ValueOfString(x.ToCurrency)
+		if !f(fd_ExchangeRateJson_to_currency, value) {
+			return
+		}
+	}
+	if x.OriginalAmount != float64(0) || math.Signbit(x.OriginalAmount) {
+		value := protoreflect.ValueOfFloat64(x.OriginalAmount)
+		if !f(fd_ExchangeRateJson_original_amount, value) {
+			return
+		}
+	}
+	if x.ConvertedAmount != float64(0) || math.Signbit(x.ConvertedAmount) {
+		value := protoreflect.ValueOfFloat64(x.ConvertedAmount)
+		if !f(fd_ExchangeRateJson_converted_amount, value) {
+			return
+		}
+	}
+	if x.CurrencyRate != float64(0) || math.Signbit(x.CurrencyRate) {
+		value := protoreflect.ValueOfFloat64(x.CurrencyRate)
+		if !f(fd_ExchangeRateJson_currency_rate, value) {
+			return
+		}
+	}
+	if x.Timestamp != "" {
+		value := protoreflect.ValueOfString(x.Timestamp)
+		if !f(fd_ExchangeRateJson_timestamp, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_ExchangeRateJson) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "ggezchain.trade.ExchangeRateJson.from_currency":
+		return x.FromCurrency != ""
+	case "ggezchain.trade.ExchangeRateJson.to_currency":
+		return x.ToCurrency != ""
+	case "ggezchain.trade.ExchangeRateJson.original_amount":
+		return x.OriginalAmount != float64(0) || math.Signbit(x.OriginalAmount)
+	case "ggezchain.trade.ExchangeRateJson.converted_amount":
+		return x.ConvertedAmount != float64(0) || math.Signbit(x.ConvertedAmount)
+	case "ggezchain.trade.ExchangeRateJson.currency_rate":
+		return x.CurrencyRate != float64(0) || math.Signbit(x.CurrencyRate)
+	case "ggezchain.trade.ExchangeRateJson.timestamp":
+		return x.Timestamp != ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.ExchangeRateJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.ExchangeRateJson does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_ExchangeRateJson) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "ggezchain.trade.ExchangeRateJson.from_currency":
+		x.FromCurrency = ""
+	case "ggezchain.trade.ExchangeRateJson.to_currency":
+		x.ToCurrency = ""
+	case "ggezchain.trade.ExchangeRateJson.original_amount":
+		x.OriginalAmount = float64(0)
+	case "ggezchain.trade.ExchangeRateJson.converted_amount":
+		x.ConvertedAmount = float64(0)
+	case "ggezchain.trade.ExchangeRateJson.currency_rate":
+		x.CurrencyRate = float64(0)
+	case "ggezchain.trade.ExchangeRateJson.timestamp":
+		x.Timestamp = ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.ExchangeRateJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.ExchangeRateJson does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_ExchangeRateJson) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "ggezchain.trade.ExchangeRateJson.from_currency":
+		value := x.FromCurrency
+		return protoreflect.ValueOfString(value)
+	case "ggezchain.trade.ExchangeRateJson.to_currency":
+		value := x.ToCurrency
+		return protoreflect.ValueOfString(value)
+	case "ggezchain.trade.ExchangeRateJson.original_amount":
+		value := x.OriginalAmount
+		return protoreflect.ValueOfFloat64(value)
+	case "ggezchain.trade.ExchangeRateJson.converted_amount":
+		value := x.ConvertedAmount
+		return protoreflect.ValueOfFloat64(value)
+	case "ggezchain.trade.ExchangeRateJson.currency_rate":
+		value := x.CurrencyRate
+		return protoreflect.ValueOfFloat64(value)
+	case "ggezchain.trade.ExchangeRateJson.timestamp":
+		value := x.Timestamp
+		return protoreflect.ValueOfString(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.ExchangeRateJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.ExchangeRateJson does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_ExchangeRateJson) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "ggezchain.trade.ExchangeRateJson.from_currency":
+		x.FromCurrency = value.Interface().(string)
+	case "ggezchain.trade.ExchangeRateJson.to_currency":
+		x.ToCurrency = value.Interface().(string)
+	case "ggezchain.trade.ExchangeRateJson.original_amount":
+		x.OriginalAmount = value.Float()
+	case "ggezchain.trade.ExchangeRateJson.converted_amount":
+		x.ConvertedAmount = value.Float()
+	case "ggezchain.trade.ExchangeRateJson.currency_rate":
+		x.CurrencyRate = value.Float()
+	case "ggezchain.trade.ExchangeRateJson.timestamp":
+		x.Timestamp = value.Interface().(string)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.ExchangeRateJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.ExchangeRateJson does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_ExchangeRateJson) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "ggezchain.trade.ExchangeRateJson.from_currency":
+		panic(fmt.Errorf("field from_currency of message ggezchain.trade.ExchangeRateJson is not mutable"))
+	case "ggezchain.trade.ExchangeRateJson.to_currency":
+		panic(fmt.Errorf("field to_currency of message ggezchain.trade.ExchangeRateJson is not mutable"))
+	case "ggezchain.trade.ExchangeRateJson.original_amount":
+		panic(fmt.Errorf("field original_amount of message ggezchain.trade.ExchangeRateJson is not mutable"))
+	case "ggezchain.trade.ExchangeRateJson.converted_amount":
+		panic(fmt.Errorf("field converted_amount of message ggezchain.trade.ExchangeRateJson is not mutable"))
+	case "ggezchain.trade.ExchangeRateJson.currency_rate":
+		panic(fmt.Errorf("field currency_rate of message ggezchain.trade.ExchangeRateJson is not mutable"))
+	case "ggezchain.trade.ExchangeRateJson.timestamp":
+		panic(fmt.Errorf("field timestamp of message ggezchain.trade.ExchangeRateJson is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.ExchangeRateJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.ExchangeRateJson does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_ExchangeRateJson) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "ggezchain.trade.ExchangeRateJson.from_currency":
+		return protoreflect.ValueOfString("")
+	case "ggezchain.trade.ExchangeRateJson.to_currency":
+		return protoreflect.ValueOfString("")
+	case "ggezchain.trade.ExchangeRateJson.original_amount":
+		return protoreflect.ValueOfFloat64(float64(0))
+	case "ggezchain.trade.ExchangeRateJson.converted_amount":
+		return protoreflect.ValueOfFloat64(float64(0))
+	case "ggezchain.trade.ExchangeRateJson.currency_rate":
+		return protoreflect.ValueOfFloat64(float64(0))
+	case "ggezchain.trade.ExchangeRateJson.timestamp":
+		return protoreflect.ValueOfString("")
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.ExchangeRateJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.ExchangeRateJson does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_ExchangeRateJson) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in ggezchain.trade.ExchangeRateJson", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_ExchangeRateJson) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_ExchangeRateJson) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_ExchangeRateJson) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_ExchangeRateJson) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*ExchangeRateJson)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.FromCurrency)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		l = len(x.ToCurrency)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.OriginalAmount != 0 || math.Signbit(x.OriginalAmount) {
+			n += 9
+		}
+		if x.ConvertedAmount != 0 || math.Signbit(x.ConvertedAmount) {
+			n += 9
+		}
+		if x.CurrencyRate != 0 || math.Signbit(x.CurrencyRate) {
+			n += 9
+		}
+		l = len(x.Timestamp)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*ExchangeRateJson)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Timestamp) > 0 {
+			i -= len(x.Timestamp)
+			copy(dAtA[i:], x.Timestamp)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Timestamp)))
+			i--
+			dAtA[i] = 0x32
+		}
+		if x.CurrencyRate != 0 || math.Signbit(x.CurrencyRate) {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.CurrencyRate))))
+			i--
+			dAtA[i] = 0x29
+		}
+		if x.ConvertedAmount != 0 || math.Signbit(x.ConvertedAmount) {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.ConvertedAmount))))
+			i--
+			dAtA[i] = 0x21
+		}
+		if x.OriginalAmount != 0 || math.Signbit(x.OriginalAmount) {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.OriginalAmount))))
+			i--
+			dAtA[i] = 0x19
+		}
+		if len(x.ToCurrency) > 0 {
+			i -= len(x.ToCurrency)
+			copy(dAtA[i:], x.ToCurrency)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.ToCurrency)))
+			i--
+			dAtA[i] = 0x12
+		}
+		if len(x.FromCurrency) > 0 {
+			i -= len(x.FromCurrency)
+			copy(dAtA[i:], x.FromCurrency)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.FromCurrency)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*ExchangeRateJson)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: ExchangeRateJson: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: ExchangeRateJson: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field FromCurrency", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.FromCurrency = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 2:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ToCurrency", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.ToCurrency = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 3:
+				if wireType != 1 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field OriginalAmount", wireType)
+				}
+				var v uint64
+				if (iNdEx + 8) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				x.OriginalAmount = float64(math.Float64frombits(v))
+			case 4:
+				if wireType != 1 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ConvertedAmount", wireType)
+				}
+				var v uint64
+				if (iNdEx + 8) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				x.ConvertedAmount = float64(math.Float64frombits(v))
+			case 5:
+				if wireType != 1 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CurrencyRate", wireType)
+				}
+				var v uint64
+				if (iNdEx + 8) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				x.CurrencyRate = float64(math.Float64frombits(v))
+			case 6:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Timestamp", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Timestamp = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
+	md_CoinMintingPriceJson               protoreflect.MessageDescriptor
+	fd_CoinMintingPriceJson_currency_code protoreflect.FieldDescriptor
+	fd_CoinMintingPriceJson_minting_price protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_ggezchain_trade_trade_proto_init()
+	md_CoinMintingPriceJson = File_ggezchain_trade_trade_proto.Messages().ByName("CoinMintingPriceJson")
+	fd_CoinMintingPriceJson_currency_code = md_CoinMintingPriceJson.Fields().ByName("currency_code")
+	fd_CoinMintingPriceJson_minting_price = md_CoinMintingPriceJson.Fields().ByName("minting_price")
+}
+
+var _ protoreflect.Message = (*fastReflection_CoinMintingPriceJson)(nil)
+
+type fastReflection_CoinMintingPriceJson CoinMintingPriceJson
+
+func (x *CoinMintingPriceJson) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_CoinMintingPriceJson)(x)
+}
+
+func (x *CoinMintingPriceJson) slowProtoReflect() protoreflect.Message {
+	mi := &file_ggezchain_trade_trade_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_CoinMintingPriceJson_messageType fastReflection_CoinMintingPriceJson_messageType
+var _ protoreflect.MessageType = fastReflection_CoinMintingPriceJson_messageType{}
+
+type fastReflection_CoinMintingPriceJson_messageType struct{}
+
+func (x fastReflection_CoinMintingPriceJson_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_CoinMintingPriceJson)(nil)
+}
+func (x fastReflection_CoinMintingPriceJson_messageType) New() protoreflect.Message {
+	return new(fastReflection_CoinMintingPriceJson)
+}
+func (x fastReflection_CoinMintingPriceJson_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_CoinMintingPriceJson
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_CoinMintingPriceJson) Descriptor() protoreflect.MessageDescriptor {
+	return md_CoinMintingPriceJson
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_CoinMintingPriceJson) Type() protoreflect.MessageType {
+	return _fastReflection_CoinMintingPriceJson_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_CoinMintingPriceJson) New() protoreflect.Message {
+	return new(fastReflection_CoinMintingPriceJson)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_CoinMintingPriceJson) Interface() protoreflect.ProtoMessage {
+	return (*CoinMintingPriceJson)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_CoinMintingPriceJson) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.CurrencyCode != "" {
+		value := protoreflect.ValueOfString(x.CurrencyCode)
+		if !f(fd_CoinMintingPriceJson_currency_code, value) {
+			return
+		}
+	}
+	if x.MintingPrice != float64(0) || math.Signbit(x.MintingPrice) {
+		value := protoreflect.ValueOfFloat64(x.MintingPrice)
+		if !f(fd_CoinMintingPriceJson_minting_price, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_CoinMintingPriceJson) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "ggezchain.trade.CoinMintingPriceJson.currency_code":
+		return x.CurrencyCode != ""
+	case "ggezchain.trade.CoinMintingPriceJson.minting_price":
+		return x.MintingPrice != float64(0) || math.Signbit(x.MintingPrice)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.CoinMintingPriceJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.CoinMintingPriceJson does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_CoinMintingPriceJson) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "ggezchain.trade.CoinMintingPriceJson.currency_code":
+		x.CurrencyCode = ""
+	case "ggezchain.trade.CoinMintingPriceJson.minting_price":
+		x.MintingPrice = float64(0)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.CoinMintingPriceJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.CoinMintingPriceJson does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_CoinMintingPriceJson) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "ggezchain.trade.CoinMintingPriceJson.currency_code":
+		value := x.CurrencyCode
+		return protoreflect.ValueOfString(value)
+	case "ggezchain.trade.CoinMintingPriceJson.minting_price":
+		value := x.MintingPrice
+		return protoreflect.ValueOfFloat64(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.CoinMintingPriceJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.CoinMintingPriceJson does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_CoinMintingPriceJson) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "ggezchain.trade.CoinMintingPriceJson.currency_code":
+		x.CurrencyCode = value.Interface().(string)
+	case "ggezchain.trade.CoinMintingPriceJson.minting_price":
+		x.MintingPrice = value.Float()
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.CoinMintingPriceJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.CoinMintingPriceJson does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_CoinMintingPriceJson) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "ggezchain.trade.CoinMintingPriceJson.currency_code":
+		panic(fmt.Errorf("field currency_code of message ggezchain.trade.CoinMintingPriceJson is not mutable"))
+	case "ggezchain.trade.CoinMintingPriceJson.minting_price":
+		panic(fmt.Errorf("field minting_price of message ggezchain.trade.CoinMintingPriceJson is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.CoinMintingPriceJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.CoinMintingPriceJson does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_CoinMintingPriceJson) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "ggezchain.trade.CoinMintingPriceJson.currency_code":
+		return protoreflect.ValueOfString("")
+	case "ggezchain.trade.CoinMintingPriceJson.minting_price":
+		return protoreflect.ValueOfFloat64(float64(0))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: ggezchain.trade.CoinMintingPriceJson"))
+		}
+		panic(fmt.Errorf("message ggezchain.trade.CoinMintingPriceJson does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_CoinMintingPriceJson) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in ggezchain.trade.CoinMintingPriceJson", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_CoinMintingPriceJson) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_CoinMintingPriceJson) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_CoinMintingPriceJson) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_CoinMintingPriceJson) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*CoinMintingPriceJson)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.CurrencyCode)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.MintingPrice != 0 || math.Signbit(x.MintingPrice) {
+			n += 9
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*CoinMintingPriceJson)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if x.MintingPrice != 0 || math.Signbit(x.MintingPrice) {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.MintingPrice))))
+			i--
+			dAtA[i] = 0x11
+		}
+		if len(x.CurrencyCode) > 0 {
+			i -= len(x.CurrencyCode)
+			copy(dAtA[i:], x.CurrencyCode)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.CurrencyCode)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*CoinMintingPriceJson)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: CoinMintingPriceJson: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: CoinMintingPriceJson: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CurrencyCode", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.CurrencyCode = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			case 2:
+				if wireType != 1 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field MintingPrice", wireType)
+				}
+				var v uint64
+				if (iNdEx + 8) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				x.MintingPrice = float64(math.Float64frombits(v))
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
 
 // Code generated by protoc-gen-go. DO NOT EDIT.
 // versions:
@@ -197,51 +1335,191 @@ func (TradeType) EnumDescriptor() ([]byte, []int) {
 	return file_ggezchain_trade_trade_proto_rawDescGZIP(), []int{2}
 }
 
+type ExchangeRateJson struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	FromCurrency    string  `protobuf:"bytes,1,opt,name=from_currency,json=fromCurrency,proto3" json:"from_currency,omitempty"`
+	ToCurrency      string  `protobuf:"bytes,2,opt,name=to_currency,json=toCurrency,proto3" json:"to_currency,omitempty"`
+	OriginalAmount  float64 `protobuf:"fixed64,3,opt,name=original_amount,json=originalAmount,proto3" json:"original_amount,omitempty"`
+	ConvertedAmount float64 `protobuf:"fixed64,4,opt,name=converted_amount,json=convertedAmount,proto3" json:"converted_amount,omitempty"`
+	CurrencyRate    float64 `protobuf:"fixed64,5,opt,name=currency_rate,json=currencyRate,proto3" json:"currency_rate,omitempty"`
+	Timestamp       string  `protobuf:"bytes,6,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+}
+
+func (x *ExchangeRateJson) Reset() {
+	*x = ExchangeRateJson{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ggezchain_trade_trade_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ExchangeRateJson) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExchangeRateJson) ProtoMessage() {}
+
+// Deprecated: Use ExchangeRateJson.ProtoReflect.Descriptor instead.
+func (*ExchangeRateJson) Descriptor() ([]byte, []int) {
+	return file_ggezchain_trade_trade_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ExchangeRateJson) GetFromCurrency() string {
+	if x != nil {
+		return x.FromCurrency
+	}
+	return ""
+}
+
+func (x *ExchangeRateJson) GetToCurrency() string {
+	if x != nil {
+		return x.ToCurrency
+	}
+	return ""
+}
+
+func (x *ExchangeRateJson) GetOriginalAmount() float64 {
+	if x != nil {
+		return x.OriginalAmount
+	}
+	return 0
+}
+
+func (x *ExchangeRateJson) GetConvertedAmount() float64 {
+	if x != nil {
+		return x.ConvertedAmount
+	}
+	return 0
+}
+
+func (x *ExchangeRateJson) GetCurrencyRate() float64 {
+	if x != nil {
+		return x.CurrencyRate
+	}
+	return 0
+}
+
+func (x *ExchangeRateJson) GetTimestamp() string {
+	if x != nil {
+		return x.Timestamp
+	}
+	return ""
+}
+
+type CoinMintingPriceJson struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	CurrencyCode string  `protobuf:"bytes,1,opt,name=currency_code,json=currencyCode,proto3" json:"currency_code,omitempty"`
+	MintingPrice float64 `protobuf:"fixed64,2,opt,name=minting_price,json=mintingPrice,proto3" json:"minting_price,omitempty"`
+}
+
+func (x *CoinMintingPriceJson) Reset() {
+	*x = CoinMintingPriceJson{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ggezchain_trade_trade_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CoinMintingPriceJson) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CoinMintingPriceJson) ProtoMessage() {}
+
+// Deprecated: Use CoinMintingPriceJson.ProtoReflect.Descriptor instead.
+func (*CoinMintingPriceJson) Descriptor() ([]byte, []int) {
+	return file_ggezchain_trade_trade_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CoinMintingPriceJson) GetCurrencyCode() string {
+	if x != nil {
+		return x.CurrencyCode
+	}
+	return ""
+}
+
+func (x *CoinMintingPriceJson) GetMintingPrice() float64 {
+	if x != nil {
+		return x.MintingPrice
+	}
+	return 0
+}
+
 var File_ggezchain_trade_trade_proto protoreflect.FileDescriptor
 
 var file_ggezchain_trade_trade_proto_rawDesc = []byte{
 	0x0a, 0x1b, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x74, 0x72, 0x61, 0x64,
 	0x65, 0x2f, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0f, 0x67,
-	0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x2a, 0xb0,
-	0x01, 0x0a, 0x0b, 0x54, 0x72, 0x61, 0x64, 0x65, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x1c,
-	0x0a, 0x18, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x55,
-	0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x18, 0x0a, 0x14,
-	0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x50, 0x45, 0x4e,
-	0x44, 0x49, 0x4e, 0x47, 0x10, 0x01, 0x12, 0x19, 0x0a, 0x15, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f,
-	0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x43, 0x41, 0x4e, 0x43, 0x45, 0x4c, 0x45, 0x44, 0x10,
-	0x02, 0x12, 0x1a, 0x0a, 0x16, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55,
-	0x53, 0x5f, 0x50, 0x52, 0x4f, 0x43, 0x45, 0x53, 0x53, 0x45, 0x44, 0x10, 0x03, 0x12, 0x19, 0x0a,
-	0x15, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x52, 0x45,
-	0x4a, 0x45, 0x43, 0x54, 0x45, 0x44, 0x10, 0x04, 0x12, 0x17, 0x0a, 0x13, 0x54, 0x52, 0x41, 0x44,
-	0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x46, 0x41, 0x49, 0x4c, 0x45, 0x44, 0x10,
-	0x05, 0x2a, 0x5e, 0x0a, 0x0b, 0x50, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x54, 0x79, 0x70, 0x65,
-	0x12, 0x1c, 0x0a, 0x18, 0x50, 0x52, 0x4f, 0x43, 0x45, 0x53, 0x53, 0x5f, 0x54, 0x59, 0x50, 0x45,
-	0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x18,
-	0x0a, 0x14, 0x50, 0x52, 0x4f, 0x43, 0x45, 0x53, 0x53, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x43,
-	0x4f, 0x4e, 0x46, 0x49, 0x52, 0x4d, 0x10, 0x01, 0x12, 0x17, 0x0a, 0x13, 0x50, 0x52, 0x4f, 0x43,
-	0x45, 0x53, 0x53, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x52, 0x45, 0x4a, 0x45, 0x43, 0x54, 0x10,
-	0x02, 0x2a, 0x9d, 0x01, 0x0a, 0x09, 0x54, 0x72, 0x61, 0x64, 0x65, 0x54, 0x79, 0x70, 0x65, 0x12,
-	0x1a, 0x0a, 0x16, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x55, 0x4e,
-	0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x12, 0x0a, 0x0e, 0x54,
-	0x52, 0x41, 0x44, 0x45, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x42, 0x55, 0x59, 0x10, 0x01, 0x12,
-	0x13, 0x0a, 0x0f, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x53, 0x45,
-	0x4c, 0x4c, 0x10, 0x02, 0x12, 0x14, 0x0a, 0x10, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x54, 0x59,
-	0x50, 0x45, 0x5f, 0x53, 0x50, 0x4c, 0x49, 0x54, 0x10, 0x03, 0x12, 0x1b, 0x0a, 0x17, 0x54, 0x52,
-	0x41, 0x44, 0x45, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x52, 0x45, 0x49, 0x4e, 0x56, 0x45, 0x53,
-	0x54, 0x4d, 0x45, 0x4e, 0x54, 0x10, 0x04, 0x12, 0x18, 0x0a, 0x14, 0x54, 0x52, 0x41, 0x44, 0x45,
-	0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x44, 0x49, 0x56, 0x49, 0x44, 0x45, 0x4e, 0x44, 0x53, 0x10,
-	0x05, 0x42, 0xb1, 0x01, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68,
-	0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x42, 0x0a, 0x54, 0x72, 0x61, 0x64, 0x65,
-	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x31, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
-	0x63, 0x6f, 0x6d, 0x2f, 0x47, 0x47, 0x45, 0x5a, 0x4c, 0x61, 0x62, 0x73, 0x2f, 0x67, 0x67, 0x65,
-	0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63,
-	0x68, 0x61, 0x69, 0x6e, 0x2f, 0x74, 0x72, 0x61, 0x64, 0x65, 0xa2, 0x02, 0x03, 0x47, 0x54, 0x58,
-	0xaa, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x54, 0x72, 0x61,
-	0x64, 0x65, 0xca, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54,
-	0x72, 0x61, 0x64, 0x65, 0xe2, 0x02, 0x1b, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e,
-	0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
-	0x74, 0x61, 0xea, 0x02, 0x10, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x3a, 0x3a,
-	0x54, 0x72, 0x61, 0x64, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x22, 0xef,
+	0x01, 0x0a, 0x10, 0x45, 0x78, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x61, 0x74, 0x65, 0x4a,
+	0x73, 0x6f, 0x6e, 0x12, 0x23, 0x0a, 0x0d, 0x66, 0x72, 0x6f, 0x6d, 0x5f, 0x63, 0x75, 0x72, 0x72,
+	0x65, 0x6e, 0x63, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x66, 0x72, 0x6f, 0x6d,
+	0x43, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x12, 0x1f, 0x0a, 0x0b, 0x74, 0x6f, 0x5f, 0x63,
+	0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x74,
+	0x6f, 0x43, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x12, 0x27, 0x0a, 0x0f, 0x6f, 0x72, 0x69,
+	0x67, 0x69, 0x6e, 0x61, 0x6c, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x01, 0x52, 0x0e, 0x6f, 0x72, 0x69, 0x67, 0x69, 0x6e, 0x61, 0x6c, 0x41, 0x6d, 0x6f, 0x75,
+	0x6e, 0x74, 0x12, 0x29, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x76, 0x65, 0x72, 0x74, 0x65, 0x64, 0x5f,
+	0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0f, 0x63, 0x6f,
+	0x6e, 0x76, 0x65, 0x72, 0x74, 0x65, 0x64, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x23, 0x0a,
+	0x0d, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x5f, 0x72, 0x61, 0x74, 0x65, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x01, 0x52, 0x0c, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x52, 0x61,
+	0x74, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x18,
+	0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70,
+	0x22, 0x60, 0x0a, 0x14, 0x43, 0x6f, 0x69, 0x6e, 0x4d, 0x69, 0x6e, 0x74, 0x69, 0x6e, 0x67, 0x50,
+	0x72, 0x69, 0x63, 0x65, 0x4a, 0x73, 0x6f, 0x6e, 0x12, 0x23, 0x0a, 0x0d, 0x63, 0x75, 0x72, 0x72,
+	0x65, 0x6e, 0x63, 0x79, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0c, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x23, 0x0a,
+	0x0d, 0x6d, 0x69, 0x6e, 0x74, 0x69, 0x6e, 0x67, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x01, 0x52, 0x0c, 0x6d, 0x69, 0x6e, 0x74, 0x69, 0x6e, 0x67, 0x50, 0x72, 0x69,
+	0x63, 0x65, 0x2a, 0xb0, 0x01, 0x0a, 0x0b, 0x54, 0x72, 0x61, 0x64, 0x65, 0x53, 0x74, 0x61, 0x74,
+	0x75, 0x73, 0x12, 0x1c, 0x0a, 0x18, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54,
+	0x55, 0x53, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00,
+	0x12, 0x18, 0x0a, 0x14, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53,
+	0x5f, 0x50, 0x45, 0x4e, 0x44, 0x49, 0x4e, 0x47, 0x10, 0x01, 0x12, 0x19, 0x0a, 0x15, 0x54, 0x52,
+	0x41, 0x44, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x43, 0x41, 0x4e, 0x43, 0x45,
+	0x4c, 0x45, 0x44, 0x10, 0x02, 0x12, 0x1a, 0x0a, 0x16, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x53,
+	0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x50, 0x52, 0x4f, 0x43, 0x45, 0x53, 0x53, 0x45, 0x44, 0x10,
+	0x03, 0x12, 0x19, 0x0a, 0x15, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55,
+	0x53, 0x5f, 0x52, 0x45, 0x4a, 0x45, 0x43, 0x54, 0x45, 0x44, 0x10, 0x04, 0x12, 0x17, 0x0a, 0x13,
+	0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x53, 0x54, 0x41, 0x54, 0x55, 0x53, 0x5f, 0x46, 0x41, 0x49,
+	0x4c, 0x45, 0x44, 0x10, 0x05, 0x2a, 0x5e, 0x0a, 0x0b, 0x50, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73,
+	0x54, 0x79, 0x70, 0x65, 0x12, 0x1c, 0x0a, 0x18, 0x50, 0x52, 0x4f, 0x43, 0x45, 0x53, 0x53, 0x5f,
+	0x54, 0x59, 0x50, 0x45, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44,
+	0x10, 0x00, 0x12, 0x18, 0x0a, 0x14, 0x50, 0x52, 0x4f, 0x43, 0x45, 0x53, 0x53, 0x5f, 0x54, 0x59,
+	0x50, 0x45, 0x5f, 0x43, 0x4f, 0x4e, 0x46, 0x49, 0x52, 0x4d, 0x10, 0x01, 0x12, 0x17, 0x0a, 0x13,
+	0x50, 0x52, 0x4f, 0x43, 0x45, 0x53, 0x53, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x52, 0x45, 0x4a,
+	0x45, 0x43, 0x54, 0x10, 0x02, 0x2a, 0x9d, 0x01, 0x0a, 0x09, 0x54, 0x72, 0x61, 0x64, 0x65, 0x54,
+	0x79, 0x70, 0x65, 0x12, 0x1a, 0x0a, 0x16, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x54, 0x59, 0x50,
+	0x45, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12,
+	0x12, 0x0a, 0x0e, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x42, 0x55,
+	0x59, 0x10, 0x01, 0x12, 0x13, 0x0a, 0x0f, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x54, 0x59, 0x50,
+	0x45, 0x5f, 0x53, 0x45, 0x4c, 0x4c, 0x10, 0x02, 0x12, 0x14, 0x0a, 0x10, 0x54, 0x52, 0x41, 0x44,
+	0x45, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x53, 0x50, 0x4c, 0x49, 0x54, 0x10, 0x03, 0x12, 0x1b,
+	0x0a, 0x17, 0x54, 0x52, 0x41, 0x44, 0x45, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x52, 0x45, 0x49,
+	0x4e, 0x56, 0x45, 0x53, 0x54, 0x4d, 0x45, 0x4e, 0x54, 0x10, 0x04, 0x12, 0x18, 0x0a, 0x14, 0x54,
+	0x52, 0x41, 0x44, 0x45, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f, 0x44, 0x49, 0x56, 0x49, 0x44, 0x45,
+	0x4e, 0x44, 0x53, 0x10, 0x05, 0x42, 0xb1, 0x01, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x67, 0x67,
+	0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2e, 0x74, 0x72, 0x61, 0x64, 0x65, 0x42, 0x0a, 0x54,
+	0x72, 0x61, 0x64, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x31, 0x67, 0x69, 0x74,
+	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x47, 0x47, 0x45, 0x5a, 0x4c, 0x61, 0x62, 0x73,
+	0x2f, 0x67, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x67,
+	0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x2f, 0x74, 0x72, 0x61, 0x64, 0x65, 0xa2, 0x02,
+	0x03, 0x47, 0x54, 0x58, 0xaa, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61, 0x69, 0x6e,
+	0x2e, 0x54, 0x72, 0x61, 0x64, 0x65, 0xca, 0x02, 0x0f, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0xe2, 0x02, 0x1b, 0x47, 0x67, 0x65, 0x7a, 0x63,
+	0x68, 0x61, 0x69, 0x6e, 0x5c, 0x54, 0x72, 0x61, 0x64, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65,
+	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x10, 0x47, 0x67, 0x65, 0x7a, 0x63, 0x68, 0x61,
+	0x69, 0x6e, 0x3a, 0x3a, 0x54, 0x72, 0x61, 0x64, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -257,10 +1535,13 @@ func file_ggezchain_trade_trade_proto_rawDescGZIP() []byte {
 }
 
 var file_ggezchain_trade_trade_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_ggezchain_trade_trade_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_ggezchain_trade_trade_proto_goTypes = []interface{}{
-	(TradeStatus)(0), // 0: ggezchain.trade.TradeStatus
-	(ProcessType)(0), // 1: ggezchain.trade.ProcessType
-	(TradeType)(0),   // 2: ggezchain.trade.TradeType
+	(TradeStatus)(0),             // 0: ggezchain.trade.TradeStatus
+	(ProcessType)(0),             // 1: ggezchain.trade.ProcessType
+	(TradeType)(0),               // 2: ggezchain.trade.TradeType
+	(*ExchangeRateJson)(nil),     // 3: ggezchain.trade.ExchangeRateJson
+	(*CoinMintingPriceJson)(nil), // 4: ggezchain.trade.CoinMintingPriceJson
 }
 var file_ggezchain_trade_trade_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -275,19 +1556,46 @@ func file_ggezchain_trade_trade_proto_init() {
 	if File_ggezchain_trade_trade_proto != nil {
 		return
 	}
+	if !protoimpl.UnsafeEnabled {
+		file_ggezchain_trade_trade_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ExchangeRateJson); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ggezchain_trade_trade_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CoinMintingPriceJson); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_ggezchain_trade_trade_proto_rawDesc,
 			NumEnums:      3,
-			NumMessages:   0,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_ggezchain_trade_trade_proto_goTypes,
 		DependencyIndexes: file_ggezchain_trade_trade_proto_depIdxs,
 		EnumInfos:         file_ggezchain_trade_trade_proto_enumTypes,
+		MessageInfos:      file_ggezchain_trade_trade_proto_msgTypes,
 	}.Build()
 	File_ggezchain_trade_trade_proto = out.File
 	file_ggezchain_trade_trade_proto_rawDesc = nil

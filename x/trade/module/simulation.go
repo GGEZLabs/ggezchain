@@ -42,7 +42,7 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	tradeGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
 		TradeIndex: types.TradeIndex{
-			NextId: uint64(simState.Rand.Intn(100)),
+			NextId: uint64(simState.Rand.Intn(99) + 1),
 		},
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}

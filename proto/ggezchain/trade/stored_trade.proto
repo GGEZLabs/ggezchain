@@ -10,7 +10,7 @@ message StoredTrade {
   uint64 trade_index = 1; 
   TradeType trade_type = 2; 
   cosmos.base.v1beta1.Coin amount = 3; 
-  string price = 4; 
+  string coin_minting_price_usd = 4; 
   string receiver_address = 5; 
   TradeStatus status = 6; 
   string maker = 7; 
