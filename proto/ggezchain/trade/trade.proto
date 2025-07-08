@@ -36,4 +36,18 @@ enum TradeStatus {
     TRADE_TYPE_SPLIT = 3;
     TRADE_TYPE_REINVESTMENT = 4;
     TRADE_TYPE_DIVIDENDS = 5;
-  } 
+  }
+
+  message ExchangeRateJson {
+    string from_currency = 1;
+    string to_currency = 2;
+    double original_amount = 3;
+    double converted_amount = 4;
+    double currency_rate = 5;
+    string timestamp = 6;
+  }
+
+  message CoinMintingPriceJson {
+    string currency_code = 1;
+    double minting_price = 2;
+  }

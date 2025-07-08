@@ -37,15 +37,17 @@ func (msg *MsgCreateTrade) ValidateBasic() error {
 		return ErrInvalidBankingSystemData
 	}
 
-	// todo: check data should be send
-	// if msg.CoinMintingPriceJSON == "" {
-	// 	return ErrInvalidCoinMintingPriceJSON
-	// }
+	// Validate CoinMintingPriceJson
+	if !json.Valid([]byte(msg.CoinMintingPriceJson)) {
+		return ErrInvalidCoinMintingPriceJson
+	}
 
-	// if msg.ExchangeRateJSON == "" {
-	// 	return ErrInvalidExchangeRateJSON
-	// }
+	// Validate ExchangeRateJson
+	if !json.Valid([]byte(msg.ExchangeRateJson)) {
+		return ErrInvalidExchangeRateJson
+	}
 
+	// Validate CreateDate if it does not empty
 	if msg.CreateDate != "" {
 		_, err = time.Parse(time.RFC3339, msg.CreateDate)
 		if err != nil {

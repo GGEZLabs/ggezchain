@@ -13,7 +13,7 @@ func (tt TradeType) IsTypeValid() bool {
 	}
 }
 
-// IsValid check if a trade status is valid
+// IsStatusValid check if a trade status is valid
 func (tt TradeStatus) IsStatusValid() bool {
 	switch tt {
 	case StatusProcessed,

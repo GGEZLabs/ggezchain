@@ -71,8 +71,8 @@ func SimulateMsgCreateTrade(
 			ReceiverAddress:      receiverAddress,
 			TradeData:            tradeData,
 			BankingSystemData:    `{}`,
-			CoinMintingPriceJson: `{}`,
-			ExchangeRateJson:     `{}`,
+			CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+			ExchangeRateJson:     types.GetSampleExchangeRateJson(),
 			CreateDate:           randomDate,
 		}
 

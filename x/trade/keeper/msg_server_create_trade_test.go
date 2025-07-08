@@ -83,10 +83,12 @@ func (suite *KeeperTestSuite) TestCreateTradeWithInvalidMakerPermission() {
 	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Bob,
-		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
-		BankingSystemData: "{}",
+		Creator:              testutil.Bob,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            types.GetSampleTradeData(types.TradeTypeBuy),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
 	})
 
 	suite.Require().Nil(createResponse)
@@ -97,10 +99,12 @@ func (suite *KeeperTestSuite) TestCreateTradeAuthorityAddressNotExist() {
 	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Eve,
-		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
-		BankingSystemData: "{}",
+		Creator:              testutil.Eve,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            types.GetSampleTradeData(types.TradeTypeBuy),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
 	})
 
 	suite.Require().Nil(createResponse)
@@ -112,10 +116,12 @@ func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
 	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Carol, // Does not has permission for trade module
-		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
-		BankingSystemData: "{}",
+		Creator:              testutil.Carol, // Does not has permission for trade module
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            types.GetSampleTradeData(types.TradeTypeBuy),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
 	})
 
 	suite.Require().Nil(createResponse)
@@ -126,14 +132,48 @@ func (suite *KeeperTestSuite) TestCreateTradeNoPermissionForModule() {
 func (suite *KeeperTestSuite) TestCreateTradeWithInvalidTradeData() {
 	suite.setupTest()
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Alice,
-		ReceiverAddress:   testutil.Alice,
-		TradeData:         `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":1,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-		BankingSystemData: "{}",
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":1,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
 	})
 
 	suite.Require().Nil(createResponse)
 	suite.Require().ErrorIs(err, types.ErrInvalidTradeInfo)
+}
+
+func (suite *KeeperTestSuite) TestCreateTradeWithCoinMintingPriceJson() {
+	suite.setupTest()
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            types.GetSampleTradeData(types.TradeTypeBuy),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleExchangeRateJson(),
+	})
+
+	suite.Require().Nil(createResponse)
+	suite.Require().ErrorIs(err, types.ErrInvalidCoinMintingPriceJson)
+	suite.Require().Contains(err.Error(), "currency_code must not be empty or whitespace at index: 0")
+}
+
+func (suite *KeeperTestSuite) TestCreateTradeWithExchangeRateJson() {
+	suite.setupTest()
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            types.GetSampleTradeData(types.TradeTypeBuy),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleCoinMintingPriceJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+	})
+
+	suite.Require().Nil(createResponse)
+	suite.Require().ErrorIs(err, types.ErrInvalidExchangeRateJson)
+	suite.Require().Contains(err.Error(), "from_currency must not be empty or whitespace at index: 0")
 }
 
 func (suite *KeeperTestSuite) TestCreateTrades() {
@@ -169,11 +209,13 @@ func (suite *KeeperTestSuite) TestCreateTrades() {
 func (suite *KeeperTestSuite) TestCreateTradeWithInvalidCreateDate() {
 	suite.setupTest()
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Alice,
-		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
-		BankingSystemData: "{}",
-		CreateDate:        "2023-05-06",
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            types.GetSampleTradeData(types.TradeTypeBuy),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+		CreateDate:           "2023-05-06",
 	})
 
 	suite.Require().Nil(createResponse)
@@ -202,11 +244,13 @@ func (suite *KeeperTestSuite) TestCreateTradeWithCreateDateInFuture() {
 	}, true).AnyTimes()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Alice,
-		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
-		BankingSystemData: "{}",
-		CreateDate:        futureDate,
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            types.GetSampleTradeData(types.TradeTypeBuy),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+		CreateDate:           futureDate,
 	})
 
 	suite.Require().Nil(createResponse)
@@ -233,11 +277,13 @@ func (suite *KeeperTestSuite) TestCreateTradeWithValidCreateDate() {
 	}, true).AnyTimes()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Alice,
-		ReceiverAddress:   testutil.Alice,
-		TradeData:         types.GetSampleTradeData(types.TradeTypeBuy),
-		BankingSystemData: "{}",
-		CreateDate:        "2024-05-11T08:44:00Z",
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            types.GetSampleTradeData(types.TradeTypeBuy),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+		CreateDate:           "2024-05-11T08:44:00Z",
 	})
 
 	suite.Require().Nil(err)
@@ -256,9 +302,11 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeSplit() {
 	keeper := suite.tradeKeeper
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Alice,
-		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":1,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-		BankingSystemData: "{}",
+		Creator:              testutil.Alice,
+		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":1,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
 	})
 
 	suite.Require().Equal(&types.MsgCreateTradeResponse{
@@ -270,19 +318,21 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeSplit() {
 	trade, found := keeper.GetStoredTrade(suite.ctx, 1)
 	suite.Require().True(found)
 	suite.Require().EqualValues(types.StoredTrade{
-		TradeIndex:        1,
-		TradeType:         types.TradeTypeSplit,
-		Price:             "0.000000000012",
-		Status:            types.StatusPending,
-		Maker:             testutil.Alice,
-		TxDate:            "0001-01-01T00:00:00Z",
-		CreateDate:        "0001-01-01T00:00:00Z",
-		UpdateDate:        "0001-01-01T00:00:00Z",
-		ProcessDate:       "0001-01-01T00:00:00Z",
-		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":1,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-		BankingSystemData: "{}",
-		Result:            types.TradeCreatedSuccessfully,
-		Amount:            nil,
+		TradeIndex:           1,
+		TradeType:            types.TradeTypeSplit,
+		CoinMintingPriceUsd:  "0.000000000012",
+		Status:               types.StatusPending,
+		Maker:                testutil.Alice,
+		TxDate:               "0001-01-01T00:00:00Z",
+		CreateDate:           "0001-01-01T00:00:00Z",
+		UpdateDate:           "0001-01-01T00:00:00Z",
+		ProcessDate:          "0001-01-01T00:00:00Z",
+		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":1,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+		Result:               types.TradeCreatedSuccessfully,
+		Amount:               nil,
 	}, trade)
 }
 
@@ -290,10 +340,12 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeSplitAndReceiverAddress() {
 	suite.setupTest()
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Alice,
-		ReceiverAddress:   testutil.Alice,
-		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":1,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-		BankingSystemData: "{}",
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":1,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
 	})
 
 	suite.Require().Nil(createResponse)
@@ -303,10 +355,12 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeSplitAndReceiverAddress() {
 func (suite *KeeperTestSuite) TestCreateTradeWithTypeSplitAndQuantity() {
 	suite.setupTest()
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
-		Creator:           testutil.Alice,
-		ReceiverAddress:   testutil.Alice,
-		TradeData:         `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"price":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-		BankingSystemData: "{}",
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
 	})
 
 	suite.Require().Nil(createResponse)
