@@ -6,6 +6,7 @@ func (tt TradeType) IsTypeValid() bool {
 	case TradeTypeBuy,
 		TradeTypeSell,
 		TradeTypeSplit,
+		TradeTypeReverseSplit,
 		TradeTypeReinvestment,
 		TradeTypeDividends:
 		return true

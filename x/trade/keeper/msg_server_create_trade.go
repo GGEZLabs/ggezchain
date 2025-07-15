@@ -40,6 +40,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 
 	// Validate receiver address if trade type not split or reinvestment
 	if td.TradeInfo.TradeType != types.TradeTypeSplit &&
+		td.TradeInfo.TradeType != types.TradeTypeReverseSplit &&
 		td.TradeInfo.TradeType != types.TradeTypeReinvestment &&
 		td.TradeInfo.TradeType != types.TradeTypeDividends {
 		_, err = sdk.AccAddressFromBech32(msg.ReceiverAddress)

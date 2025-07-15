@@ -68,6 +68,7 @@ func (gs GenesisState) ValidateStoredTrade() error {
 		}
 
 		if elem.TradeType != TradeTypeSplit &&
+			elem.TradeType != TradeTypeReverseSplit &&
 			elem.TradeType != TradeTypeReinvestment &&
 			elem.TradeType != TradeTypeDividends {
 			if !elem.Amount.IsValid() {

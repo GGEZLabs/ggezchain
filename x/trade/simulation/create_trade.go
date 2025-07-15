@@ -56,6 +56,7 @@ func SimulateMsgCreateTrade(
 		}
 
 		if td.TradeInfo.TradeType == types.TradeTypeSplit ||
+			td.TradeInfo.TradeType == types.TradeTypeReverseSplit ||
 			td.TradeInfo.TradeType == types.TradeTypeReinvestment ||
 			td.TradeInfo.TradeType == types.TradeTypeDividends {
 			td.TradeInfo.Quantity = &sdk.Coin{Denom: "", Amount: math.NewInt(0)}
@@ -97,7 +98,7 @@ func SimulateMsgCreateTrade(
 
 // randomTradeType Pick a random trade type
 func randomTradeType(r *rand.Rand) types.TradeType {
-	switch r.Intn(5) {
+	switch r.Intn(6) {
 	case 0:
 		return types.TradeTypeBuy
 	case 1:
@@ -105,8 +106,10 @@ func randomTradeType(r *rand.Rand) types.TradeType {
 	case 2:
 		return types.TradeTypeSplit
 	case 3:
-		return types.TradeTypeReinvestment
+		return types.TradeTypeReverseSplit
 	case 4:
+		return types.TradeTypeReinvestment
+	case 5:
 		return types.TradeTypeDividends
 	default:
 		panic("invalid trade type")

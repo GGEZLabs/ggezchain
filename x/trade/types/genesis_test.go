@@ -253,6 +253,45 @@ func TestGenesisState_Validate(t *testing.T) {
 			expErrMsg: "receiver_address must not be set for trade type TRADE_TYPE_SPLIT",
 		},
 		{
+			desc: "set amount with trade type reverse split",
+			genState: &types.GenesisState{
+				TradeIndex: types.TradeIndex{
+					NextId: 2,
+				},
+				StoredTrades: []types.StoredTrade{
+					{
+						TradeIndex:          1,
+						TradeType:           types.TradeTypeReverseSplit,
+						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						CoinMintingPriceUsd: "0.01",
+						Status:              types.StatusPending,
+					},
+				},
+			},
+			expErr:    true,
+			expErrMsg: "amount must not be set for trade type: TRADE_TYPE_REVERSE_SPLIT",
+		},
+		{
+			desc: "set receiver address with trade type reverse split",
+			genState: &types.GenesisState{
+				TradeIndex: types.TradeIndex{
+					NextId: 2,
+				},
+				StoredTrades: []types.StoredTrade{
+					{
+						TradeIndex:          1,
+						TradeType:           types.TradeTypeReverseSplit,
+						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						ReceiverAddress:     sample.AccAddress(),
+						CoinMintingPriceUsd: "0.01",
+						Status:              types.StatusPending,
+					},
+				},
+			},
+			expErr:    true,
+			expErrMsg: "receiver_address must not be set for trade type TRADE_TYPE_REVERSE_SPLIT",
+		},
+		{
 			desc: "set amount with trade type reinvestment",
 			genState: &types.GenesisState{
 				TradeIndex: types.TradeIndex{
@@ -902,6 +941,39 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 			},
 			expErr:    true,
 			expErrMsg: "receiver_address must not be set for trade type TRADE_TYPE_SPLIT",
+		},
+		{
+			desc: "set amount with trade type reverse split",
+			genState: &types.GenesisState{
+				StoredTrades: []types.StoredTrade{
+					{
+						TradeIndex:          1,
+						TradeType:           types.TradeTypeReverseSplit,
+						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						CoinMintingPriceUsd: "0.01",
+						Status:              types.StatusPending,
+					},
+				},
+			},
+			expErr:    true,
+			expErrMsg: "amount must not be set for trade type: TRADE_TYPE_REVERSE_SPLIT",
+		},
+		{
+			desc: "set receiver address with trade type reverse split",
+			genState: &types.GenesisState{
+				StoredTrades: []types.StoredTrade{
+					{
+						TradeIndex:          1,
+						TradeType:           types.TradeTypeReverseSplit,
+						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						ReceiverAddress:     sample.AccAddress(),
+						CoinMintingPriceUsd: "0.01",
+						Status:              types.StatusPending,
+					},
+				},
+			},
+			expErr:    true,
+			expErrMsg: "receiver_address must not be set for trade type TRADE_TYPE_REVERSE_SPLIT",
 		},
 		{
 			desc: "set amount with trade type reinvestment",

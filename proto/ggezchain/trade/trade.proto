@@ -34,8 +34,9 @@ enum TradeStatus {
     TRADE_TYPE_BUY = 1;
     TRADE_TYPE_SELL = 2;
     TRADE_TYPE_SPLIT = 3;
-    TRADE_TYPE_REINVESTMENT = 4;
-    TRADE_TYPE_DIVIDENDS = 5;
+    TRADE_TYPE_REVERSE_SPLIT = 4;
+    TRADE_TYPE_REINVESTMENT = 5;
+    TRADE_TYPE_DIVIDENDS = 6;
   }
 
   message ExchangeRateJson {
