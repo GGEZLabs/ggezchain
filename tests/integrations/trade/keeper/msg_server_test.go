@@ -401,7 +401,7 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	assert.Assert(t, trade.Status == types.StatusProcessed)
 
 	supply = f.bankKeeper.GetSupply(f.ctx, types.DefaultDenom)
-	
+
 	// Supply should not be changed
 	assert.Assert(t, supply.Amount.Int64() == 400000000)
 }
