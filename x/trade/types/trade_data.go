@@ -72,7 +72,8 @@ func ValidateTradeData(tradeData string) (TradeData, error) {
 
 	// Validate quantity if trade type not split or reinvestment
 	if td.TradeInfo.TradeType != TradeTypeSplit &&
-		td.TradeInfo.TradeType != TradeTypeReinvestment {
+		td.TradeInfo.TradeType != TradeTypeReinvestment &&
+		td.TradeInfo.TradeType != TradeTypeDividends {
 		if !td.TradeInfo.Quantity.IsValid() {
 			return td, ErrInvalidTradeInfo.Wrapf("invalid quantity: %s", td.TradeInfo.Quantity)
 		}
