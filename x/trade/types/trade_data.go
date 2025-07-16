@@ -43,7 +43,7 @@ func ValidateTradeData(tradeData string) (TradeData, error) {
 		return td, ErrInvalidTradeInfo.Wrap("issuer must not be empty or whitespace")
 	}
 	if td.TradeInfo.NoShares <= 0 {
-		return td, ErrInvalidTradeInfo.Wrapf("no_shares must be greater than 0, got: %d", td.TradeInfo.NoShares)
+		return td, ErrInvalidTradeInfo.Wrapf("no_shares must be greater than 0, got: %f", td.TradeInfo.NoShares)
 	}
 	if td.TradeInfo.CoinMintingPriceUsd <= 0 {
 		return td, ErrInvalidTradeInfo.Wrapf("coin_minting_price_usd must be greater than 0, got: %f", td.TradeInfo.CoinMintingPriceUsd)

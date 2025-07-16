@@ -701,8 +701,8 @@ func (x *fastReflection_TradeInfo) Range(f func(protoreflect.FieldDescriptor, pr
 			return
 		}
 	}
-	if x.NoShares != uint64(0) {
-		value := protoreflect.ValueOfUint64(x.NoShares)
+	if x.NoShares != float64(0) || math.Signbit(x.NoShares) {
+		value := protoreflect.ValueOfFloat64(x.NoShares)
 		if !f(fd_TradeInfo_no_shares, value) {
 			return
 		}
@@ -791,7 +791,7 @@ func (x *fastReflection_TradeInfo) Has(fd protoreflect.FieldDescriptor) bool {
 	case "ggezchain.trade.TradeInfo.issuer":
 		return x.Issuer != ""
 	case "ggezchain.trade.TradeInfo.no_shares":
-		return x.NoShares != uint64(0)
+		return x.NoShares != float64(0) || math.Signbit(x.NoShares)
 	case "ggezchain.trade.TradeInfo.coin_minting_price_usd":
 		return x.CoinMintingPriceUsd != float64(0) || math.Signbit(x.CoinMintingPriceUsd)
 	case "ggezchain.trade.TradeInfo.quantity":
@@ -845,7 +845,7 @@ func (x *fastReflection_TradeInfo) Clear(fd protoreflect.FieldDescriptor) {
 	case "ggezchain.trade.TradeInfo.issuer":
 		x.Issuer = ""
 	case "ggezchain.trade.TradeInfo.no_shares":
-		x.NoShares = uint64(0)
+		x.NoShares = float64(0)
 	case "ggezchain.trade.TradeInfo.coin_minting_price_usd":
 		x.CoinMintingPriceUsd = float64(0)
 	case "ggezchain.trade.TradeInfo.quantity":
@@ -910,7 +910,7 @@ func (x *fastReflection_TradeInfo) Get(descriptor protoreflect.FieldDescriptor) 
 		return protoreflect.ValueOfString(value)
 	case "ggezchain.trade.TradeInfo.no_shares":
 		value := x.NoShares
-		return protoreflect.ValueOfUint64(value)
+		return protoreflect.ValueOfFloat64(value)
 	case "ggezchain.trade.TradeInfo.coin_minting_price_usd":
 		value := x.CoinMintingPriceUsd
 		return protoreflect.ValueOfFloat64(value)
@@ -976,7 +976,7 @@ func (x *fastReflection_TradeInfo) Set(fd protoreflect.FieldDescriptor, value pr
 	case "ggezchain.trade.TradeInfo.issuer":
 		x.Issuer = value.Interface().(string)
 	case "ggezchain.trade.TradeInfo.no_shares":
-		x.NoShares = value.Uint()
+		x.NoShares = value.Float()
 	case "ggezchain.trade.TradeInfo.coin_minting_price_usd":
 		x.CoinMintingPriceUsd = value.Float()
 	case "ggezchain.trade.TradeInfo.quantity":
@@ -1088,7 +1088,7 @@ func (x *fastReflection_TradeInfo) NewField(fd protoreflect.FieldDescriptor) pro
 	case "ggezchain.trade.TradeInfo.issuer":
 		return protoreflect.ValueOfString("")
 	case "ggezchain.trade.TradeInfo.no_shares":
-		return protoreflect.ValueOfUint64(uint64(0))
+		return protoreflect.ValueOfFloat64(float64(0))
 	case "ggezchain.trade.TradeInfo.coin_minting_price_usd":
 		return protoreflect.ValueOfFloat64(float64(0))
 	case "ggezchain.trade.TradeInfo.quantity":
@@ -1210,8 +1210,8 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.NoShares != 0 {
-			n += 1 + runtime.Sov(uint64(x.NoShares))
+		if x.NoShares != 0 || math.Signbit(x.NoShares) {
+			n += 9
 		}
 		if x.CoinMintingPriceUsd != 0 || math.Signbit(x.CoinMintingPriceUsd) {
 			n += 9
@@ -1335,10 +1335,11 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x61
 		}
-		if x.NoShares != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.NoShares))
+		if x.NoShares != 0 || math.Signbit(x.NoShares) {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(x.NoShares))))
 			i--
-			dAtA[i] = 0x58
+			dAtA[i] = 0x59
 		}
 		if len(x.Issuer) > 0 {
 			i -= len(x.Issuer)
@@ -1691,24 +1692,16 @@ func (x *fastReflection_TradeInfo) ProtoMethods() *protoiface.Methods {
 				x.Issuer = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 11:
-				if wireType != 0 {
+				if wireType != 1 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field NoShares", wireType)
 				}
-				x.NoShares = 0
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					x.NoShares |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
+				var v uint64
+				if (iNdEx + 8) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
+				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				x.NoShares = float64(math.Float64frombits(v))
 			case 12:
 				if wireType != 1 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CoinMintingPriceUsd", wireType)
@@ -2518,7 +2511,7 @@ type TradeInfo struct {
 	Exchange            string        `protobuf:"bytes,8,opt,name=exchange,proto3" json:"exchange,omitempty"`
 	FundName            string        `protobuf:"bytes,9,opt,name=fund_name,json=fundName,proto3" json:"fund_name,omitempty"`
 	Issuer              string        `protobuf:"bytes,10,opt,name=issuer,proto3" json:"issuer,omitempty"`
-	NoShares            uint64        `protobuf:"varint,11,opt,name=no_shares,json=noShares,proto3" json:"no_shares,omitempty"`
+	NoShares            float64       `protobuf:"fixed64,11,opt,name=no_shares,json=noShares,proto3" json:"no_shares,omitempty"`
 	CoinMintingPriceUsd float64       `protobuf:"fixed64,12,opt,name=coin_minting_price_usd,json=coinMintingPriceUsd,proto3" json:"coin_minting_price_usd,omitempty"`
 	Quantity            *v1beta1.Coin `protobuf:"bytes,13,opt,name=quantity,proto3" json:"quantity,omitempty"`
 	Segment             string        `protobuf:"bytes,14,opt,name=segment,proto3" json:"segment,omitempty"`
@@ -2619,7 +2612,7 @@ func (x *TradeInfo) GetIssuer() string {
 	return ""
 }
 
-func (x *TradeInfo) GetNoShares() uint64 {
+func (x *TradeInfo) GetNoShares() float64 {
 	if x != nil {
 		return x.NoShares
 	}
@@ -2775,7 +2768,7 @@ var file_ggezchain_trade_trade_data_proto_rawDesc = []byte{
 	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x66, 0x75, 0x6e, 0x64,
 	0x4e, 0x61, 0x6d, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x69, 0x73, 0x73, 0x75, 0x65, 0x72, 0x18, 0x0a,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x69, 0x73, 0x73, 0x75, 0x65, 0x72, 0x12, 0x1b, 0x0a, 0x09,
-	0x6e, 0x6f, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x6e, 0x6f, 0x5f, 0x73, 0x68, 0x61, 0x72, 0x65, 0x73, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x01, 0x52,
 	0x08, 0x6e, 0x6f, 0x53, 0x68, 0x61, 0x72, 0x65, 0x73, 0x12, 0x33, 0x0a, 0x16, 0x63, 0x6f, 0x69,
 	0x6e, 0x5f, 0x6d, 0x69, 0x6e, 0x74, 0x69, 0x6e, 0x67, 0x5f, 0x70, 0x72, 0x69, 0x63, 0x65, 0x5f,
 	0x75, 0x73, 0x64, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x01, 0x52, 0x13, 0x63, 0x6f, 0x69, 0x6e, 0x4d,
