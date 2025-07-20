@@ -11,7 +11,7 @@ import (
 )
 
 func TestGenesisState_Validate(t *testing.T) {
-	td := types.GetSampleTradeData(types.TradeTypeBuy)
+	td := types.GetSampleTradeDataJson(types.TradeTypeBuy)
 	cmpj := types.GetSampleCoinMintingPriceJson()
 	erj := types.GetSampleExchangeRateJson()
 	tests := []struct {
@@ -762,7 +762,7 @@ func TestGenesisState_Validate(t *testing.T) {
 }
 
 func TestGenesisState_ValidateStoredTrade(t *testing.T) {
-	td := types.GetSampleTradeData(types.TradeTypeBuy)
+	td := types.GetSampleTradeDataJson(types.TradeTypeBuy)
 	tests := []struct {
 		desc      string
 		genState  *types.GenesisState

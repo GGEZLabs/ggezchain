@@ -1,8 +1,6 @@
 module github.com/GGEZLabs/ggezchain/v2
 
-go 1.23.2
-
-toolchain go1.23.7
+go 1.23.7
 
 replace (
 	// fix upstream GHSA-h395-qcrw-5vmq vulnerability.

@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"time"
 
-	"cosmossdk.io/math"
 	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/v2/x/trade/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
@@ -48,24 +47,16 @@ func SimulateMsgCreateTrade(
 
 		tradeType := randomTradeType(r)
 		receiverAddress := simAccount.Address.String()
-		tradeData := types.GetSampleTradeData(tradeType)
+		tradeData := types.GetSampleTradeDataJson(tradeType)
 
 		var td types.TradeData
 		if err := json.Unmarshal([]byte(tradeData), &td); err != nil {
 			panic(err)
 		}
 
-		if td.TradeInfo.TradeType == types.TradeTypeSplit ||
-			td.TradeInfo.TradeType == types.TradeTypeReverseSplit ||
-			td.TradeInfo.TradeType == types.TradeTypeReinvestment ||
-			td.TradeInfo.TradeType == types.TradeTypeDividends {
-			td.TradeInfo.Quantity = &sdk.Coin{Denom: "", Amount: math.NewInt(0)}
+		if td.TradeInfo.TradeType != types.TradeTypeBuy &&
+			td.TradeInfo.TradeType != types.TradeTypeSell {
 			receiverAddress = ""
-			tdBytes, err := json.Marshal(td)
-			if err != nil {
-				panic(err)
-			}
-			tradeData = string(tdBytes)
 		}
 
 		msg := &types.MsgCreateTrade{
