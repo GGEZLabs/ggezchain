@@ -1,0 +1,3 @@
+[codespell]
+skip = *.rs,*.json,*.js,*.html,*.d,*.sum,go.mod,*/docs/static/openapi.yml
+quiet-level = 2
