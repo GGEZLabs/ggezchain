@@ -263,6 +263,18 @@ func TestGenesisState_ValidateAclAuthority(t *testing.T) {
 			expErrMsg: "invalid address for aclAuthority",
 		},
 		{
+			desc: "empty name",
+			genState: &types.GenesisState{
+				AclAuthorities: []types.AclAuthority{
+					{
+						Address: sample.AccAddress(),
+					},
+				},
+			},
+			expErr:    true,
+			expErrMsg: "empty name not allowed",
+		},
+		{
 			desc: "duplicate access definition module",
 			genState: &types.GenesisState{
 				AclAuthorities: []types.AclAuthority{

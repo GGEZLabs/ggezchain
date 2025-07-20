@@ -14,7 +14,7 @@ import (
 )
 
 func TestGenesis(t *testing.T) {
-	td := types.GetSampleTradeData(types.TradeTypeBuy)
+	td := types.GetSampleTradeDataJson(types.TradeTypeBuy)
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 		TradeIndex: types.TradeIndex{

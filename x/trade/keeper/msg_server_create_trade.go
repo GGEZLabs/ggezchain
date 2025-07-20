@@ -39,9 +39,8 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 	}
 
 	// Validate receiver address if trade type not split or reinvestment
-	if td.TradeInfo.TradeType != types.TradeTypeSplit &&
-		td.TradeInfo.TradeType != types.TradeTypeReinvestment &&
-		td.TradeInfo.TradeType != types.TradeTypeDividends {
+	if td.TradeInfo.TradeType == types.TradeTypeBuy ||
+		td.TradeInfo.TradeType == types.TradeTypeSell {
 		_, err = sdk.AccAddressFromBech32(msg.ReceiverAddress)
 		if err != nil {
 			return nil, sdkerrors.ErrInvalidAddress.Wrapf("invalid receiver address (%s)", err)
