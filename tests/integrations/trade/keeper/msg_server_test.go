@@ -54,7 +54,7 @@ func TestCreateTrade(t *testing.T) {
 			exceptErr: true,
 			req: types.MsgCreateTrade{
 				Creator:   testutil.Alice,
-				TradeData: `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":1,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+				TradeData: `{"trade_info":{"asset_holder_id":0,"asset_id":1,"trade_type":1,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			},
 			expErrMsg: "invalid trade info",
 		},
@@ -92,7 +92,7 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 	_, err := msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
 		testutil.Alice,
-		types.GetSampleTradeData(types.TradeTypeBuy),
+		types.GetSampleTradeDataJson(types.TradeTypeBuy),
 		"{}",
 		types.GetSampleCoinMintingPriceJson(),
 		types.GetSampleExchangeRateJson(),
@@ -103,7 +103,7 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
 		testutil.Alice,
-		types.GetSampleTradeData(types.TradeTypeBuy),
+		types.GetSampleTradeDataJson(types.TradeTypeBuy),
 		"{}",
 		types.GetSampleCoinMintingPriceJson(),
 		types.GetSampleExchangeRateJson(),
@@ -114,7 +114,7 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
 		testutil.Alice,
-		types.GetSampleTradeData(types.TradeTypeBuy),
+		types.GetSampleTradeDataJson(types.TradeTypeBuy),
 		"{}",
 		types.GetSampleCoinMintingPriceJson(),
 		types.GetSampleExchangeRateJson(),
@@ -147,7 +147,7 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
 		testutil.Alice,
-		types.GetSampleTradeData(types.TradeTypeBuy),
+		types.GetSampleTradeDataJson(types.TradeTypeBuy),
 		"{}",
 		types.GetSampleCoinMintingPriceJson(),
 		types.GetSampleExchangeRateJson(),
@@ -179,7 +179,7 @@ func TestProcessTrade(t *testing.T) {
 	_, err := msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
 		testutil.Alice,
-		types.GetSampleTradeData(types.TradeTypeBuy),
+		types.GetSampleTradeDataJson(types.TradeTypeBuy),
 		"{}",
 		types.GetSampleCoinMintingPriceJson(),
 		types.GetSampleExchangeRateJson(),
@@ -190,7 +190,7 @@ func TestProcessTrade(t *testing.T) {
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
 		testutil.Alice,
-		types.GetSampleTradeData(types.TradeTypeBuy),
+		types.GetSampleTradeDataJson(types.TradeTypeBuy),
 		"{}",
 		types.GetSampleCoinMintingPriceJson(),
 		types.GetSampleExchangeRateJson(),
@@ -200,7 +200,7 @@ func TestProcessTrade(t *testing.T) {
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
 		testutil.Alice,
-		types.GetSampleTradeData(types.TradeTypeBuy),
+		types.GetSampleTradeDataJson(types.TradeTypeBuy),
 		"{}",
 		types.GetSampleCoinMintingPriceJson(),
 		types.GetSampleExchangeRateJson(),
@@ -375,4 +375,31 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 
 	balance = f.bankKeeper.GetBalance(f.ctx, receiverAddress, types.DefaultDenom)
 	assert.Assert(t, balance.Amount.Int64() == 400000000)
+
+	// Trade 5
+	_, err = msgServer.CreateTrade(f.ctx, &types.MsgCreateTrade{
+		Creator:              testutil.Alice,
+		ReceiverAddress:      "",
+		TradeData:            types.GetSampleTradeDataJson(types.TradeTypeSplit),
+		BankingSystemData:    "{}",
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+	})
+	assert.NilError(t, err)
+
+	_, err = msgServer.ProcessTrade(f.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  5,
+	})
+	assert.NilError(t, err)
+
+	trade, found = f.tradeKeeper.GetStoredTrade(f.ctx, 5)
+	assert.Assert(t, found == true)
+	assert.Assert(t, trade.Status == types.StatusProcessed)
+
+	supply = f.bankKeeper.GetSupply(f.ctx, types.DefaultDenom)
+
+	// Supply should not be changed
+	assert.Assert(t, supply.Amount.Int64() == 400000000)
 }

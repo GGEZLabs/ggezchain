@@ -16,7 +16,7 @@ func TestGRPCQueryAclAdmin(t *testing.T) {
 
 	var (
 		req      *types.QueryGetAclAdminRequest
-		expRes   *types.QueryGetAclAdminResponse
+		res      *types.QueryGetAclAdminResponse
 		aclAdmin types.AclAdmin
 	)
 
@@ -37,7 +37,7 @@ func TestGRPCQueryAclAdmin(t *testing.T) {
 
 				req = &types.QueryGetAclAdminRequest{Address: "address"}
 
-				expRes = &types.QueryGetAclAdminResponse{
+				res = &types.QueryGetAclAdminResponse{
 					AclAdmin: types.AclAdmin{
 						Address: "address",
 					},
@@ -56,7 +56,7 @@ func TestGRPCQueryAclAdmin(t *testing.T) {
 
 			if testCase.expPass {
 				assert.NilError(t, err)
-				assert.Equal(t, expRes.String(), aclAdmin.String())
+				assert.Equal(t, res.String(), aclAdmin.String())
 			} else {
 				assert.ErrorContains(t, err, testCase.expErrMsg)
 				assert.Assert(t, aclAdmin == nil)
@@ -71,7 +71,7 @@ func TestGRPCQueryAllAclAdmin(t *testing.T) {
 
 	var (
 		req         *types.QueryAllAclAdminRequest
-		expRes      *types.QueryAllAclAdminResponse
+		res         *types.QueryAllAclAdminResponse
 		aclAdminAll []types.AclAdmin
 	)
 
@@ -85,7 +85,7 @@ func TestGRPCQueryAllAclAdmin(t *testing.T) {
 			"nil request",
 			func() {
 				req = nil
-				expRes = &types.QueryAllAclAdminResponse{
+				res = &types.QueryAllAclAdminResponse{
 					AclAdmin:   []types.AclAdmin{},
 					Pagination: &query.PageResponse{},
 				}
@@ -106,7 +106,7 @@ func TestGRPCQueryAllAclAdmin(t *testing.T) {
 
 				req = &types.QueryAllAclAdminRequest{}
 
-				expRes = &types.QueryAllAclAdminResponse{
+				res = &types.QueryAllAclAdminResponse{
 					AclAdmin: []types.AclAdmin{
 						{Address: "address1"},
 						{Address: "address2"},
@@ -133,7 +133,7 @@ func TestGRPCQueryAllAclAdmin(t *testing.T) {
 					},
 				}
 
-				expRes = &types.QueryAllAclAdminResponse{
+				res = &types.QueryAllAclAdminResponse{
 					AclAdmin: []types.AclAdmin{
 						{
 							Address: "address1",
@@ -157,7 +157,7 @@ func TestGRPCQueryAllAclAdmin(t *testing.T) {
 
 			if testCase.expPass {
 				assert.NilError(t, err)
-				assert.Equal(t, len(expRes.AclAdmin), len(aclAdmins.AclAdmin))
+				assert.Equal(t, len(res.AclAdmin), len(aclAdmins.AclAdmin))
 			} else {
 				assert.ErrorContains(t, err, testCase.expErrMsg)
 				assert.Assert(t, aclAdmins == nil)
@@ -172,7 +172,7 @@ func TestGRPCQueryAclAuthority(t *testing.T) {
 
 	var (
 		req      *types.QueryGetAclAuthorityRequest
-		expRes   *types.QueryGetAclAuthorityResponse
+		res      *types.QueryGetAclAuthorityResponse
 		aclAdmin types.AclAuthority
 	)
 
@@ -199,7 +199,7 @@ func TestGRPCQueryAclAuthority(t *testing.T) {
 
 				req = &types.QueryGetAclAuthorityRequest{Address: "address"}
 
-				expRes = &types.QueryGetAclAuthorityResponse{
+				res = &types.QueryGetAclAuthorityResponse{
 					AclAuthority: types.AclAuthority{
 						Address: "address",
 						Name:    "Alice",
@@ -222,7 +222,7 @@ func TestGRPCQueryAclAuthority(t *testing.T) {
 
 			if testCase.expPass {
 				assert.NilError(t, err)
-				assert.Equal(t, expRes.String(), aclAdmin.String())
+				assert.Equal(t, res.String(), aclAdmin.String())
 			} else {
 				assert.ErrorContains(t, err, testCase.expErrMsg)
 				assert.Assert(t, aclAdmin == nil)
@@ -237,7 +237,7 @@ func TestGRPCQueryAllAclAuthority(t *testing.T) {
 
 	var (
 		req             *types.QueryAllAclAuthorityRequest
-		expRes          *types.QueryAllAclAuthorityResponse
+		res             *types.QueryAllAclAuthorityResponse
 		aclAuthorityAll []types.AclAuthority
 	)
 
@@ -251,7 +251,7 @@ func TestGRPCQueryAllAclAuthority(t *testing.T) {
 			"nil request",
 			func() {
 				req = nil
-				expRes = &types.QueryAllAclAuthorityResponse{
+				res = &types.QueryAllAclAuthorityResponse{
 					AclAuthority: []types.AclAuthority{},
 					Pagination:   &query.PageResponse{},
 				}
@@ -296,7 +296,7 @@ func TestGRPCQueryAllAclAuthority(t *testing.T) {
 
 				req = &types.QueryAllAclAuthorityRequest{}
 
-				expRes = &types.QueryAllAclAuthorityResponse{
+				res = &types.QueryAllAclAuthorityResponse{
 					AclAuthority: []types.AclAuthority{
 						{Address: "address1"},
 						{Address: "address2"},
@@ -323,7 +323,7 @@ func TestGRPCQueryAllAclAuthority(t *testing.T) {
 					},
 				}
 
-				expRes = &types.QueryAllAclAuthorityResponse{
+				res = &types.QueryAllAclAuthorityResponse{
 					AclAuthority: []types.AclAuthority{
 						{
 							Address: "address1",
@@ -347,7 +347,7 @@ func TestGRPCQueryAllAclAuthority(t *testing.T) {
 
 			if testCase.expPass {
 				assert.NilError(t, err)
-				assert.Equal(t, len(expRes.AclAuthority), len(aclAuthorities.AclAuthority))
+				assert.Equal(t, len(res.AclAuthority), len(aclAuthorities.AclAuthority))
 			} else {
 				assert.ErrorContains(t, err, testCase.expErrMsg)
 				assert.Assert(t, aclAuthorities == nil)

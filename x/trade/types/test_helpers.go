@@ -8,31 +8,50 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func GetSampleTradeData(tradeType TradeType) string {
+func GetSampleTradeDataJson(tradeType TradeType) string {
+	tradeValue := 100.50
+	tradeNetValue := 495.00
+	numberOfShares := 1000.0
+	sharePrice := 49.50
+	shareNetPrice := 500.00
+	quantity := &sdk.Coin{
+		Denom:  DefaultDenom,
+		Amount: math.NewInt(100000),
+	}
+	if tradeType != TradeTypeBuy && tradeType != TradeTypeSell {
+		quantity = nil
+	}
+	if tradeType == TradeTypeSplit || tradeType == TradeTypeReverseSplit {
+		tradeValue = 0
+		tradeNetValue = 0
+	}
+	if tradeType == TradeTypeDividends {
+		numberOfShares = 0
+		sharePrice = 0
+		shareNetPrice = 0
+	}
+
 	tradeData := TradeData{
 		TradeInfo: &TradeInfo{
-			AssetHolderId:       2,
-			AssetId:             789,
+			AssetHolderId:       1,
+			AssetId:             1,
 			TradeType:           tradeType,
-			TradeValue:          100.50,
+			TradeValue:          tradeValue,
 			BaseCurrency:        "USD",
 			SettlementCurrency:  "USD",
 			ExchangeRate:        1,
-			Exchange:            "NYSE",
+			Exchange:            "US",
 			FundName:            "TechFund",
 			Issuer:              "CompanyA",
-			NoShares:            1000,
+			NumberOfShares:      numberOfShares,
 			CoinMintingPriceUsd: 0.001,
-			Quantity: &sdk.Coin{
-				Denom:  DefaultDenom,
-				Amount: math.NewInt(100000),
-			},
-			Segment:       "Technology",
-			SharePrice:    49.50,
-			Ticker:        "TECH",
-			TradeFee:      5.00,
-			TradeNetPrice: 500.00,
-			TradeNetValue: 495.00,
+			Quantity:            quantity,
+			Segment:             "Technology",
+			SharePrice:          sharePrice,
+			Ticker:              "TECH",
+			TradeFee:            5.00,
+			ShareNetPrice:       shareNetPrice,
+			TradeNetValue:       tradeNetValue,
 		},
 		Brokerage: &Brokerage{
 			Name:    "XYZBrokerage",
@@ -46,6 +65,62 @@ func GetSampleTradeData(tradeType TradeType) string {
 		panic(err)
 	}
 	return string(tradeDataBytes)
+}
+
+func GetSampleTradeData(tradeType TradeType) TradeData {
+	tradeValue := 100.50
+	tradeNetValue := 495.00
+	numberOfShares := 1000.0
+	sharePrice := 49.50
+	shareNetPrice := 500.00
+	quantity := &sdk.Coin{
+		Denom:  DefaultDenom,
+		Amount: math.NewInt(100000),
+	}
+
+	if tradeType != TradeTypeBuy && tradeType != TradeTypeSell {
+		quantity = nil
+	}
+	if tradeType == TradeTypeSplit || tradeType == TradeTypeReverseSplit {
+		tradeValue = 0
+		tradeNetValue = 0
+	}
+
+	if tradeType == TradeTypeDividends {
+		numberOfShares = 0
+		sharePrice = 0
+		shareNetPrice = 0
+	}
+
+	tradeData := TradeData{
+		TradeInfo: &TradeInfo{
+			AssetHolderId:       2,
+			AssetId:             789,
+			TradeType:           tradeType,
+			TradeValue:          tradeValue,
+			BaseCurrency:        "USD",
+			SettlementCurrency:  "USD",
+			ExchangeRate:        1,
+			Exchange:            "NYSE",
+			FundName:            "TechFund",
+			Issuer:              "CompanyA",
+			NumberOfShares:      numberOfShares,
+			CoinMintingPriceUsd: 0.001,
+			Quantity:            quantity,
+			Segment:             "Technology",
+			SharePrice:          sharePrice,
+			Ticker:              "TECH",
+			TradeFee:            5.00,
+			ShareNetPrice:       shareNetPrice,
+			TradeNetValue:       tradeNetValue,
+		},
+		Brokerage: &Brokerage{
+			Name:    "XYZBrokerage",
+			Type:    "Online",
+			Country: "USA",
+		},
+	}
+	return tradeData
 }
 
 func GetSampleExchangeRateJson() string {
@@ -92,7 +167,7 @@ func GetBaseStoredTrade() StoredTrade {
 		CoinMintingPriceUsd:  "0.001",
 		ReceiverAddress:      testutil.Alice,
 		Maker:                testutil.Alice,
-		TradeData:            GetSampleTradeData(TradeTypeBuy),
+		TradeData:            GetSampleTradeDataJson(TradeTypeBuy),
 		BankingSystemData:    "{}",
 		ExchangeRateJson:     GetSampleExchangeRateJson(),
 		CoinMintingPriceJson: GetSampleCoinMintingPriceJson(),
@@ -108,7 +183,7 @@ func GetSampleMsgCreateTrade() *MsgCreateTrade {
 	return NewMsgCreateTrade(
 		testutil.Alice,
 		testutil.Alice,
-		GetSampleTradeData(TradeTypeBuy),
+		GetSampleTradeDataJson(TradeTypeBuy),
 		"{}",
 		GetSampleCoinMintingPriceJson(),
 		GetSampleExchangeRateJson(),
@@ -117,7 +192,7 @@ func GetSampleMsgCreateTrade() *MsgCreateTrade {
 
 // GetMsgCreateTradeWithTypeAndAmount get sample create trade message specified with trade type and amount
 func GetMsgCreateTradeWithTypeAndAmount(tradeType TradeType, amount int64) *MsgCreateTrade {
-	tdStr := GetSampleTradeData(TradeTypeBuy)
+	tdStr := GetSampleTradeDataJson(TradeTypeBuy)
 	var td TradeData
 	if err := json.Unmarshal([]byte(tdStr), &td); err != nil {
 		panic(err)

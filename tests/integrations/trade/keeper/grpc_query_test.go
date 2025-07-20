@@ -17,7 +17,7 @@ func TestGRPCQueryTradeIndex(t *testing.T) {
 
 	var (
 		req        *types.QueryGetTradeIndexRequest
-		expRes     *types.QueryGetTradeIndexResponse
+		res        *types.QueryGetTradeIndexResponse
 		tradeIndex types.TradeIndex
 	)
 
@@ -38,7 +38,7 @@ func TestGRPCQueryTradeIndex(t *testing.T) {
 
 				req = &types.QueryGetTradeIndexRequest{}
 
-				expRes = &types.QueryGetTradeIndexResponse{
+				res = &types.QueryGetTradeIndexResponse{
 					TradeIndex: types.TradeIndex{
 						NextId: 1,
 					},
@@ -57,7 +57,7 @@ func TestGRPCQueryTradeIndex(t *testing.T) {
 
 			if testCase.expPass {
 				assert.NilError(t, err)
-				assert.Equal(t, expRes.String(), trade.String())
+				assert.Equal(t, res.String(), trade.String())
 			} else {
 				assert.ErrorContains(t, err, testCase.expErrMsg)
 				assert.Assert(t, trade == nil)
@@ -73,7 +73,7 @@ func TestGRPCQueryStoredTrade(t *testing.T) {
 
 	var (
 		req         *types.QueryGetStoredTradeRequest
-		expRes      *types.QueryGetStoredTradeResponse
+		res         *types.QueryGetStoredTradeResponse
 		storedTrade types.StoredTrade
 	)
 
@@ -118,7 +118,7 @@ func TestGRPCQueryStoredTrade(t *testing.T) {
 
 				req = &types.QueryGetStoredTradeRequest{TradeIndex: storedTrade.TradeIndex}
 
-				expRes = &types.QueryGetStoredTradeResponse{
+				res = &types.QueryGetStoredTradeResponse{
 					StoredTrade: types.StoredTrade{TradeIndex: 1},
 				}
 			},
@@ -135,7 +135,7 @@ func TestGRPCQueryStoredTrade(t *testing.T) {
 
 			if testCase.expPass {
 				assert.NilError(t, err)
-				assert.Equal(t, expRes.String(), trade.String())
+				assert.Equal(t, res.String(), trade.String())
 			} else {
 				assert.ErrorContains(t, err, testCase.expErrMsg)
 				assert.Assert(t, trade == nil)
@@ -151,7 +151,7 @@ func TestGRPCQueryAllStoredTrade(t *testing.T) {
 
 	var (
 		req            *types.QueryAllStoredTradeRequest
-		expRes         *types.QueryAllStoredTradeResponse
+		res            *types.QueryAllStoredTradeResponse
 		storedTradeAll []types.StoredTrade
 	)
 
@@ -165,7 +165,7 @@ func TestGRPCQueryAllStoredTrade(t *testing.T) {
 			"nil request",
 			func() {
 				req = nil
-				expRes = &types.QueryAllStoredTradeResponse{
+				res = &types.QueryAllStoredTradeResponse{
 					StoredTrade: []types.StoredTrade{},
 					Pagination:  &query.PageResponse{},
 				}
@@ -186,7 +186,7 @@ func TestGRPCQueryAllStoredTrade(t *testing.T) {
 
 				req = &types.QueryAllStoredTradeRequest{}
 
-				expRes = &types.QueryAllStoredTradeResponse{
+				res = &types.QueryAllStoredTradeResponse{
 					StoredTrade: []types.StoredTrade{
 						{
 							TradeIndex: 1,
@@ -224,7 +224,7 @@ func TestGRPCQueryAllStoredTrade(t *testing.T) {
 					},
 				}
 
-				expRes = &types.QueryAllStoredTradeResponse{
+				res = &types.QueryAllStoredTradeResponse{
 					StoredTrade: []types.StoredTrade{
 						{
 							TradeIndex: 1,
@@ -248,7 +248,7 @@ func TestGRPCQueryAllStoredTrade(t *testing.T) {
 
 			if testCase.expPass {
 				assert.NilError(t, err)
-				assert.Equal(t, len(expRes.StoredTrade), len(trades.StoredTrade))
+				assert.Equal(t, len(res.StoredTrade), len(trades.StoredTrade))
 			} else {
 				assert.ErrorContains(t, err, testCase.expErrMsg)
 				assert.Assert(t, trades == nil)
@@ -264,7 +264,7 @@ func TestGRPCQueryStoredTempTrade(t *testing.T) {
 
 	var (
 		req             *types.QueryGetStoredTempTradeRequest
-		expRes          *types.QueryGetStoredTempTradeResponse
+		res             *types.QueryGetStoredTempTradeResponse
 		storedTempTrade types.StoredTempTrade
 	)
 
@@ -309,7 +309,7 @@ func TestGRPCQueryStoredTempTrade(t *testing.T) {
 
 				req = &types.QueryGetStoredTempTradeRequest{TradeIndex: storedTempTrade.TradeIndex}
 
-				expRes = &types.QueryGetStoredTempTradeResponse{
+				res = &types.QueryGetStoredTempTradeResponse{
 					StoredTempTrade: types.StoredTempTrade{TradeIndex: 1},
 				}
 			},
@@ -326,7 +326,7 @@ func TestGRPCQueryStoredTempTrade(t *testing.T) {
 
 			if testCase.expPass {
 				assert.NilError(t, err)
-				assert.Equal(t, expRes.String(), trade.String())
+				assert.Equal(t, res.String(), trade.String())
 			} else {
 				assert.ErrorContains(t, err, testCase.expErrMsg)
 				assert.Assert(t, trade == nil)
@@ -342,7 +342,7 @@ func TestGRPCQueryAllStoredTempTrade(t *testing.T) {
 
 	var (
 		req                *types.QueryAllStoredTempTradeRequest
-		expRes             *types.QueryAllStoredTempTradeResponse
+		res                *types.QueryAllStoredTempTradeResponse
 		storedTempTradeAll []types.StoredTempTrade
 	)
 
@@ -356,7 +356,7 @@ func TestGRPCQueryAllStoredTempTrade(t *testing.T) {
 			"nil request",
 			func() {
 				req = nil
-				expRes = &types.QueryAllStoredTempTradeResponse{
+				res = &types.QueryAllStoredTempTradeResponse{
 					StoredTempTrade: []types.StoredTempTrade{},
 					Pagination:      &query.PageResponse{},
 				}
@@ -377,7 +377,7 @@ func TestGRPCQueryAllStoredTempTrade(t *testing.T) {
 
 				req = &types.QueryAllStoredTempTradeRequest{}
 
-				expRes = &types.QueryAllStoredTempTradeResponse{
+				res = &types.QueryAllStoredTempTradeResponse{
 					StoredTempTrade: []types.StoredTempTrade{
 						{
 							TradeIndex: 1,
@@ -420,7 +420,7 @@ func TestGRPCQueryAllStoredTempTrade(t *testing.T) {
 					},
 				}
 
-				expRes = &types.QueryAllStoredTempTradeResponse{
+				res = &types.QueryAllStoredTempTradeResponse{
 					StoredTempTrade: []types.StoredTempTrade{
 						{
 							TradeIndex: 1,
@@ -444,7 +444,7 @@ func TestGRPCQueryAllStoredTempTrade(t *testing.T) {
 
 			if testCase.expPass {
 				assert.NilError(t, err)
-				assert.Equal(t, len(expRes.StoredTempTrade), len(trades.StoredTempTrade))
+				assert.Equal(t, len(res.StoredTempTrade), len(trades.StoredTempTrade))
 			} else {
 				assert.ErrorContains(t, err, testCase.expErrMsg)
 				assert.Assert(t, trades == nil)

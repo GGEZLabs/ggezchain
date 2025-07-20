@@ -502,7 +502,39 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeSplit() {
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:              testutil.Alice,
-		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":1,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		TradeData:            types.GetSampleTradeDataJson(types.TradeTypeSplit),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+	})
+	suite.Require().NoError(err)
+
+	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  createResponse.TradeIndex,
+	})
+	suite.Require().NoError(err)
+	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+		TradeIndex: createResponse.TradeIndex,
+		Status:     types.StatusProcessed,
+	}, *processResponse)
+
+	suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
+		Denom:  types.DefaultDenom,
+		Amount: sdkmath.NewInt(0),
+	}).Times(1)
+
+	supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
+	suite.Require().Equal(sdkmath.NewInt(0), supply.Amount)
+}
+
+func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeReverseSplit() {
+	suite.setupTest()
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:              testutil.Alice,
+		TradeData:            types.GetSampleTradeDataJson(types.TradeTypeReverseSplit),
 		BankingSystemData:    "{}",
 		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
 		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
@@ -534,7 +566,7 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeReinvestment() 
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:              testutil.Alice,
-		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":1,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		TradeData:            types.GetSampleTradeDataJson(types.TradeTypeReinvestment),
 		BankingSystemData:    "{}",
 		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
 		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
@@ -566,7 +598,7 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeDividends() {
 
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:              testutil.Alice,
-		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":5,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","no_shares":10,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":1,"trade_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		TradeData:            types.GetSampleTradeDataJson(types.TradeTypeDividends),
 		BankingSystemData:    "{}",
 		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
 		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
