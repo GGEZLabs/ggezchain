@@ -379,7 +379,7 @@ func TestValidateCommonTradeData(t *testing.T) {
 				TradeInfo: &types.TradeInfo{
 					AssetHolderId: 1,
 					AssetId:       1,
-					TradeType:     types.TradeTypeUnspecified,
+					TradeType:     types.TradeTypeNil,
 				},
 			},
 			expErr:    true,
@@ -975,14 +975,14 @@ func TestValidateDividends(t *testing.T) {
 				NumberOfShares: 0,
 				TradeValue:     5000,
 				TradeNetValue:  5000,
-				TradeType:      types.TradeTypeReinvestment,
+				TradeType:      types.TradeTypeDividends,
 				Quantity: &sdk.Coin{
 					Amount: math.NewInt(1000000),
 					Denom:  types.DefaultDenom,
 				},
 			},
 			expErr:    true,
-			expErrMsg: "quantity must not be set for trade type TRADE_TYPE_REINVESTMENT",
+			expErrMsg: "quantity must not be set for trade type TRADE_TYPE_DIVIDENDS",
 		},
 		{
 			name: "set valid quantity",

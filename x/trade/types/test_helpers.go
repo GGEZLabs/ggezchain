@@ -30,7 +30,7 @@ func GetSampleTradeDataJson(tradeType TradeType) string {
 		sharePrice = 0
 		shareNetPrice = 0
 
-	case TradeTypeDividends:
+	case TradeTypeDividends, TradeTypeDividendsDeduction:
 		numberOfShares = 0
 		sharePrice = 0
 		shareNetPrice = 0
@@ -94,7 +94,7 @@ func GetSampleTradeData(tradeType TradeType) TradeData {
 		sharePrice = 0
 		shareNetPrice = 0
 
-	case TradeTypeDividends:
+	case TradeTypeDividends, TradeTypeDividendsDeduction:
 		numberOfShares = 0
 		sharePrice = 0
 		shareNetPrice = 0

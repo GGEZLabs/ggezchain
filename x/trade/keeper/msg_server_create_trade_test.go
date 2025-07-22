@@ -326,7 +326,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeSplit() {
 		CreateDate:           "0001-01-01T00:00:00Z",
 		UpdateDate:           "0001-01-01T00:00:00Z",
 		ProcessDate:          "0001-01-01T00:00:00Z",
-		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"TechFund","issuer":"CompanyA","number_of_shares":1000,"coin_minting_price_usd":0.001,"segment":"Technology","share_price":49.5,"ticker":"TECH","trade_fee":5,"share_net_price":500},"brokerage":{"name":"XYZBrokerage","type":"Online","country":"USA"}}`,
+		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"TechFund","issuer":"CompanyA","number_of_shares":1000,"coin_minting_price_usd":0.001,"segment":"Technology","ticker":"TECH","trade_fee":5},"brokerage":{"name":"XYZBrokerage","type":"Online","country":"USA"}}`,
 		BankingSystemData:    "{}",
 		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
 		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
@@ -356,7 +356,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeSplitAndQuantity() {
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:              testutil.Alice,
 		ReceiverAddress:      testutil.Alice,
-		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 		BankingSystemData:    "{}",
 		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
 		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
@@ -397,7 +397,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeReverseSplit() {
 		CreateDate:           "0001-01-01T00:00:00Z",
 		UpdateDate:           "0001-01-01T00:00:00Z",
 		ProcessDate:          "0001-01-01T00:00:00Z",
-		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"TechFund","issuer":"CompanyA","number_of_shares":1000,"coin_minting_price_usd":0.001,"segment":"Technology","share_price":49.5,"ticker":"TECH","trade_fee":5,"share_net_price":500},"brokerage":{"name":"XYZBrokerage","type":"Online","country":"USA"}}`,
+		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"TechFund","issuer":"CompanyA","number_of_shares":1000,"coin_minting_price_usd":0.001,"segment":"Technology","ticker":"TECH","trade_fee":5},"brokerage":{"name":"XYZBrokerage","type":"Online","country":"USA"}}`,
 		BankingSystemData:    "{}",
 		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
 		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
@@ -427,7 +427,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeReverseSplitAndQuantity() {
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:              testutil.Alice,
 		ReceiverAddress:      testutil.Alice,
-		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.001,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.001,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 		BankingSystemData:    "{}",
 		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
 		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
@@ -569,6 +569,76 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeDividendsAndQuantity() {
 	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
 		Creator:              testutil.Alice,
 		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":6,"trade_value":100.5,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"TechFund","issuer":"CompanyA","coin_minting_price_usd":0.001,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Technology","ticker":"TECH","trade_fee":5,"trade_net_value":495},"brokerage":{"name":"XYZBrokerage","type":"Online","country":"USA"}}`,
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+	})
+
+	suite.Require().Nil(createResponse)
+	suite.Require().ErrorIs(err, types.ErrInvalidTradeInfo)
+	suite.Require().Contains(err.Error(), "quantity must not be set")
+}
+
+func (suite *KeeperTestSuite) TestCreateTradeWithTypeDividendsDeduction() {
+	suite.setupTest()
+	keeper := suite.tradeKeeper
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:              testutil.Alice,
+		TradeData:            types.GetSampleTradeDataJson(types.TradeTypeDividendsDeduction),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+	})
+
+	suite.Require().Equal(&types.MsgCreateTradeResponse{
+		TradeIndex: 1,
+		Status:     types.StatusPending,
+	}, createResponse)
+	suite.Require().NoError(err)
+
+	trade, found := keeper.GetStoredTrade(suite.ctx, 1)
+	suite.Require().True(found)
+	suite.Require().EqualValues(types.StoredTrade{
+		TradeIndex:           1,
+		TradeType:            types.TradeTypeDividendsDeduction,
+		CoinMintingPriceUsd:  "0.001",
+		Status:               types.StatusPending,
+		Maker:                testutil.Alice,
+		TxDate:               "0001-01-01T00:00:00Z",
+		CreateDate:           "0001-01-01T00:00:00Z",
+		UpdateDate:           "0001-01-01T00:00:00Z",
+		ProcessDate:          "0001-01-01T00:00:00Z",
+		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":7,"trade_value":100.5,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"TechFund","issuer":"CompanyA","coin_minting_price_usd":0.001,"segment":"Technology","ticker":"TECH","trade_fee":5,"trade_net_value":495},"brokerage":{"name":"XYZBrokerage","type":"Online","country":"USA"}}`,
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+		Result:               types.TradeCreatedSuccessfully,
+		Amount:               nil,
+	}, trade)
+}
+
+func (suite *KeeperTestSuite) TestCreateTradeWithTypeDividendsDeductionAndReceiverAddress() {
+	suite.setupTest()
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            types.GetSampleTradeDataJson(types.TradeTypeDividendsDeduction),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+	})
+
+	suite.Require().Nil(createResponse)
+	suite.Require().Contains(err.Error(), "receiver address must not be set for trade type TRADE_TYPE_DIVIDEND_DEDUCTION")
+}
+
+func (suite *KeeperTestSuite) TestCreateTradeWithTypeDividendsDeductionAndQuantity() {
+	suite.setupTest()
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:              testutil.Alice,
+		TradeData:            `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":7,"trade_value":100.5,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"TechFund","issuer":"CompanyA","coin_minting_price_usd":0.001,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Technology","ticker":"TECH","trade_fee":5,"trade_net_value":495},"brokerage":{"name":"XYZBrokerage","type":"Online","country":"USA"}}`,
 		BankingSystemData:    "{}",
 		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
 		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),

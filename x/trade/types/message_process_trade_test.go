@@ -55,7 +55,7 @@ func TestMsgProcessTrade_ValidateBasic(t *testing.T) {
 			name: "process trade with invalid process type",
 			msg: MsgProcessTrade{
 				Creator:     sample.AccAddress(),
-				ProcessType: ProcessTypeUnspecified,
+				ProcessType: ProcessTypeNil,
 				TradeIndex:  1,
 			},
 			err: ErrInvalidProcessType,

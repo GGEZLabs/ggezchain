@@ -166,8 +166,6 @@ func ValidateDividends(tradeInfo *TradeInfo) error {
 
 // ValidateSplit validates split and reverse split trade types
 func ValidateSplit(tradeInfo *TradeInfo) error {
-	// todo: check if share price will be passed or not
-	// only quantity
 	if tradeInfo.SharePrice != 0 {
 		return ErrInvalidTradeInfo.Wrapf("share_price must be 0, got: %f", tradeInfo.SharePrice)
 	}
