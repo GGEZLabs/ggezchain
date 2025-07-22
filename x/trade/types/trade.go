@@ -8,7 +8,8 @@ func (tt TradeType) IsTypeValid() bool {
 		TradeTypeSplit,
 		TradeTypeReverseSplit,
 		TradeTypeReinvestment,
-		TradeTypeDividends:
+		TradeTypeDividends,
+		TradeTypeDividendsDeduction:
 		return true
 	default:
 		return false
