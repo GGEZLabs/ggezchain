@@ -174,9 +174,9 @@ release:
   replace_existing_draft: true
   header: |
 
-    ## Changelog
+    # ## Changelog
 
-    See the full changelog [here](https://github.com/GGEZLabs/ggezchain/blob/v{{ .Version }}/CHANGELOG.md)
+    # See the full changelog [here](https://github.com/GGEZLabs/ggezchain/blob/v{{ .Version }}/CHANGELOG.md)
 
     ## ⚡️ Binaries
 
