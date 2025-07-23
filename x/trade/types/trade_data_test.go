@@ -135,7 +135,7 @@ func TestValidateTradeData(t *testing.T) {
 			expErr:    true,
 			expErrMsg: "brokerage name must not be empty or whitespace",
 		},
-		// Test buy type
+		// Test buy and sell types
 		{
 			name:      "invalid share_price - trade type buy",
 			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":1,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -161,32 +161,32 @@ func TestValidateTradeData(t *testing.T) {
 			expErrMsg: "trade_value must be greater than 0",
 		},
 		{
-			name:      "invalid trade net value - trade type buy",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":1,"trade_value":100,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "invalid trade net value - trade type sell",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":2,"trade_value":100,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "trade_net_value must be greater than 0",
 		},
 		{
-			name:      "invalid quantity - trade type buy",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":1,"trade_value":100,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "invalid quantity - trade type sell",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":2,"trade_value":100,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "invalid quantity",
 		},
 		{
-			name:      "invalid quantity - trade type buy",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":1,"trade_value":100,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "invalid quantity - trade type sell",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":2,"trade_value":100,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "invalid quantity",
 		},
 		{
-			name:      "zero quantity - trade type buy",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":1,"trade_value":100,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"0","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "zero quantity - trade type sell",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":2,"trade_value":100,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"0","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "zero quantity not allowed",
 		},
 		{
-			name:      "invalid denom - trade type buy",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":1,"trade_value":100,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggez1"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "invalid denom - trade type sell",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":2,"trade_value":100,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggez1"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "invalid denom expected: uggz, got: uggez1",
 		},
@@ -237,7 +237,7 @@ func TestValidateTradeData(t *testing.T) {
 			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":5,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    false,
 		},
-		// Test dividends type
+		// Test dividends and dividends deduction types
 		{
 			name:      "invalid share_price - trade type dividends",
 			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":6,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
@@ -263,104 +263,67 @@ func TestValidateTradeData(t *testing.T) {
 			expErrMsg: "trade_value must be greater than 0",
 		},
 		{
-			name:      "invalid trade net value - trade type dividends",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":6,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "invalid trade net value - trade type dividends deduction",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":7,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "trade_net_value must be greater than 0",
 		},
 		{
-			name:      "invalid quantity - trade type dividends",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":6,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "invalid quantity - trade type dividends deduction",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":7,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
-			expErrMsg: "quantity must not be set for trade type TRADE_TYPE_DIVIDENDS",
+			expErrMsg: "quantity must not be set for trade type TRADE_TYPE_DIVIDEND_DEDUCTION",
 		},
 		{
-			name:      "set valid quantity - trade type dividends",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":6,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"0","denom":""},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "set valid quantity - trade type dividends deduction",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":7,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"0","denom":""},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    false,
 		},
 		{
-			name:      "nil quantity - trade type dividends",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":6,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "nil quantity - trade type dividends deduction",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":7,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    false,
 		},
-		// Test split type
+		// Test split and reverse split types
 		{
 			name:      "invalid share_price - trade type split",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":100,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
-			expErrMsg: "share_price must be greater than 0",
+			expErrMsg: "share_price must be 0",
 		},
 		{
 			name:      "invalid share_net_price - trade type split",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":100,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
-			expErrMsg: "share_net_price must be greater than 0",
+			expErrMsg: "share_net_price must be 0",
 		},
 		{
 			name:      "invalid number_of_shares - trade type split",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":1944.9,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "number_of_shares must be greater than 0",
 		},
 		{
 			name:      "invalid trade value - trade type split",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":15,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "trade_value must be 0",
 		},
 		{
-			name:      "invalid trade net value - trade type split",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "invalid trade net value - trade type reverse split",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":1944.9},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "trade_net_value must be 0",
 		},
 		{
 			name:      "invalid quantity - trade type split",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "quantity must not be set for trade type TRADE_TYPE_SPLIT",
 		},
 		{
-			name:      "invalid quantity - trade type split",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":3,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-			expErr:    true,
-			expErrMsg: "quantity must not be set for trade type TRADE_TYPE_SPLIT",
-		},
-		// Test reverse split type
-		{
-			name:      "invalid share_price - trade type reverse split",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-			expErr:    true,
-			expErrMsg: "share_price must be greater than 0",
-		},
-		{
-			name:      "invalid share_net_price - trade type reverse split",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-			expErr:    true,
-			expErrMsg: "share_net_price must be greater than 0",
-		},
-		{
-			name:      "invalid number_of_shares - trade type reverse split",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":0,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-			expErr:    true,
-			expErrMsg: "number_of_shares must be greater than 0",
-		},
-		{
-			name:      "invalid trade value",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":1000,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":15,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-			expErr:    true,
-			expErrMsg: "trade_value must be 0",
-		},
-		{
-			name:      "invalid trade net value",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":15,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":10000},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
-			expErr:    true,
-			expErrMsg: "trade_net_value must be 0",
-		},
-		{
-			name:      "invalid quantity",
-			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":15,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":194.49,"ticker":"CRBN","trade_fee":0,"share_net_price":194.49,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
+			name:      "invalid quantity - trade type reverse split",
+			tradeData: `{"trade_info":{"asset_holder_id":1,"asset_id":1,"trade_type":4,"trade_value":0,"base_currency":"USD","settlement_currency":"USD","exchange_rate":1,"exchange":"US","fund_name":"Low Carbon Target ETF","issuer":"Blackrock","number_of_shares":10,"coin_minting_price_usd":0.000000000012,"quantity":{"amount":"162075000000000","denom":"uggz"},"segment":"Equity: Global Low Carbon","share_price":0,"ticker":"CRBN","trade_fee":0,"share_net_price":0,"trade_net_value":0},"brokerage":{"name":"Interactive Brokers LLC","type":"Brokerage Firm","country":"US"}}`,
 			expErr:    true,
 			expErrMsg: "quantity must not be set for trade type TRADE_TYPE_REVERSE_SPLIT",
 		},
@@ -416,7 +379,7 @@ func TestValidateCommonTradeData(t *testing.T) {
 				TradeInfo: &types.TradeInfo{
 					AssetHolderId: 1,
 					AssetId:       1,
-					TradeType:     types.TradeTypeUnspecified,
+					TradeType:     types.TradeTypeNil,
 				},
 			},
 			expErr:    true,
@@ -575,51 +538,6 @@ func TestValidateCommonTradeData(t *testing.T) {
 			expErr:    true,
 			expErrMsg: "trade_fee must be a non-negative number",
 		},
-		// {
-		// 	name: "invalid share_price",
-		// 	tradeData: types.TradeData{
-		// 		TradeInfo: &types.TradeInfo{
-		// 			AssetHolderId:       1,
-		// 			AssetId:             1,
-		// 			TradeType:           types.TradeTypeBuy,
-		// 			BaseCurrency:        "USD",
-		// 			SettlementCurrency:  "USD",
-		// 			Exchange:            "US",
-		// 			FundName:            "TechFund",
-		// 			Issuer:              "Blackrock",
-		// 			CoinMintingPriceUsd: 1,
-		// 			Segment:             "Global Low Carbon",
-		// 			Ticker:              "CEN",
-		// 			TradeFee:            0,
-		// 			SharePrice:          0,
-		// 		},
-		// 	},
-		// 	expErr:    true,
-		// 	expErrMsg: "share_price must be greater than 0",
-		// },
-		// {
-		// 	name: "invalid share_net_price",
-		// 	tradeData: types.TradeData{
-		// 		TradeInfo: &types.TradeInfo{
-		// 			AssetHolderId:       1,
-		// 			AssetId:             1,
-		// 			TradeType:           types.TradeTypeBuy,
-		// 			BaseCurrency:        "USD",
-		// 			SettlementCurrency:  "USD",
-		// 			Exchange:            "US",
-		// 			FundName:            "TechFund",
-		// 			Issuer:              "Blackrock",
-		// 			CoinMintingPriceUsd: 1,
-		// 			Segment:             "Global Low Carbon",
-		// 			Ticker:              "CEN",
-		// 			TradeFee:            0,
-		// 			SharePrice:          100,
-		// 			ShareNetPrice:       0,
-		// 		},
-		// 	},
-		// 	expErr:    true,
-		// 	expErrMsg: "share_net_price must be greater than 0",
-		// },
 		{
 			name: "invalid exchange rate",
 			tradeData: types.TradeData{
@@ -642,31 +560,6 @@ func TestValidateCommonTradeData(t *testing.T) {
 			expErr:    true,
 			expErrMsg: "exchange_rate must be greater than 0",
 		},
-		// {
-		// 	name: "invalid number_of_shares",
-		// 	tradeData: types.TradeData{
-		// 		TradeInfo: &types.TradeInfo{
-		// 			AssetHolderId:       1,
-		// 			AssetId:             1,
-		// 			TradeType:           types.TradeTypeBuy,
-		// 			BaseCurrency:        "USD",
-		// 			SettlementCurrency:  "USD",
-		// 			Exchange:            "US",
-		// 			FundName:            "TechFund",
-		// 			Issuer:              "Blackrock",
-		// 			CoinMintingPriceUsd: 1,
-		// 			Segment:             "Global Low Carbon",
-		// 			Ticker:              "CEN",
-		// 			TradeFee:            0,
-		// 			SharePrice:          100,
-		// 			ShareNetPrice:       100,
-		// 			ExchangeRate:        1,
-		// 			NumberOfShares:      0,
-		// 		},
-		// 	},
-		// 	expErr:    true,
-		// 	expErrMsg: "number_of_shares must be greater than 0",
-		// },
 		{
 			name: "invalid brokerage country",
 			tradeData: types.TradeData{
@@ -1082,14 +975,14 @@ func TestValidateDividends(t *testing.T) {
 				NumberOfShares: 0,
 				TradeValue:     5000,
 				TradeNetValue:  5000,
-				TradeType:      types.TradeTypeReinvestment,
+				TradeType:      types.TradeTypeDividends,
 				Quantity: &sdk.Coin{
 					Amount: math.NewInt(1000000),
 					Denom:  types.DefaultDenom,
 				},
 			},
 			expErr:    true,
-			expErrMsg: "quantity must not be set for trade type TRADE_TYPE_REINVESTMENT",
+			expErrMsg: "quantity must not be set for trade type TRADE_TYPE_DIVIDENDS",
 		},
 		{
 			name: "set valid quantity",
@@ -1146,25 +1039,25 @@ func TestValidateSplit(t *testing.T) {
 		{
 			name: "invalid share_price",
 			tradeInfo: &types.TradeInfo{
-				SharePrice: 0,
+				SharePrice: -1,
 			},
 			expErr:    true,
-			expErrMsg: "share_price must be greater than 0",
+			expErrMsg: "share_price must be 0",
 		},
 		{
 			name: "invalid share_net_price",
 			tradeInfo: &types.TradeInfo{
-				SharePrice:    100,
-				ShareNetPrice: 0,
+				SharePrice:    0,
+				ShareNetPrice: -5,
 			},
 			expErr:    true,
-			expErrMsg: "share_net_price must be greater than 0",
+			expErrMsg: "share_net_price must be 0",
 		},
 		{
 			name: "invalid number_of_shares",
 			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
+				SharePrice:     0,
+				ShareNetPrice:  0,
 				NumberOfShares: 0,
 			},
 			expErr:    true,
@@ -1173,8 +1066,8 @@ func TestValidateSplit(t *testing.T) {
 		{
 			name: "invalid trade value",
 			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
+				SharePrice:     0,
+				ShareNetPrice:  0,
 				NumberOfShares: 500,
 				TradeValue:     1000,
 			},
@@ -1184,8 +1077,8 @@ func TestValidateSplit(t *testing.T) {
 		{
 			name: "invalid trade net value",
 			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
+				SharePrice:     0,
+				ShareNetPrice:  0,
 				NumberOfShares: 500,
 				TradeValue:     0,
 				TradeNetValue:  100,
@@ -1196,8 +1089,8 @@ func TestValidateSplit(t *testing.T) {
 		{
 			name: "invalid quantity",
 			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
+				SharePrice:     0,
+				ShareNetPrice:  0,
 				NumberOfShares: 500,
 				TradeValue:     0,
 				TradeNetValue:  0,
@@ -1213,8 +1106,8 @@ func TestValidateSplit(t *testing.T) {
 		{
 			name: "set valid quantity",
 			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
+				SharePrice:     0,
+				ShareNetPrice:  0,
 				NumberOfShares: 500,
 				TradeValue:     0,
 				TradeNetValue:  0,
@@ -1228,8 +1121,8 @@ func TestValidateSplit(t *testing.T) {
 		{
 			name: "nil quantity",
 			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
+				SharePrice:     0,
+				ShareNetPrice:  0,
 				NumberOfShares: 500,
 				TradeValue:     0,
 				TradeNetValue:  0,
@@ -1241,125 +1134,6 @@ func TestValidateSplit(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := types.ValidateSplit(tt.tradeInfo)
-			if tt.expErr {
-				require.Error(t, err)
-				require.Contains(t, err.Error(), tt.expErrMsg)
-			} else {
-				require.NoError(t, err)
-			}
-		})
-	}
-}
-
-func TestValidateReverseSplit(t *testing.T) {
-	tests := []struct {
-		name      string
-		tradeInfo *types.TradeInfo
-		expErr    bool
-		expErrMsg string
-	}{
-		{
-			name:      "valid trade data object",
-			tradeInfo: types.GetSampleTradeData(types.TradeTypeReverseSplit).TradeInfo,
-		},
-		{
-			name: "invalid share_price",
-			tradeInfo: &types.TradeInfo{
-				SharePrice: 0,
-			},
-			expErr:    true,
-			expErrMsg: "share_price must be greater than 0",
-		},
-		{
-			name: "invalid share_net_price",
-			tradeInfo: &types.TradeInfo{
-				SharePrice:    100,
-				ShareNetPrice: 0,
-			},
-			expErr:    true,
-			expErrMsg: "share_net_price must be greater than 0",
-		},
-		{
-			name: "invalid number_of_shares",
-			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
-				NumberOfShares: 0,
-			},
-			expErr:    true,
-			expErrMsg: "number_of_shares must be greater than 0",
-		},
-		{
-			name: "invalid trade value",
-			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
-				NumberOfShares: 500,
-				TradeValue:     1000,
-			},
-			expErr:    true,
-			expErrMsg: "trade_value must be 0",
-		},
-		{
-			name: "invalid trade net value",
-			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
-				NumberOfShares: 500,
-				TradeValue:     0,
-				TradeNetValue:  100,
-			},
-			expErr:    true,
-			expErrMsg: "trade_net_value must be 0",
-		},
-		{
-			name: "invalid quantity",
-			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
-				NumberOfShares: 500,
-				TradeValue:     0,
-				TradeNetValue:  0,
-				TradeType:      types.TradeTypeReverseSplit,
-				Quantity: &sdk.Coin{
-					Amount: math.NewInt(1000000),
-					Denom:  types.DefaultDenom,
-				},
-			},
-			expErr:    true,
-			expErrMsg: "quantity must not be set for trade type TRADE_TYPE_REVERSE_SPLIT",
-		},
-		{
-			name: "set valid quantity",
-			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
-				NumberOfShares: 500,
-				TradeValue:     0,
-				TradeNetValue:  0,
-				Quantity: &sdk.Coin{
-					Amount: math.NewInt(0),
-					Denom:  "",
-				},
-			},
-			expErr: false,
-		},
-		{
-			name: "nil quantity",
-			tradeInfo: &types.TradeInfo{
-				SharePrice:     100,
-				ShareNetPrice:  100,
-				NumberOfShares: 500,
-				TradeValue:     0,
-				TradeNetValue:  0,
-				Quantity:       nil,
-			},
-			expErr: false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			err := types.ValidateReverseSplit(tt.tradeInfo)
 			if tt.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tt.expErrMsg)

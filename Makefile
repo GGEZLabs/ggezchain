@@ -144,9 +144,9 @@ clean:
 PACKAGES_E2E=$(shell cd tests/e2e && go list ./... | grep '/e2e')
 PACKAGES_UNIT=$(shell go list ./... | grep -v -e '/tests/e2e')
 
-test-all: test test-race test-cover
+test-all: test-unit test-race test-cover
 
-test:
+test-unit:
 	@VERSION=$(VERSION) go test -mod=readonly -tags='ledger test_ledger_mock'  $(PACKAGES_UNIT)
 
 test-race:
@@ -161,7 +161,7 @@ test-e2e: build-image
 benchmark:
 	@go test -mod=readonly -bench=. $(PACKAGES_UNIT)
 
-.PHONY: test-all test \
+.PHONY: test-all test-unit \
 	test-race test-cover\
 	test-e2e benchmark
 

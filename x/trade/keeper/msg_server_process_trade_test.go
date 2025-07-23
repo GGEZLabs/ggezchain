@@ -624,3 +624,35 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeDividends() {
 	supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
 	suite.Require().Equal(sdkmath.NewInt(0), supply.Amount)
 }
+
+func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeDividendsDeduction() {
+	suite.setupTest()
+
+	createResponse, err := suite.msgServer.CreateTrade(suite.ctx, &types.MsgCreateTrade{
+		Creator:              testutil.Alice,
+		TradeData:            types.GetSampleTradeDataJson(types.TradeTypeDividendsDeduction),
+		BankingSystemData:    "{}",
+		ExchangeRateJson:     types.GetSampleExchangeRateJson(),
+		CoinMintingPriceJson: types.GetSampleCoinMintingPriceJson(),
+	})
+	suite.Require().NoError(err)
+
+	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
+		Creator:     testutil.Bob,
+		ProcessType: types.ProcessTypeConfirm,
+		TradeIndex:  createResponse.TradeIndex,
+	})
+	suite.Require().NoError(err)
+	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+		TradeIndex: createResponse.TradeIndex,
+		Status:     types.StatusProcessed,
+	}, *processResponse)
+
+	suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
+		Denom:  types.DefaultDenom,
+		Amount: sdkmath.NewInt(0),
+	}).Times(1)
+
+	supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
+	suite.Require().Equal(sdkmath.NewInt(0), supply.Amount)
+}

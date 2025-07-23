@@ -14,18 +14,23 @@ func GetSampleTradeDataJson(tradeType TradeType) string {
 	numberOfShares := 1000.0
 	sharePrice := 49.50
 	shareNetPrice := 500.00
-	quantity := &sdk.Coin{
-		Denom:  DefaultDenom,
-		Amount: math.NewInt(100000),
+
+	var quantity *sdk.Coin
+	if tradeType == TradeTypeBuy || tradeType == TradeTypeSell {
+		quantity = &sdk.Coin{
+			Denom:  DefaultDenom,
+			Amount: math.NewInt(100000),
+		}
 	}
-	if tradeType != TradeTypeBuy && tradeType != TradeTypeSell {
-		quantity = nil
-	}
-	if tradeType == TradeTypeSplit || tradeType == TradeTypeReverseSplit {
+
+	switch tradeType {
+	case TradeTypeSplit, TradeTypeReverseSplit:
 		tradeValue = 0
 		tradeNetValue = 0
-	}
-	if tradeType == TradeTypeDividends {
+		sharePrice = 0
+		shareNetPrice = 0
+
+	case TradeTypeDividends, TradeTypeDividendsDeduction:
 		numberOfShares = 0
 		sharePrice = 0
 		shareNetPrice = 0
@@ -73,20 +78,23 @@ func GetSampleTradeData(tradeType TradeType) TradeData {
 	numberOfShares := 1000.0
 	sharePrice := 49.50
 	shareNetPrice := 500.00
-	quantity := &sdk.Coin{
-		Denom:  DefaultDenom,
-		Amount: math.NewInt(100000),
+
+	var quantity *sdk.Coin
+	if tradeType == TradeTypeBuy || tradeType == TradeTypeSell {
+		quantity = &sdk.Coin{
+			Denom:  DefaultDenom,
+			Amount: math.NewInt(100000),
+		}
 	}
 
-	if tradeType != TradeTypeBuy && tradeType != TradeTypeSell {
-		quantity = nil
-	}
-	if tradeType == TradeTypeSplit || tradeType == TradeTypeReverseSplit {
+	switch tradeType {
+	case TradeTypeSplit, TradeTypeReverseSplit:
 		tradeValue = 0
 		tradeNetValue = 0
-	}
+		sharePrice = 0
+		shareNetPrice = 0
 
-	if tradeType == TradeTypeDividends {
+	case TradeTypeDividends, TradeTypeDividendsDeduction:
 		numberOfShares = 0
 		sharePrice = 0
 		shareNetPrice = 0

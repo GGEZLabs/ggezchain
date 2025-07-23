@@ -111,7 +111,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 				Denom:  types.DefaultDenom,
 				Amount: sdkmath.NewInt(10000000),
 			},
-			TradeType: types.TradeTypeUnspecified,
+			TradeType: types.TradeTypeNil,
 		}
 
 		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
