@@ -174,10 +174,6 @@ release:
   replace_existing_draft: true
   header: |
 
-    # ## Changelog
-
-    # See the full changelog [here](https://github.com/GGEZLabs/ggezchain/blob/v{{ .Version }}/CHANGELOG.md)
-
     ## ⚡️ Binaries
 
     Binaries for Linux (amd64 and arm64) are available below.
