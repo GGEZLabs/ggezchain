@@ -38,19 +38,20 @@ const (
 )
 
 const (
-	ProcessTypeUnspecified = ProcessType_PROCESS_TYPE_UNSPECIFIED
-	ProcessTypeConfirm     = ProcessType_PROCESS_TYPE_CONFIRM
-	ProcessTypeReject      = ProcessType_PROCESS_TYPE_REJECT
+	ProcessTypeNil     = ProcessType_PROCESS_TYPE_UNSPECIFIED
+	ProcessTypeConfirm = ProcessType_PROCESS_TYPE_CONFIRM
+	ProcessTypeReject  = ProcessType_PROCESS_TYPE_REJECT
 )
 
 const (
-	TradeTypeUnspecified  = TradeType_TRADE_TYPE_UNSPECIFIED
-	TradeTypeBuy          = TradeType_TRADE_TYPE_BUY
-	TradeTypeSell         = TradeType_TRADE_TYPE_SELL
-	TradeTypeSplit        = TradeType_TRADE_TYPE_SPLIT
-	TradeTypeReverseSplit = TradeType_TRADE_TYPE_REVERSE_SPLIT
-	TradeTypeReinvestment = TradeType_TRADE_TYPE_REINVESTMENT
-	TradeTypeDividends    = TradeType_TRADE_TYPE_DIVIDENDS
+	TradeTypeNil                = TradeType_TRADE_TYPE_UNSPECIFIED
+	TradeTypeBuy                = TradeType_TRADE_TYPE_BUY
+	TradeTypeSell               = TradeType_TRADE_TYPE_SELL
+	TradeTypeSplit              = TradeType_TRADE_TYPE_SPLIT
+	TradeTypeReverseSplit       = TradeType_TRADE_TYPE_REVERSE_SPLIT
+	TradeTypeReinvestment       = TradeType_TRADE_TYPE_REINVESTMENT
+	TradeTypeDividends          = TradeType_TRADE_TYPE_DIVIDENDS
+	TradeTypeDividendsDeduction = TradeType_TRADE_TYPE_DIVIDEND_DEDUCTION
 )
 
 const (

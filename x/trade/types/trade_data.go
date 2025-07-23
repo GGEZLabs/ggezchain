@@ -19,18 +19,15 @@ func ValidateTradeData(tradeData string) (TradeData, error) {
 		return td, err
 	}
 
-	// todo: add dividends type
 	switch td.TradeInfo.TradeType {
 	case TradeTypeBuy, TradeTypeSell:
 		return td, ValidateBuyOrSell(td.TradeInfo)
 	case TradeTypeReinvestment:
 		return td, ValidateReinvestment(td.TradeInfo)
-	case TradeTypeDividends:
+	case TradeTypeDividends, TradeTypeDividendsDeduction:
 		return td, ValidateDividends(td.TradeInfo)
-	case TradeTypeSplit:
+	case TradeTypeSplit, TradeTypeReverseSplit:
 		return td, ValidateSplit(td.TradeInfo)
-	case TradeTypeReverseSplit:
-		return td, ValidateReverseSplit(td.TradeInfo)
 	default:
 		return td, ErrInvalidTradeInfo.Wrapf("invalid trade_type, %s", td.TradeInfo.TradeType.String())
 	}
@@ -89,7 +86,7 @@ func ValidateCommonTradeData(td TradeData) error {
 	return nil
 }
 
-// ValidateBuyOrSell validates Buy and Sell trade types
+// ValidateBuyOrSell validates buy and sell trade types
 func ValidateBuyOrSell(tradeInfo *TradeInfo) error {
 	if tradeInfo.SharePrice <= 0 {
 		return ErrInvalidTradeInfo.Wrapf("share_price must be greater than 0, got: %f", tradeInfo.SharePrice)
@@ -121,7 +118,7 @@ func ValidateBuyOrSell(tradeInfo *TradeInfo) error {
 	return nil
 }
 
-// ValidateReinvestment validates Reinvestment trade type
+// ValidateReinvestment validates reinvestment trade type
 func ValidateReinvestment(tradeInfo *TradeInfo) error {
 	if tradeInfo.SharePrice <= 0 {
 		return ErrInvalidTradeInfo.Wrapf("share_price must be greater than 0, got: %f", tradeInfo.SharePrice)
@@ -144,7 +141,7 @@ func ValidateReinvestment(tradeInfo *TradeInfo) error {
 	return nil
 }
 
-// ValidateDividends validates Dividends trade type
+// ValidateDividends validates dividends and dividends deduction trade types
 func ValidateDividends(tradeInfo *TradeInfo) error {
 	if tradeInfo.SharePrice != 0 {
 		return ErrInvalidTradeInfo.Wrapf("share_price must be 0, got: %f", tradeInfo.SharePrice)
@@ -167,37 +164,13 @@ func ValidateDividends(tradeInfo *TradeInfo) error {
 	return nil
 }
 
-// ValidateSplit validates Split trade type
+// ValidateSplit validates split and reverse split trade types
 func ValidateSplit(tradeInfo *TradeInfo) error {
-	// todo: check if share price will be passed or not
-	if tradeInfo.SharePrice <= 0 {
-		return ErrInvalidTradeInfo.Wrapf("share_price must be greater than 0, got: %f", tradeInfo.SharePrice)
+	if tradeInfo.SharePrice != 0 {
+		return ErrInvalidTradeInfo.Wrapf("share_price must be 0, got: %f", tradeInfo.SharePrice)
 	}
-	if tradeInfo.ShareNetPrice <= 0 {
-		return ErrInvalidTradeInfo.Wrapf("share_net_price must be greater than 0, got: %f", tradeInfo.ShareNetPrice)
-	}
-	if tradeInfo.NumberOfShares <= 0 {
-		return ErrInvalidTradeInfo.Wrapf("number_of_shares must be greater than 0, got: %f", tradeInfo.NumberOfShares)
-	}
-	if tradeInfo.TradeValue != 0 {
-		return ErrInvalidTradeInfo.Wrapf("trade_value must be 0, got: %f", tradeInfo.TradeValue)
-	}
-	if tradeInfo.TradeNetValue != 0 {
-		return ErrInvalidTradeInfo.Wrapf("trade_net_value must be 0, got: %f", tradeInfo.TradeNetValue)
-	}
-	if err := ValidateNoQuantity(tradeInfo); err != nil {
-		return err
-	}
-	return nil
-}
-
-// ValidateReverseSplit validates Reverse Split trade type
-func ValidateReverseSplit(tradeInfo *TradeInfo) error {
-	if tradeInfo.SharePrice <= 0 {
-		return ErrInvalidTradeInfo.Wrapf("share_price must be greater than 0, got: %f", tradeInfo.SharePrice)
-	}
-	if tradeInfo.ShareNetPrice <= 0 {
-		return ErrInvalidTradeInfo.Wrapf("share_net_price must be greater than 0, got: %f", tradeInfo.ShareNetPrice)
+	if tradeInfo.ShareNetPrice != 0 {
+		return ErrInvalidTradeInfo.Wrapf("share_net_price must be 0, got: %f", tradeInfo.ShareNetPrice)
 	}
 	if tradeInfo.NumberOfShares <= 0 {
 		return ErrInvalidTradeInfo.Wrapf("number_of_shares must be greater than 0, got: %f", tradeInfo.NumberOfShares)
