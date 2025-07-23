@@ -1,0 +1,36 @@
+name: Lint
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+env:
+  GO_VERSION: "1.23"
+  GIT_DIFF:
+
+jobs:
+  golangci:
+    name: Run golangci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - uses: technote-space/get-diff-action@v6.1.2
+        with:
+          PATTERNS: |
+            **/**.go
+            go.mod
+            go.sum
+            .github/**
+            Makefile
+      - name: 🐿 Setup Golang
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{env.GO_VERSION}}
+
+      - name: Run golangci-lint
+        if: env.GIT_DIFF
+        run: make lint-all
