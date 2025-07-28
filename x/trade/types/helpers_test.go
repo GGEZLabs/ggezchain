@@ -104,13 +104,13 @@ func TestValidateExchangeRateJson(t *testing.T) {
 		},
 		{
 			name:             "Invalid original_amount",
-			exchangeRateJson: `[{"from_currency":"USD","to_currency":"EUR","original_amount":0,"converted_amount":0.85,"currency_rate":0.85,"timestamp":"2025-07-08T10:59:59Z"}]`,
+			exchangeRateJson: `[{"from_currency":"USD","to_currency":"EUR","original_amount":-1,"converted_amount":0.85,"currency_rate":0.85,"timestamp":"2025-07-08T10:59:59Z"}]`,
 			expErr:           true,
 			expErrMsg:        "original_amount must be greater than 0",
 		},
 		{
 			name:             "Invalid converted_amount",
-			exchangeRateJson: `[{"from_currency":"USD","to_currency":"EUR","original_amount":1,"converted_amount":0,"currency_rate":0.85,"timestamp":"2025-07-08T10:59:59Z"}]`,
+			exchangeRateJson: `[{"from_currency":"USD","to_currency":"EUR","original_amount":1,"converted_amount":-1,"currency_rate":0.85,"timestamp":"2025-07-08T10:59:59Z"}]`,
 			expErr:           true,
 			expErrMsg:        "converted_amount must be greater than 0",
 		},
