@@ -12,3 +12,4 @@ build/
 coverage.txt
 dist
 exclusive.lock
+config.yml
