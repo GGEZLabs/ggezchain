@@ -96,7 +96,7 @@ func (c *chain) createAndInitValidators(count int) error {
 	appOptions[flags.FlagHome] = ggezchain.DefaultNodeHome
 	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
 
-	tempApplication, _ := ggezchain.New(
+	tempApplication := ggezchain.New(
 		log.NewNopLogger(),
 		dbm.NewMemDB(),
 		nil,
@@ -142,7 +142,7 @@ func (c *chain) createAndInitValidatorsWithMnemonics(count int, mnemonics []stri
 	appOptions[flags.FlagHome] = ggezchain.DefaultNodeHome
 	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
 
-	tempApplication, _ := ggezchain.New(
+	tempApplication := ggezchain.New(
 		log.NewNopLogger(),
 		dbm.NewMemDB(),
 		nil,

@@ -1,4 +1,4 @@
-package app_test
+package app
 
 import (
 	"encoding/json"
@@ -16,13 +16,11 @@ import (
 	storetypes "cosmossdk.io/store/types"
 	"cosmossdk.io/x/feegrant"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
-	"github.com/GGEZLabs/ggezchain/v2/app"
 	abci "github.com/cometbft/cometbft/abci/types"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/server"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	simulationtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	authzkeeper "github.com/cosmos/cosmos-sdk/x/authz/keeper"
@@ -59,7 +57,7 @@ func interBlockCacheOpt() func(*baseapp.BaseApp) {
 }
 
 // BenchmarkSimulation run the chain simulation
-// Running using starport command:
+// Running using ignite command:
 // `ignite chain simulate -v --numBlocks 200 --blockSize 50`
 // Running as go benchmark test:
 // `go test -benchmem -run=^$ -bench ^BenchmarkSimulation ./app -NumBlocks=200 -BlockSize 50 -Commit=true -Verbose=true -Enabled=true`
@@ -84,12 +82,10 @@ func BenchmarkSimulation(b *testing.B) {
 	}()
 
 	appOptions := make(simtestutil.AppOptionsMap, 0)
-	appOptions[flags.FlagHome] = app.DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
+	appOptions[flags.FlagHome] = DefaultNodeHome
 
-	bApp, err := app.New(logger, db, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
-	require.NoError(b, err)
-	require.Equal(b, app.Name, bApp.Name())
+	bApp := New(logger, db, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	require.Equal(b, Name, bApp.Name())
 
 	// run randomized simulation
 	_, simParams, simErr := simulation.SimulateFromSeed(
@@ -99,7 +95,7 @@ func BenchmarkSimulation(b *testing.B) {
 		simtestutil.AppStateFn(bApp.AppCodec(), bApp.SimulationManager(), bApp.DefaultGenesis()),
 		simulationtypes.RandomAccounts,
 		simtestutil.SimulationOperations(bApp, bApp.AppCodec(), config),
-		app.BlockedAddresses(),
+		BlockedAddresses(),
 		config,
 		bApp.AppCodec(),
 	)
@@ -108,6 +104,53 @@ func BenchmarkSimulation(b *testing.B) {
 	err = simtestutil.CheckExportSimulation(bApp, config, simParams)
 	require.NoError(b, err)
 	require.NoError(b, simErr)
+
+	if config.Commit {
+		simtestutil.PrintStats(db)
+	}
+}
+
+func TestFullAppSimulation(t *testing.T) {
+	config := simcli.NewConfigFromFlags()
+	config.ChainID = SimAppChainID
+
+	db, dir, logger, skip, err := simtestutil.SetupSimulation(config, "leveldb-app-sim", "Simulation", simcli.FlagVerboseValue, simcli.FlagEnabledValue)
+	if skip {
+		t.Skip("skipping application simulation")
+	}
+	require.NoError(t, err, "simulation setup failed")
+
+	defer func() {
+		require.NoError(t, db.Close())
+		require.NoError(t, os.RemoveAll(dir))
+	}()
+
+	appOptions := make(simtestutil.AppOptionsMap, 0)
+	appOptions[flags.FlagHome] = DefaultNodeHome
+
+	app := New(logger, db, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	if !simcli.FlagSigverifyTxValue {
+		app.SetNotSigverifyTx()
+	}
+	require.Equal(t, "ggezchain", app.Name())
+
+	// run randomized simulation
+	_, simParams, simErr := simulation.SimulateFromSeed(
+		t,
+		os.Stdout,
+		app.BaseApp,
+		simtestutil.AppStateFn(app.AppCodec(), app.SimulationManager(), app.DefaultGenesis()),
+		simulationtypes.RandomAccounts,
+		simtestutil.SimulationOperations(app, app.AppCodec(), config),
+		BlockedAddresses(),
+		config,
+		app.AppCodec(),
+	)
+
+	// export state and simParams before the simulation error is checked
+	err = simtestutil.CheckExportSimulation(app, config, simParams)
+	require.NoError(t, err)
+	require.NoError(t, simErr)
 
 	if config.Commit {
 		simtestutil.PrintStats(db)
@@ -130,12 +173,10 @@ func TestAppImportExport(t *testing.T) {
 	}()
 
 	appOptions := make(simtestutil.AppOptionsMap, 0)
-	appOptions[flags.FlagHome] = app.DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
+	appOptions[flags.FlagHome] = DefaultNodeHome
 
-	bApp, err := app.New(logger, db, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
-	require.NoError(t, err)
-	require.Equal(t, app.Name, bApp.Name())
+	bApp := New(logger, db, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	require.Equal(t, Name, bApp.Name())
 
 	// Run randomized simulation
 	_, simParams, simErr := simulation.SimulateFromSeed(
@@ -145,7 +186,7 @@ func TestAppImportExport(t *testing.T) {
 		simtestutil.AppStateFn(bApp.AppCodec(), bApp.SimulationManager(), bApp.DefaultGenesis()),
 		simulationtypes.RandomAccounts,
 		simtestutil.SimulationOperations(bApp, bApp.AppCodec(), config),
-		app.BlockedAddresses(),
+		BlockedAddresses(),
 		config,
 		bApp.AppCodec(),
 	)
@@ -174,11 +215,10 @@ func TestAppImportExport(t *testing.T) {
 		require.NoError(t, os.RemoveAll(newDir))
 	}()
 
-	newApp, err := app.New(log.NewNopLogger(), newDB, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
-	require.NoError(t, err)
-	require.Equal(t, app.Name, newApp.Name())
+	newApp := New(log.NewNopLogger(), newDB, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	require.Equal(t, Name, newApp.Name())
 
-	var genesisState app.GenesisState
+	var genesisState GenesisState
 	err = json.Unmarshal(exported.AppState, &genesisState)
 	require.NoError(t, err)
 
@@ -228,11 +268,11 @@ func TestAppImportExport(t *testing.T) {
 		storeB := ctxB.KVStore(appKeyB)
 
 		failedKVAs, failedKVBs := simtestutil.DiffKVStores(storeA, storeB, skipPrefixes[keyName])
-		require.Equal(t, len(failedKVAs), len(failedKVBs), "unequal sets of key-values to compare %s", keyName)
+		require.Equal(t, len(failedKVAs), len(failedKVBs), "unequal sets of key-values to compare %s, key stores %s and %s", keyName, appKeyA, appKeyB)
 
-		fmt.Printf("compared %d different key/value pairs between %s and %s\n", len(failedKVAs), appKeyA, appKeyB)
+		t.Logf("compared %d different key/value pairs between %s and %s\n", len(failedKVAs), appKeyA, appKeyB)
 
-		require.Empty(t, failedKVAs, simtestutil.GetSimulationLog(keyName, bApp.SimulationManager().StoreDecoders, failedKVAs, failedKVBs))
+		require.Equal(t, 0, len(failedKVAs), simtestutil.GetSimulationLog(keyName, bApp.SimulationManager().StoreDecoders, failedKVAs, failedKVBs))
 	}
 }
 
@@ -252,12 +292,10 @@ func TestAppSimulationAfterImport(t *testing.T) {
 	}()
 
 	appOptions := make(simtestutil.AppOptionsMap, 0)
-	appOptions[flags.FlagHome] = app.DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
+	appOptions[flags.FlagHome] = DefaultNodeHome
 
-	bApp, err := app.New(logger, db, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
-	require.NoError(t, err)
-	require.Equal(t, app.Name, bApp.Name())
+	bApp := New(logger, db, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	require.Equal(t, Name, bApp.Name())
 
 	// Run randomized simulation
 	stopEarly, simParams, simErr := simulation.SimulateFromSeed(
@@ -267,7 +305,7 @@ func TestAppSimulationAfterImport(t *testing.T) {
 		simtestutil.AppStateFn(bApp.AppCodec(), bApp.SimulationManager(), bApp.DefaultGenesis()),
 		simulationtypes.RandomAccounts,
 		simtestutil.SimulationOperations(bApp, bApp.AppCodec(), config),
-		app.BlockedAddresses(),
+		BlockedAddresses(),
 		config,
 		bApp.AppCodec(),
 	)
@@ -301,9 +339,8 @@ func TestAppSimulationAfterImport(t *testing.T) {
 		require.NoError(t, os.RemoveAll(newDir))
 	}()
 
-	newApp, err := app.New(log.NewNopLogger(), newDB, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
-	require.NoError(t, err)
-	require.Equal(t, app.Name, newApp.Name())
+	newApp := New(log.NewNopLogger(), newDB, nil, true, appOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	require.Equal(t, Name, newApp.Name())
 
 	_, err = newApp.InitChain(&abci.RequestInitChain{
 		AppStateBytes: exported.AppState,
@@ -318,7 +355,7 @@ func TestAppSimulationAfterImport(t *testing.T) {
 		simtestutil.AppStateFn(bApp.AppCodec(), bApp.SimulationManager(), bApp.DefaultGenesis()),
 		simulationtypes.RandomAccounts,
 		simtestutil.SimulationOperations(newApp, newApp.AppCodec(), config),
-		app.BlockedAddresses(),
+		BlockedAddresses(),
 		config,
 		bApp.AppCodec(),
 	)
@@ -356,8 +393,7 @@ func TestAppStateDeterminism(t *testing.T) {
 			appOptions.SetDefault(key, value)
 		}
 	}
-	appOptions.SetDefault(flags.FlagHome, app.DefaultNodeHome)
-	appOptions.SetDefault(server.FlagInvCheckPeriod, simcli.FlagPeriodValue)
+	appOptions.SetDefault(flags.FlagHome, DefaultNodeHome)
 	if simcli.FlagVerboseValue {
 		appOptions.SetDefault(flags.FlagLogLevel, "debug")
 	}
@@ -377,7 +413,7 @@ func TestAppStateDeterminism(t *testing.T) {
 			}
 
 			db := dbm.NewMemDB()
-			bApp, err := app.New(
+			bApp := New(
 				logger,
 				db,
 				nil,
@@ -386,14 +422,13 @@ func TestAppStateDeterminism(t *testing.T) {
 				interBlockCacheOpt(),
 				baseapp.SetChainID(SimAppChainID),
 			)
-			require.NoError(t, err)
 
 			fmt.Printf(
 				"running non-determinism simulation; seed %d: %d/%d, attempt: %d/%d\n",
 				config.Seed, i+1, numSeeds, j+1, numTimesToRunPerSeed,
 			)
 
-			_, _, err = simulation.SimulateFromSeed(
+			_, _, err := simulation.SimulateFromSeed(
 				t,
 				os.Stdout,
 				bApp.BaseApp,
@@ -404,7 +439,7 @@ func TestAppStateDeterminism(t *testing.T) {
 				),
 				simulationtypes.RandomAccounts,
 				simtestutil.SimulationOperations(bApp, bApp.AppCodec(), config),
-				app.BlockedAddresses(),
+				BlockedAddresses(),
 				config,
 				bApp.AppCodec(),
 			)
