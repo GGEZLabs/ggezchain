@@ -275,12 +275,12 @@ var (
 				Config: appconfig.WrapAny(&circuitmodulev1.Module{}),
 			},
 			{
-				Name:   trademoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&trademodulev1.Module{}),
-			},
-			{
 				Name:   aclmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&aclmodulev1.Module{}),
+			},
+			{
+				Name:   trademoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&trademodulev1.Module{}),
 			},
 			{
 				Name:   paramstypes.ModuleName,

@@ -62,7 +62,6 @@ func initRootCmd(
 // addModuleInitFlags adds more flags to the start command.
 func addModuleInitFlags(startCmd *cobra.Command) {
 	wasm.AddModuleInitFlags(startCmd)
-
 }
 
 func queryCommand() *cobra.Command {

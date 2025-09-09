@@ -105,8 +105,8 @@ type App struct {
 	// CosmWasm
 	WasmKeeper wasmkeeper.Keeper
 
-	TradeKeeper trademodulekeeper.Keeper
 	AclKeeper   aclmodulekeeper.Keeper
+	TradeKeeper trademodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -186,8 +186,8 @@ func New(
 		&app.CircuitBreakerKeeper,
 		&app.ParamsKeeper,
 		&app.FeeGrantKeeper,
-		&app.TradeKeeper,
 		&app.AclKeeper,
+		&app.TradeKeeper,
 	); err != nil {
 		panic(err)
 	}

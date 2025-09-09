@@ -25,7 +25,7 @@ func NewRootCmd() *cobra.Command {
 		autoCliOpts        autocli.AppOptions
 		moduleBasicManager module.BasicManager
 		clientCtx          client.Context
-	)	
+	)
 	if err := depinject.Inject(
 		depinject.Configs(app.AppConfig(),
 			depinject.Supply(log.NewNopLogger()),
