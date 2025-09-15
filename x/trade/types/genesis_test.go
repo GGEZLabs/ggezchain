@@ -1484,7 +1484,7 @@ func TestGenesisState_ValidateStoredTempTrade(t *testing.T) {
 }
 
 func TestDefaultGenesisState_ExpectedInitialNextId(t *testing.T) {
-	require.EqualValues(t,
+	require.Equal(t,
 		&types.GenesisState{
 			StoredTrades:     []types.StoredTrade{},
 			TradeIndex:       types.TradeIndex{NextId: 1},

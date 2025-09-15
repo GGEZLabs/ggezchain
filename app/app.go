@@ -94,7 +94,7 @@ type App struct {
 	AuthzKeeper           authzkeeper.Keeper
 	ConsensusParamsKeeper consensuskeeper.Keeper
 	CircuitBreakerKeeper  circuitkeeper.Keeper
-	ParamsKeeper          paramskeeper.Keeper
+	ParamsKeeper          paramskeeper.Keeper //nolint:staticcheck
 
 	// ibc keepers
 	IBCKeeper           *ibckeeper.Keeper
@@ -118,7 +118,6 @@ type App struct {
 }
 
 func init() {
-
 	sdk.DefaultBondDenom = "uggez1"
 
 	var err error
@@ -227,7 +226,7 @@ func New(
 		if err := app.UpgradeKeeper.SetModuleVersionMap(ctx, app.ModuleManager.GetVersionMap()); err != nil {
 			return nil, err
 		}
-		return app.App.InitChainer(ctx, req)
+		return app.InitChainer(ctx, req)
 	})
 
 	app.setupUpgradeHandlers(app.Configurator())

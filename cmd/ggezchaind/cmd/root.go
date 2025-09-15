@@ -6,6 +6,7 @@ import (
 	"cosmossdk.io/client/v2/autocli"
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
+	"github.com/GGEZLabs/ggezchain/v2/app"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/config"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -16,7 +17,6 @@ import (
 	authtxconfig "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/spf13/cobra"
-	"github.com/GGEZLabs/ggezchain/v2/app"
 )
 
 // NewRootCmd creates a new root command for ggezchaind. It is called once in the main function.

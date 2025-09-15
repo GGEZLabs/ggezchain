@@ -70,7 +70,7 @@ func (s *IntegrationTestSuite) fundCommunityPool() {
 		beforeDistUGGEZ1Balance = sdk.NewInt64Coin(uggez1Denom, 0)
 	}
 
-	s.execDistributionFundCommunityPool(s.chainA, 0, sender.String(), tokenAmount.String(), standardFees.String())
+	s.execProtocolpoolFundCommunityPool(s.chainA, 0, sender.String(), tokenAmount.String(), standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {

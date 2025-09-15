@@ -182,7 +182,7 @@ func TestHasDuplicateAddresses(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			hasDuplicate := hasDuplicateAddresses(tt.addresses)
-			require.EqualValues(t, tt.expectedOutput, hasDuplicate)
+			require.Equal(t, tt.expectedOutput, hasDuplicate)
 		})
 	}
 }

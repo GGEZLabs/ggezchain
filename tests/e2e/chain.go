@@ -27,6 +27,7 @@ import (
 	govv1types "github.com/cosmos/cosmos-sdk/x/gov/types/v1"
 	govv1beta1types "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramsproptypes "github.com/cosmos/cosmos-sdk/x/params/types/proposal"
+	protocolpooltypes "github.com/cosmos/cosmos-sdk/x/protocolpool/types"
 	simcli "github.com/cosmos/cosmos-sdk/x/simulation/client/cli"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	ratelimittypes "github.com/cosmos/ibc-apps/modules/rate-limiting/v10/types"
@@ -57,6 +58,7 @@ func init() {
 	paramsproptypes.RegisterLegacyAminoCodec(encodingConfig.Amino)
 	upgradetypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	distribtypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
+	protocolpooltypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	ratelimittypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	tradetypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	acltypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
@@ -94,7 +96,7 @@ func (c *chain) configDir() string {
 func (c *chain) createAndInitValidators(count int) error {
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = ggezchain.DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
+	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue //nolint:staticcheck
 
 	tempApplication := ggezchain.New(
 		log.NewNopLogger(),
@@ -140,7 +142,7 @@ func (c *chain) createAndInitValidators(count int) error {
 func (c *chain) createAndInitValidatorsWithMnemonics(count int, mnemonics []string) error { //nolint:unused // this is called during e2e tests
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = ggezchain.DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
+	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue //nolint:staticcheck
 
 	tempApplication := ggezchain.New(
 		log.NewNopLogger(),

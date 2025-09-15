@@ -10,6 +10,7 @@ import (
 	"cosmossdk.io/log"
 	"cosmossdk.io/math"
 	storetypes "cosmossdk.io/store/types"
+	"github.com/GGEZLabs/ggezchain/v2/app"
 	"github.com/cometbft/cometbft/crypto"
 	"github.com/cometbft/cometbft/libs/bytes"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
@@ -26,8 +27,6 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
-
-	"github.com/GGEZLabs/ggezchain/v2/app"
 )
 
 const valVotingPower int64 = 900000000000000
@@ -79,7 +78,7 @@ func newTestnetApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts s
 func initAppForTestnet(app *app.App, args valArgs) *app.App {
 	// Required Changes:
 	//
-	ctx := app.App.NewUncachedContext(true, cmtproto.Header{})
+	ctx := app.NewUncachedContext(true, cmtproto.Header{})
 
 	pubkey := &ed25519.PubKey{Key: args.newValPubKey.Bytes()}
 	pubkeyAny, err := codectypes.NewAnyWithValue(pubkey)
@@ -169,7 +168,7 @@ func initAppForTestnet(app *app.App, args valArgs) *app.App {
 	newConsAddr := sdk.ConsAddress(args.newValAddr.Bytes())
 	newValidatorSigningInfo := slashingtypes.ValidatorSigningInfo{
 		Address:     newConsAddr.String(),
-		StartHeight: app.App.LastBlockHeight() - 1,
+		StartHeight: app.LastBlockHeight() - 1,
 		Tombstoned:  false,
 	}
 	_ = app.SlashingKeeper.SetValidatorSigningInfo(ctx, newConsAddr, newValidatorSigningInfo)
