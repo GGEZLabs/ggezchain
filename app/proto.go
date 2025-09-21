@@ -1,14 +1,27 @@
 package app
 
 import (
+	"cosmossdk.io/log"
 	"cosmossdk.io/x/tx/signing"
+	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
+	amino "github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/codec/types"
+	"github.com/cosmos/cosmos-sdk/server"
+	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
+	simcli "github.com/cosmos/cosmos-sdk/x/simulation/client/cli"
+	enccodec "github.com/cosmos/evm/encoding/codec"
+	"github.com/cosmos/evm/ethereum/eip712"
+	erc20types "github.com/cosmos/evm/x/erc20/types"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/cosmos/gogoproto/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // EncodingConfig specifies the concrete encoding types to use for a given app.
@@ -22,29 +35,58 @@ type EncodingConfig struct {
 
 // MakeEncodingConfig creates an EncodingConfig for an amino based test configuration.
 func MakeEncodingConfig() EncodingConfig {
-	amino := codec.NewLegacyAmino()
-	interfaceRegistry, err := types.NewInterfaceRegistryWithOptions(types.InterfaceRegistryOptions{
-		ProtoFiles: proto.HybridResolver,
-		SigningOptions: signing.Options{
-			AddressCodec: address.Bech32Codec{
-				Bech32Prefix: sdk.GetConfig().GetBech32AccountAddrPrefix(),
-			},
-			ValidatorAddressCodec: address.Bech32Codec{
-				Bech32Prefix: sdk.GetConfig().GetBech32ValidatorAddrPrefix(),
-			},
+	cdc := amino.NewLegacyAmino()
+	signingOptions := signing.Options{
+		AddressCodec: address.Bech32Codec{
+			Bech32Prefix: sdk.GetConfig().GetBech32AccountAddrPrefix(),
 		},
-	})
-	if err != nil {
-		panic(err)
+		ValidatorAddressCodec: address.Bech32Codec{
+			Bech32Prefix: sdk.GetConfig().GetBech32ValidatorAddrPrefix(),
+		},
+		CustomGetSigners: map[protoreflect.FullName]signing.GetSignersFunc{
+			evmtypes.MsgEthereumTxCustomGetSigner.MsgType:     evmtypes.MsgEthereumTxCustomGetSigner.Fn,
+			erc20types.MsgConvertERC20CustomGetSigner.MsgType: erc20types.MsgConvertERC20CustomGetSigner.Fn,
+		},
 	}
 
-	marshaler := codec.NewProtoCodec(interfaceRegistry)
-	txCfg := tx.NewTxConfig(marshaler, tx.DefaultSignModes)
+	interfaceRegistry, _ := types.NewInterfaceRegistryWithOptions(types.InterfaceRegistryOptions{
+		ProtoFiles:     proto.HybridResolver,
+		SigningOptions: signingOptions,
+	})
+	codec := amino.NewProtoCodec(interfaceRegistry)
+	enccodec.RegisterLegacyAminoCodec(cdc)
+	enccodec.RegisterInterfaces(interfaceRegistry)
+
+	// This is needed for the EIP712 txs because currently is using
+	// the deprecated method legacytx.StdSignBytes
+	legacytx.RegressionTestingAminoCodec = cdc
+	eip712.SetEncodingConfig(cdc, interfaceRegistry, EVMChainID)
 
 	return EncodingConfig{
 		InterfaceRegistry: interfaceRegistry,
-		Codec:             marshaler,
-		TxConfig:          txCfg,
-		Amino:             amino,
+		Codec:             codec,
+		TxConfig:          tx.NewTxConfig(codec, tx.DefaultSignModes),
+		Amino:             cdc,
 	}
+}
+
+type CombinedCodecs struct {
+	Amino *codec.LegacyAmino
+	Proto codec.Codec
+}
+
+// NewTmpApp returns a new App
+func NewTmpApp() *App {
+	appOptions := make(simtestutil.AppOptionsMap, 0)
+	appOptions[flags.FlagHome] = DefaultNodeHome
+	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue //nolint:staticcheck
+	newTempApp := New(
+		log.NewNopLogger(),
+		dbm.NewMemDB(),
+		nil,
+		true,
+		appOptions,
+	)
+
+	return newTempApp
 }

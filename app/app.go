@@ -1,7 +1,10 @@
 package app
 
 import (
+	"encoding/json"
 	"io"
+
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 
 	clienthelpers "cosmossdk.io/client/v2/helpers"
 	"cosmossdk.io/core/appmodule"
@@ -11,6 +14,7 @@ import (
 	circuitkeeper "cosmossdk.io/x/circuit/keeper"
 	feegrantkeeper "cosmossdk.io/x/feegrant/keeper"
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
+	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/docs"
 	aclmodulekeeper "github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
@@ -49,8 +53,25 @@ import (
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/controller/keeper"
 	icahostkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/keeper"
-	ibctransferkeeper "github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
+
 	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
+	"github.com/spf13/cast"
+
+	"cosmossdk.io/math"
+	"github.com/cosmos/evm/ante"
+	enccodec "github.com/cosmos/evm/encoding/codec"
+	evmsrvflags "github.com/cosmos/evm/server/flags"
+	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
+	erc20types "github.com/cosmos/evm/x/erc20/types"
+	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
+	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
+	ibctransferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
+	precisebankkeeper "github.com/cosmos/evm/x/precisebank/keeper"
+	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 const (
@@ -59,7 +80,13 @@ const (
 	// AccountAddressPrefix is the prefix for accounts addresses.
 	AccountAddressPrefix = "ggez"
 	// ChainCoinType is the coin type of the chain.
-	ChainCoinType = 118
+	ChainCoinType = 60
+
+	CosmosChainID = "ggezchain"
+
+	EVMChainID = 9000
+
+	BaseDenomUnit int64 = 18
 )
 
 // DefaultNodeHome default home directories for the application daemon
@@ -107,14 +134,25 @@ type App struct {
 	// CosmWasm
 	WasmKeeper wasmkeeper.Keeper
 
+	// Cosmos EVM keepers
+	FeeMarketKeeper   feemarketkeeper.Keeper
+	EVMKeeper         *evmkeeper.Keeper
+	Erc20Keeper       erc20keeper.Keeper
+	PreciseBankKeeper precisebankkeeper.Keeper
+
 	AclKeeper   aclmodulekeeper.Keeper
 	TradeKeeper trademodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
-	sm                 *module.SimulationManager
+	sm *module.SimulationManager
+
 	ProtocolPoolKeeper protocolpoolkeeper.Keeper
 	EpochsKeeper       epochskeeper.Keeper
+
+	// pending tx listeners
+	pendingTxListeners []ante.PendingTxListener
+	clientCtx          client.Context
 }
 
 func init() {
@@ -138,6 +176,7 @@ func AppConfig() depinject.Config {
 				genutiltypes.ModuleName: genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
 			},
 		),
+		depinject.Provide(ProvideMsgEthereumTxCustomGetSigner), // TODO:
 	)
 }
 
@@ -167,7 +206,7 @@ func New(
 				// on available options and how to use them.
 			),
 		)
-	)
+	)	
 	var appModules map[string]appmodule.AppModule
 	if err := depinject.Inject(appConfig,
 		&appBuilder,
@@ -200,10 +239,17 @@ func New(
 	// add to default baseapp options
 	// enable optimistic execution
 	baseAppOptions = append(baseAppOptions, baseapp.SetOptimisticExecution())
+	// TODO:
+	enccodec.RegisterInterfaces(app.interfaceRegistry)
 
 	// build app
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
 
+	// evm must be instantiated before IBC modules
+	if err := app.registerEVMModules(appOpts); err != nil {
+		panic(err)
+	}
+	
 	// register legacy modules
 	if err := app.registerIBCModules(appOpts); err != nil {
 		panic(err)
@@ -228,6 +274,15 @@ func New(
 		}
 		return app.InitChainer(ctx, req)
 	})
+
+	maxGasWanted := cast.ToUint64(appOpts.Get(evmsrvflags.EVMMaxTxGasWanted))
+	wasmConfig, err := wasm.ReadNodeConfig(appOpts)
+	if err != nil {
+		panic(err)
+	}
+
+	// set ante handlers
+	app.setAnteHandler(app.appCodec, app.txConfig, maxGasWanted, wasmConfig, app.GetKey(wasmtypes.StoreKey))
 
 	app.setupUpgradeHandlers(app.Configurator())
 
@@ -318,4 +373,34 @@ func BlockedAddresses() map[string]bool {
 		}
 	}
 	return result
+}
+
+// TODO:
+func (app *App) DefaultGenesis() map[string]json.RawMessage {
+	genesis := app.App.DefaultGenesis()
+
+	evmGenState := evmtypes.DefaultGenesisState()
+	evmGenState.Params.ActiveStaticPrecompiles = evmtypes.AvailableStaticPrecompiles
+	evmGenState.Params.EvmDenom = "uggez1"
+	genesis[evmtypes.ModuleName] = app.appCodec.MustMarshalJSON(evmGenState)
+
+	// Add ERC20 genesis configuration
+	erc20GenState := erc20types.DefaultGenesisState()
+	genesis[erc20types.ModuleName] = app.appCodec.MustMarshalJSON(erc20GenState)
+
+	feemarketGenState := feemarkettypes.DefaultGenesisState()
+	feemarketGenState.Params.NoBaseFee = false
+	feemarketGenState.Params.BaseFee = math.LegacyMustNewDecFromStr("0.01")
+	feemarketGenState.Params.MinGasPrice = feemarketGenState.Params.BaseFee
+	genesis[feemarkettypes.ModuleName] = app.appCodec.MustMarshalJSON(feemarketGenState)
+
+	return genesis
+}
+
+func (app *App) SetClientCtx(clientCtx client.Context) {
+	app.clientCtx = clientCtx
+}
+
+func (app *App) RegisterPendingTxListener(listener func(common.Hash)) {
+	app.pendingTxListeners = append(app.pendingTxListeners, listener)
 }

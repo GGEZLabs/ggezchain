@@ -78,6 +78,11 @@ import (
 	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
 	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
+
+	erc20types "github.com/cosmos/evm/x/erc20/types"
+	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
+	precisebanktypes "github.com/cosmos/evm/x/precisebank/types"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
 )
 
 var (
@@ -91,10 +96,14 @@ var (
 		{Account: nft.ModuleName},
 		{Account: ibctransfertypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
 		{Account: icatypes.ModuleName},
+		{Account: evmtypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
+		{Account: erc20types.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
+		{Account: feemarkettypes.ModuleName},
 		{Account: trademoduletypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner, authtypes.Staking}},
 		{Account: wasmtypes.ModuleName, Permissions: []string{authtypes.Burner}},
 		{Account: protocolpooltypes.ModuleName},
 		{Account: protocolpooltypes.ProtocolPoolEscrowAccount},
+		{Account: precisebanktypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -136,6 +145,11 @@ var (
 						stakingtypes.ModuleName,
 						authz.ModuleName,
 						epochstypes.ModuleName,
+						// cosmos evm modules
+						erc20types.ModuleName,
+						feemarkettypes.ModuleName,
+						evmtypes.ModuleName,
+						precisebanktypes.ModuleName,
 						// ibc modules
 						ibcexported.ModuleName,
 						// chain modules
@@ -154,6 +168,9 @@ var (
 						trademoduletypes.ModuleName,
 						wasmtypes.ModuleName,
 						protocolpooltypes.ModuleName,
+						erc20types.ModuleName,
+						feemarkettypes.ModuleName,
+						evmtypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/endBlockers
 					},
 					// The following is mostly only needed when ModuleName != StoreKey name.
@@ -186,6 +203,11 @@ var (
 						upgradetypes.ModuleName,
 						circuittypes.ModuleName,
 						epochstypes.ModuleName,
+						// cosmos evm modules
+						erc20types.ModuleName,
+						feemarkettypes.ModuleName,
+						evmtypes.ModuleName,
+						precisebanktypes.ModuleName,
 						// ibc modules
 						ibcexported.ModuleName,
 						ibctransfertypes.ModuleName,

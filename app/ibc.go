@@ -11,6 +11,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
+	ibctransfer "github.com/cosmos/evm/x/ibc/transfer"
+	ibctransferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
+	ibctransferv2 "github.com/cosmos/evm/x/ibc/transfer/v2"
 	icamodule "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts"
 	icacontroller "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/controller"
 	icacontrollerkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/controller/keeper"
@@ -19,10 +22,7 @@ import (
 	icahostkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/keeper"
 	icahosttypes "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/types"
 	icatypes "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/types"
-	ibctransfer "github.com/cosmos/ibc-go/v10/modules/apps/transfer"
-	ibctransferkeeper "github.com/cosmos/ibc-go/v10/modules/apps/transfer/keeper"
 	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
-	ibctransferv2 "github.com/cosmos/ibc-go/v10/modules/apps/transfer/v2"
 	ibc "github.com/cosmos/ibc-go/v10/modules/core"
 	ibcclienttypes "github.com/cosmos/ibc-go/v10/modules/core/02-client/types"
 	ibcconnectiontypes "github.com/cosmos/ibc-go/v10/modules/core/03-connection/types"
@@ -75,6 +75,7 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 		app.MsgServiceRouter(),
 		app.AuthKeeper,
 		app.BankKeeper,
+		app.Erc20Keeper,
 		govModuleAddr,
 	)
 
@@ -156,14 +157,14 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 // RegisterIBC Since the IBC modules don't support dependency injection,
 // we need to manually register the modules on the client side.
 // This needs to be removed after IBC supports App Wiring.
-func RegisterIBC(cdc codec.Codec) map[string]appmodule.AppModule {
+func RegisterIBC(cdc codec.Codec, app *App) map[string]appmodule.AppModule {
 	modules := map[string]appmodule.AppModule{
-		ibcexported.ModuleName:      ibc.AppModule{},
-		ibctransfertypes.ModuleName: ibctransfer.AppModule{},
-		icatypes.ModuleName:         icamodule.AppModule{},
-		ibctm.ModuleName:            ibctm.AppModule{},
-		solomachine.ModuleName:      solomachine.AppModule{},
-		wasmtypes.ModuleName:        wasm.AppModule{},
+		ibcexported.ModuleName:      ibc.NewAppModule(app.IBCKeeper),
+		ibctransfertypes.ModuleName: ibctransfer.NewAppModule(app.TransferKeeper),
+		icatypes.ModuleName:         icamodule.NewAppModule(&app.ICAControllerKeeper, &app.ICAHostKeeper),
+		ibctm.ModuleName:            ibctm.NewAppModule(ibctm.NewLightClientModule(app.appCodec, ibcclienttypes.StoreProvider{})),
+		solomachine.ModuleName:      solomachine.NewAppModule(solomachine.NewLightClientModule(app.appCodec, ibcclienttypes.StoreProvider{})),
+		wasmtypes.ModuleName:        wasm.NewAppModule(app.appCodec, &app.WasmKeeper, app.StakingKeeper, app.AuthKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
 	}
 
 	for _, m := range modules {

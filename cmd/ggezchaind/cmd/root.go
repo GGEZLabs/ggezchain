@@ -9,6 +9,7 @@ import (
 	"github.com/GGEZLabs/ggezchain/v2/app"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/config"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/server"
@@ -16,8 +17,30 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtxconfig "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/cosmos/evm/crypto/hd"
+	cosmosevmkeyring "github.com/cosmos/evm/crypto/keyring"
+	evmencoding "github.com/cosmos/evm/encoding"
 	"github.com/spf13/cobra"
 )
+// TODO:
+type EncodingOut struct {
+	depinject.Out
+
+	AppCodec          codec.Codec
+	LegacyAmino       *codec.LegacyAmino
+	TxConfig          client.TxConfig
+	InterfaceRegistry codectypes.InterfaceRegistry
+}
+// TODO:
+func ProvideEVMEncoding() EncodingOut {
+	enc := evmencoding.MakeConfig(app.EVMChainID)
+	return EncodingOut{
+		AppCodec:          enc.Codec,
+		LegacyAmino:       enc.Amino,
+		TxConfig:          enc.TxConfig,
+		InterfaceRegistry: enc.InterfaceRegistry,
+	}
+}
 
 // NewRootCmd creates a new root command for ggezchaind. It is called once in the main function.
 func NewRootCmd() *cobra.Command {
@@ -28,7 +51,10 @@ func NewRootCmd() *cobra.Command {
 	)
 	if err := depinject.Inject(
 		depinject.Configs(app.AppConfig(),
-			depinject.Supply(log.NewNopLogger()),
+			depinject.Supply(
+				log.NewNopLogger(),
+				ProvideEVMEncoding,
+			),
 			depinject.Provide(
 				ProvideClientContext,
 			),
@@ -39,7 +65,7 @@ func NewRootCmd() *cobra.Command {
 	); err != nil {
 		panic(err)
 	}
-
+	newTempApp := app.NewTmpApp()
 	rootCmd := &cobra.Command{
 		Use:           app.Name + "d",
 		Short:         "ggezchain node",
@@ -48,8 +74,17 @@ func NewRootCmd() *cobra.Command {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())
 			cmd.SetErr(cmd.ErrOrStderr())
+			clientCtx = clientCtx.
+				WithCmdContext(cmd.Context()).
+				WithCodec(newTempApp.AppCodec()).
+				WithInterfaceRegistry(newTempApp.InterfaceRegistry()).
+				WithTxConfig(newTempApp.TxConfig()).
+				WithLegacyAmino(newTempApp.LegacyAmino()).
+				WithViper(app.Name).                                                    // env variable prefix
+				WithKeyringOptions(cosmosevmkeyring.Option(), hd.EthSecp256k1Option()). // evm keyring capabilities
+				WithBroadcastMode(flags.FlagBroadcastMode).
+				WithLedgerHasProtobuf(true)
 
-			clientCtx = clientCtx.WithCmdContext(cmd.Context()).WithViper(app.Name)
 			clientCtx, err := client.ReadPersistentCommandFlags(clientCtx, cmd.Flags())
 			if err != nil {
 				return err
@@ -74,8 +109,14 @@ func NewRootCmd() *cobra.Command {
 	// Since the IBC modules don't support dependency injection, we need to
 	// manually register the modules on the client side.
 	// This needs to be removed after IBC supports App Wiring.
-	ibcModules := app.RegisterIBC(clientCtx.Codec)
+	ibcModules := app.RegisterIBC(clientCtx.Codec, newTempApp)
 	for name, mod := range ibcModules {
+		moduleBasicManager[name] = module.CoreAppModuleBasicAdaptor(name, mod)
+		autoCliOpts.Modules[name] = mod
+	}
+
+	evmModules := app.RegisterEVM(clientCtx.Codec, clientCtx.InterfaceRegistry)
+	for name, mod := range evmModules {
 		moduleBasicManager[name] = module.CoreAppModuleBasicAdaptor(name, mod)
 		autoCliOpts.Modules[name] = mod
 	}
@@ -104,7 +145,9 @@ func ProvideClientContext(
 		WithInput(os.Stdin).
 		WithAccountRetriever(types.AccountRetriever{}).
 		WithHomeDir(app.DefaultNodeHome).
-		WithViper(app.Name) // env variable prefix
+		WithViper(app.Name).                                                    // env variable prefix
+		WithKeyringOptions(cosmosevmkeyring.Option(), hd.EthSecp256k1Option()). // evm keyring capabilities
+		WithLedgerHasProtobuf(true)
 
 	// Read the config again to overwrite the default values with the values from the config file
 	clientCtx, _ = config.ReadFromClientConfig(clientCtx)

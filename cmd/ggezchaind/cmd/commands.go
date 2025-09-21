@@ -13,7 +13,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/debug"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/client/pruning"
 	"github.com/cosmos/cosmos-sdk/client/rpc"
 	"github.com/cosmos/cosmos-sdk/client/snapshot"
@@ -23,6 +22,8 @@ import (
 	authcmd "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
+	cosmosevmcmd "github.com/cosmos/evm/client"
+	evmserver "github.com/cosmos/evm/server"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -32,17 +33,21 @@ func initRootCmd(
 	txConfig client.TxConfig,
 	basicManager module.BasicManager,
 ) {
+	sdkAppCreatorWrapper := func(l log.Logger, d dbm.DB, w io.Writer, ao servertypes.AppOptions) servertypes.Application {
+		return newApp(l, d, w, ao)
+	}
+
 	rootCmd.AddCommand(
 		genutilcli.InitCmd(basicManager, app.DefaultNodeHome),
 		NewInPlaceTestnetCmd(),
 		NewTestnetMultiNodeCmd(basicManager, banktypes.GenesisBalancesIterator{}),
 		debug.Cmd(),
 		confixcmd.ConfigCommand(),
-		pruning.Cmd(newApp, app.DefaultNodeHome),
-		snapshot.Cmd(newApp),
+		pruning.Cmd(sdkAppCreatorWrapper, app.DefaultNodeHome),
+		snapshot.Cmd(sdkAppCreatorWrapper),
 	)
 
-	server.AddCommandsWithStartCmdOptions(rootCmd, app.DefaultNodeHome, newApp, appExport, server.StartCmdOptions{
+	server.AddCommandsWithStartCmdOptions(rootCmd, app.DefaultNodeHome, sdkAppCreatorWrapper, appExport, server.StartCmdOptions{
 		AddFlags: addModuleInitFlags,
 	})
 
@@ -52,7 +57,7 @@ func initRootCmd(
 		genutilcli.Commands(txConfig, basicManager, app.DefaultNodeHome),
 		queryCommand(),
 		txCommand(),
-		keys.Commands(),
+		cosmosevmcmd.KeyCommands(app.DefaultNodeHome, true),
 	)
 	wasmcli.ExtendUnsafeResetAllCmd(rootCmd)
 }
@@ -116,7 +121,7 @@ func newApp(
 	db dbm.DB,
 	traceStore io.Writer,
 	appOpts servertypes.AppOptions,
-) servertypes.Application {
+) evmserver.Application {
 	baseappOptions := server.DefaultBaseappOptions(appOpts)
 
 	return app.New(
