@@ -10,7 +10,6 @@ import (
 	evmante "github.com/cosmos/evm/ante"
 	cosmosevmante "github.com/cosmos/evm/ante/evm"
 	cosmosevmtypes "github.com/cosmos/evm/types"
-	"github.com/ethereum/go-ethereum/common"
 )
 
 // setAnteHandler sets the ante handler for the application.
@@ -29,9 +28,8 @@ func (app *App) setAnteHandler(appCodec codec.Codec, txConfig client.TxConfig, m
 			SigGasConsumer:         evmante.SigVerificationGasConsumer,
 			MaxTxGasWanted:         maxGasWanted,
 			TxFeeChecker:           cosmosevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
-			PendingTxListener:      func(hash common.Hash) {},
+			PendingTxListener:      app.onPendingTx,
 		},
-		IBCKeeper:             app.IBCKeeper,
 		NodeConfig:            &wasmConfig,
 		WasmKeeper:            &app.WasmKeeper,
 		TXCounterStoreService: runtime.NewKVStoreService(txCounterStoreKey),

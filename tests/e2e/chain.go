@@ -104,6 +104,7 @@ func (c *chain) createAndInitValidators(count int) error {
 		nil,
 		true,
 		appOptions,
+		false,
 		baseapp.SetChainID("ggezchain-testnet"),
 	)
 	defer func() {
@@ -150,6 +151,7 @@ func (c *chain) createAndInitValidatorsWithMnemonics(count int, mnemonics []stri
 		nil,
 		true,
 		appOptions,
+		false,
 		baseapp.SetChainID("ggezchain-testnet"),
 	)
 	defer func() {

@@ -11,24 +11,16 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 	evmante "github.com/cosmos/evm/ante"
-	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
-	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
-	"github.com/cosmos/ibc-go/v10/modules/core/keeper"
 )
 
 type HandlerOptions struct {
 	evmante.HandlerOptions
 
-	IBCKeeper              *keeper.Keeper
 	NodeConfig             *wasmTypes.NodeConfig
 	WasmKeeper             *wasmkeeper.Keeper
 	TXCounterStoreService  corestoretypes.KVStoreService
 	CircuitKeeper          *circuitkeeper.Keeper
-	FeeMarketKeeper        *feemarketkeeper.Keeper
-	EvmKeeper              *evmkeeper.Keeper
 	ExtensionOptionChecker ante.ExtensionOptionChecker
-	MaxTxGasWanted         uint64
-	TxFeeChecker           ante.TxFeeChecker
 }
 
 // NewAnteHandler returns an ante handler responsible for attempting to route an

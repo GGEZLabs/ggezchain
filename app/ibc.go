@@ -35,7 +35,7 @@ import (
 )
 
 // registerIBCModules register IBC keepers and non dependency inject modules.
-func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
+func (app *App) registerIBCModules(appOpts servertypes.AppOptions, isTemp bool) error {
 	// set up non depinject support modules store keys
 	if err := app.RegisterStores(
 		storetypes.NewKVStoreKey(ibcexported.StoreKey),
@@ -120,11 +120,13 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	ibcv2Router := ibcapi.NewRouter().
 		AddRoute(ibctransfertypes.PortID, transferStackV2)
 
-	wasmStack, err := app.registerWasmModules(appOpts)
-	if err != nil {
-		return err
+	if !isTemp {
+		wasmStack, err := app.registerWasmModules(appOpts)
+		if err != nil {
+			return err
+		}
+		ibcRouter.AddRoute(wasmtypes.ModuleName, wasmStack)
 	}
-	ibcRouter.AddRoute(wasmtypes.ModuleName, wasmStack)
 
 	// this line is used by starport scaffolding # ibc/app/module
 

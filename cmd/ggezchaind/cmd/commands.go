@@ -24,6 +24,7 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	cosmosevmcmd "github.com/cosmos/evm/client"
 	evmserver "github.com/cosmos/evm/server"
+	srvflags "github.com/cosmos/evm/server/flags"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -36,6 +37,13 @@ func initRootCmd(
 	sdkAppCreatorWrapper := func(l log.Logger, d dbm.DB, w io.Writer, ao servertypes.AppOptions) servertypes.Application {
 		return newApp(l, d, w, ao)
 	}
+
+	evmserver.AddCommands(
+        rootCmd,
+        evmserver.NewDefaultStartOptions(newApp, app.DefaultNodeHome),
+        appExport,
+        addModuleInitFlags,
+    )
 
 	rootCmd.AddCommand(
 		genutilcli.InitCmd(basicManager, app.DefaultNodeHome),
@@ -60,6 +68,13 @@ func initRootCmd(
 		cosmosevmcmd.KeyCommands(app.DefaultNodeHome, true),
 	)
 	wasmcli.ExtendUnsafeResetAllCmd(rootCmd)
+
+	// // add general tx flags to the root command
+	var err error
+	_, err = srvflags.AddTxFlags(rootCmd)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // addModuleInitFlags adds more flags to the start command.
@@ -127,6 +142,7 @@ func newApp(
 	return app.New(
 		logger, db, traceStore, true,
 		appOpts,
+		false, //TODO: check when true and false
 		baseappOptions...,
 	)
 }
@@ -158,12 +174,12 @@ func appExport(
 
 	appOpts = viperAppOpts
 	if height != -1 {
-		bApp = app.New(logger, db, traceStore, false, appOpts)
+		bApp = app.New(logger, db, traceStore, false, appOpts, false)
 		if err := bApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		bApp = app.New(logger, db, traceStore, true, appOpts)
+		bApp = app.New(logger, db, traceStore, true, appOpts, false)
 	}
 
 	return bApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)

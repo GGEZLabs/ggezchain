@@ -1,7 +1,6 @@
 package app
 
 import (
-	"encoding/json"
 	"io"
 
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
@@ -59,18 +58,15 @@ import (
 	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
 	"github.com/spf13/cast"
 
-	"cosmossdk.io/math"
 	"github.com/cosmos/evm/ante"
+	evmencoding "github.com/cosmos/evm/encoding"
 	enccodec "github.com/cosmos/evm/encoding/codec"
 	evmsrvflags "github.com/cosmos/evm/server/flags"
 	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
-	erc20types "github.com/cosmos/evm/x/erc20/types"
 	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
-	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 	ibctransferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
 	precisebankkeeper "github.com/cosmos/evm/x/precisebank/keeper"
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
-	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -84,7 +80,7 @@ const (
 
 	CosmosChainID = "ggezchain"
 
-	EVMChainID = 9000
+	EVMChainID = 262144
 
 	BaseDenomUnit int64 = 18
 )
@@ -166,6 +162,27 @@ func init() {
 	}
 }
 
+// TODO:
+type EncodingOut struct {
+	depinject.Out
+
+	AppCodec          codec.Codec
+	LegacyAmino       *codec.LegacyAmino
+	TxConfig          client.TxConfig
+	InterfaceRegistry codectypes.InterfaceRegistry
+}
+
+// TODO:
+func ProvideEVMEncoding() EncodingOut {
+	enc := evmencoding.MakeConfig(EVMChainID)
+	return EncodingOut{
+		AppCodec:          enc.Codec,
+		LegacyAmino:       enc.Amino,
+		TxConfig:          enc.TxConfig,
+		InterfaceRegistry: enc.InterfaceRegistry,
+	}
+}
+
 // AppConfig returns the default app config.
 func AppConfig() depinject.Config {
 	return depinject.Configs(
@@ -175,6 +192,7 @@ func AppConfig() depinject.Config {
 			map[string]module.AppModuleBasic{
 				genutiltypes.ModuleName: genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
 			},
+			ProvideEVMEncoding,
 		),
 		depinject.Provide(ProvideMsgEthereumTxCustomGetSigner), // TODO:
 	)
@@ -187,6 +205,7 @@ func New(
 	traceStore io.Writer,
 	loadLatest bool,
 	appOpts servertypes.AppOptions,
+	isTemp bool,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) *App {
 	var (
@@ -206,7 +225,7 @@ func New(
 				// on available options and how to use them.
 			),
 		)
-	)	
+	)
 	var appModules map[string]appmodule.AppModule
 	if err := depinject.Inject(appConfig,
 		&appBuilder,
@@ -246,12 +265,12 @@ func New(
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
 
 	// evm must be instantiated before IBC modules
-	if err := app.registerEVMModules(appOpts); err != nil {
+	if err := app.registerEVMModules(appOpts, isTemp); err != nil {
 		panic(err)
 	}
-	
+
 	// register legacy modules
-	if err := app.registerIBCModules(appOpts); err != nil {
+	if err := app.registerIBCModules(appOpts, isTemp); err != nil {
 		panic(err)
 	}
 
@@ -289,8 +308,10 @@ func New(
 	if err := app.Load(loadLatest); err != nil {
 		panic(err)
 	}
-	if err := app.WasmKeeper.InitializePinnedCodes(app.NewUncachedContext(true, tmproto.Header{})); err != nil {
-		panic(err)
+	if !isTemp {
+		if err := app.WasmKeeper.InitializePinnedCodes(app.NewUncachedContext(true, tmproto.Header{})); err != nil {
+			panic(err)
+		}
 	}
 
 	return app
@@ -376,26 +397,26 @@ func BlockedAddresses() map[string]bool {
 }
 
 // TODO:
-func (app *App) DefaultGenesis() map[string]json.RawMessage {
-	genesis := app.App.DefaultGenesis()
+// func (app *App) DefaultGenesis() map[string]json.RawMessage {
+// 	genesis := app.App.DefaultGenesis()
 
-	evmGenState := evmtypes.DefaultGenesisState()
-	evmGenState.Params.ActiveStaticPrecompiles = evmtypes.AvailableStaticPrecompiles
-	evmGenState.Params.EvmDenom = "uggez1"
-	genesis[evmtypes.ModuleName] = app.appCodec.MustMarshalJSON(evmGenState)
+// 	evmGenState := evmtypes.DefaultGenesisState()
+// 	evmGenState.Params.ActiveStaticPrecompiles = evmtypes.AvailableStaticPrecompiles
+// 	evmGenState.Params.EvmDenom = "uggez1"
+// 	genesis[evmtypes.ModuleName] = app.appCodec.MustMarshalJSON(evmGenState)
 
-	// Add ERC20 genesis configuration
-	erc20GenState := erc20types.DefaultGenesisState()
-	genesis[erc20types.ModuleName] = app.appCodec.MustMarshalJSON(erc20GenState)
+// 	// Add ERC20 genesis configuration
+// 	erc20GenState := erc20types.DefaultGenesisState()
+// 	genesis[erc20types.ModuleName] = app.appCodec.MustMarshalJSON(erc20GenState)
 
-	feemarketGenState := feemarkettypes.DefaultGenesisState()
-	feemarketGenState.Params.NoBaseFee = false
-	feemarketGenState.Params.BaseFee = math.LegacyMustNewDecFromStr("0.01")
-	feemarketGenState.Params.MinGasPrice = feemarketGenState.Params.BaseFee
-	genesis[feemarkettypes.ModuleName] = app.appCodec.MustMarshalJSON(feemarketGenState)
+// 	feemarketGenState := feemarkettypes.DefaultGenesisState()
+// 	feemarketGenState.Params.NoBaseFee = false
+// 	feemarketGenState.Params.BaseFee = math.LegacyMustNewDecFromStr("0.01")
+// 	feemarketGenState.Params.MinGasPrice = feemarketGenState.Params.BaseFee
+// 	genesis[feemarkettypes.ModuleName] = app.appCodec.MustMarshalJSON(feemarketGenState)
 
-	return genesis
-}
+// 	return genesis
+// }
 
 func (app *App) SetClientCtx(clientCtx client.Context) {
 	app.clientCtx = clientCtx
@@ -403,4 +424,10 @@ func (app *App) SetClientCtx(clientCtx client.Context) {
 
 func (app *App) RegisterPendingTxListener(listener func(common.Hash)) {
 	app.pendingTxListeners = append(app.pendingTxListeners, listener)
+}
+
+func (app *App) onPendingTx(hash common.Hash) {
+	for _, listener := range app.pendingTxListeners {
+		listener(hash)
+	}
 }

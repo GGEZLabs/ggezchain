@@ -86,6 +86,7 @@ func NewTmpApp() *App {
 		nil,
 		true,
 		appOptions,
+		true,
 	)
 
 	return newTempApp
