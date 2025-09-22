@@ -115,7 +115,7 @@ func NewRootCmd() *cobra.Command {
 		autoCliOpts.Modules[name] = mod
 	}
 
-	evmModules := app.RegisterEVM(clientCtx.Codec, clientCtx.InterfaceRegistry)
+	evmModules := app.RegisterEVM(newTempApp.AppCodec(), newTempApp.InterfaceRegistry())
 	for name, mod := range evmModules {
 		moduleBasicManager[name] = module.CoreAppModuleBasicAdaptor(name, mod)
 		autoCliOpts.Modules[name] = mod

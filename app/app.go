@@ -301,7 +301,11 @@ func New(
 	}
 
 	// set ante handlers
-	app.setAnteHandler(app.appCodec, app.txConfig, maxGasWanted, wasmConfig, app.GetKey(wasmtypes.StoreKey))
+	// When pass app.txConfig and run any tx with --dry-run got this error: 
+	// Cannot encode unregistered concrete type ethsecp256k1.PubKey
+	// its work when pass ProvideEVMEncoding().TxConfig ineasted
+	// app.setAnteHandler(app.appCodec, app.txConfig, maxGasWanted, wasmConfig, app.GetKey(wasmtypes.StoreKey))
+	app.setAnteHandler(app.appCodec, ProvideEVMEncoding().TxConfig, maxGasWanted, wasmConfig, app.GetKey(wasmtypes.StoreKey))
 
 	app.setupUpgradeHandlers(app.Configurator())
 
