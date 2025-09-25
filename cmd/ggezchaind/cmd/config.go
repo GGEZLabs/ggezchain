@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	cmtcfg "github.com/cometbft/cometbft/config"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
 )
@@ -40,25 +41,14 @@ func initAppConfig() (string, interface{}) {
 	//   own app.toml to override, or use this default value.
 	//
 	// In tests, we set the min gas prices to 0.
-	// srvCfg.MinGasPrices = "0stake"
+	srvCfg.MinGasPrices = "0uggez1"
 
 	customAppConfig := CustomAppConfig{
 		Config: *srvCfg,
 	}
 
 	customAppTemplate := serverconfig.DefaultConfigTemplate
-	customAppTemplate += `
-[wasm]
-# Smart query gas limit is the max gas to be used in a smart query contract call
-query_gas_limit = 3000000
-
-# in-memory cache for Wasm contracts. Set to 0 to disable.
-# The value is in MiB not bytes
-memory_cache_size = 100
-
-# Simulation gas limit is the max gas to be used in a tx simulation call.
-# When not set the consensus max block gas is used instead
-# simulation_gas_limit =`
+	customAppTemplate += wasmtypes.DefaultConfigTemplate()
 
 	// Edit the default template file
 	//

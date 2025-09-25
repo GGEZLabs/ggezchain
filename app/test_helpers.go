@@ -8,6 +8,7 @@ import (
 
 	"cosmossdk.io/log"
 	sdkmath "cosmossdk.io/math"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	abci "github.com/cometbft/cometbft/abci/types"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmttypes "github.com/cometbft/cometbft/types"
@@ -53,7 +54,7 @@ func setup(withGenesis bool, invCheckPeriod uint) (*App, GenesisState) {
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[server.FlagInvCheckPeriod] = invCheckPeriod
 
-	app := New(log.NewNopLogger(), db, nil, true, appOptions)
+	app := New(log.NewNopLogger(), db, nil, true, appOptions, []wasmkeeper.Option{})
 	DefaultNodeHome = tmpDir
 	if withGenesis {
 		return app, app.DefaultGenesis()

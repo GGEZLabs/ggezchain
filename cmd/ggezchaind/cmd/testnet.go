@@ -184,7 +184,7 @@ func initAppForTestnet(app *app.App, args valArgs) *app.App {
 	for _, accountStr := range args.accountsToFund {
 		handleErr(app.BankKeeper.MintCoins(ctx, minttypes.ModuleName, defaultCoins))
 
-		account, err := app.AuthKeeper.AddressCodec().StringToBytes(accountStr)
+		account, err := app.AccountKeeper.AddressCodec().StringToBytes(accountStr)
 		handleErr(err)
 
 		handleErr(app.BankKeeper.SendCoinsFromModuleToAccount(ctx, minttypes.ModuleName, account, defaultCoins))

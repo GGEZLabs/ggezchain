@@ -7,6 +7,7 @@ import (
 	"cosmossdk.io/log"
 	evidencetypes "cosmossdk.io/x/evidence/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	ggezchain "github.com/GGEZLabs/ggezchain/v2/app"
 	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	tradetypes "github.com/GGEZLabs/ggezchain/v2/x/trade/types"
@@ -104,6 +105,7 @@ func (c *chain) createAndInitValidators(count int) error {
 		nil,
 		true,
 		appOptions,
+		[]wasmkeeper.Option{},
 		baseapp.SetChainID("ggezchain-testnet"),
 	)
 	defer func() {
@@ -150,6 +152,7 @@ func (c *chain) createAndInitValidatorsWithMnemonics(count int, mnemonics []stri
 		nil,
 		true,
 		appOptions,
+		[]wasmkeeper.Option{},
 		baseapp.SetChainID("ggezchain-testnet"),
 	)
 	defer func() {

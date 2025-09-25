@@ -4,6 +4,7 @@ import (
 	"os"
 	"testing"
 
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
@@ -48,7 +49,7 @@ func BenchmarkFullAppSimulation(b *testing.B) {
 	}
 	appOptions.SetDefault(flags.FlagHome, DefaultNodeHome)
 
-	app := New(logger, db, nil, true, appOptions, interBlockCacheOpt(), baseapp.SetChainID(SimAppChainID))
+	app := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, interBlockCacheOpt(), baseapp.SetChainID(SimAppChainID))
 
 	// run randomized simulation
 	_, simParams, simErr := simulation.SimulateFromSeed(

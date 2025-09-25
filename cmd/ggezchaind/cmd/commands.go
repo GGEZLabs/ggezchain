@@ -3,12 +3,15 @@ package cmd
 import (
 	"errors"
 	"io"
+	"os"
 
 	"cosmossdk.io/log"
 	confixcmd "cosmossdk.io/tools/confix/cmd"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmcli "github.com/CosmWasm/wasmd/x/wasm/client/cli"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/app"
+	cmtcli "github.com/cometbft/cometbft/libs/cli"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/debug"
@@ -19,37 +22,41 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/snapshot"
 	"github.com/cosmos/cosmos-sdk/server"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
-	"github.com/cosmos/cosmos-sdk/types/module"
 	authcmd "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 func initRootCmd(
 	rootCmd *cobra.Command,
-	txConfig client.TxConfig,
-	basicManager module.BasicManager,
+	chainApp *app.App,
 ) {
 	rootCmd.AddCommand(
-		genutilcli.InitCmd(basicManager, app.DefaultNodeHome),
+		genutilcli.InitCmd(chainApp.BasicModuleManager, app.DefaultNodeHome),
+		cmtcli.NewCompletionCmd(rootCmd, true),
 		NewInPlaceTestnetCmd(),
-		NewTestnetMultiNodeCmd(basicManager, banktypes.GenesisBalancesIterator{}),
+		NewTestnetMultiNodeCmd(chainApp.BasicModuleManager, banktypes.GenesisBalancesIterator{}),
 		debug.Cmd(),
 		confixcmd.ConfigCommand(),
 		pruning.Cmd(newApp, app.DefaultNodeHome),
 		snapshot.Cmd(newApp),
 	)
 
-	server.AddCommandsWithStartCmdOptions(rootCmd, app.DefaultNodeHome, newApp, appExport, server.StartCmdOptions{
-		AddFlags: addModuleInitFlags,
-	})
+	server.AddCommands(rootCmd, app.DefaultNodeHome, newApp, appExport, addModuleInitFlags)
+
+	// TODO: check if it necessary
+	// server.AddCommandsWithStartCmdOptions(rootCmd, app.DefaultNodeHome, newApp, appExport, server.StartCmdOptions{
+	// 	AddFlags: addModuleInitFlags,
+	// })
 
 	// add keybase, auxiliary RPC, query, genesis, and tx child commands
 	rootCmd.AddCommand(
 		server.StatusCommand(),
-		genutilcli.Commands(txConfig, basicManager, app.DefaultNodeHome),
+		genutilcli.Commands(chainApp.TxConfig(), chainApp.BasicModuleManager, app.DefaultNodeHome),
 		queryCommand(),
 		txCommand(),
 		keys.Commands(),
@@ -119,9 +126,15 @@ func newApp(
 ) servertypes.Application {
 	baseappOptions := server.DefaultBaseappOptions(appOpts)
 
+	var wasmOpts []wasmkeeper.Option
+	if cast.ToBool(appOpts.Get("telemetry.enabled")) {
+		wasmOpts = append(wasmOpts, wasmkeeper.WithVMCacheMetrics(prometheus.DefaultRegisterer))
+	}
+
 	return app.New(
 		logger, db, traceStore, true,
 		appOpts,
+		wasmOpts,
 		baseappOptions...,
 	)
 }
@@ -153,13 +166,23 @@ func appExport(
 
 	appOpts = viperAppOpts
 	if height != -1 {
-		bApp = app.New(logger, db, traceStore, false, appOpts)
+		bApp = app.New(logger, db, traceStore, false, appOpts, []wasmkeeper.Option{})
 		if err := bApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		bApp = app.New(logger, db, traceStore, true, appOpts)
+		bApp = app.New(logger, db, traceStore, true, appOpts, []wasmkeeper.Option{})
 	}
 
 	return bApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
+}
+
+var tempDir = func() string {
+	dir, err := os.MkdirTemp("", "simd")
+	if err != nil {
+		panic("failed to create temp dir: " + err.Error())
+	}
+	defer os.RemoveAll(dir)
+
+	return dir
 }

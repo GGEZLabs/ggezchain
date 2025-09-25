@@ -4,15 +4,17 @@ import (
 	"os"
 
 	"cosmossdk.io/client/v2/autocli"
-	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/app"
+	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/config"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/server"
-	"github.com/cosmos/cosmos-sdk/types/module"
+	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
+	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtxconfig "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -22,23 +24,29 @@ import (
 // NewRootCmd creates a new root command for ggezchaind. It is called once in the main function.
 func NewRootCmd() *cobra.Command {
 	var (
-		autoCliOpts        autocli.AppOptions
-		moduleBasicManager module.BasicManager
-		clientCtx          client.Context
+		autoCliOpts autocli.AppOptions
+		clientCtx client.Context
 	)
-	if err := depinject.Inject(
-		depinject.Configs(app.AppConfig(),
-			depinject.Supply(log.NewNopLogger()),
-			depinject.Provide(
-				ProvideClientContext,
-			),
-		),
-		&autoCliOpts,
-		&moduleBasicManager,
-		&clientCtx,
-	); err != nil {
-		panic(err)
+	tempApp := app.New(
+		log.NewNopLogger(), dbm.NewMemDB(), nil, false, simtestutil.NewAppOptionsWithFlagHome(tempDir()),
+		[]wasmkeeper.Option{},
+	)
+	encodingConfig := app.EncodingConfig{
+		InterfaceRegistry: tempApp.InterfaceRegistry(),
+		Codec:             tempApp.AppCodec(),
+		TxConfig:          tempApp.TxConfig(),
+		Amino:             tempApp.LegacyAmino(),
 	}
+
+	clientCtx = clientCtx.
+		WithCodec(encodingConfig.Codec).
+		WithInterfaceRegistry(encodingConfig.InterfaceRegistry).
+		WithTxConfig(encodingConfig.TxConfig).
+		WithLegacyAmino(encodingConfig.Amino).
+		WithInput(os.Stdin).
+		WithAccountRetriever(types.AccountRetriever{}).
+		WithHomeDir(app.DefaultNodeHome).
+		WithViper("")
 
 	rootCmd := &cobra.Command{
 		Use:           app.Name + "d",
@@ -49,7 +57,7 @@ func NewRootCmd() *cobra.Command {
 			cmd.SetOut(cmd.OutOrStdout())
 			cmd.SetErr(cmd.ErrOrStderr())
 
-			clientCtx = clientCtx.WithCmdContext(cmd.Context()).WithViper(app.Name)
+			clientCtx = clientCtx.WithCmdContext(cmd.Context())
 			clientCtx, err := client.ReadPersistentCommandFlags(clientCtx, cmd.Flags())
 			if err != nil {
 				return err
@@ -58,6 +66,27 @@ func NewRootCmd() *cobra.Command {
 			clientCtx, err = config.ReadFromClientConfig(clientCtx)
 			if err != nil {
 				return err
+			}
+
+			// This needs to go after ReadFromClientConfig, as that function
+			// sets the RPC client needed for SIGN_MODE_TEXTUAL. This sign mode
+			// is only available if the client is online.
+			if !clientCtx.Offline {
+				enabledSignModes := tx.DefaultSignModes
+				enabledSignModes = append(enabledSignModes, signing.SignMode_SIGN_MODE_TEXTUAL)
+				txConfigOpts := tx.ConfigOptions{
+					EnabledSignModes:           enabledSignModes,
+					TextualCoinMetadataQueryFn: authtxconfig.NewGRPCCoinMetadataQueryFn(clientCtx),
+				}
+				txConfig, err := tx.NewTxConfigWithOptions(
+					clientCtx.Codec,
+					txConfigOpts,
+				)
+				if err != nil {
+					return err
+				}
+
+				clientCtx = clientCtx.WithTxConfig(txConfig)
 			}
 
 			if err := client.SetCmdClientContextHandler(clientCtx, cmd); err != nil {
@@ -71,16 +100,11 @@ func NewRootCmd() *cobra.Command {
 		},
 	}
 
-	// Since the IBC modules don't support dependency injection, we need to
-	// manually register the modules on the client side.
-	// This needs to be removed after IBC supports App Wiring.
-	ibcModules := app.RegisterIBC(clientCtx.Codec)
-	for name, mod := range ibcModules {
-		moduleBasicManager[name] = module.CoreAppModuleBasicAdaptor(name, mod)
-		autoCliOpts.Modules[name] = mod
-	}
-
-	initRootCmd(rootCmd, clientCtx.TxConfig, moduleBasicManager)
+	initRootCmd(rootCmd, tempApp)
+	// add keyring to autocli opts
+	autoCliOpts = tempApp.AutoCliOpts()
+	clientCtx, _ = config.ReadFromClientConfig(clientCtx)
+	autoCliOpts.ClientCtx = clientCtx
 
 	if err := autoCliOpts.EnhanceRootCommand(rootCmd); err != nil {
 		panic(err)
