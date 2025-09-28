@@ -31,6 +31,7 @@ import (
 	simcli "github.com/cosmos/cosmos-sdk/x/simulation/client/cli"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	ratelimittypes "github.com/cosmos/ibc-apps/modules/rate-limiting/v10/types"
+	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 )
 
 const (
@@ -62,7 +63,8 @@ func init() {
 	ratelimittypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	tradetypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	acltypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
-
+    feemarkettypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
+	
 	cdc = encodingConfig.Codec
 	txConfig = encodingConfig.TxConfig
 }
@@ -104,7 +106,6 @@ func (c *chain) createAndInitValidators(count int) error {
 		nil,
 		true,
 		appOptions,
-		false,
 		baseapp.SetChainID("ggezchain-testnet"),
 	)
 	defer func() {
@@ -151,7 +152,6 @@ func (c *chain) createAndInitValidatorsWithMnemonics(count int, mnemonics []stri
 		nil,
 		true,
 		appOptions,
-		false,
 		baseapp.SetChainID("ggezchain-testnet"),
 	)
 	defer func() {

@@ -7,12 +7,14 @@ import (
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	"github.com/GGEZLabs/ggezchain/v2/app"
+	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/config"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/server"
+	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtxconfig "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
@@ -22,6 +24,7 @@ import (
 	evmencoding "github.com/cosmos/evm/encoding"
 	"github.com/spf13/cobra"
 )
+
 // TODO:
 type EncodingOut struct {
 	depinject.Out
@@ -31,6 +34,7 @@ type EncodingOut struct {
 	TxConfig          client.TxConfig
 	InterfaceRegistry codectypes.InterfaceRegistry
 }
+
 // TODO:
 func ProvideEVMEncoding() EncodingOut {
 	enc := evmencoding.MakeConfig(app.EVMChainID)
@@ -65,7 +69,15 @@ func NewRootCmd() *cobra.Command {
 	); err != nil {
 		panic(err)
 	}
-	newTempApp := app.NewTmpApp()
+	tempApp := app.New(
+		log.NewNopLogger(), dbm.NewMemDB(), nil, false, simtestutil.NewAppOptionsWithFlagHome(tempDir()),
+	)
+	encodingConfig := app.EncodingConfig{
+		InterfaceRegistry: tempApp.InterfaceRegistry(),
+		Codec:             tempApp.AppCodec(),
+		TxConfig:          tempApp.TxConfig(),
+		Amino:             tempApp.LegacyAmino(),
+	}
 	rootCmd := &cobra.Command{
 		Use:           app.Name + "d",
 		Short:         "ggezchain node",
@@ -76,10 +88,10 @@ func NewRootCmd() *cobra.Command {
 			cmd.SetErr(cmd.ErrOrStderr())
 			clientCtx = clientCtx.
 				WithCmdContext(cmd.Context()).
-				WithCodec(newTempApp.AppCodec()).
-				WithInterfaceRegistry(newTempApp.InterfaceRegistry()).
-				WithTxConfig(newTempApp.TxConfig()).
-				WithLegacyAmino(newTempApp.LegacyAmino()).
+				WithCodec(encodingConfig.Codec).
+				WithInterfaceRegistry(encodingConfig.InterfaceRegistry).
+				WithTxConfig(encodingConfig.TxConfig).
+				WithLegacyAmino(encodingConfig.Amino).
 				WithViper(app.Name).                                                    // env variable prefix
 				WithKeyringOptions(cosmosevmkeyring.Option(), hd.EthSecp256k1Option()). // evm keyring capabilities
 				WithBroadcastMode(flags.FlagBroadcastMode).
@@ -109,13 +121,13 @@ func NewRootCmd() *cobra.Command {
 	// Since the IBC modules don't support dependency injection, we need to
 	// manually register the modules on the client side.
 	// This needs to be removed after IBC supports App Wiring.
-	ibcModules := app.RegisterIBC(clientCtx.Codec, newTempApp)
+	ibcModules := app.RegisterIBC(clientCtx.Codec, tempApp)
 	for name, mod := range ibcModules {
 		moduleBasicManager[name] = module.CoreAppModuleBasicAdaptor(name, mod)
 		autoCliOpts.Modules[name] = mod
 	}
 
-	evmModules := app.RegisterEVM(newTempApp.AppCodec(), newTempApp.InterfaceRegistry())
+	evmModules := app.RegisterEVM(tempApp.AppCodec(), tempApp.InterfaceRegistry())
 	for name, mod := range evmModules {
 		moduleBasicManager[name] = module.CoreAppModuleBasicAdaptor(name, mod)
 		autoCliOpts.Modules[name] = mod

@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"io"
+	"os"
 
 	"cosmossdk.io/log"
 	confixcmd "cosmossdk.io/tools/confix/cmd"
@@ -39,11 +40,11 @@ func initRootCmd(
 	}
 
 	evmserver.AddCommands(
-        rootCmd,
-        evmserver.NewDefaultStartOptions(newApp, app.DefaultNodeHome),
-        appExport,
-        addModuleInitFlags,
-    )
+		rootCmd,
+		evmserver.NewDefaultStartOptions(newApp, app.DefaultNodeHome),
+		appExport,
+		addModuleInitFlags,
+	)
 
 	rootCmd.AddCommand(
 		genutilcli.InitCmd(basicManager, app.DefaultNodeHome),
@@ -142,7 +143,6 @@ func newApp(
 	return app.New(
 		logger, db, traceStore, true,
 		appOpts,
-		false, //TODO: check when true and false
 		baseappOptions...,
 	)
 }
@@ -174,13 +174,23 @@ func appExport(
 
 	appOpts = viperAppOpts
 	if height != -1 {
-		bApp = app.New(logger, db, traceStore, false, appOpts, false)
+		bApp = app.New(logger, db, traceStore, false, appOpts)
 		if err := bApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		bApp = app.New(logger, db, traceStore, true, appOpts, false)
+		bApp = app.New(logger, db, traceStore, true, appOpts)
 	}
 
 	return bApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)
+}
+
+var tempDir = func() string {
+	dir, err := os.MkdirTemp("", "simd")
+	if err != nil {
+		panic("failed to create temp dir: " + err.Error())
+	}
+	defer os.RemoveAll(dir)
+
+	return dir
 }

@@ -68,6 +68,10 @@ import (
 	precisebankkeeper "github.com/cosmos/evm/x/precisebank/keeper"
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	"github.com/ethereum/go-ethereum/common"
+	appante "github.com/GGEZLabs/ggezchain/v2/app/ante"
+	evmante "github.com/cosmos/evm/ante"
+	cosmosevmtypes "github.com/cosmos/evm/types"
+	cosmosevmante "github.com/cosmos/evm/ante/evm"
 )
 
 const (
@@ -205,7 +209,6 @@ func New(
 	traceStore io.Writer,
 	loadLatest bool,
 	appOpts servertypes.AppOptions,
-	isTemp bool,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) *App {
 	var (
@@ -265,12 +268,12 @@ func New(
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
 
 	// evm must be instantiated before IBC modules
-	if err := app.registerEVMModules(appOpts, isTemp); err != nil {
+	if err := app.registerEVMModules(appOpts); err != nil {
 		panic(err)
 	}
 
 	// register legacy modules
-	if err := app.registerIBCModules(appOpts, isTemp); err != nil {
+	if err := app.registerIBCModules(appOpts); err != nil {
 		panic(err)
 	}
 
@@ -301,21 +304,41 @@ func New(
 	}
 
 	// set ante handlers
-	// When pass app.txConfig and run any tx with --dry-run got this error: 
+	// When pass app.txConfig and run any tx with --dry-run got this error:
 	// Cannot encode unregistered concrete type ethsecp256k1.PubKey
 	// its work when pass ProvideEVMEncoding().TxConfig ineasted
 	// app.setAnteHandler(app.appCodec, app.txConfig, maxGasWanted, wasmConfig, app.GetKey(wasmtypes.StoreKey))
-	app.setAnteHandler(app.appCodec, ProvideEVMEncoding().TxConfig, maxGasWanted, wasmConfig, app.GetKey(wasmtypes.StoreKey))
+	app.setAnteHandler(
+		appante.HandlerOptions{
+			HandlerOptions: evmante.HandlerOptions{
+				Cdc:                    app.appCodec,
+				AccountKeeper:          app.AuthKeeper,
+				BankKeeper:             app.BankKeeper,
+				ExtensionOptionChecker: cosmosevmtypes.HasDynamicFeeExtensionOption,
+				EvmKeeper:              app.EVMKeeper,
+				FeegrantKeeper:         app.FeeGrantKeeper,
+				IBCKeeper:              app.IBCKeeper,
+				FeeMarketKeeper:        app.FeeMarketKeeper,
+				SignModeHandler:        app.txConfig.SignModeHandler(),
+				SigGasConsumer:         evmante.SigVerificationGasConsumer,
+				MaxTxGasWanted:         maxGasWanted,
+				TxFeeChecker:           cosmosevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
+				PendingTxListener:      app.onPendingTx,
+			},
+			NodeConfig:            &wasmConfig,
+			WasmKeeper:            &app.WasmKeeper,
+			TXCounterStoreService: runtime.NewKVStoreService(app.GetKey(wasmtypes.StoreKey)),
+			CircuitKeeper:         &app.CircuitBreakerKeeper,
+		},
+	)
 
 	app.setupUpgradeHandlers(app.Configurator())
 
 	if err := app.Load(loadLatest); err != nil {
 		panic(err)
 	}
-	if !isTemp {
 		if err := app.WasmKeeper.InitializePinnedCodes(app.NewUncachedContext(true, tmproto.Header{})); err != nil {
 			panic(err)
-		}
 	}
 
 	return app
@@ -434,4 +457,12 @@ func (app *App) onPendingTx(hash common.Hash) {
 	for _, listener := range app.pendingTxListeners {
 		listener(hash)
 	}
+}
+
+func (app *App) setAnteHandler(options appante.HandlerOptions) {
+	if err := options.Validate(); err != nil {
+		panic(err)
+	}
+
+	app.SetAnteHandler(appante.NewAnteHandler(options))
 }

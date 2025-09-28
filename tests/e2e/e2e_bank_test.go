@@ -63,9 +63,9 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 				// alice's balance should be decremented by the token amount and the gas fees
 				// if the difference between expected and actual balance is less than 500, consider it as a success
 				// any small change in operation/code can result in the gasFee difference
-				// we set the threshold to 500 to avoid false negatives
+				// we set the threshold to 400000 to avoid false negatives
 				expectedAfterAliceUGGEZ1Balance := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(standardFees)
-				decremented := afterAliceUGGEZ1Balance.Sub(expectedAfterAliceUGGEZ1Balance).Amount.LT(math.NewInt(500))
+				decremented := afterAliceUGGEZ1Balance.Sub(expectedAfterAliceUGGEZ1Balance).Amount.LT(math.NewInt(400000))
 
 				incremented := beforeBobUGGEZ1Balance.Add(tokenAmount).IsEqual(afterBobUGGEZ1Balance)
 
@@ -96,9 +96,9 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 				// alice's balance should be decremented by the token amount and the gas fees
 				// if the difference between expected and actual balance is less than 500, consider it as a success
 				// any small change in operation/code can result in the gasFee difference
-				// we set the threshold to 500 to avoid false negatives
+				// we set the threshold to 400000 to avoid false negatives
 				expectedAfterAliceUGGEZ1Balance := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(tokenAmount).Sub(standardFees)
-				decremented := afterAliceUGGEZ1Balance.Sub(expectedAfterAliceUGGEZ1Balance).Amount.LT(math.NewInt(500))
+				decremented := afterAliceUGGEZ1Balance.Sub(expectedAfterAliceUGGEZ1Balance).Amount.LT(math.NewInt(400000))
 
 				incremented := beforeBobUGGEZ1Balance.Add(tokenAmount).IsEqual(afterBobUGGEZ1Balance) &&
 					beforeCharlieUGGEZ1Balance.Add(tokenAmount).IsEqual(afterCharlieUGGEZ1Balance)

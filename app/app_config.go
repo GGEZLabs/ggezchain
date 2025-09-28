@@ -218,6 +218,41 @@ var (
 						wasmtypes.ModuleName,
 						// this line is used by starport scaffolding # stargate/app/initGenesis
 					},
+					ExportGenesis: []string{
+						consensustypes.ModuleName,
+						authtypes.ModuleName,
+						protocolpooltypes.ModuleName,
+						banktypes.ModuleName,
+						distrtypes.ModuleName,
+						stakingtypes.ModuleName,
+						slashingtypes.ModuleName,
+						govtypes.ModuleName,
+						minttypes.ModuleName,
+						genutiltypes.ModuleName,
+						evidencetypes.ModuleName,
+						authz.ModuleName,
+						feegrant.ModuleName,
+						vestingtypes.ModuleName,
+						nft.ModuleName,
+						group.ModuleName,
+						upgradetypes.ModuleName,
+						circuittypes.ModuleName,
+						epochstypes.ModuleName,
+						// cosmos evm modules
+						erc20types.ModuleName,
+						feemarkettypes.ModuleName,
+						evmtypes.ModuleName,
+						// precisebanktypes.ModuleName,
+						// ibc modules
+						ibcexported.ModuleName,
+						ibctransfertypes.ModuleName,
+						icatypes.ModuleName,
+						// chain modules
+						aclmoduletypes.ModuleName,
+						trademoduletypes.ModuleName,
+						wasmtypes.ModuleName,
+						// this line is used by starport scaffolding # stargate/app/initGenesis
+					},
 				}),
 			},
 			{
@@ -294,7 +329,7 @@ var (
 			},
 			{
 				Name:   govtypes.ModuleName,
-				Config: appconfig.WrapAny(&govmodulev1.Module{MaxMetadataLen: 10200}),
+				Config: appconfig.WrapAny(&govmodulev1.Module{MaxMetadataLen: 20000}),
 			},
 			{
 				Name:   consensustypes.ModuleName,

@@ -46,7 +46,7 @@ const (
 	keysCommand      = "keys"
 	ggezHomePath     = "/home/nonroot/.ggezchain"
 	uggez1Denom      = "uggez1"
-	initBalanceStr   = "100000000000000000uggez1"
+	initBalanceStr   = "10000000000000000000000uggez1"
 	minGasPrice      = "0.01"
 	// the test basefee in genesis is the same as minGasPrice
 	// global fee lower/higher than min_gas_price
@@ -79,8 +79,8 @@ const (
 )
 
 var (
-	ggezConfigPath    = filepath.Join(ggezHomePath, "config")
-	stakingAmount     = math.NewInt(100000000000)
+	ggezConfigPath   = filepath.Join(ggezHomePath, "config")
+	stakingAmount, _ = math.NewIntFromString("1000000000000000000")
 	stakingAmountCoin = sdk.NewCoin(uggez1Denom, stakingAmount)
 	tokenAmount       = sdk.NewCoin(uggez1Denom, math.NewInt(3300000000))
 	standardFees      = sdk.NewCoin(uggez1Denom, math.NewInt(330000))
@@ -631,7 +631,7 @@ func (s *IntegrationTestSuite) runIBCRelayer() {
 		&dockertest.RunOptions{
 			Name:       fmt.Sprintf("%s-%s-relayer", s.chainA.id, s.chainB.id),
 			Repository: "ghcr.io/informalsystems/hermes",
-			Tag:        "1.10.4",
+			Tag:        "1.13.1",
 			NetworkID:  s.dkrNet.Network.ID,
 			Mounts: []string{
 				fmt.Sprintf("%s/:/root/hermes", hermesCfgPath),

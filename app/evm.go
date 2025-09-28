@@ -44,7 +44,7 @@ import (
 )
 
 // registerEVMModules register EVM keepers and non dependency inject modules.
-func (app *App) registerEVMModules(appOpts servertypes.AppOptions, isTemp bool) error {
+func (app *App) registerEVMModules(appOpts servertypes.AppOptions) error {
 	// chain config
 	// TODO:
 	// chainID := getEVMChainID(appOpts)
@@ -105,7 +105,7 @@ func (app *App) registerEVMModules(appOpts servertypes.AppOptions, isTemp bool) 
 		app.GetStoreKeysMap(),
 		authtypes.NewModuleAddress(govtypes.ModuleName),
 		app.AuthKeeper,
-		app.BankKeeper,
+		app.PreciseBankKeeper, // TODO:
 		app.StakingKeeper,
 		app.FeeMarketKeeper,
 		&app.ConsensusParamsKeeper,
@@ -129,7 +129,6 @@ func (app *App) registerEVMModules(appOpts servertypes.AppOptions, isTemp bool) 
 	}
 
 	// register evm modules
-	if !isTemp {
 		// Only register modules for non-temporary apps to avoid keeper issues
 		if err := app.RegisterModules(
 			vm.NewAppModule(app.EVMKeeper, app.AuthKeeper, app.AuthKeeper.AddressCodec()),
@@ -138,7 +137,6 @@ func (app *App) registerEVMModules(appOpts servertypes.AppOptions, isTemp bool) 
 		); err != nil {
 			return err
 		}
-	}
 
 	return nil
 }
