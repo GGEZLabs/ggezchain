@@ -1,16 +1,9 @@
 package app
 
 import (
-	"fmt"
-	"hash/fnv"
-	"maps"
-	"os"
-	"path/filepath"
-
 	"cosmossdk.io/core/appmodule"
 	storetypes "cosmossdk.io/store/types"
 	"cosmossdk.io/x/tx/signing"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
@@ -18,15 +11,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	"github.com/spf13/cast"
-
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	evmconfig "github.com/cosmos/evm/config"
-	"github.com/cosmos/evm/precompiles/bech32"
-	"github.com/cosmos/evm/precompiles/p256"
+	"github.com/cosmos/evm/evmd/eips"
 	srvflags "github.com/cosmos/evm/server/flags"
 	erc20 "github.com/cosmos/evm/x/erc20"
 	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
@@ -41,37 +30,43 @@ import (
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
 	gethvm "github.com/ethereum/go-ethereum/core/vm"
+	"github.com/spf13/cast"
 )
 
 // registerEVMModules register EVM keepers and non dependency inject modules.
 func (app *App) registerEVMModules(appOpts servertypes.AppOptions) error {
+	displayDenom := "ggez1"
 	// chain config
-	// TODO:
-	// chainID := getEVMChainID(appOpts)
 	coinInfoMap := map[uint64]evmtypes.EvmCoinInfo{
-		EVMChainID: evmtypes.EvmCoinInfo{
+		EVMChainID: {
 			Denom:         sdk.DefaultBondDenom,
 			ExtendedDenom: sdk.DefaultBondDenom,
-			DisplayDenom:  sdk.DefaultBondDenom,
+			DisplayDenom:  displayDenom,
 			Decimals:      evmtypes.EighteenDecimals, // in line with Cosmos SDK default decimals
 		},
+	}
+
+	cosmosEVMActivators := map[int]func(*gethvm.JumpTable){
+		0o000: eips.Enable0000,
+		0o001: eips.Enable0001,
+		0o002: eips.Enable0002,
 	}
 
 	// configure evm modules
 	if err := evmconfig.EvmAppOptionsWithConfig(
 		EVMChainID,
 		coinInfoMap,
-		getCustomEVMActivators(),
+		cosmosEVMActivators,
 	); err != nil {
 		return err
 	}
 
 	// set up non depinject support modules store keys
 	if err := app.RegisterStores(
-		storetypes.NewKVStoreKey(precisebanktypes.StoreKey),
 		storetypes.NewKVStoreKey(evmtypes.StoreKey),
 		storetypes.NewKVStoreKey(feemarkettypes.StoreKey),
 		storetypes.NewKVStoreKey(erc20types.StoreKey),
+		storetypes.NewKVStoreKey(precisebanktypes.StoreKey),
 		storetypes.NewKVStoreKey(paramstypes.TStoreKey),
 		storetypes.NewTransientStoreKey(evmtypes.TransientKey),
 		storetypes.NewTransientStoreKey(feemarkettypes.TransientKey),
@@ -92,7 +87,7 @@ func (app *App) registerEVMModules(appOpts servertypes.AppOptions) error {
 	// PreciseBank wraps BankKeeper to support 18 decimals
 	app.PreciseBankKeeper = precisebankkeeper.NewKeeper(
 		app.appCodec,
-		storetypes.NewKVStoreKey(precisebanktypes.StoreKey),
+		app.GetKey(precisebanktypes.StoreKey),
 		app.BankKeeper,
 		app.AuthKeeper,
 	)
@@ -105,128 +100,47 @@ func (app *App) registerEVMModules(appOpts servertypes.AppOptions) error {
 		app.GetStoreKeysMap(),
 		authtypes.NewModuleAddress(govtypes.ModuleName),
 		app.AuthKeeper,
-		app.PreciseBankKeeper, // TODO:
+		app.PreciseBankKeeper,
 		app.StakingKeeper,
 		app.FeeMarketKeeper,
 		&app.ConsensusParamsKeeper,
 		&app.Erc20Keeper,
 		tracer,
-	)
+	).WithStaticPrecompiles(NewAvailableStaticPrecompiles( // TODO: check precompiles
+		*app.StakingKeeper,
+		app.DistrKeeper,
+		app.BankKeeper,
+		app.Erc20Keeper,
+		app.TransferKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		app.EVMKeeper,
+		*app.GovKeeper,
+		app.SlashingKeeper,
+		app.AppCodec(),
+	))
 
 	app.Erc20Keeper = erc20keeper.NewKeeper(
 		app.GetKey(erc20types.StoreKey),
 		app.appCodec,
 		authtypes.NewModuleAddress(govtypes.ModuleName),
 		app.AuthKeeper,
-		app.BankKeeper,
+		app.PreciseBankKeeper,
 		app.EVMKeeper,
 		app.StakingKeeper,
 		&app.TransferKeeper,
 	)
 
-	if err := app.postRegisterEVMModules(); err != nil {
+	// register evm modules
+	if err := app.RegisterModules(
+		vm.NewAppModule(app.EVMKeeper, app.AuthKeeper, app.AuthKeeper.AddressCodec()),
+		feemarket.NewAppModule(app.FeeMarketKeeper),
+		erc20.NewAppModule(app.Erc20Keeper, app.AuthKeeper),
+		precisebank.NewAppModule(app.PreciseBankKeeper, app.BankKeeper, app.AuthKeeper),
+	); err != nil {
 		return err
 	}
 
-	// register evm modules
-		// Only register modules for non-temporary apps to avoid keeper issues
-		if err := app.RegisterModules(
-			vm.NewAppModule(app.EVMKeeper, app.AuthKeeper, app.AuthKeeper.AddressCodec()),
-			feemarket.NewAppModule(app.FeeMarketKeeper),
-			erc20.NewAppModule(app.Erc20Keeper, app.AuthKeeper),
-		); err != nil {
-			return err
-		}
-
 	return nil
-}
-
-func (app *App) postRegisterEVMModules() error {
-	// register precompiles on EVMKeeper
-	const bech32PrecompileBaseGas = 6_000
-
-	// secp256r1 precompile as per EIP-7212
-	p256Precompile := &p256.Precompile{}
-
-	bech32Precompile, err := bech32.NewPrecompile(bech32PrecompileBaseGas)
-	if err != nil {
-		return fmt.Errorf("failed to instantiate bech32 precompile: %w", err)
-	}
-
-	precompiles := maps.Clone(gethvm.PrecompiledContractsPrague) // clone from latest vm fork.
-	precompiles[bech32Precompile.Address()] = bech32Precompile
-	precompiles[p256Precompile.Address()] = p256Precompile
-
-	// add more stateful precompiles here, if needed.
-
-	_ = app.EVMKeeper.WithStaticPrecompiles(precompiles)
-	return nil
-}
-
-// getCustomEVMActivators defines a map of opcode modifiers associated
-// with a key defining the corresponding EIP.
-func getCustomEVMActivators() map[int]func(*gethvm.JumpTable) {
-	var (
-		multiplier        = uint64(10)
-		sstoreConstantGas = uint64(500)
-	)
-
-	return map[int]func(*gethvm.JumpTable){
-		0o000: func(jt *gethvm.JumpTable) {
-			// enable0000 contains the logic to modify the CREATE and CREATE2 opcodes
-			// constant gas value.
-			currentValCreate := jt[gethvm.CREATE].GetConstantGas()
-			jt[gethvm.CREATE].SetConstantGas(currentValCreate * multiplier)
-
-			currentValCreate2 := jt[gethvm.CREATE2].GetConstantGas()
-			jt[gethvm.CREATE2].SetConstantGas(currentValCreate2 * multiplier)
-		},
-		0o001: func(jt *gethvm.JumpTable) {
-			// enable0001 contains the logic to modify the CALL opcode
-			// constant gas value.
-			currentVal := jt[gethvm.CALL].GetConstantGas()
-			jt[gethvm.CALL].SetConstantGas(currentVal * multiplier)
-		},
-		0o002: func(jt *gethvm.JumpTable) {
-			// enable0002 contains the logic to modify the SSTORE opcode
-			// constant gas value.
-			jt[gethvm.SSTORE].SetConstantGas(sstoreConstantGas)
-		},
-	}
-}
-
-// getEVMChainID returns the EVM chain ID from the app options.
-func getEVMChainID(appOpts servertypes.AppOptions) uint64 {
-	chainID := cast.ToString(appOpts.Get(flags.FlagChainID))
-	if chainID == "" {
-		// fallback to genesis chain-id
-		genesisPathCfg, _ := appOpts.Get("genesis_file").(string)
-		if genesisPathCfg == "" {
-			genesisPathCfg = filepath.Join("config", "genesis.json")
-		}
-
-		reader, err := os.Open(filepath.Join(DefaultNodeHome, genesisPathCfg))
-		if err != nil {
-			panic(err)
-		}
-		defer reader.Close()
-
-		chainID, err = genutiltypes.ParseChainIDFromGenesis(reader)
-		if err != nil {
-			panic(fmt.Errorf("failed to parse chain-id from genesis file: %w", err))
-		}
-	}
-
-	return cosmosChainIDToEVMChainID(chainID)
-}
-
-// cosmosChainIDToEVMChainID converts a Cosmos chain ID to an EVM chain ID.
-// This is an opinionated function to simplify chain id management.
-// In theory, cosmos chain id and evm chain id are independent and can be managed separately.
-func cosmosChainIDToEVMChainID(chainID string) uint64 {
-	hasher := fnv.New32a()
-	hasher.Write([]byte(chainID))
-	return uint64(hasher.Sum32())
 }
 
 // RegisterEVM Since the EVM modules don't support dependency injection,

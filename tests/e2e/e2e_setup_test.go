@@ -79,8 +79,8 @@ const (
 )
 
 var (
-	ggezConfigPath   = filepath.Join(ggezHomePath, "config")
-	stakingAmount, _ = math.NewIntFromString("1000000000000000000")
+	ggezConfigPath    = filepath.Join(ggezHomePath, "config")
+	stakingAmount, _  = math.NewIntFromString("1000000000000000000")
 	stakingAmountCoin = sdk.NewCoin(uggez1Denom, stakingAmount)
 	tokenAmount       = sdk.NewCoin(uggez1Denom, math.NewInt(3300000000))
 	standardFees      = sdk.NewCoin(uggez1Denom, math.NewInt(330000))

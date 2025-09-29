@@ -27,7 +27,7 @@ func NewAnteHandler(options HandlerOptions) sdk.AnteHandler {
 					anteHandler = newMonoEVMAnteHandler(options)
 				case "/cosmos.evm.vm.v1.ExtensionOptionDynamicFeeTx":
 					// cosmos-sdk tx with dynamic fee extension
-					anteHandler = NewCosmosAnteHandler(options)
+					anteHandler = newCosmosAnteHandler(options)
 				default:
 					return ctx, errorsmod.Wrapf(
 						errortypes.ErrUnknownExtensionOptions,
@@ -42,7 +42,7 @@ func NewAnteHandler(options HandlerOptions) sdk.AnteHandler {
 		// handle as totally normal Cosmos SDK tx
 		switch tx.(type) {
 		case sdk.Tx:
-			anteHandler = NewCosmosAnteHandler(options)
+			anteHandler = newCosmosAnteHandler(options)
 		default:
 			return ctx, errorsmod.Wrapf(errortypes.ErrUnknownRequest, "invalid transaction type: %T", tx)
 		}

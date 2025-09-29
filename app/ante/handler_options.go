@@ -1,42 +1,15 @@
 package ante
 
 import (
-	// addresscodec "cosmossdk.io/core/address"
 	corestoretypes "cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
-	// storetypes "cosmossdk.io/store/types"
 	circuitkeeper "cosmossdk.io/x/circuit/keeper"
-	// txsigning "cosmossdk.io/x/tx/signing"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	// "github.com/cosmos/cosmos-sdk/codec"
-	// sdk "github.com/cosmos/cosmos-sdk/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
-	// "github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
-	// authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	// ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
 	evmante "github.com/cosmos/evm/ante"
-
 )
-
-// // BankKeeper defines the contract needed for supply related APIs (noalias)
-// type BankKeeper interface {
-// 	IsSendEnabledCoins(ctx context.Context, coins ...sdk.Coin) error
-// 	SendCoins(ctx context.Context, from, to sdk.AccAddress, amt sdk.Coins) error
-// 	SendCoinsFromAccountToModule(ctx context.Context, senderAddr sdk.AccAddress, recipientModule string, amt sdk.Coins) error
-// }
-
-// type AccountKeeper interface {
-// 	NewAccountWithAddress(ctx context.Context, addr sdk.AccAddress) sdk.AccountI
-// 	GetModuleAddress(moduleName string) sdk.AccAddress
-// 	GetAccount(ctx context.Context, addr sdk.AccAddress) sdk.AccountI
-// 	SetAccount(ctx context.Context, account sdk.AccountI)
-// 	RemoveAccount(ctx context.Context, account sdk.AccountI)
-// 	GetParams(ctx context.Context) (params authtypes.Params)
-// 	GetSequence(ctx context.Context, addr sdk.AccAddress) (uint64, error)
-// 	AddressCodec() addresscodec.Codec
-// }
 
 // HandlerOptions defines the list of module keepers required to run the EVM
 // AnteHandler decorators.

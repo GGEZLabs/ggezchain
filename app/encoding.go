@@ -1,21 +1,15 @@
 package app
 
 import (
-	"cosmossdk.io/log"
 	"cosmossdk.io/x/tx/signing"
-	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/codec"
 	amino "github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/server"
-	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdktestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/cosmos/cosmos-sdk/x/auth/migrations/legacytx"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
-	simcli "github.com/cosmos/cosmos-sdk/x/simulation/client/cli"
 	enccodec "github.com/cosmos/evm/encoding/codec"
 	"github.com/cosmos/evm/ethereum/eip712"
 	erc20types "github.com/cosmos/evm/x/erc20/types"
@@ -28,13 +22,13 @@ import (
 // This is provided for compatibility between protobuf and amino implementations.
 type EncodingConfig struct {
 	InterfaceRegistry types.InterfaceRegistry
-	Codec             codec.Codec
+	Codec             amino.Codec
 	TxConfig          client.TxConfig
-	Amino             *codec.LegacyAmino
+	Amino             *amino.LegacyAmino
 }
 
-// MakeEncodingConfig creates an EncodingConfig for an amino based test configuration.
-func MakeEncodingConfig() EncodingConfig {
+// MakeConfig creates a new EncodingConfig and returns it
+func MakeConfig(evmChainID uint64) sdktestutil.TestEncodingConfig {
 	cdc := amino.NewLegacyAmino()
 	signingOptions := signing.Options{
 		AddressCodec: address.Bech32Codec{
@@ -60,33 +54,12 @@ func MakeEncodingConfig() EncodingConfig {
 	// This is needed for the EIP712 txs because currently is using
 	// the deprecated method legacytx.StdSignBytes
 	legacytx.RegressionTestingAminoCodec = cdc
-	eip712.SetEncodingConfig(cdc, interfaceRegistry, EVMChainID)
+	eip712.SetEncodingConfig(cdc, interfaceRegistry, evmChainID)
 
-	return EncodingConfig{
+	return sdktestutil.TestEncodingConfig{
 		InterfaceRegistry: interfaceRegistry,
 		Codec:             codec,
 		TxConfig:          tx.NewTxConfig(codec, tx.DefaultSignModes),
 		Amino:             cdc,
 	}
-}
-
-type CombinedCodecs struct {
-	Amino *codec.LegacyAmino
-	Proto codec.Codec
-}
-
-// NewTmpApp returns a new App
-func NewTmpApp() *App {
-	appOptions := make(simtestutil.AppOptionsMap, 0)
-	appOptions[flags.FlagHome] = DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue //nolint:staticcheck
-	newTempApp := New(
-		log.NewNopLogger(),
-		dbm.NewMemDB(),
-		nil,
-		true,
-		appOptions,
-	)
-
-	return newTempApp
 }

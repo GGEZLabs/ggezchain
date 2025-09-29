@@ -74,15 +74,14 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	icatypes "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/types"
-	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
-	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
-	"google.golang.org/protobuf/types/known/durationpb"
-
 	erc20types "github.com/cosmos/evm/x/erc20/types"
 	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 	precisebanktypes "github.com/cosmos/evm/x/precisebank/types"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
+	icatypes "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/types"
+	ibctransfertypes "github.com/cosmos/ibc-go/v10/modules/apps/transfer/types"
+	ibcexported "github.com/cosmos/ibc-go/v10/modules/core/exported"
+	"google.golang.org/protobuf/types/known/durationpb"
 )
 
 var (
@@ -242,7 +241,7 @@ var (
 						erc20types.ModuleName,
 						feemarkettypes.ModuleName,
 						evmtypes.ModuleName,
-						// precisebanktypes.ModuleName,
+						precisebanktypes.ModuleName,
 						// ibc modules
 						ibcexported.ModuleName,
 						ibctransfertypes.ModuleName,

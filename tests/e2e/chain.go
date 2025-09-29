@@ -20,6 +20,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/server"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdktestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	authvesting "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -30,8 +31,8 @@ import (
 	protocolpooltypes "github.com/cosmos/cosmos-sdk/x/protocolpool/types"
 	simcli "github.com/cosmos/cosmos-sdk/x/simulation/client/cli"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	ratelimittypes "github.com/cosmos/ibc-apps/modules/rate-limiting/v10/types"
 	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
+	ratelimittypes "github.com/cosmos/ibc-apps/modules/rate-limiting/v10/types"
 )
 
 const (
@@ -40,13 +41,13 @@ const (
 )
 
 var (
-	encodingConfig ggezchain.EncodingConfig
+	encodingConfig sdktestutil.TestEncodingConfig
 	cdc            codec.Codec
 	txConfig       client.TxConfig
 )
 
 func init() {
-	encodingConfig = ggezchain.MakeEncodingConfig()
+	encodingConfig = ggezchain.MakeConfig(ggezchain.EVMChainID)
 	banktypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	authtypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	authvesting.RegisterInterfaces(encodingConfig.InterfaceRegistry)
@@ -63,8 +64,8 @@ func init() {
 	ratelimittypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	tradetypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	acltypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
-    feemarkettypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
-	
+	feemarkettypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
+
 	cdc = encodingConfig.Codec
 	txConfig = encodingConfig.TxConfig
 }

@@ -10,18 +10,18 @@ import (
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/config"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/server"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtxconfig "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/evm/crypto/hd"
 	cosmosevmkeyring "github.com/cosmos/evm/crypto/keyring"
-	evmencoding "github.com/cosmos/evm/encoding"
+	evmdconfig "github.com/cosmos/evm/evmd/cmd/evmd/config"
 	"github.com/spf13/cobra"
 )
 
@@ -35,17 +35,6 @@ type EncodingOut struct {
 	InterfaceRegistry codectypes.InterfaceRegistry
 }
 
-// TODO:
-func ProvideEVMEncoding() EncodingOut {
-	enc := evmencoding.MakeConfig(app.EVMChainID)
-	return EncodingOut{
-		AppCodec:          enc.Codec,
-		LegacyAmino:       enc.Amino,
-		TxConfig:          enc.TxConfig,
-		InterfaceRegistry: enc.InterfaceRegistry,
-	}
-}
-
 // NewRootCmd creates a new root command for ggezchaind. It is called once in the main function.
 func NewRootCmd() *cobra.Command {
 	var (
@@ -57,7 +46,6 @@ func NewRootCmd() *cobra.Command {
 		depinject.Configs(app.AppConfig(),
 			depinject.Supply(
 				log.NewNopLogger(),
-				ProvideEVMEncoding,
 			),
 			depinject.Provide(
 				ProvideClientContext,
@@ -78,6 +66,18 @@ func NewRootCmd() *cobra.Command {
 		TxConfig:          tempApp.TxConfig(),
 		Amino:             tempApp.LegacyAmino(),
 	}
+
+	clientCtx = clientCtx.
+		WithCodec(encodingConfig.Codec).
+		WithInterfaceRegistry(encodingConfig.InterfaceRegistry).
+		WithTxConfig(encodingConfig.TxConfig).
+		WithLegacyAmino(encodingConfig.Amino).
+		WithInput(os.Stdin).WithChainID(app.CosmosChainID).
+		WithAccountRetriever(types.AccountRetriever{}).
+		WithHomeDir(app.DefaultNodeHome).
+		WithKeyringOptions(cosmosevmkeyring.Option(), hd.EthSecp256k1Option()).
+		WithViper(app.Name)
+
 	rootCmd := &cobra.Command{
 		Use:           app.Name + "d",
 		Short:         "ggezchain node",
@@ -86,17 +86,8 @@ func NewRootCmd() *cobra.Command {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())
 			cmd.SetErr(cmd.ErrOrStderr())
-			clientCtx = clientCtx.
-				WithCmdContext(cmd.Context()).
-				WithCodec(encodingConfig.Codec).
-				WithInterfaceRegistry(encodingConfig.InterfaceRegistry).
-				WithTxConfig(encodingConfig.TxConfig).
-				WithLegacyAmino(encodingConfig.Amino).
-				WithViper(app.Name).                                                    // env variable prefix
-				WithKeyringOptions(cosmosevmkeyring.Option(), hd.EthSecp256k1Option()). // evm keyring capabilities
-				WithBroadcastMode(flags.FlagBroadcastMode).
-				WithLedgerHasProtobuf(true)
 
+			clientCtx = clientCtx.WithCmdContext(cmd.Context())
 			clientCtx, err := client.ReadPersistentCommandFlags(clientCtx, cmd.Flags())
 			if err != nil {
 				return err
@@ -105,6 +96,27 @@ func NewRootCmd() *cobra.Command {
 			clientCtx, err = config.ReadFromClientConfig(clientCtx)
 			if err != nil {
 				return err
+			}
+
+			// This needs to go after ReadFromClientConfig, as that function
+			// sets the RPC client needed for SIGN_MODE_TEXTUAL. This sign mode
+			// is only available if the client is online.
+			if !clientCtx.Offline {
+				enabledSignModes := tx.DefaultSignModes
+				enabledSignModes = append(enabledSignModes, signing.SignMode_SIGN_MODE_TEXTUAL)
+				txConfigOpts := tx.ConfigOptions{
+					EnabledSignModes:           enabledSignModes,
+					TextualCoinMetadataQueryFn: authtxconfig.NewGRPCCoinMetadataQueryFn(clientCtx),
+				}
+				txConfig, err := tx.NewTxConfigWithOptions(
+					clientCtx.Codec,
+					txConfigOpts,
+				)
+				if err != nil {
+					return err
+				}
+
+				clientCtx = clientCtx.WithTxConfig(txConfig)
 			}
 
 			if err := client.SetCmdClientContextHandler(clientCtx, cmd); err != nil {
@@ -133,10 +145,16 @@ func NewRootCmd() *cobra.Command {
 		autoCliOpts.Modules[name] = mod
 	}
 
-	initRootCmd(rootCmd, clientCtx.TxConfig, moduleBasicManager)
+	initRootCmd(rootCmd, tempApp.TxConfig(), moduleBasicManager)
 
 	if err := autoCliOpts.EnhanceRootCommand(rootCmd); err != nil {
 		panic(err)
+	}
+
+	if clientCtx.ChainID != "" {
+		if err := evmdconfig.EvmAppOptions(app.EVMChainID); err != nil {
+			panic(err)
+		}
 	}
 
 	return rootCmd
@@ -164,6 +182,9 @@ func ProvideClientContext(
 	// Read the config again to overwrite the default values with the values from the config file
 	clientCtx, _ = config.ReadFromClientConfig(clientCtx)
 
+	enabledSignModes := tx.DefaultSignModes
+	enabledSignModes = append(enabledSignModes, signing.SignMode_SIGN_MODE_TEXTUAL)
+	txConfigOpts.EnabledSignModes = enabledSignModes
 	// textual is enabled by default, we need to re-create the tx config grpc instead of bank keeper.
 	txConfigOpts.TextualCoinMetadataQueryFn = authtxconfig.NewGRPCCoinMetadataQueryFn(clientCtx)
 	txConfig, err := tx.NewTxConfigWithOptions(clientCtx.Codec, txConfigOpts)

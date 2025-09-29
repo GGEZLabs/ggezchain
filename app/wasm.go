@@ -2,11 +2,13 @@ package app
 
 import (
 	"fmt"
+	"path/filepath"
 
 	storetypes "cosmossdk.io/store/types"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
@@ -16,6 +18,7 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/cosmos/gogoproto/proto"
 	porttypes "github.com/cosmos/ibc-go/v10/modules/core/05-port/types"
+	"github.com/spf13/cast"
 )
 
 // registerWasmModules register CosmWasm keepers and non dependency inject modules.
@@ -35,6 +38,8 @@ func (app *App) registerWasmModules(
 		return nil, fmt.Errorf("error while reading wasm config: %s", err)
 	}
 
+	homePath := cast.ToString(appOpts.Get(flags.FlagHome))
+	wasmDir := filepath.Join(homePath, "data")
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
 	app.WasmKeeper = wasmkeeper.NewKeeper(
@@ -49,7 +54,7 @@ func (app *App) registerWasmModules(
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
-		DefaultNodeHome,
+		wasmDir,
 		wasmConfig,
 		wasmtypes.VMConfig{},
 		wasmkeeper.BuiltInCapabilities(),

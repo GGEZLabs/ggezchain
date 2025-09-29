@@ -3,8 +3,6 @@ package app
 import (
 	"io"
 
-	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-
 	clienthelpers "cosmossdk.io/client/v2/helpers"
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/depinject"
@@ -15,6 +13,8 @@ import (
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	appante "github.com/GGEZLabs/ggezchain/v2/app/ante"
 	"github.com/GGEZLabs/ggezchain/v2/docs"
 	aclmodulekeeper "github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
 	trademodulekeeper "github.com/GGEZLabs/ggezchain/v2/x/trade/keeper"
@@ -50,28 +50,24 @@ import (
 	protocolpoolkeeper "github.com/cosmos/cosmos-sdk/x/protocolpool/keeper"
 	slashingkeeper "github.com/cosmos/cosmos-sdk/x/slashing/keeper"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
-	icacontrollerkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/controller/keeper"
-	icahostkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/keeper"
-
-	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
-	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
-	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
-	"github.com/spf13/cast"
-
-	"github.com/cosmos/evm/ante"
+	evmante "github.com/cosmos/evm/ante"
+	cosmosevmante "github.com/cosmos/evm/ante/evm"
 	evmencoding "github.com/cosmos/evm/encoding"
 	enccodec "github.com/cosmos/evm/encoding/codec"
 	evmsrvflags "github.com/cosmos/evm/server/flags"
+	cosmosevmtypes "github.com/cosmos/evm/types"
 	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
 	feemarketkeeper "github.com/cosmos/evm/x/feemarket/keeper"
 	ibctransferkeeper "github.com/cosmos/evm/x/ibc/transfer/keeper"
 	precisebankkeeper "github.com/cosmos/evm/x/precisebank/keeper"
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
+	icacontrollerkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/controller/keeper"
+	icahostkeeper "github.com/cosmos/ibc-go/v10/modules/apps/27-interchain-accounts/host/keeper"
+	ibckeeper "github.com/cosmos/ibc-go/v10/modules/core/keeper"
 	"github.com/ethereum/go-ethereum/common"
-	appante "github.com/GGEZLabs/ggezchain/v2/app/ante"
-	evmante "github.com/cosmos/evm/ante"
-	cosmosevmtypes "github.com/cosmos/evm/types"
-	cosmosevmante "github.com/cosmos/evm/ante/evm"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/js"
+	_ "github.com/ethereum/go-ethereum/eth/tracers/native"
+	"github.com/spf13/cast"
 )
 
 const (
@@ -151,7 +147,7 @@ type App struct {
 	EpochsKeeper       epochskeeper.Keeper
 
 	// pending tx listeners
-	pendingTxListeners []ante.PendingTxListener
+	pendingTxListeners []evmante.PendingTxListener
 	clientCtx          client.Context
 }
 
@@ -267,13 +263,13 @@ func New(
 	// build app
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
 
-	// evm must be instantiated before IBC modules
-	if err := app.registerEVMModules(appOpts); err != nil {
+	// register legacy modules
+	if err := app.registerIBCModules(appOpts); err != nil {
 		panic(err)
 	}
 
-	// register legacy modules
-	if err := app.registerIBCModules(appOpts); err != nil {
+	// evm must be instantiated before IBC modules
+	if err := app.registerEVMModules(appOpts); err != nil {
 		panic(err)
 	}
 
@@ -304,41 +300,38 @@ func New(
 	}
 
 	// set ante handlers
-	// When pass app.txConfig and run any tx with --dry-run got this error:
-	// Cannot encode unregistered concrete type ethsecp256k1.PubKey
-	// its work when pass ProvideEVMEncoding().TxConfig ineasted
-	// app.setAnteHandler(app.appCodec, app.txConfig, maxGasWanted, wasmConfig, app.GetKey(wasmtypes.StoreKey))
-	app.setAnteHandler(
-		appante.HandlerOptions{
-			HandlerOptions: evmante.HandlerOptions{
-				Cdc:                    app.appCodec,
-				AccountKeeper:          app.AuthKeeper,
-				BankKeeper:             app.BankKeeper,
-				ExtensionOptionChecker: cosmosevmtypes.HasDynamicFeeExtensionOption,
-				EvmKeeper:              app.EVMKeeper,
-				FeegrantKeeper:         app.FeeGrantKeeper,
-				IBCKeeper:              app.IBCKeeper,
-				FeeMarketKeeper:        app.FeeMarketKeeper,
-				SignModeHandler:        app.txConfig.SignModeHandler(),
-				SigGasConsumer:         evmante.SigVerificationGasConsumer,
-				MaxTxGasWanted:         maxGasWanted,
-				TxFeeChecker:           cosmosevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
-				PendingTxListener:      app.onPendingTx,
-			},
-			NodeConfig:            &wasmConfig,
-			WasmKeeper:            &app.WasmKeeper,
-			TXCounterStoreService: runtime.NewKVStoreService(app.GetKey(wasmtypes.StoreKey)),
-			CircuitKeeper:         &app.CircuitBreakerKeeper,
+	app.setAnteHandler(appante.HandlerOptions{
+		HandlerOptions: evmante.HandlerOptions{
+			Cdc:                    app.appCodec,
+			AccountKeeper:          app.AuthKeeper,
+			BankKeeper:             app.BankKeeper,
+			ExtensionOptionChecker: cosmosevmtypes.HasDynamicFeeExtensionOption,
+			EvmKeeper:              app.EVMKeeper,
+			FeegrantKeeper:         app.FeeGrantKeeper,
+			IBCKeeper:              app.IBCKeeper,
+			FeeMarketKeeper:        app.FeeMarketKeeper,
+			SignModeHandler:        app.txConfig.SignModeHandler(),
+			SigGasConsumer:         evmante.SigVerificationGasConsumer,
+			MaxTxGasWanted:         maxGasWanted,
+			TxFeeChecker:           cosmosevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
+			PendingTxListener:      app.onPendingTx,
 		},
-	)
+		NodeConfig:            &wasmConfig,
+		WasmKeeper:            &app.WasmKeeper,
+		TXCounterStoreService: runtime.NewKVStoreService(app.GetKey(wasmtypes.StoreKey)),
+		CircuitKeeper:         &app.CircuitBreakerKeeper,
+	})
 
 	app.setupUpgradeHandlers(app.Configurator())
 
 	if err := app.Load(loadLatest); err != nil {
 		panic(err)
 	}
+
+	if loadLatest {
 		if err := app.WasmKeeper.InitializePinnedCodes(app.NewUncachedContext(true, tmproto.Header{})); err != nil {
 			panic(err)
+		}
 	}
 
 	return app
@@ -453,16 +446,16 @@ func (app *App) RegisterPendingTxListener(listener func(common.Hash)) {
 	app.pendingTxListeners = append(app.pendingTxListeners, listener)
 }
 
-func (app *App) onPendingTx(hash common.Hash) {
-	for _, listener := range app.pendingTxListeners {
-		listener(hash)
-	}
-}
-
 func (app *App) setAnteHandler(options appante.HandlerOptions) {
 	if err := options.Validate(); err != nil {
 		panic(err)
 	}
 
 	app.SetAnteHandler(appante.NewAnteHandler(options))
+}
+
+func (app *App) onPendingTx(hash common.Hash) {
+	for _, listener := range app.pendingTxListeners {
+		listener(hash)
+	}
 }

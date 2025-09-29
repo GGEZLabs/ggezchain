@@ -1,21 +1,19 @@
 package ante
 
 import (
+	circuitante "cosmossdk.io/x/circuit/ante"
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/ante"
 	sdkvesting "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	evmoscosmosante "github.com/cosmos/evm/ante/cosmos"
 	evmante "github.com/cosmos/evm/ante/evm"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
-
-	circuitante "cosmossdk.io/x/circuit/ante"
-	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	ibcante "github.com/cosmos/ibc-go/v10/modules/core/ante"
 )
 
 // newCosmosAnteHandler creates the default ante handler for Cosmos transactions
-func NewCosmosAnteHandler(options HandlerOptions) sdk.AnteHandler {
-
+func newCosmosAnteHandler(options HandlerOptions) sdk.AnteHandler {
 	return sdk.ChainAnteDecorators(
 		evmoscosmosante.NewRejectMessagesDecorator(), // reject MsgEthereumTxs
 		evmoscosmosante.NewAuthzLimiterDecorator( // disable the Msg types that cannot be included on an authz.MsgExec msgs field
