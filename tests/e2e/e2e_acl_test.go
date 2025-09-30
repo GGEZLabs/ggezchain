@@ -3,9 +3,6 @@ package e2e
 import (
 	"fmt"
 	"time"
-
-	"cosmossdk.io/math"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (s *IntegrationTestSuite) testAcl() {
@@ -23,10 +20,8 @@ func (s *IntegrationTestSuite) testAcl() {
 	admin3, err := s.chainA.genesisAccounts[2].keyInfo.GetAddress()
 	s.Require().NoError(err)
 
-	fees := sdk.NewCoin(uggez1Denom, math.NewInt(1))
-
 	// Init ACL module
-	s.execInitAcl(s.chainA, 0, superAdmin.String(), superAdmin.String(), ggezHomePath, fees.String())
+	s.execInitAcl(s.chainA, 0, superAdmin.String(), superAdmin.String(), ggezHomePath, standardFees.String())
 	s.Require().Eventually(
 		func() bool {
 			res, err := querySuperAdmin(chainEndpoint)
@@ -39,7 +34,7 @@ func (s *IntegrationTestSuite) testAcl() {
 	)
 
 	// Add admin by super admin
-	s.execAddAclAdmin(s.chainA, 0, admin1.String(), superAdmin.String(), ggezHomePath, fees.String())
+	s.execAddAclAdmin(s.chainA, 0, admin1.String(), superAdmin.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -53,7 +48,7 @@ func (s *IntegrationTestSuite) testAcl() {
 	)
 
 	// Add another admin by super admin
-	s.execAddAclAdmin(s.chainA, 0, admin2.String(), superAdmin.String(), ggezHomePath, fees.String())
+	s.execAddAclAdmin(s.chainA, 0, admin2.String(), superAdmin.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -70,7 +65,7 @@ func (s *IntegrationTestSuite) testAcl() {
 	)
 
 	// Add admin3 by super admin
-	s.execAddAclAdmin(s.chainA, 0, admin3.String(), superAdmin.String(), ggezHomePath, fees.String())
+	s.execAddAclAdmin(s.chainA, 0, admin3.String(), superAdmin.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -87,7 +82,7 @@ func (s *IntegrationTestSuite) testAcl() {
 	)
 
 	// Delete admin3
-	s.execDeleteAclAdmin(s.chainA, 0, admin3.String(), superAdmin.String(), ggezHomePath, fees.String())
+	s.execDeleteAclAdmin(s.chainA, 0, admin3.String(), superAdmin.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -102,7 +97,7 @@ func (s *IntegrationTestSuite) testAcl() {
 
 	// Add authority for super admin
 	accessDefinitions := `[{"module":"trade","is_maker":true,"is_checker":true},{"module":"acl","is_maker":true,"is_checker":true}]`
-	s.execAddAclAuthority(s.chainA, 0, superAdmin.String(), "Alice", accessDefinitions, admin1.String(), ggezHomePath, fees.String())
+	s.execAddAclAuthority(s.chainA, 0, superAdmin.String(), "Alice", accessDefinitions, admin1.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -120,7 +115,7 @@ func (s *IntegrationTestSuite) testAcl() {
 
 	// Add authority for admin2
 	accessDefinitions = `[{"module":"trade","is_maker":false,"is_checker":true}]`
-	s.execAddAclAuthority(s.chainA, 0, admin2.String(), "Bob", accessDefinitions, admin1.String(), ggezHomePath, fees.String())
+	s.execAddAclAuthority(s.chainA, 0, admin2.String(), "Bob", accessDefinitions, admin1.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -138,7 +133,7 @@ func (s *IntegrationTestSuite) testAcl() {
 
 	// Add authority for admin3
 	accessDefinitions = `[{"module":"trade","is_maker":true,"is_checker":true}]`
-	s.execAddAclAuthority(s.chainA, 0, admin3.String(), "Carol", accessDefinitions, admin1.String(), ggezHomePath, fees.String())
+	s.execAddAclAuthority(s.chainA, 0, admin3.String(), "Carol", accessDefinitions, admin1.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -155,7 +150,7 @@ func (s *IntegrationTestSuite) testAcl() {
 	)
 
 	// Delete admin3 authority
-	s.execDeleteAclAuthority(s.chainA, 0, admin3.String(), admin1.String(), ggezHomePath, fees.String())
+	s.execDeleteAclAuthority(s.chainA, 0, admin3.String(), admin1.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -170,7 +165,7 @@ func (s *IntegrationTestSuite) testAcl() {
 
 	// update authority
 	updateAccessDefinitions := `{"module":"trade","is_maker":true,"is_checker":false}`
-	s.execUpdateAclAuthority(s.chainA, 0, superAdmin.String(), "acl", updateAccessDefinitions, admin1.String(), ggezHomePath, fees.String())
+	s.execUpdateAclAuthority(s.chainA, 0, superAdmin.String(), "acl", updateAccessDefinitions, admin1.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {

@@ -16,7 +16,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/debug"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/client/pruning"
 	"github.com/cosmos/cosmos-sdk/client/rpc"
 	"github.com/cosmos/cosmos-sdk/client/snapshot"
@@ -25,16 +24,30 @@ import (
 	authcmd "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
+	cosmosevmcmd "github.com/cosmos/evm/client"
+	evmserver "github.com/cosmos/evm/server"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	srvflags "github.com/cosmos/evm/server/flags"
 )
 
 func initRootCmd(
 	rootCmd *cobra.Command,
 	chainApp *app.App,
 ) {
+	sdkAppCreatorWrapper := func(l log.Logger, d dbm.DB, w io.Writer, ao servertypes.AppOptions) servertypes.Application {
+		return newApp(l, d, w, ao)
+	}
+
+	evmserver.AddCommands(
+		rootCmd,
+		evmserver.NewDefaultStartOptions(newApp, app.DefaultNodeHome),
+		appExport,
+		addModuleInitFlags,
+	)
+
 	rootCmd.AddCommand(
 		genutilcli.InitCmd(chainApp.BasicModuleManager, app.DefaultNodeHome),
 		cmtcli.NewCompletionCmd(rootCmd, true),
@@ -42,16 +55,15 @@ func initRootCmd(
 		NewTestnetMultiNodeCmd(chainApp.BasicModuleManager, banktypes.GenesisBalancesIterator{}),
 		debug.Cmd(),
 		confixcmd.ConfigCommand(),
-		pruning.Cmd(newApp, app.DefaultNodeHome),
-		snapshot.Cmd(newApp),
+		pruning.Cmd(sdkAppCreatorWrapper, app.DefaultNodeHome),
+		snapshot.Cmd(sdkAppCreatorWrapper),
 	)
 
-	server.AddCommands(rootCmd, app.DefaultNodeHome, newApp, appExport, addModuleInitFlags)
+	server.AddCommands(rootCmd, app.DefaultNodeHome, sdkAppCreatorWrapper, appExport, addModuleInitFlags)
 
-	// TODO: check if it necessary
-	// server.AddCommandsWithStartCmdOptions(rootCmd, app.DefaultNodeHome, newApp, appExport, server.StartCmdOptions{
-	// 	AddFlags: addModuleInitFlags,
-	// })
+	server.AddCommandsWithStartCmdOptions(rootCmd, app.DefaultNodeHome, sdkAppCreatorWrapper, appExport, server.StartCmdOptions{
+		AddFlags: addModuleInitFlags,
+	})
 
 	// add keybase, auxiliary RPC, query, genesis, and tx child commands
 	rootCmd.AddCommand(
@@ -59,9 +71,16 @@ func initRootCmd(
 		genutilcli.Commands(chainApp.TxConfig(), chainApp.BasicModuleManager, app.DefaultNodeHome),
 		queryCommand(),
 		txCommand(),
-		keys.Commands(),
+		cosmosevmcmd.KeyCommands(app.DefaultNodeHome, true),
 	)
 	wasmcli.ExtendUnsafeResetAllCmd(rootCmd)
+
+	// add general tx flags to the root command
+	var err error
+	_, err = srvflags.AddTxFlags(rootCmd)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // addModuleInitFlags adds more flags to the start command.
@@ -123,7 +142,7 @@ func newApp(
 	db dbm.DB,
 	traceStore io.Writer,
 	appOpts servertypes.AppOptions,
-) servertypes.Application {
+) evmserver.Application {
 	baseappOptions := server.DefaultBaseappOptions(appOpts)
 
 	var wasmOpts []wasmkeeper.Option
@@ -135,6 +154,7 @@ func newApp(
 		logger, db, traceStore, true,
 		appOpts,
 		wasmOpts,
+		app.EVMAppOptions,
 		baseappOptions...,
 	)
 }
@@ -166,12 +186,12 @@ func appExport(
 
 	appOpts = viperAppOpts
 	if height != -1 {
-		bApp = app.New(logger, db, traceStore, false, appOpts, []wasmkeeper.Option{})
+		bApp = app.New(logger, db, traceStore, false, appOpts, []wasmkeeper.Option{}, app.EVMAppOptions)
 		if err := bApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		bApp = app.New(logger, db, traceStore, true, appOpts, []wasmkeeper.Option{})
+		bApp = app.New(logger, db, traceStore, true, appOpts, []wasmkeeper.Option{}, app.EVMAppOptions)
 	}
 
 	return bApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)

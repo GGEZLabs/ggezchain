@@ -1,6 +1,10 @@
 package app
 
-import sdk "github.com/cosmos/cosmos-sdk/types"
+import (
+	"cosmossdk.io/math"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"math/big"
+)
 
 func init() {
 	// Set prefixes
@@ -9,6 +13,10 @@ func init() {
 	validatorPubKeyPrefix := AccountAddressPrefix + "valoperpub"
 	consNodeAddressPrefix := AccountAddressPrefix + "valcons"
 	consNodePubKeyPrefix := AccountAddressPrefix + "valconspub"
+
+	sdk.DefaultPowerReduction = math.NewIntFromBigInt(
+		new(big.Int).Exp(big.NewInt(10), big.NewInt(BaseDenomUnit), nil),
+	)
 
 	// Set and seal config
 	config := sdk.GetConfig()

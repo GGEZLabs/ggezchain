@@ -4,6 +4,7 @@ import (
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	cmtcfg "github.com/cometbft/cometbft/config"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
+	evmserverconfig "github.com/cosmos/evm/server/config"
 )
 
 // initCometBFTConfig helps to override default CometBFT Config values.
@@ -24,6 +25,9 @@ func initAppConfig() (string, interface{}) {
 	// The following code snippet is just for reference.
 	type CustomAppConfig struct {
 		serverconfig.Config `mapstructure:",squash"`
+		EVM                 evmserverconfig.EVMConfig
+		JSONRPC             evmserverconfig.JSONRPCConfig
+		TLS                 evmserverconfig.TLSConfig
 	}
 
 	// Optionally allow the chain developer to overwrite the SDK's default
@@ -44,10 +48,13 @@ func initAppConfig() (string, interface{}) {
 	srvCfg.MinGasPrices = "0uggez1"
 
 	customAppConfig := CustomAppConfig{
-		Config: *srvCfg,
+		Config:  *srvCfg,
+		EVM:     *evmserverconfig.DefaultEVMConfig(),
+		JSONRPC: *evmserverconfig.DefaultJSONRPCConfig(),
+		TLS:     *evmserverconfig.DefaultTLSConfig(),
 	}
 
-	customAppTemplate := serverconfig.DefaultConfigTemplate
+	customAppTemplate := serverconfig.DefaultConfigTemplate + evmserverconfig.DefaultEVMConfigTemplate
 	customAppTemplate += wasmtypes.DefaultConfigTemplate()
 
 	// Edit the default template file

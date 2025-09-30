@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"cosmossdk.io/math"
 	tradetypes "github.com/GGEZLabs/ggezchain/v2/x/trade/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (s *IntegrationTestSuite) testTrade() {
@@ -18,10 +16,9 @@ func (s *IntegrationTestSuite) testTrade() {
 	admin2, err := s.chainA.genesisAccounts[1].keyInfo.GetAddress()
 	s.Require().NoError(err)
 
-	fees := sdk.NewCoin(uggez1Denom, math.NewInt(1))
 
 	// Create trade
-	s.execCreateTrade(s.chainA, 0, admin1.String(), tradetypes.GetSampleTradeDataJson(tradetypes.TradeTypeBuy), `{}`, tradetypes.GetSampleCoinMintingPriceJson(), tradetypes.GetSampleExchangeRateJson(), admin1.String(), ggezHomePath, fees.String())
+	s.execCreateTrade(s.chainA, 0, admin1.String(), tradetypes.GetSampleTradeDataJson(tradetypes.TradeTypeBuy), `{}`, tradetypes.GetSampleCoinMintingPriceJson(), tradetypes.GetSampleExchangeRateJson(), admin1.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -48,7 +45,7 @@ func (s *IntegrationTestSuite) testTrade() {
 	)
 
 	// Process trade
-	s.execProcessTrade(s.chainA, 0, "1", "confirm", admin2.String(), ggezHomePath, fees.String(), false)
+	s.execProcessTrade(s.chainA, 0, "1", "confirm", admin2.String(), ggezHomePath, standardFees.String(), false)
 
 	s.Require().Eventually(
 		func() bool {
@@ -77,10 +74,10 @@ func (s *IntegrationTestSuite) testTrade() {
 	)
 
 	// Process already processed trade
-	s.execProcessTrade(s.chainA, 0, "1", "confirm", admin2.String(), ggezHomePath, fees.String(), true)
+	s.execProcessTrade(s.chainA, 0, "1", "confirm", admin2.String(), ggezHomePath, standardFees.String(), true)
 
 	// Create trade with type split
-	s.execCreateTrade(s.chainA, 0, "", tradetypes.GetSampleTradeDataJson(tradetypes.TradeTypeSplit), `{}`, tradetypes.GetSampleCoinMintingPriceJson(), tradetypes.GetSampleExchangeRateJson(), admin1.String(), ggezHomePath, fees.String())
+	s.execCreateTrade(s.chainA, 0, "", tradetypes.GetSampleTradeDataJson(tradetypes.TradeTypeSplit), `{}`, tradetypes.GetSampleCoinMintingPriceJson(), tradetypes.GetSampleExchangeRateJson(), admin1.String(), ggezHomePath, standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -107,7 +104,7 @@ func (s *IntegrationTestSuite) testTrade() {
 	)
 
 	// Process trade
-	s.execProcessTrade(s.chainA, 0, "2", "confirm", admin2.String(), ggezHomePath, fees.String(), false)
+	s.execProcessTrade(s.chainA, 0, "2", "confirm", admin2.String(), ggezHomePath, standardFees.String(), false)
 
 	s.Require().Eventually(
 		func() bool {

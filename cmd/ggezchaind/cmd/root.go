@@ -18,6 +18,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtxconfig "github.com/cosmos/cosmos-sdk/x/auth/tx/config"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/cosmos/evm/crypto/hd"
+	cosmosevmkeyring "github.com/cosmos/evm/crypto/keyring"
 	"github.com/spf13/cobra"
 )
 
@@ -25,11 +27,11 @@ import (
 func NewRootCmd() *cobra.Command {
 	var (
 		autoCliOpts autocli.AppOptions
-		clientCtx client.Context
+		clientCtx   client.Context
 	)
 	tempApp := app.New(
 		log.NewNopLogger(), dbm.NewMemDB(), nil, false, simtestutil.NewAppOptionsWithFlagHome(tempDir()),
-		[]wasmkeeper.Option{},
+		[]wasmkeeper.Option{}, app.EVMAppOptions,
 	)
 	encodingConfig := app.EncodingConfig{
 		InterfaceRegistry: tempApp.InterfaceRegistry(),
@@ -46,7 +48,8 @@ func NewRootCmd() *cobra.Command {
 		WithInput(os.Stdin).
 		WithAccountRetriever(types.AccountRetriever{}).
 		WithHomeDir(app.DefaultNodeHome).
-		WithViper("")
+		WithKeyringOptions(cosmosevmkeyring.Option(), hd.EthSecp256k1Option()).
+		WithViper(app.Name)
 
 	rootCmd := &cobra.Command{
 		Use:           app.Name + "d",

@@ -49,7 +49,7 @@ func BenchmarkFullAppSimulation(b *testing.B) {
 	}
 	appOptions.SetDefault(flags.FlagHome, DefaultNodeHome)
 
-	app := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, interBlockCacheOpt(), baseapp.SetChainID(SimAppChainID))
+	app := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, EVMAppOptions, interBlockCacheOpt(), baseapp.SetChainID(SimAppChainID))
 
 	// run randomized simulation
 	_, simParams, simErr := simulation.SimulateFromSeed(
