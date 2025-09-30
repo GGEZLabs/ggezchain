@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path/filepath"
 	"sort"
 	"sync"
 
@@ -117,7 +116,6 @@ import (
 	cosmosevmante "github.com/cosmos/evm/ante/evm"
 	evmencoding "github.com/cosmos/evm/encoding"
 	evmsrvflags "github.com/cosmos/evm/server/flags"
-	srvflags "github.com/cosmos/evm/server/flags"
 	cosmosevmtypes "github.com/cosmos/evm/types"
 	erc20 "github.com/cosmos/evm/x/erc20"
 	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
@@ -622,7 +620,7 @@ func New(
 		app.AccountKeeper,
 	)
 
-	tracer := cast.ToString(appOpts.Get(srvflags.EVMTracer))
+	tracer := cast.ToString(appOpts.Get(evmsrvflags.EVMTracer))
 	// NOTE: it's required to set up the EVM keeper before the ERC-20 keeper, because it is used in its instantiation.
 	app.EVMKeeper = evmkeeper.NewKeeper(
 		app.appCodec,
@@ -675,7 +673,6 @@ func New(
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
 
-	wasmDir := filepath.Join(homePath)
 	wasmConfig, err := wasm.ReadNodeConfig(appOpts)
 	if err != nil {
 		panic(fmt.Sprintf("error while reading wasm config: %s", err))
@@ -695,7 +692,7 @@ func New(
 		app.TransferKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
-		wasmDir,
+		homePath,
 		wasmConfig,
 		wasmtypes.VMConfig{},
 		wasmkeeper.BuiltInCapabilities(), // TODO: check the perpos of capabilities (the difference between this capabilities and in line: 668 )

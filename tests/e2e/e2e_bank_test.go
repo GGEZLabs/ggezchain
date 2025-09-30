@@ -49,7 +49,7 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 
 		customFee := sdk.NewCoin(uggez1Denom, math.NewInt(340000000))
 		// alice sends tokens to bob
-		s.execBankSend(s.chainA, valIdx, alice.String(), bob.String(), tokenAmount.String(), customFee.String(), false, )
+		s.execBankSend(s.chainA, valIdx, alice.String(), bob.String(), tokenAmount.String(), customFee.String(), false)
 
 		// check that the transfer was successful
 		s.Require().Eventually(

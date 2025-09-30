@@ -16,7 +16,6 @@ func (s *IntegrationTestSuite) testTrade() {
 	admin2, err := s.chainA.genesisAccounts[1].keyInfo.GetAddress()
 	s.Require().NoError(err)
 
-
 	// Create trade
 	s.execCreateTrade(s.chainA, 0, admin1.String(), tradetypes.GetSampleTradeDataJson(tradetypes.TradeTypeBuy), `{}`, tradetypes.GetSampleCoinMintingPriceJson(), tradetypes.GetSampleExchangeRateJson(), admin1.String(), ggezHomePath, standardFees.String())
 
