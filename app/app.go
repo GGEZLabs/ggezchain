@@ -1329,7 +1329,7 @@ func GetMaccPerms() map[string][]string {
 	return dupMaccPerms
 }
 
-// // BlockedAddresses returns all the app's blocked account addresses.
+// BlockedAddresses returns all the app's blocked account addresses.
 func BlockedAddresses() map[string]bool {
 	blockedAddrs := make(map[string]bool)
 
