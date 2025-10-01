@@ -15,7 +15,6 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	evmconfig "github.com/cosmos/evm/config"
-	"github.com/cosmos/evm/evmd/eips"
 	srvflags "github.com/cosmos/evm/server/flags"
 	erc20 "github.com/cosmos/evm/x/erc20"
 	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
@@ -46,17 +45,11 @@ func (app *App) registerEVMModules(appOpts servertypes.AppOptions) error {
 		},
 	}
 
-	cosmosEVMActivators := map[int]func(*gethvm.JumpTable){
-		0o000: eips.Enable0000,
-		0o001: eips.Enable0001,
-		0o002: eips.Enable0002,
-	}
-
 	// configure evm modules
 	if err := evmconfig.EvmAppOptionsWithConfig(
 		EVMChainID,
 		coinInfoMap,
-		cosmosEVMActivators,
+		getCustomEVMActivators(),
 	); err != nil {
 		return err
 	}
@@ -166,6 +159,38 @@ func RegisterEVM(cdc codec.Codec, interfaceRegistry codectypes.InterfaceRegistry
 // ProvideMsgEthereumTxCustomGetSigner provides a custom signer for the MsgEthereumTx message.
 func ProvideMsgEthereumTxCustomGetSigner() signing.CustomGetSigner {
 	return evmtypes.MsgEthereumTxCustomGetSigner
+}
+
+// getCustomEVMActivators defines a map of opcode modifiers associated
+// with a key defining the corresponding EIP.
+func getCustomEVMActivators() map[int]func(*gethvm.JumpTable) {
+	var (
+		multiplier        = uint64(10)
+		sstoreConstantGas = uint64(500)
+	)
+
+	return map[int]func(*gethvm.JumpTable){
+		0o000: func(jt *gethvm.JumpTable) {
+			// enable0000 contains the logic to modify the CREATE and CREATE2 opcodes
+			// constant gas value.
+			currentValCreate := jt[gethvm.CREATE].GetConstantGas()
+			jt[gethvm.CREATE].SetConstantGas(currentValCreate * multiplier)
+
+			currentValCreate2 := jt[gethvm.CREATE2].GetConstantGas()
+			jt[gethvm.CREATE2].SetConstantGas(currentValCreate2 * multiplier)
+		},
+		0o001: func(jt *gethvm.JumpTable) {
+			// enable0001 contains the logic to modify the CALL opcode
+			// constant gas value.
+			currentVal := jt[gethvm.CALL].GetConstantGas()
+			jt[gethvm.CALL].SetConstantGas(currentVal * multiplier)
+		},
+		0o002: func(jt *gethvm.JumpTable) {
+			// enable0002 contains the logic to modify the SSTORE opcode
+			// constant gas value.
+			jt[gethvm.SSTORE].SetConstantGas(sstoreConstantGas)
+		},
+	}
 }
 
 // GetStoreKeysMap returns a map of store keys.

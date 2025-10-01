@@ -21,7 +21,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/evm/crypto/hd"
 	cosmosevmkeyring "github.com/cosmos/evm/crypto/keyring"
-	evmdconfig "github.com/cosmos/evm/evmd/cmd/evmd/config"
 	"github.com/spf13/cobra"
 )
 
@@ -72,7 +71,7 @@ func NewRootCmd() *cobra.Command {
 		WithInterfaceRegistry(encodingConfig.InterfaceRegistry).
 		WithTxConfig(encodingConfig.TxConfig).
 		WithLegacyAmino(encodingConfig.Amino).
-		WithInput(os.Stdin).WithChainID(app.CosmosChainID).
+		WithInput(os.Stdin).
 		WithAccountRetriever(types.AccountRetriever{}).
 		WithHomeDir(app.DefaultNodeHome).
 		WithKeyringOptions(cosmosevmkeyring.Option(), hd.EthSecp256k1Option()).
@@ -151,11 +150,6 @@ func NewRootCmd() *cobra.Command {
 		panic(err)
 	}
 
-	if clientCtx.ChainID != "" {
-		if err := evmdconfig.EvmAppOptions(app.EVMChainID); err != nil {
-			panic(err)
-		}
-	}
 
 	return rootCmd
 }
