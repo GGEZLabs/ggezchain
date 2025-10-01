@@ -47,7 +47,6 @@ func (app *App) setupUpgradeHandlers(configurator module.Configurator) {
 				protocolpooltypes.ModuleName,
 			},
 		}
-
 	}
 
 	if storeUpgrades != nil {
