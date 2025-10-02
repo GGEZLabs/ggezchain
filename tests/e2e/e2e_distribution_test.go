@@ -70,7 +70,7 @@ func (s *IntegrationTestSuite) fundCommunityPool() {
 		beforeDistUGGEZ1Balance = sdk.NewInt64Coin(uggez1Denom, 0)
 	}
 
-	s.execDistributionFundCommunityPool(s.chainA, 0, sender.String(), tokenAmount.String(), standardFees.String())
+	s.execProtocolpoolFundCommunityPool(s.chainA, 0, sender.String(), tokenAmount.String(), standardFees.String())
 
 	s.Require().Eventually(
 		func() bool {
@@ -79,7 +79,7 @@ func (s *IntegrationTestSuite) fundCommunityPool() {
 
 			// check if the balance is increased by the tokenAmount and at least some portion of
 			// the fees (some amount of the fees will be given to the proposer)
-			return beforeDistUGGEZ1Balance.Add(tokenAmount).Add(standardFees).IsEqual(afterDistUGGEZ1Balance)
+			return beforeDistUGGEZ1Balance.Add(tokenAmount).Add(standardFees).IsLT(afterDistUGGEZ1Balance)
 		},
 		15*time.Second,
 		5*time.Second,

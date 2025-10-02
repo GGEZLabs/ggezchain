@@ -95,7 +95,7 @@ ldflags := $(strip $(ldflags))
 
 BUILD_FLAGS := -tags "$(build_tags_comma_sep)" -ldflags '$(ldflags)' -trimpath
 
-all: install lint test
+all: test-all lint-all install
 
 build: go.sum
 ifeq ($(OS),Windows_NT)
