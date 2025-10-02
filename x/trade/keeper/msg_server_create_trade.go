@@ -49,7 +49,7 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		return nil, sdkerrors.ErrInvalidRequest.Wrapf("receiver address must not be set for trade type %s", td.TradeInfo.TradeType.String())
 	}
 
-	tradeIndex, found := k.Keeper.GetTradeIndex(ctx)
+	tradeIndex, found := k.GetTradeIndex(ctx)
 	if !found {
 		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "trade with index %d not found", tradeIndex.NextId)
 	}
@@ -93,14 +93,14 @@ func (k msgServer) CreateTrade(goCtx context.Context, msg *types.MsgCreateTrade)
 		TxDate:     formattedDateTime,
 	}
 
-	k.Keeper.SetStoredTrade(ctx, storedTrade)
-	k.Keeper.SetStoredTempTrade(ctx, storedTempTrade)
+	k.SetStoredTrade(ctx, storedTrade)
+	k.SetStoredTempTrade(ctx, storedTempTrade)
 
 	tradeIndex.NextId++
-	k.Keeper.SetTradeIndex(ctx, tradeIndex)
+	k.SetTradeIndex(ctx, tradeIndex)
 
 	// Cancel expired trades
-	k.Keeper.CancelExpiredPendingTrades(ctx)
+	k.CancelExpiredPendingTrades(ctx)
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

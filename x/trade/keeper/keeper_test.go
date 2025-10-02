@@ -174,7 +174,7 @@ func (suite *KeeperTestSuite) createNTrades(numberOfTrades uint64) (tradeIndex [
 	for i := uint64(0); i < numberOfTrades; i++ {
 		createResponse, err := suite.msgServer.CreateTrade(suite.ctx, types.GetSampleMsgCreateTrade())
 		suite.Require().NoError(err)
-		suite.Require().EqualValues(types.MsgCreateTradeResponse{
+		suite.Require().Equal(types.MsgCreateTradeResponse{
 			TradeIndex: i + 1,
 			Status:     types.StatusPending,
 		}, *createResponse)
