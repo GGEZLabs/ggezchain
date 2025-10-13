@@ -34,6 +34,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
+	"github.com/cosmos/cosmos-sdk/x/auth/posthandler"
 	authsims "github.com/cosmos/cosmos-sdk/x/auth/simulation"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	authzkeeper "github.com/cosmos/cosmos-sdk/x/authz/keeper"
@@ -267,8 +268,6 @@ func New(
 	if err := app.registerIBCModules(appOpts); err != nil {
 		panic(err)
 	}
-
-	// evm must be instantiated before IBC modules
 	if err := app.registerEVMModules(appOpts); err != nil {
 		panic(err)
 	}
@@ -321,6 +320,10 @@ func New(
 		TXCounterStoreService: runtime.NewKVStoreService(app.GetKey(wasmtypes.StoreKey)),
 		CircuitKeeper:         &app.CircuitBreakerKeeper,
 	})
+
+	if err := app.setPostHandler(); err != nil {
+		panic(err)
+	}
 
 	app.setupUpgradeHandlers(app.Configurator())
 
@@ -458,4 +461,15 @@ func (app *App) onPendingTx(hash common.Hash) {
 	for _, listener := range app.pendingTxListeners {
 		listener(hash)
 	}
+}
+
+func (app *App) setPostHandler() error {
+	postHandler, err := posthandler.NewPostHandler(
+		posthandler.HandlerOptions{},
+	)
+	if err != nil {
+		return err
+	}
+	app.SetPostHandler(postHandler)
+	return nil
 }

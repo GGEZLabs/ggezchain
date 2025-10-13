@@ -36,6 +36,7 @@ import (
 func (app *App) registerEVMModules(appOpts servertypes.AppOptions) error {
 	displayDenom := "ggez1"
 	// chain config
+	// TODO:
 	coinInfoMap := map[uint64]evmtypes.EvmCoinInfo{
 		EVMChainID: {
 			Denom:         sdk.DefaultBondDenom,

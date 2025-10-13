@@ -12,7 +12,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/runtime"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
-	"github.com/cosmos/cosmos-sdk/x/auth/posthandler"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	distrkeeper "github.com/cosmos/cosmos-sdk/x/distribution/keeper"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
@@ -85,10 +84,6 @@ func (app *App) registerWasmModules(
 		}
 	}
 
-	if err := app.setPostHandler(); err != nil {
-		return nil, err
-	}
-
 	// At startup, after all modules have been registered, check that all proto
 	// annotations are correct.
 	protoFiles, err := proto.MergedRegistry()
@@ -104,15 +99,4 @@ func (app *App) registerWasmModules(
 	wasmStack := wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper, app.IBCKeeper.ChannelKeeper)
 
 	return wasmStack, nil
-}
-
-func (app *App) setPostHandler() error {
-	postHandler, err := posthandler.NewPostHandler(
-		posthandler.HandlerOptions{},
-	)
-	if err != nil {
-		return err
-	}
-	app.SetPostHandler(postHandler)
-	return nil
 }

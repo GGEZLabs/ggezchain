@@ -8,6 +8,7 @@ import (
     evmtypes "github.com/cosmos/evm/x/vm/types"
 )
 
+// TODO: use the default config
 type EVMOptionsFn func(uint32) error
 
 func NoOpEVMOptions(_ uint32) error {
@@ -17,6 +18,7 @@ func NoOpEVMOptions(_ uint32) error {
 var sealed = false
 var displayDenom = "ggez1"
 
+// TODO:
 // ChainsCoinInfo maps EVM chain IDs to coin configuration
 // IMPORTANT: Uses uint64 EVM chain IDs as keys, not Cosmos chain ID strings
 var ChainsCoinInfo = map[uint64]evmtypes.EvmCoinInfo{
