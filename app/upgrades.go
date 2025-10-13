@@ -31,7 +31,7 @@ func (app *App) setupUpgradeHandlers(configurator module.Configurator) {
 
 	app.UpgradeKeeper.SetUpgradeHandler(
 		v3_0_0.UpgradeName,
-		v3_0_0.CreateUpgradeHandler(app.ModuleManager, configurator),
+		v3_0_0.CreateUpgradeHandler(app.ModuleManager, configurator, app.EVMKeeper),
 	)
 
 	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
