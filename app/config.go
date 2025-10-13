@@ -16,7 +16,7 @@ func init() {
 	consNodePubKeyPrefix := AccountAddressPrefix + "valconspub"
 
 	sdk.DefaultPowerReduction = math.NewIntFromBigInt(
-		new(big.Int).Exp(big.NewInt(10), big.NewInt(BaseDenomUnit), nil),
+		new(big.Int).Exp(big.NewInt(10), big.NewInt(6), nil), // TODO:
 	)
 
 	// Set and seal config

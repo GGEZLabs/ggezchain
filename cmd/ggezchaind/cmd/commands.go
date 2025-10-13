@@ -14,7 +14,6 @@ import (
 	cmtcli "github.com/cometbft/cometbft/libs/cli"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/debug"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/pruning"
 	"github.com/cosmos/cosmos-sdk/client/rpc"
@@ -24,7 +23,8 @@ import (
 	authcmd "github.com/cosmos/cosmos-sdk/x/auth/client/cli"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
-	cosmosevmcmd "github.com/cosmos/evm/client"
+	evmcmd "github.com/cosmos/evm/client"
+	evmdebug "github.com/cosmos/evm/client/debug"
 	evmserver "github.com/cosmos/evm/server"
 	srvflags "github.com/cosmos/evm/server/flags"
 	"github.com/prometheus/client_golang/prometheus"
@@ -53,17 +53,11 @@ func initRootCmd(
 		cmtcli.NewCompletionCmd(rootCmd, true),
 		NewInPlaceTestnetCmd(),
 		NewTestnetMultiNodeCmd(chainApp.BasicModuleManager, banktypes.GenesisBalancesIterator{}),
-		debug.Cmd(),
+		evmdebug.Cmd(),
 		confixcmd.ConfigCommand(),
 		pruning.Cmd(sdkAppCreatorWrapper, app.DefaultNodeHome),
 		snapshot.Cmd(sdkAppCreatorWrapper),
 	)
-
-	server.AddCommands(rootCmd, app.DefaultNodeHome, sdkAppCreatorWrapper, appExport, addModuleInitFlags)
-
-	server.AddCommandsWithStartCmdOptions(rootCmd, app.DefaultNodeHome, sdkAppCreatorWrapper, appExport, server.StartCmdOptions{
-		AddFlags: addModuleInitFlags,
-	})
 
 	// add keybase, auxiliary RPC, query, genesis, and tx child commands
 	rootCmd.AddCommand(
@@ -71,7 +65,7 @@ func initRootCmd(
 		genutilcli.Commands(chainApp.TxConfig(), chainApp.BasicModuleManager, app.DefaultNodeHome),
 		queryCommand(),
 		txCommand(),
-		cosmosevmcmd.KeyCommands(app.DefaultNodeHome, true),
+		evmcmd.KeyCommands(app.DefaultNodeHome, true),
 	)
 	wasmcli.ExtendUnsafeResetAllCmd(rootCmd)
 

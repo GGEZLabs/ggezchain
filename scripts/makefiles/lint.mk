@@ -18,7 +18,7 @@ lint-help:
 lint: lint-help
 
 lint-all:
-	@echo "--> Installing golangci-lint if not installed"
+	@echo "--> Installing golangci-lint"
 	@if ! command -v golangci-lint >/dev/null 2>&1; then \
 		curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $$(go env GOPATH)/bin v2.3.1; \
 	fi
@@ -27,7 +27,7 @@ lint-all:
 	@docker run -v $(PWD):/workdir ghcr.io/igorshubovych/markdownlint-cli:latest "**/*.md"
 
 lint-format:
-	@echo "--> Installing golangci-lint if not installed"
+	@echo "--> Installing golangci-lint"
 	@if ! command -v golangci-lint >/dev/null 2>&1; then \
 		curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $$(go env GOPATH)/bin v2.3.1; \
 	fi

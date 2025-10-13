@@ -638,7 +638,7 @@ func New(
 	).WithStaticPrecompiles(NewAvailableStaticPrecompiles( // TODO: check precompiles
 		*app.StakingKeeper,
 		app.DistrKeeper,
-		app.BankKeeper,
+		app.PreciseBankKeeper,
 		app.Erc20Keeper,
 		app.TransferKeeper,
 		app.IBCKeeper.ChannelKeeper,
