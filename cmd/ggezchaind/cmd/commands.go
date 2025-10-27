@@ -148,7 +148,6 @@ func newApp(
 		logger, db, traceStore, true,
 		appOpts,
 		wasmOpts,
-		app.EVMAppOptions,
 		baseappOptions...,
 	)
 }
@@ -180,12 +179,12 @@ func appExport(
 
 	appOpts = viperAppOpts
 	if height != -1 {
-		bApp = app.New(logger, db, traceStore, false, appOpts, []wasmkeeper.Option{}, app.EVMAppOptions)
+		bApp = app.New(logger, db, traceStore, false, appOpts, []wasmkeeper.Option{})
 		if err := bApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		bApp = app.New(logger, db, traceStore, true, appOpts, []wasmkeeper.Option{}, app.EVMAppOptions)
+		bApp = app.New(logger, db, traceStore, true, appOpts, []wasmkeeper.Option{})
 	}
 
 	return bApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs, modulesToExport)

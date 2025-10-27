@@ -108,7 +108,6 @@ func (c *chain) createAndInitValidators(count int) error {
 		true,
 		appOptions,
 		[]wasmkeeper.Option{},
-		ggezchain.EVMAppOptions,
 		baseapp.SetChainID("ggezchain-testnet"),
 	)
 	defer func() {
@@ -156,7 +155,6 @@ func (c *chain) createAndInitValidatorsWithMnemonics(count int, mnemonics []stri
 		true,
 		appOptions,
 		[]wasmkeeper.Option{},
-		ggezchain.EVMAppOptions,
 		baseapp.SetChainID("ggezchain-testnet"),
 	)
 	defer func() {

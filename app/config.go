@@ -1,10 +1,8 @@
 package app
 
 import (
-	"math/big"
-
-	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/evm/utils"
 )
 
 func init() {
@@ -15,9 +13,7 @@ func init() {
 	consNodeAddressPrefix := AccountAddressPrefix + "valcons"
 	consNodePubKeyPrefix := AccountAddressPrefix + "valconspub"
 
-	sdk.DefaultPowerReduction = math.NewIntFromBigInt(
-		new(big.Int).Exp(big.NewInt(10), big.NewInt(6), nil), // TODO:
-	)
+	sdk.DefaultPowerReduction = utils.MicroPowerReduction
 
 	// Set and seal config
 	config := sdk.GetConfig()

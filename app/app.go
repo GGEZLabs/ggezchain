@@ -34,6 +34,7 @@ import (
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	appante "github.com/GGEZLabs/ggezchain/v2/app/ante"
+	"github.com/GGEZLabs/ggezchain/v2/app/precompiles"
 	"github.com/GGEZLabs/ggezchain/v2/docs"
 	aclkeeper "github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
 	acl "github.com/GGEZLabs/ggezchain/v2/x/acl/module"
@@ -58,6 +59,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/server/config"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkmempool "github.com/cosmos/cosmos-sdk/types/mempool"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/types/msgservice"
 	signingtype "github.com/cosmos/cosmos-sdk/types/tx/signing"
@@ -113,10 +115,11 @@ import (
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	evmante "github.com/cosmos/evm/ante"
-	cosmosevmante "github.com/cosmos/evm/ante/evm"
+	antetypes "github.com/cosmos/evm/ante/types"
 	evmencoding "github.com/cosmos/evm/encoding"
+	evmaddress "github.com/cosmos/evm/encoding/address"
+	evmmempool "github.com/cosmos/evm/mempool"
 	evmsrvflags "github.com/cosmos/evm/server/flags"
-	cosmosevmtypes "github.com/cosmos/evm/types"
 	erc20 "github.com/cosmos/evm/x/erc20"
 	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
 	erc20types "github.com/cosmos/evm/x/erc20/types"
@@ -159,13 +162,10 @@ const (
 	// AccountAddressPrefix is the prefix for accounts addresses.
 	AccountAddressPrefix = "ggez"
 	// ChainCoinType is the coin type of the chain.
-	ChainCoinType       = 60
-	CosmosChainID       = "ggezchain"
-	EVMChainID          = 262144
-	BaseDenomUnit int64 = 18
-
-	BaseDenom    = "uggez1"
-	DisplayDenom = "ggez1"
+	ChainCoinType = 60
+	// TODO: Specify chain Id
+	EVMChainID = 262144
+	BaseDenom  = "uggez1"
 )
 
 var (
@@ -227,6 +227,7 @@ type App struct {
 	EVMKeeper         *evmkeeper.Keeper
 	Erc20Keeper       erc20keeper.Keeper
 	PreciseBankKeeper precisebankkeeper.Keeper
+	EVMMempool        *evmmempool.ExperimentalEVMMempool
 
 	// chain keepers
 	AclKeeper   aclkeeper.Keeper
@@ -290,7 +291,6 @@ func New(
 	loadLatest bool,
 	appOpts servertypes.AppOptions,
 	wasmOpts []wasmkeeper.Option,
-	evmAppOptions EVMOptionsFn,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) *App {
 	encodingConfig := evmencoding.MakeConfig(EVMChainID)
@@ -307,11 +307,6 @@ func New(
 	bApp.SetInterfaceRegistry(interfaceRegistry)
 
 	bApp.SetTxEncoder(txConfig.TxEncoder())
-
-	// initialize the Cosmos EVM application configuration
-	if err := evmAppOptions(EVMChainID); err != nil {
-		panic(err)
-	}
 
 	keys := storetypes.NewKVStoreKeys(
 		authtypes.StoreKey, banktypes.StoreKey,
@@ -389,7 +384,7 @@ func New(
 		runtime.NewKVStoreService(keys[authtypes.StoreKey]),
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		authcodec.NewBech32Codec(sdk.GetConfig().GetBech32AccountAddrPrefix()),
+		evmaddress.NewEvmCodec(sdk.GetConfig().GetBech32AccountAddrPrefix()),
 		sdk.GetConfig().GetBech32AccountAddrPrefix(),
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
@@ -634,19 +629,20 @@ func New(
 		app.FeeMarketKeeper,
 		&app.ConsensusParamsKeeper,
 		&app.Erc20Keeper,
+		EVMChainID,
 		tracer,
-	).WithStaticPrecompiles(NewAvailableStaticPrecompiles( // TODO: check precompiles
-		*app.StakingKeeper,
-		app.DistrKeeper,
-		app.PreciseBankKeeper,
-		app.Erc20Keeper,
-		app.TransferKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		app.EVMKeeper,
-		app.GovKeeper,
-		app.SlashingKeeper,
-		app.AppCodec(),
-	))
+	).WithStaticPrecompiles(
+		precompiles.DefaultStaticPrecompiles(
+			*app.StakingKeeper,
+			app.DistrKeeper,
+			app.PreciseBankKeeper,
+			&app.Erc20Keeper,
+			&app.TransferKeeper,
+			app.IBCKeeper.ChannelKeeper,
+			app.GovKeeper,
+			app.SlashingKeeper,
+			appCodec,
+		))
 
 	app.Erc20Keeper = erc20keeper.NewKeeper(
 		app.GetKey(erc20types.StoreKey),
@@ -661,9 +657,8 @@ func New(
 
 	// Create Transfer Keepers
 	app.TransferKeeper = ibctransferkeeper.NewKeeper(
-		app.appCodec,
-		runtime.NewKVStoreService(app.GetKey(ibctransfertypes.StoreKey)),
-		app.GetSubspace(ibctransfertypes.ModuleName),
+		appCodec,
+		runtime.NewKVStoreService(keys[ibctransfertypes.StoreKey]),
 		app.IBCKeeper.ChannelKeeper,
 		app.IBCKeeper.ChannelKeeper,
 		app.MsgServiceRouter(),
@@ -784,7 +779,7 @@ func New(
 		staking.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.GetSubspace(stakingtypes.ModuleName)),
 		upgrade.NewAppModule(app.UpgradeKeeper, app.AccountKeeper.AddressCodec()),
 		evidence.NewAppModule(app.EvidenceKeeper),
-		params.NewAppModule(app.ParamsKeeper), //nolint:staticcheck
+		params.NewAppModule(app.ParamsKeeper), //nolint:staticcheck // reason: using deprecated module
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		nftmodule.NewAppModule(appCodec, app.NFTKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
@@ -805,7 +800,7 @@ func New(
 		epochs.NewAppModule(app.EpochsKeeper),
 		acl.NewAppModule(app.appCodec, app.AclKeeper, app.AccountKeeper, app.BankKeeper),
 		trade.NewAppModule(app.appCodec, app.TradeKeeper, app.AccountKeeper, app.BankKeeper, app.AclKeeper),
-		evm.NewAppModule(app.EVMKeeper, app.AccountKeeper, app.AccountKeeper.AddressCodec()),
+		evm.NewAppModule(app.EVMKeeper, app.AccountKeeper, app.BankKeeper, app.AccountKeeper.AddressCodec()),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
 		erc20.NewAppModule(app.Erc20Keeper, app.AccountKeeper),
 		precisebank.NewAppModule(app.PreciseBankKeeper, app.BankKeeper, app.AccountKeeper),
@@ -827,6 +822,7 @@ func New(
 	app.ModuleManager.SetOrderPreBlockers(
 		upgradetypes.ModuleName,
 		authtypes.ModuleName,
+		evmtypes.ModuleName,
 	)
 	// During begin block slashing happens after distr.BeginBlocker so that
 	// there is nothing left over in the validator fee pool, so as to keep the
@@ -979,7 +975,7 @@ func New(
 				Cdc:                    appCodec,
 				AccountKeeper:          app.AccountKeeper,
 				BankKeeper:             app.BankKeeper,
-				ExtensionOptionChecker: cosmosevmtypes.HasDynamicFeeExtensionOption,
+				ExtensionOptionChecker: antetypes.HasDynamicFeeExtensionOption,
 				EvmKeeper:              app.EVMKeeper,
 				FeegrantKeeper:         app.FeeGrantKeeper,
 				IBCKeeper:              app.IBCKeeper,
@@ -987,7 +983,7 @@ func New(
 				SignModeHandler:        txConfig.SignModeHandler(),
 				SigGasConsumer:         evmante.SigVerificationGasConsumer,
 				MaxTxGasWanted:         maxGasWanted,
-				TxFeeChecker:           cosmosevmante.NewDynamicFeeChecker(app.FeeMarketKeeper),
+				DynamicFeeChecker:      true,
 				PendingTxListener:      app.onPendingTx,
 			},
 			NodeConfig:            &wasmConfig,
@@ -996,6 +992,10 @@ func New(
 			CircuitKeeper:         &app.CircuitKeeper,
 		},
 	)
+
+	// set the EVM priority nonce mempool
+	// if you wish to use the noop mempool, remove this codeblock
+	app.configureEVMMempool(appOpts, logger)
 
 	// must be before Loading version
 	// requires the snapshot store to be created and registered as a BaseAppOption
@@ -1109,6 +1109,10 @@ func (app *App) setAnteHandler(options appante.HandlerOptions) {
 	}
 
 	app.SetAnteHandler(appante.NewAnteHandler(options))
+}
+
+func (app *App) GetAnteHandler() sdk.AnteHandler {
+	return app.AnteHandler()
 }
 
 func (app *App) setPostHandler() {
@@ -1343,22 +1347,6 @@ func BlockedAddresses() map[string]bool {
 	return blockedAddrs
 }
 
-// TODO: compare this with new one
-// BlockedAddresses returns all the app's blocked account addresses.
-// func BlockedAddresses() map[string]bool {
-// 	result := make(map[string]bool)
-// 	if len(blockAccAddrs) > 0 {
-// 		for _, addr := range blockAccAddrs {
-// 			result[addr] = true
-// 		}
-// 	} else {
-// 		for addr := range GetMaccPerms() {
-// 			result[addr] = true
-// 		}
-// 	}
-// 	return result
-// }
-
 func (app *App) SetClientCtx(clientCtx client.Context) {
 	app.clientCtx = clientCtx
 }
@@ -1371,4 +1359,8 @@ func (app *App) onPendingTx(hash common.Hash) {
 	for _, listener := range app.pendingTxListeners {
 		listener(hash)
 	}
+}
+
+func (app *App) GetMempool() sdkmempool.ExtMempool {
+	return app.EVMMempool
 }

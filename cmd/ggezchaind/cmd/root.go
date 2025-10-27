@@ -31,7 +31,7 @@ func NewRootCmd() *cobra.Command {
 	)
 	tempApp := app.New(
 		log.NewNopLogger(), dbm.NewMemDB(), nil, false, simtestutil.NewAppOptionsWithFlagHome(tempDir()),
-		[]wasmkeeper.Option{}, app.EVMAppOptions,
+		[]wasmkeeper.Option{},
 	)
 	encodingConfig := app.EncodingConfig{
 		InterfaceRegistry: tempApp.InterfaceRegistry(),

@@ -85,7 +85,7 @@ func BenchmarkSimulation(b *testing.B) {
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = DefaultNodeHome
 
-	bApp := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, EVMAppOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	bApp := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
 	require.Equal(b, Name, bApp.Name())
 
 	// run randomized simulation
@@ -129,7 +129,7 @@ func TestFullAppSimulation(t *testing.T) {
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = DefaultNodeHome
 
-	app := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, EVMAppOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	app := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
 	if !simcli.FlagSigverifyTxValue {
 		app.SetNotSigverifyTx()
 	}
@@ -176,7 +176,7 @@ func TestAppImportExport(t *testing.T) {
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = DefaultNodeHome
 
-	bApp := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, EVMAppOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	bApp := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
 	require.Equal(t, Name, bApp.Name())
 
 	// Run randomized simulation
@@ -216,7 +216,7 @@ func TestAppImportExport(t *testing.T) {
 		require.NoError(t, os.RemoveAll(newDir))
 	}()
 
-	newApp := New(log.NewNopLogger(), newDB, nil, true, appOptions, []wasmkeeper.Option{}, EVMAppOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	newApp := New(log.NewNopLogger(), newDB, nil, true, appOptions, []wasmkeeper.Option{}, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
 	require.Equal(t, Name, newApp.Name())
 
 	var genesisState GenesisState
@@ -295,7 +295,7 @@ func TestAppSimulationAfterImport(t *testing.T) {
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[flags.FlagHome] = DefaultNodeHome
 
-	bApp := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, EVMAppOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	bApp := New(logger, db, nil, true, appOptions, []wasmkeeper.Option{}, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
 	require.Equal(t, Name, bApp.Name())
 
 	// Run randomized simulation
@@ -340,7 +340,7 @@ func TestAppSimulationAfterImport(t *testing.T) {
 		require.NoError(t, os.RemoveAll(newDir))
 	}()
 
-	newApp := New(log.NewNopLogger(), newDB, nil, true, appOptions, []wasmkeeper.Option{}, EVMAppOptions, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
+	newApp := New(log.NewNopLogger(), newDB, nil, true, appOptions, []wasmkeeper.Option{}, fauxMerkleModeOpt, baseapp.SetChainID(SimAppChainID))
 	require.Equal(t, Name, newApp.Name())
 
 	_, err = newApp.InitChain(&abci.RequestInitChain{
@@ -421,7 +421,6 @@ func TestAppStateDeterminism(t *testing.T) {
 				true,
 				appOptions,
 				[]wasmkeeper.Option{},
-				EVMAppOptions,
 				interBlockCacheOpt(),
 				baseapp.SetChainID(SimAppChainID),
 			)

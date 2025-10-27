@@ -13,7 +13,13 @@ import (
 )
 
 // newCosmosAnteHandler creates the default ante handler for Cosmos transactions
-func NewCosmosAnteHandler(options HandlerOptions) sdk.AnteHandler {
+func NewCosmosAnteHandler(ctx sdk.Context, options HandlerOptions) sdk.AnteHandler {
+	feemarketParams := options.FeeMarketKeeper.GetParams(ctx)
+	var txFeeChecker ante.TxFeeChecker
+	if options.DynamicFeeChecker {
+		txFeeChecker = evmante.NewDynamicFeeChecker(&feemarketParams)
+	}
+
 	return sdk.ChainAnteDecorators(
 		evmoscosmosante.NewRejectMessagesDecorator(), // reject MsgEthereumTxs
 		evmoscosmosante.NewAuthzLimiterDecorator( // disable the Msg types that cannot be included on an authz.MsgExec msgs field
@@ -30,9 +36,9 @@ func NewCosmosAnteHandler(options HandlerOptions) sdk.AnteHandler {
 		ante.NewValidateBasicDecorator(),
 		ante.NewTxTimeoutHeightDecorator(),
 		ante.NewValidateMemoDecorator(options.AccountKeeper),
-		evmoscosmosante.NewMinGasPriceDecorator(options.FeeMarketKeeper, options.EvmKeeper),
+		evmoscosmosante.NewMinGasPriceDecorator(&feemarketParams),
 		ante.NewConsumeGasForTxSizeDecorator(options.AccountKeeper),
-		ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, options.TxFeeChecker),
+		ante.NewDeductFeeDecorator(options.AccountKeeper, options.BankKeeper, options.FeegrantKeeper, txFeeChecker),
 		// SetPubKeyDecorator must be called before all signature verification decorators
 		ante.NewSetPubKeyDecorator(options.AccountKeeper),
 		ante.NewValidateSigCountDecorator(options.AccountKeeper),
@@ -40,6 +46,6 @@ func NewCosmosAnteHandler(options HandlerOptions) sdk.AnteHandler {
 		ante.NewSigVerificationDecorator(options.AccountKeeper, options.SignModeHandler),
 		ante.NewIncrementSequenceDecorator(options.AccountKeeper),
 		ibcante.NewRedundantRelayDecorator(options.IBCKeeper),
-		evmante.NewGasWantedDecorator(options.EvmKeeper, options.FeeMarketKeeper),
+		evmante.NewGasWantedDecorator(options.EvmKeeper, options.FeeMarketKeeper, &feemarketParams),
 	)
 }
