@@ -2,12 +2,13 @@ package v3_0_0
 
 import (
 	"context"
-	"encoding/json"
 
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	precisebank "github.com/cosmos/evm/x/precisebank"
+	precisebanktypes "github.com/cosmos/evm/x/precisebank/types"
 	evm "github.com/cosmos/evm/x/vm"
 	evmkeeper "github.com/cosmos/evm/x/vm/keeper"
 	evmtypes "github.com/cosmos/evm/x/vm/types"
@@ -25,18 +26,11 @@ func CreateUpgradeHandler(
 
 		logger := ctx.Logger().With("upgrade", UpgradeName)
 
-		customEvmGenesis := evmtypes.DefaultGenesisState()
-		customEvmGenesis.Params.EvmDenom = "uggez1"
-		customEvmGenesis.Params.ExtendedDenomOptions = &evmtypes.ExtendedDenomOptions{
-			ExtendedDenom: "uggez1",
-		}
+		evmParams := evmtypes.DefaultParams()
+		evmParams.EvmDenom = BaseDenom
+		evmParams.ExtendedDenomOptions = &evmtypes.ExtendedDenomOptions{ExtendedDenom: BaseDenom}
 
-		// Marshal the custom genesis state
-		customEvmGenesisJSON := appCodec.MustMarshalJSON(customEvmGenesis)
-		_, err := mm.InitGenesis(ctx, appCodec, map[string]json.RawMessage{
-			evmtypes.ModuleName: customEvmGenesisJSON,
-		})
-		if err != nil {
+		if err := evmkeeper.SetParams(ctx, evmParams); err != nil {
 			return nil, err
 		}
 
@@ -45,6 +39,7 @@ func CreateUpgradeHandler(
 		}
 
 		fromVM[evmtypes.ModuleName] = evm.AppModule{}.ConsensusVersion()
+		fromVM[precisebanktypes.ModuleName] = precisebank.AppModule{}.ConsensusVersion()
 
 		logger.Debug("running module migrations ...")
 		return mm.RunMigrations(ctx, configurator, fromVM)
