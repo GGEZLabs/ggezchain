@@ -14,7 +14,12 @@ var (
 	runRestInterfacesTest         = true
 	runAclTest                    = true
 	runTradeTest                  = true
+	runWasmTest                   = true
 )
+
+func (s *IntegrationTestSuite) CanTestOnSingleNode() bool {
+	return !runIBCTest
+}
 
 func (s *IntegrationTestSuite) TestRestInterfaces() {
 	if !runRestInterfacesTest {
@@ -110,4 +115,15 @@ func (s *IntegrationTestSuite) TestTrade() {
 		s.T().Skip()
 	}
 	s.testTrade()
+}
+
+func (s *IntegrationTestSuite) TestWasm() {
+	// The wasm contract will call the tokenfactory module, so we need to run both tests together.
+	if !runWasmTest {
+		s.T().Skip()
+	}
+	s.testQueryWasmParams()
+	s.testStoreCode()
+	s.testInstantiateContract()
+	s.testExecuteContractWithSimplyMessage()
 }

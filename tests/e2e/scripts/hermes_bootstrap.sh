@@ -53,7 +53,7 @@ account_prefix = 'ggez'
 key_name = 'rly01-ggez-a'
 store_prefix = 'ibc'
 max_gas = 6000000
-gas_price = { price = 2000000000, denom = 'uggez1' }
+gas_price = { price = 0.01, denom = 'uggez1' }
 gas_multiplier = 1.5
 clock_drift = '1m' # to accommodate docker containers
 trusting_period = '14days'
@@ -70,7 +70,7 @@ account_prefix = 'ggez'
 key_name = 'rly01-ggez-b'
 store_prefix = 'ibc'
 max_gas = 6000000
-gas_price = { price = 2000000000, denom = 'uggez1' }
+gas_price = { price = 0.01, denom = 'uggez1' }
 gas_multiplier = 1.5
 clock_drift = '1m' # to accommodate docker containers
 trusting_period = '14days'

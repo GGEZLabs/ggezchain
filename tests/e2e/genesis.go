@@ -19,9 +19,10 @@ import (
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	govlegacytypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 )
 
-func modifyGenesis(path, moniker, amountStr string, addrAll []sdk.AccAddress, denom string) error {
+func modifyGenesis(path, moniker, amountStr string, addrAll []sdk.AccAddress, basefee string, denom string) error {
 	serverCtx := server.NewDefaultContext()
 	config := serverCtx.Config
 	config.SetRoot(path)
@@ -144,6 +145,17 @@ func modifyGenesis(path, moniker, amountStr string, addrAll []sdk.AccAddress, de
 		return fmt.Errorf("failed to marshal acl genesis state: %w", err)
 	}
 	appState[acltypes.ModuleName] = aclGenStateBz
+
+	feemarketGenState := feemarkettypes.DefaultGenesisState()
+	feemarketGenState.Params.MinGasPrice = math.LegacyMustNewDecFromStr(basefee)
+	feemarketGenState.Params.NoBaseFee = false
+	feemarketGenState.Params.BaseFee = math.LegacyMustNewDecFromStr(basefee)
+
+	feemarketGenStateBz, err := cdc.MarshalJSON(feemarketGenState)
+	if err != nil {
+		return fmt.Errorf("failed to marshal feemarket genesis state: %w", err)
+	}
+	appState[feemarkettypes.ModuleName] = feemarketGenStateBz
 
 	appStateJSON, err := json.Marshal(appState)
 	if err != nil {

@@ -33,6 +33,7 @@ import (
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	evmtypes "github.com/cosmos/evm/x/vm/types"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
 	"github.com/spf13/viper"
@@ -46,7 +47,7 @@ const (
 	keysCommand      = "keys"
 	ggezHomePath     = "/home/nonroot/.ggezchain"
 	uggez1Denom      = "uggez1"
-	initBalanceStr   = "10000000000000000000000uggez1"
+	initBalanceStr   = "100000000000000000uggez1"
 	minGasPrice      = "0.01"
 	// the test basefee in genesis is the same as minGasPrice
 	// global fee lower/higher than min_gas_price
@@ -80,14 +81,21 @@ const (
 
 var (
 	ggezConfigPath    = filepath.Join(ggezHomePath, "config")
-	stakingAmount, _  = math.NewIntFromString("1000000000000000000")
+	stakingAmount     = math.NewInt(100000000000)
 	stakingAmountCoin = sdk.NewCoin(uggez1Denom, stakingAmount)
-	tokenAmount       = sdk.NewCoin(uggez1Denom, math.NewInt(3300000000))
-	standardFees      = sdk.NewCoin(uggez1Denom, math.NewInt(330000))
-	depositAmount     = sdk.NewCoin(uggez1Denom, math.NewInt(330000000))
-	distModuleAddress = authtypes.NewModuleAddress(distrtypes.ModuleName).String()
-	govModuleAddress  = authtypes.NewModuleAddress(govtypes.ModuleName).String()
+	tokenAmount       = sdk.NewCoin(uggez1Denom, math.NewInt(3300000000)) // 3,300ggez1
+	standardFees      = sdk.NewCoin(uggez1Denom, math.NewInt(100000))     // 0.1ggez1
+	depositAmount     = sdk.NewCoin(uggez1Denom, math.NewInt(3300000000)) // 3,300uggez1
 	proposalCounter   = 0
+
+	distModuleAddress, govModuleAddress string
+
+	ChainCoinInfo = evmtypes.EvmCoinInfo{
+		Denom:         "uggez1",
+		ExtendedDenom: "uggez1", // TODO:
+		DisplayDenom:  "ggez1",
+		Decimals:      evmtypes.SixDecimals.Uint32(),
+	}
 )
 
 type IntegrationTestSuite struct {
@@ -101,6 +109,8 @@ type IntegrationTestSuite struct {
 	hermesResource *dockertest.Resource
 
 	valResources map[string][]*dockertest.Resource
+
+	testOnSingleNode bool
 }
 
 type AddressResponse struct {
@@ -111,6 +121,11 @@ type AddressResponse struct {
 }
 
 func TestIntegrationTestSuite(t *testing.T) {
+	// appparams.SetAddressPrefixes()
+	// initiate the module addresses after setting address prefixes to avoid caching invalid prefixed address
+	distModuleAddress = authtypes.NewModuleAddress(distrtypes.ModuleName).String()
+	govModuleAddress = authtypes.NewModuleAddress(govtypes.ModuleName).String()
+
 	suite.Run(t, new(IntegrationTestSuite))
 }
 
@@ -138,6 +153,15 @@ func (s *IntegrationTestSuite) SetupSuite() {
 	jailedValMnemonic, err := createMnemonic()
 	s.Require().NoError(err)
 
+	// Some tests require two nodes, some only require one.
+	s.testOnSingleNode = s.CanTestOnSingleNode()
+
+	if s.testOnSingleNode {
+		s.T().Log("running tests on a single node setup...")
+	} else {
+		s.T().Log("running tests on a multi nodes setup...")
+	}
+
 	// The bootstrapping phase is as follows:
 	//
 	// 1. Initialize ggez validator nodes.
@@ -151,14 +175,16 @@ func (s *IntegrationTestSuite) SetupSuite() {
 	s.initValidatorConfigs(s.chainA)
 	s.runValidators(s.chainA, 0)
 
-	s.T().Logf("starting e2e infrastructure for chain B; chain-id: %s; datadir: %s", s.chainB.id, s.chainB.dataDir)
-	s.initNodes(s.chainB)
-	s.initGenesis(s.chainB, vestingMnemonic, jailedValMnemonic)
-	s.initValidatorConfigs(s.chainB)
-	s.runValidators(s.chainB, 10)
+	if !s.testOnSingleNode {
+		s.T().Logf("starting e2e infrastructure for chain B; chain-id: %s; datadir: %s", s.chainB.id, s.chainB.dataDir)
+		s.initNodes(s.chainB)
+		s.initGenesis(s.chainB, vestingMnemonic, jailedValMnemonic)
+		s.initValidatorConfigs(s.chainB)
+		s.runValidators(s.chainB, 10)
 
-	time.Sleep(10 * time.Second)
-	s.runIBCRelayer()
+		time.Sleep(10 * time.Second)
+		s.runIBCRelayer()
+	}
 }
 
 func (s *IntegrationTestSuite) TearDownSuite() {
@@ -173,7 +199,9 @@ func (s *IntegrationTestSuite) TearDownSuite() {
 
 	s.T().Log("tearing down e2e integration test suite...")
 
-	s.Require().NoError(s.dkrPool.Purge(s.hermesResource))
+	if !s.testOnSingleNode {
+		s.Require().NoError(s.dkrPool.Purge(s.hermesResource))
+	}
 
 	for _, vr := range s.valResources {
 		for _, r := range vr {
@@ -216,7 +244,7 @@ func (s *IntegrationTestSuite) initNodes(c *chain) {
 	}
 
 	s.Require().NoError(
-		modifyGenesis(val0ConfigDir, "", initBalanceStr, addrAll, uggez1Denom),
+		modifyGenesis(val0ConfigDir, "", initBalanceStr, addrAll, initialBaseFeeAmt, uggez1Denom),
 	)
 	// copy the genesis file to the remaining validators
 	for _, val := range c.validators[1:] {
@@ -367,22 +395,22 @@ func (s *IntegrationTestSuite) addGenesisVestingAndJailedAccounts(
 		stakingModuleBalances,
 	)
 	bankGenState.Balances = banktypes.SanitizeGenesisBalances(bankGenState.Balances)
-
-	// update the denom metadata for the bank module
 	bankGenState.DenomMetadata = append(bankGenState.DenomMetadata, banktypes.Metadata{
-		Description: "An example stable token",
-		Display:     uggez1Denom,
-		Base:        uggez1Denom,
-		Symbol:      uggez1Denom,
-		Name:        uggez1Denom,
 		DenomUnits: []*banktypes.DenomUnit{
 			{
-				Denom:    uggez1Denom,
+				Denom:    ChainCoinInfo.Denom,
 				Exponent: 0,
 			},
+			{
+				Denom:    ChainCoinInfo.DisplayDenom,
+				Exponent: ChainCoinInfo.Decimals,
+			},
 		},
+		Base:    ChainCoinInfo.Denom,
+		Display: ChainCoinInfo.DisplayDenom,
+		Name:    ChainCoinInfo.DisplayDenom,
+		Symbol:  "GGEZ1",
 	})
-
 	// update bank module state
 	appGenState[banktypes.ModuleName], err = cdc.MarshalJSON(bankGenState)
 	s.Require().NoError(err)
@@ -452,6 +480,15 @@ func (s *IntegrationTestSuite) initGenesis(c *chain, vestingMnemonic, jailedValM
 	genUtilGenState.GenTxs = genTxs
 
 	appGenState[genutiltypes.ModuleName], err = cdc.MarshalJSON(&genUtilGenState)
+	s.Require().NoError(err)
+
+	var evmGenState evmtypes.GenesisState
+	s.Require().NoError(cdc.UnmarshalJSON(appGenState[evmtypes.ModuleName], &evmGenState))
+	evmGenState.Params.EvmDenom = ChainCoinInfo.Denom
+	evmGenState.Params.ExtendedDenomOptions = &evmtypes.ExtendedDenomOptions{
+		ExtendedDenom: ChainCoinInfo.ExtendedDenom,
+	}
+	appGenState[evmtypes.ModuleName], err = cdc.MarshalJSON(&evmGenState)
 	s.Require().NoError(err)
 
 	genDoc.AppState, err = json.MarshalIndent(appGenState, "", "  ")

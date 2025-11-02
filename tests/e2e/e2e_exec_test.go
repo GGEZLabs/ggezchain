@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"cosmossdk.io/x/feegrant"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	tradetypes "github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -642,39 +643,200 @@ func (s *IntegrationTestSuite) execWithdrawReward(
 	s.T().Logf("Successfully withdrew distribution rewards for delegator %s from validator %s", delegatorAddress, validatorAddress)
 }
 
-func (s *IntegrationTestSuite) executeTxCommand(ctx context.Context, c *chain, ggezCommand []string, valIdx int, validation func([]byte, []byte) bool) {
+func (s *IntegrationTestSuite) execWasmStoreCode(
+	c *chain,
+	valIdx int,
+	sender,
+	wasmPath string,
+	homePath string,
+) string {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	s.T().Logf("storing wasm code from %s on chain %s", wasmPath, c.id)
+
+	ggezCommand := []string{
+		ggezchaindBinary,
+		txCommand,
+		wasmtypes.ModuleName,
+		"store",
+		wasmPath,
+		fmt.Sprintf("--from=%s", sender),
+		fmt.Sprintf("--instantiate-anyof-addresses=%s", sender),
+		fmt.Sprintf("--chain-id=%s", c.id),
+		fmt.Sprintf("--%s=%s", flags.FlagGasPrices, "300uggez1"),
+		fmt.Sprintf("--%s=%s", flags.FlagGas, "auto"),
+		fmt.Sprintf("--%s=%s", flags.FlagGasAdjustment, "1.5"),
+		fmt.Sprintf("--broadcast-mode=%s", "sync"),
+		fmt.Sprintf("--%s=%s", flags.FlagHome, homePath),
+		"--keyring-backend=test",
+		"--output=json",
+		"-y",
+	}
+
+	txHash := s.executeTxCommand(ctx, c, ggezCommand, valIdx, s.defaultExecValidation(c, valIdx))
+	s.T().Log("successfully stored wasm code")
+	return txHash
+}
+
+func (s *IntegrationTestSuite) execWasmInstantiate(
+	c *chain,
+	valIdx int,
+	sender string,
+	codeId uint64,
+	initMsg string,
+	label string,
+	admin string,
+	funds string,
+	homePath string,
+) string {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	s.T().Logf("instantiating wasm contract with code ID %d on chain %s", codeId, c.id)
+
+	ggezCommand := []string{
+		ggezchaindBinary,
+		txCommand,
+		wasmtypes.ModuleName,
+		"instantiate",
+		fmt.Sprintf("%d", codeId),
+		initMsg,
+		fmt.Sprintf("--label=%s", label),
+		fmt.Sprintf("--from=%s", sender),
+		fmt.Sprintf("--chain-id=%s", c.id),
+		fmt.Sprintf("--%s=%s", flags.FlagGasPrices, "300uggez1"),
+		fmt.Sprintf("--%s=%s", flags.FlagGas, "auto"),
+		fmt.Sprintf("--%s=%s", flags.FlagGasAdjustment, "1.5"),
+		fmt.Sprintf("--broadcast-mode=%s", "sync"),
+		fmt.Sprintf("--%s=%s", flags.FlagHome, homePath),
+		"--keyring-backend=test",
+		"--output=json",
+		"-y",
+	}
+
+	// Add admin if specified
+	if admin != "" {
+		ggezCommand = append(ggezCommand, fmt.Sprintf("--admin=%s", admin))
+	} else {
+		ggezCommand = append(ggezCommand, "--no-admin")
+	}
+
+	// Add funds if specified
+	if funds != "" {
+		ggezCommand = append(ggezCommand, fmt.Sprintf("--amount=%s", funds))
+	}
+
+	txHash := s.executeTxCommand(ctx, c, ggezCommand, valIdx, s.defaultExecValidation(c, valIdx))
+
+	if txHash != "" {
+		s.T().Log("successfully instantiated wasm contract")
+	} else {
+		s.T().Log("wasm contract instantiation did not return a transaction hash")
+	}
+
+	return txHash
+}
+
+func (s *IntegrationTestSuite) execWasmExecute(
+	c *chain,
+	valIdx int,
+	sender,
+	contractAddress,
+	executeMessage,
+	homePath string,
+) string {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	s.T().Logf("executing wasm contract at %s on chain %s", contractAddress, c.id)
+	ggezCommand := []string{
+		ggezchaindBinary,
+		txCommand,
+		wasmtypes.ModuleName,
+		"execute",
+		contractAddress,
+		executeMessage,
+		fmt.Sprintf("--from=%s", sender),
+		fmt.Sprintf("--chain-id=%s", c.id),
+		fmt.Sprintf("--%s=%s", flags.FlagGasPrices, "300uggez1"),
+		fmt.Sprintf("--%s=%s", flags.FlagGas, "auto"),
+		fmt.Sprintf("--%s=%s", flags.FlagGasAdjustment, "1.5"),
+		fmt.Sprintf("--broadcast-mode=%s", "sync"),
+		fmt.Sprintf("--%s=%s", flags.FlagHome, homePath),
+		"--keyring-backend=test",
+		"--output=json",
+		"-y",
+	}
+
+	txHash := s.executeTxCommand(ctx, c, ggezCommand, valIdx, s.defaultExecValidation(c, valIdx))
+	s.T().Logf("successfully executed wasm contract at %s with tx hash %s", contractAddress, txHash)
+	return txHash
+}
+
+func (s *IntegrationTestSuite) executeTxCommand(ctx context.Context, c *chain, ggezCommand []string, valIdx int, validation func([]byte, []byte) bool) string {
 	if validation == nil {
 		validation = s.defaultExecValidation(s.chainA, 0)
 	}
 
-	var (
-		outBuf bytes.Buffer
-		errBuf bytes.Buffer
-	)
-	exec, err := s.dkrPool.Client.CreateExec(docker.CreateExecOptions{
-		Context:      ctx,
-		AttachStdout: true,
-		AttachStderr: true,
-		Container:    s.valResources[c.id][valIdx].Container.ID,
-		User:         "nonroot",
-		Cmd:          ggezCommand,
-	})
-	s.Require().NoError(err)
+	maxAttempts := 3
+	var lastStdOut, lastStdErr []byte
+	var lastTxResp sdk.TxResponse
 
-	err = s.dkrPool.Client.StartExec(exec.ID, docker.StartExecOptions{
-		Context:      ctx,
-		Detach:       false,
-		OutputStream: &outBuf,
-		ErrorStream:  &errBuf,
-	})
-	s.Require().NoError(err)
+	for attempt := 1; attempt <= maxAttempts; attempt++ {
+		s.T().Logf("Attempt %d of %d", attempt, maxAttempts)
 
-	stdOut := outBuf.Bytes()
-	stdErr := errBuf.Bytes()
-	if !validation(stdOut, stdErr) {
-		s.Require().FailNowf("Exec validation failed", "stdout: %s, stderr: %s",
-			string(stdOut), string(stdErr))
+		var (
+			outBuf bytes.Buffer
+			errBuf bytes.Buffer
+		)
+		exec, err := s.dkrPool.Client.CreateExec(docker.CreateExecOptions{
+			Context:      ctx,
+			AttachStdout: true,
+			AttachStderr: true,
+			Container:    s.valResources[c.id][valIdx].Container.ID,
+			User:         "nonroot",
+			Cmd:          ggezCommand,
+		})
+		s.Require().NoError(err)
+
+		err = s.dkrPool.Client.StartExec(exec.ID, docker.StartExecOptions{
+			Context:      ctx,
+			Detach:       false,
+			OutputStream: &outBuf,
+			ErrorStream:  &errBuf,
+		})
+		s.Require().NoError(err)
+
+		stdOut := outBuf.Bytes()
+		stdErr := errBuf.Bytes()
+		lastStdOut, lastStdErr = stdOut, stdErr
+
+		mismatch := false
+		if err := cdc.UnmarshalJSON(stdOut, &lastTxResp); err == nil {
+			mismatch = lastTxResp.Code == 32 && strings.Contains(lastTxResp.RawLog, "account sequence mismatch")
+		}
+
+		if mismatch && attempt < maxAttempts {
+			s.T().Logf("Attempt %d: sequence mismatch detected, will retry: %s", attempt, lastTxResp.RawLog)
+			time.Sleep(time.Second)
+			continue
+		}
+
+		if validation(stdOut, stdErr) {
+			if err := cdc.UnmarshalJSON(stdOut, &lastTxResp); err == nil {
+				s.T().Logf("Got transaction response with hash: %s, code: %d", lastTxResp.TxHash, lastTxResp.Code)
+				return lastTxResp.TxHash
+			}
+			return ""
+		}
+
+		s.T().Logf("Attempt %d: validation failed", attempt)
+		break
 	}
+
+	s.Require().FailNowf("Exec validation failed", "stdout: %s, stderr: %s",
+		string(lastStdOut), string(lastStdErr))
+	return ""
 }
 
 func (s *IntegrationTestSuite) executeHermesCommand(ctx context.Context, hermesCmd []string) ([]byte, error) { //nolint:unparam
@@ -751,7 +913,6 @@ func (s *IntegrationTestSuite) defaultExecValidation(chain *chain, valIdx int) f
 		if err := cdc.UnmarshalJSON(stdOut, &txResp); err != nil {
 			return false
 		}
-
 		if strings.Contains(txResp.String(), "code: 0") || txResp.Code == 0 {
 			endpoint := fmt.Sprintf("http://%s", s.valResources[chain.id][valIdx].GetHostPort("1317/tcp"))
 			s.Require().Eventually(

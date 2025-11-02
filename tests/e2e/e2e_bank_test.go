@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -47,9 +46,8 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 			5*time.Second,
 		)
 
-		customFee := sdk.NewCoin(uggez1Denom, math.NewInt(340000000))
 		// alice sends tokens to bob
-		s.execBankSend(s.chainA, valIdx, alice.String(), bob.String(), tokenAmount.String(), customFee.String(), false)
+		s.execBankSend(s.chainA, valIdx, alice.String(), bob.String(), tokenAmount.String(), standardFees.String(), false)
 
 		// check that the transfer was successful
 		s.Require().Eventually(
@@ -60,14 +58,7 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 				afterBobUGGEZ1Balance, err = getSpecificBalance(chainEndpoint, bob.String(), uggez1Denom)
 				s.Require().NoError(err)
 
-				// gasFeesBurnt := customFee.Sub(sdk.NewCoin(uggez1Denom, math.NewInt(1000)))
-				// alice's balance should be decremented by the token amount and the gas fees
-				// if the difference between expected and actual balance is less than 500, consider it as a success
-				// any small change in operation/code can result in the gasFee difference
-				// we set the threshold to 400000 to avoid false negatives
-				expectedAfterAliceUGGEZ1Balance := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(customFee)
-
-				decremented := afterAliceUGGEZ1Balance.Sub(expectedAfterAliceUGGEZ1Balance).Amount.LT(math.NewInt(400000))
+				decremented := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(standardFees).IsEqual(afterAliceUGGEZ1Balance)
 				incremented := beforeBobUGGEZ1Balance.Add(tokenAmount).IsEqual(afterBobUGGEZ1Balance)
 
 				return decremented && incremented
@@ -80,7 +71,7 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 		beforeAliceUGGEZ1Balance, beforeBobUGGEZ1Balance = afterAliceUGGEZ1Balance, afterBobUGGEZ1Balance
 
 		// alice sends tokens to bob and charlie, at once
-		s.execBankMultiSend(s.chainA, valIdx, alice.String(), []string{bob.String(), charlie.String()}, tokenAmount.String(), customFee.String(), false)
+		s.execBankMultiSend(s.chainA, valIdx, alice.String(), []string{bob.String(), charlie.String()}, tokenAmount.String(), standardFees.String(), false)
 
 		s.Require().Eventually(
 			func() bool {
@@ -93,14 +84,7 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 				afterCharlieUGGEZ1Balance, err = getSpecificBalance(chainEndpoint, charlie.String(), uggez1Denom)
 				s.Require().NoError(err)
 
-				// gasFeesBurnt := customFee.Sub(sdk.NewCoin(uggez1Denom, math.NewInt(1016)))
-				// alice's balance should be decremented by the token amount and the gas fees
-				// if the difference between expected and actual balance is less than 500, consider it as a success
-				// any small change in operation/code can result in the gasFee difference
-				// we set the threshold to 400000 to avoid false negatives
-				expectedAfterAliceUGGEZ1Balance := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(tokenAmount).Sub(customFee)
-				decremented := afterAliceUGGEZ1Balance.Sub(expectedAfterAliceUGGEZ1Balance).Amount.LT(math.NewInt(400000))
-
+				decremented := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(tokenAmount).Sub(standardFees).IsEqual(afterAliceUGGEZ1Balance)
 				incremented := beforeBobUGGEZ1Balance.Add(tokenAmount).IsEqual(afterBobUGGEZ1Balance) &&
 					beforeCharlieUGGEZ1Balance.Add(tokenAmount).IsEqual(afterCharlieUGGEZ1Balance)
 

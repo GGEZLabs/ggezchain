@@ -8,17 +8,15 @@ import (
 	evidencetypes "cosmossdk.io/x/evidence/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	ggezchain "github.com/GGEZLabs/ggezchain/v2/app"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+	"github.com/GGEZLabs/ggezchain/v2/app"
 	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	tradetypes "github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	tmrand "github.com/cometbft/cometbft/libs/rand"
 	dbm "github.com/cosmos/cosmos-db"
-	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
-	"github.com/cosmos/cosmos-sdk/server"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -29,7 +27,6 @@ import (
 	govv1beta1types "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 	paramsproptypes "github.com/cosmos/cosmos-sdk/x/params/types/proposal"
 	protocolpooltypes "github.com/cosmos/cosmos-sdk/x/protocolpool/types"
-	simcli "github.com/cosmos/cosmos-sdk/x/simulation/client/cli"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	feemarkettypes "github.com/cosmos/evm/x/feemarket/types"
 	ratelimittypes "github.com/cosmos/ibc-apps/modules/rate-limiting/v10/types"
@@ -41,13 +38,13 @@ const (
 )
 
 var (
-	encodingConfig ggezchain.EncodingConfig
+	encodingConfig app.EncodingConfig
 	cdc            codec.Codec
 	txConfig       client.TxConfig
 )
 
 func init() {
-	encodingConfig = ggezchain.MakeEncodingConfig()
+	encodingConfig = app.MakeEncodingConfig()
 	banktypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	authtypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	authvesting.RegisterInterfaces(encodingConfig.InterfaceRegistry)
@@ -60,11 +57,12 @@ func init() {
 	paramsproptypes.RegisterLegacyAminoCodec(encodingConfig.Amino)
 	upgradetypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	distribtypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
-	protocolpooltypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	ratelimittypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
+	feemarkettypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
+	wasmtypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
+	protocolpooltypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	tradetypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 	acltypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
-	feemarkettypes.RegisterInterfaces(encodingConfig.InterfaceRegistry)
 
 	cdc = encodingConfig.Codec
 	txConfig = encodingConfig.TxConfig
@@ -97,18 +95,19 @@ func (c *chain) configDir() string {
 }
 
 func (c *chain) createAndInitValidators(count int) error {
-	appOptions := make(simtestutil.AppOptionsMap, 0)
-	appOptions[flags.FlagHome] = ggezchain.DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue //nolint:staticcheck
+	tmpDir, err := os.MkdirTemp("", "app-e2e-testnet-")
+	if err != nil {
+		return err
+	}
 
-	tempApplication := ggezchain.New(
+	var emptyWasmOpts []wasmkeeper.Option
+	tempApplication := app.New(
 		log.NewNopLogger(),
 		dbm.NewMemDB(),
 		nil,
 		true,
-		appOptions,
-		[]wasmkeeper.Option{},
-		baseapp.SetChainID("ggezchain-testnet"),
+		simtestutil.NewAppOptionsWithFlagHome(tmpDir),
+		emptyWasmOpts,
 	)
 	defer func() {
 		if err := tempApplication.Close(); err != nil {
@@ -144,18 +143,14 @@ func (c *chain) createAndInitValidators(count int) error {
 }
 
 func (c *chain) createAndInitValidatorsWithMnemonics(count int, mnemonics []string) error { //nolint:unused // this is called during e2e tests
-	appOptions := make(simtestutil.AppOptionsMap, 0)
-	appOptions[flags.FlagHome] = ggezchain.DefaultNodeHome
-	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue //nolint:staticcheck
-
-	tempApplication := ggezchain.New(
+	var emptyWasmOpts []wasmkeeper.Option
+	tempApplication := app.New(
 		log.NewNopLogger(),
 		dbm.NewMemDB(),
 		nil,
 		true,
-		appOptions,
-		[]wasmkeeper.Option{},
-		baseapp.SetChainID("ggezchain-testnet"),
+		simtestutil.EmptyAppOptions{},
+		emptyWasmOpts,
 	)
 	defer func() {
 		if err := tempApplication.Close(); err != nil {

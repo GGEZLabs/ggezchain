@@ -1,6 +1,7 @@
 package e2e
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -9,6 +10,7 @@ import (
 
 	"cosmossdk.io/math"
 	evidencetypes "cosmossdk.io/x/evidence/types"
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	tradetypes "github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -39,12 +41,90 @@ func queryTx(endpoint, txHash string) error {
 		return fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	txResp := result["tx_response"].(map[string]interface{})
-	if v := txResp["code"]; v.(float64) != 0 {
-		return fmt.Errorf("tx %s failed with status code %v", txHash, v)
+	txResp, ok := result["tx_response"].(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("tx_response field is not a map")
+	}
+
+	code, ok := txResp["code"].(float64)
+	if !ok {
+		return fmt.Errorf("code field is not a number")
+	}
+
+	if code != 0 {
+		return fmt.Errorf("tx %s failed with status code %v", txHash, code)
 	}
 
 	return nil
+}
+
+func queryTxEvents(endpoint, txHash string) (map[string][]string, error) {
+	resp, err := http.Get(fmt.Sprintf("%s/cosmos/tx/v1beta1/txs/%s", endpoint, txHash))
+	if err != nil {
+		return nil, fmt.Errorf("failed to execute HTTP request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("tx query returned non-200 status: %d", resp.StatusCode)
+	}
+
+	var result map[string]interface{}
+
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	txResp, ok := result["tx_response"].(map[string]interface{})
+	if !ok {
+		return nil, fmt.Errorf("tx_response field is not a map")
+	}
+
+	events, ok := txResp["events"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("events field is not an array")
+	}
+
+	eventMap := make(map[string][]string)
+	for _, event := range events {
+		eventData, ok := event.(map[string]interface{})
+		if !ok {
+			return nil, fmt.Errorf("event is not a map")
+		}
+
+		eventType, ok := eventData["type"].(string)
+		if !ok {
+			return nil, fmt.Errorf("event type is not a string")
+		}
+
+		var attributes []string
+		attributesRaw, ok := eventData["attributes"].([]interface{})
+		if !ok {
+			return nil, fmt.Errorf("event attributes is not an array")
+		}
+
+		for _, attr := range attributesRaw {
+			attrData, ok := attr.(map[string]interface{})
+			if !ok {
+				return nil, fmt.Errorf("attribute is not a map")
+			}
+
+			key, ok := attrData["key"].(string)
+			if !ok {
+				return nil, fmt.Errorf("attribute key is not a string")
+			}
+
+			value, ok := attrData["value"].(string)
+			if !ok {
+				return nil, fmt.Errorf("attribute value is not a string")
+			}
+
+			attributes = append(attributes, fmt.Sprintf("%s=%s", key, value))
+		}
+		eventMap[eventType] = append(eventMap[eventType], attributes...)
+	}
+
+	return eventMap, nil
 }
 
 // if coin is zero, return empty coin.
@@ -263,6 +343,19 @@ func queryValidators(endpoint string) (stakingtypes.Validators, error) {
 	return stakingtypes.Validators{Validators: res.Validators}, nil
 }
 
+func queryEvidence(endpoint, hash string) (evidencetypes.QueryEvidenceResponse, error) { //nolint:unused // this is called during e2e tests
+	var res evidencetypes.QueryEvidenceResponse
+	body, err := httpGet(fmt.Sprintf("%s/cosmos/evidence/v1beta1/evidence/%s", endpoint, hash))
+	if err != nil {
+		return res, err
+	}
+
+	if err = cdc.UnmarshalJSON(body, &res); err != nil {
+		return res, err
+	}
+	return res, nil
+}
+
 func queryAllEvidence(endpoint string) (evidencetypes.QueryAllEvidenceResponse, error) {
 	var res evidencetypes.QueryAllEvidenceResponse
 	body, err := httpGet(fmt.Sprintf("%s/cosmos/evidence/v1beta1/evidence", endpoint))
@@ -288,6 +381,64 @@ func queryICAAccountAddress(endpoint, owner, connectionID string) (string, error
 	}
 
 	return icaAccountResp.Address, nil
+}
+
+func queryWasmParams(endpoint string) (wasmtypes.Params, error) {
+	body, err := httpGet(fmt.Sprintf("%s/cosmwasm/wasm/v1/codes/params", endpoint))
+	if err != nil {
+		return wasmtypes.Params{}, fmt.Errorf("failed to execute HTTP request: %w", err)
+	}
+
+	var codesResp wasmtypes.QueryParamsResponse
+	if err := cdc.UnmarshalJSON(body, &codesResp); err != nil {
+		return wasmtypes.Params{}, err
+	}
+
+	return codesResp.Params, nil
+}
+
+func queryWasmCodes(endpoint string) (wasmtypes.QueryCodesResponse, error) {
+	body, err := httpGet(fmt.Sprintf("%s/cosmwasm/wasm/v1/code", endpoint))
+	if err != nil {
+		return wasmtypes.QueryCodesResponse{}, fmt.Errorf("failed to execute HTTP request: %w", err)
+	}
+
+	var codesResp wasmtypes.QueryCodesResponse
+	if err := cdc.UnmarshalJSON(body, &codesResp); err != nil {
+		return wasmtypes.QueryCodesResponse{}, err
+	}
+
+	return codesResp, nil
+}
+
+func queryWasmContractInfo(endpoint, contractAddr string) (wasmtypes.QueryContractInfoResponse, error) {
+	body, err := httpGet(fmt.Sprintf("%s/cosmwasm/wasm/v1/contract/%s", endpoint, contractAddr))
+	if err != nil {
+		return wasmtypes.QueryContractInfoResponse{}, fmt.Errorf("failed to execute HTTP request: %w", err)
+	}
+
+	var contractInfoResp wasmtypes.QueryContractInfoResponse
+	if err := cdc.UnmarshalJSON(body, &contractInfoResp); err != nil {
+		return wasmtypes.QueryContractInfoResponse{}, err
+	}
+
+	return contractInfoResp, nil
+}
+
+func queryWasmContractSmart(endpoint, contractAddr, message string) (wasmtypes.QuerySmartContractStateResponse, error) {
+	// Base64 encode the message
+	encodedMessage := base64.StdEncoding.EncodeToString([]byte(message))
+	body, err := httpGet(fmt.Sprintf("%s/cosmwasm/wasm/v1/contract/%s/smart/%s", endpoint, contractAddr, encodedMessage))
+	if err != nil {
+		return wasmtypes.QuerySmartContractStateResponse{}, fmt.Errorf("failed to execute HTTP request: %w", err)
+	}
+
+	var contractResp wasmtypes.QuerySmartContractStateResponse
+	if err := cdc.UnmarshalJSON(body, &contractResp); err != nil {
+		return wasmtypes.QuerySmartContractStateResponse{}, err
+	}
+
+	return contractResp, nil
 }
 
 func querySuperAdmin(endpoint string) (acltypes.QueryGetSuperAdminResponse, error) {
