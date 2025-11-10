@@ -28,6 +28,9 @@ func CreateUpgradeHandler(
 
 		evmParams := evmtypes.DefaultParams()
 		evmParams.EvmDenom = BaseDenom
+		// TODO: Exclude not needed precompiles
+		evmParams.ActiveStaticPrecompiles = evmtypes.AvailableStaticPrecompiles
+		// TODO: Check if it should be aggez1
 		evmParams.ExtendedDenomOptions = &evmtypes.ExtendedDenomOptions{ExtendedDenom: BaseDenom}
 
 		if err := evmkeeper.SetParams(ctx, evmParams); err != nil {

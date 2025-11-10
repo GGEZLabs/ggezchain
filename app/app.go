@@ -34,7 +34,6 @@ import (
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	appante "github.com/GGEZLabs/ggezchain/v2/app/ante"
-	"github.com/GGEZLabs/ggezchain/v2/app/precompiles"
 	"github.com/GGEZLabs/ggezchain/v2/docs"
 	aclkeeper "github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
 	acl "github.com/GGEZLabs/ggezchain/v2/x/acl/module"
@@ -119,6 +118,7 @@ import (
 	evmencoding "github.com/cosmos/evm/encoding"
 	evmaddress "github.com/cosmos/evm/encoding/address"
 	evmmempool "github.com/cosmos/evm/mempool"
+	precompiletypes "github.com/cosmos/evm/precompiles/types"
 	evmsrvflags "github.com/cosmos/evm/server/flags"
 	erc20 "github.com/cosmos/evm/x/erc20"
 	erc20keeper "github.com/cosmos/evm/x/erc20/keeper"
@@ -632,7 +632,7 @@ func New(
 		EVMChainID,
 		tracer,
 	).WithStaticPrecompiles(
-		precompiles.DefaultStaticPrecompiles(
+		precompiletypes.DefaultStaticPrecompiles(
 			*app.StakingKeeper,
 			app.DistrKeeper,
 			app.PreciseBankKeeper,
@@ -642,7 +642,8 @@ func New(
 			app.GovKeeper,
 			app.SlashingKeeper,
 			appCodec,
-		))
+		),
+	)
 
 	app.Erc20Keeper = erc20keeper.NewKeeper(
 		app.GetKey(erc20types.StoreKey),
