@@ -234,8 +234,10 @@ func New(
 	if err := app.Load(loadLatest); err != nil {
 		panic(err)
 	}
-	if err := app.WasmKeeper.InitializePinnedCodes(app.NewUncachedContext(true, tmproto.Header{})); err != nil {
-		panic(err)
+	if loadLatest {
+		if err := app.WasmKeeper.InitializePinnedCodes(app.NewUncachedContext(true, tmproto.Header{})); err != nil {
+			panic(err)
+		}
 	}
 
 	return app
