@@ -7,6 +7,7 @@ import (
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	"github.com/GGEZLabs/ggezchain/v2/app/upgrade/v2_0_0"
 	"github.com/GGEZLabs/ggezchain/v2/app/upgrade/v2_1_0"
+	"github.com/GGEZLabs/ggezchain/v2/app/upgrade/v2_1_1"
 	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	epochstypes "github.com/cosmos/cosmos-sdk/x/epochs/types"
@@ -22,6 +23,11 @@ func (app *App) setupUpgradeHandlers(configurator module.Configurator) {
 	app.UpgradeKeeper.SetUpgradeHandler(
 		v2_1_0.UpgradeName,
 		v2_1_0.CreateUpgradeHandler(app.ModuleManager, configurator),
+	)
+
+	app.UpgradeKeeper.SetUpgradeHandler(
+		v2_1_1.UpgradeName,
+		v2_1_1.CreateUpgradeHandler(app.ModuleManager, configurator),
 	)
 
 	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
