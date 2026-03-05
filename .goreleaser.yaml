@@ -30,7 +30,7 @@ builds:
       - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
       - -w -s
       - -linkmode=external
-      - -extldflags '-L/usr/lib -lwasmvm_muslc.x86_64 -Wl,-z,muldefs -static -lm'
+      - -extldflags '-L/usr/local/lib -lwasmvm_muslc.x86_64 -Wl,-z,muldefs -static -lm'
     tags:
       - netgo
       - ledger
@@ -60,7 +60,7 @@ builds:
       - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,muslc,osusergo
       - -w -s
       - -linkmode=external
-      - -extldflags '-L/usr/lib -lwasmvm_muslc.aarch64 -Wl,-z,muldefs -static -lm'
+      - -extldflags '-L/usr/local/lib -lwasmvm_muslc.aarch64 -Wl,-z,muldefs -static -lm'
     tags:
       - netgo
       - ledger
