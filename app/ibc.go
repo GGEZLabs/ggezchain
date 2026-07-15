@@ -125,8 +125,6 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 	}
 	ibcRouter.AddRoute(wasmtypes.ModuleName, wasmStack)
 
-	// this line is used by starport scaffolding # ibc/app/module
-
 	app.IBCKeeper.SetRouter(ibcRouter)
 	app.IBCKeeper.SetRouterV2(ibcv2Router)
 
@@ -158,11 +156,11 @@ func (app *App) registerIBCModules(appOpts servertypes.AppOptions) error {
 // This needs to be removed after IBC supports App Wiring.
 func RegisterIBC(cdc codec.Codec) map[string]appmodule.AppModule {
 	modules := map[string]appmodule.AppModule{
-		ibcexported.ModuleName:      ibc.AppModule{},
-		ibctransfertypes.ModuleName: ibctransfer.AppModule{},
-		icatypes.ModuleName:         icamodule.AppModule{},
-		ibctm.ModuleName:            ibctm.AppModule{},
-		solomachine.ModuleName:      solomachine.AppModule{},
+		ibcexported.ModuleName:      ibc.NewAppModule(&ibckeeper.Keeper{}),
+		ibctransfertypes.ModuleName: ibctransfer.NewAppModule(ibctransferkeeper.Keeper{}),
+		icatypes.ModuleName:         icamodule.NewAppModule(&icacontrollerkeeper.Keeper{}, &icahostkeeper.Keeper{}),
+		ibctm.ModuleName:            ibctm.NewAppModule(ibctm.NewLightClientModule(cdc, ibcclienttypes.StoreProvider{})),
+		solomachine.ModuleName:      solomachine.NewAppModule(solomachine.NewLightClientModule(cdc, ibcclienttypes.StoreProvider{})),
 		wasmtypes.ModuleName:        wasm.AppModule{},
 	}
 
@@ -173,4 +171,10 @@ func RegisterIBC(cdc codec.Codec) map[string]appmodule.AppModule {
 	}
 
 	return modules
+}
+
+// GetIBCKeeper returns the IBC keeper.
+// Used for supply with IBC keeper getter for the IBC modules with App Wiring.
+func (app *App) GetIBCKeeper() *ibckeeper.Keeper {
+	return app.IBCKeeper
 }

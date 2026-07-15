@@ -14,7 +14,7 @@ import (
 )
 
 func SimulateMsgUpdateAuthority(
-	ak types.AccountKeeper,
+	ak types.AuthKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
 	txGen client.TxConfig,
@@ -24,13 +24,18 @@ func SimulateMsgUpdateAuthority(
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 		i := r.Int()
 
-		aclAuthorities := k.GetAllAclAuthority(ctx)
+		aclAuthorities, err := k.GetAllAclAuthority(ctx)
+		if err != nil {
+			return simtypes.OperationMsg{}, nil, err
+		}
 
 		if len(aclAuthorities) == 0 {
 			return simtypes.NoOpMsg(types.ModuleName, "MsgUpdateAuthority", "no authorities"), nil, nil
 		}
 
-		k.SetAclAdmin(ctx, types.AclAdmin{Address: simAccount.Address.String()})
+		if err := k.AclAdmin.Set(ctx, simAccount.Address.String(), types.AclAdmin{Address: simAccount.Address.String()}); err != nil {
+			return simtypes.OperationMsg{}, nil, err
+		}
 		msg := &types.MsgUpdateAuthority{
 			Creator:                    simAccount.Address.String(),
 			AuthAddress:                aclAuthorities[r.Intn(len(aclAuthorities))].Address,

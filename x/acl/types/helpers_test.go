@@ -638,7 +638,7 @@ func TestValidateJSONFormat(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := validateJSONFormat(tt.jsonStr, tt.fieldName)
+			err := ValidateJSONFormat(tt.jsonStr, tt.fieldName)
 			if tt.expErr {
 				require.Contains(t, err.Error(), tt.expErrMsg)
 				return

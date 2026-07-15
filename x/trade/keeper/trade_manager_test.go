@@ -107,7 +107,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 	suite.Run("invalid trade type", func() {
 		tradeData := types.StoredTrade{
 			ReceiverAddress: testutil.Alice,
-			Amount: &sdk.Coin{
+			Amount: sdk.Coin{
 				Denom:  types.DefaultDenom,
 				Amount: sdkmath.NewInt(10000000),
 			},
@@ -122,7 +122,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 	suite.Run("unknown denom", func() {
 		tradeData := types.StoredTrade{
 			ReceiverAddress: testutil.Alice,
-			Amount: &sdk.Coin{
+			Amount: sdk.Coin{
 				Denom:  "unknown_denom",
 				Amount: sdkmath.NewInt(10000000),
 			},
@@ -146,7 +146,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 
 	suite.Run("mint max amount coins", func() {
 		tradeData := types.StoredTrade{
-			Amount: &sdk.Coin{
+			Amount: sdk.Coin{
 				Denom:  types.DefaultDenom,
 				Amount: sdkmath.NewInt(math.MaxInt64),
 			},
@@ -174,24 +174,14 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 				},
 			}).Return(nil).Times(1)
 
-		suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(math.MaxInt64),
-		}).Times(1)
-
 		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
 		suite.Require().Equal(status, types.StatusProcessed)
 		suite.Require().NoError(err)
-		supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
-		suite.Require().Equal(supply, sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(math.MaxInt64),
-		})
 	})
 
 	suite.Run("burn max amount coins", func() {
 		tradeData := types.StoredTrade{
-			Amount: &sdk.Coin{
+			Amount: sdk.Coin{
 				Denom:  types.DefaultDenom,
 				Amount: sdkmath.NewInt(math.MaxInt64),
 			},
@@ -219,24 +209,14 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 				},
 			}).Return(nil).Times(1)
 
-		suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(0),
-		}).Times(1)
-
 		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
 		suite.Require().Equal(status, types.StatusProcessed)
 		suite.Require().NoError(err)
-		supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
-		suite.Require().Equal(supply, sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(0),
-		})
 	})
 
 	suite.Run("mint coins", func() {
 		tradeData := types.StoredTrade{
-			Amount: &sdk.Coin{
+			Amount: sdk.Coin{
 				Denom:  types.DefaultDenom,
 				Amount: sdkmath.NewInt(10000000),
 			},
@@ -264,24 +244,14 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 				},
 			}).Return(nil).Times(1)
 
-		suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(10000000),
-		}).Times(1)
-
 		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
 		suite.Require().Equal(status, types.StatusProcessed)
 		suite.Require().NoError(err)
-		supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
-		suite.Require().Equal(supply, sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(10000000),
-		})
 	})
 
 	suite.Run("send coins from account to module fails when sent amount exceeds account balance", func() {
 		tradeData := types.StoredTrade{
-			Amount: &sdk.Coin{
+			Amount: sdk.Coin{
 				Denom:  types.DefaultDenom,
 				Amount: sdkmath.NewInt(100000000000000),
 			},
@@ -308,7 +278,7 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 
 	suite.Run("burn coins", func() {
 		tradeData := types.StoredTrade{
-			Amount: &sdk.Coin{
+			Amount: sdk.Coin{
 				Denom:  types.DefaultDenom,
 				Amount: sdkmath.NewInt(1000000),
 			},
@@ -336,19 +306,9 @@ func (suite *KeeperTestSuite) TestMintOrBurnCoins() {
 				},
 			}).Return(nil).Times(1)
 
-		suite.bankKeeper.EXPECT().GetSupply(suite.ctx, types.DefaultDenom).Return(sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(9000000),
-		}).Times(1)
-
 		status, err := suite.tradeKeeper.MintOrBurnCoins(suite.ctx, tradeData)
 		suite.Require().Equal(status, types.StatusProcessed)
 		suite.Require().NoError(err)
-		supply := suite.bankKeeper.GetSupply(suite.ctx, types.DefaultDenom)
-		suite.Require().Equal(supply, sdk.Coin{
-			Denom:  types.DefaultDenom,
-			Amount: sdkmath.NewInt(9000000),
-		})
 	})
 }
 
@@ -361,10 +321,10 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 	suite.Run("no temp trades", func() {
 		suite.tradeKeeper.CancelExpiredPendingTrades(ctx)
 
-		trades := suite.tradeKeeper.GetAllStoredTrade(ctx)
+		trades := getAllStoredTrade(ctx, suite.tradeKeeper)
 		suite.Require().Equal(0, len(trades))
 
-		tempTrades := suite.tradeKeeper.GetAllStoredTempTrade(ctx)
+		tempTrades := getAllStoredTempTrade(ctx, suite.tradeKeeper)
 		suite.Require().Equal(0, len(tempTrades))
 	})
 
@@ -381,16 +341,16 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 			TxDate:     "2023-05-06",
 		}
 
-		suite.tradeKeeper.SetStoredTrade(ctx, storedTrade)
-		suite.tradeKeeper.SetStoredTempTrade(ctx, storedTempTrade)
+		setStoredTrade(ctx, suite.tradeKeeper, storedTrade)
+		setStoredTempTrade(ctx, suite.tradeKeeper, storedTempTrade)
 
 		suite.tradeKeeper.CancelExpiredPendingTrades(ctx)
 
-		trades := suite.tradeKeeper.GetAllStoredTrade(ctx)
+		trades := getAllStoredTrade(ctx, suite.tradeKeeper)
 		suite.Require().Equal(1, len(trades))
 		suite.Require().Equal(types.StatusPending, trades[0].Status)
 
-		tempTrades := suite.tradeKeeper.GetAllStoredTempTrade(ctx)
+		tempTrades := getAllStoredTempTrade(ctx, suite.tradeKeeper)
 		suite.Require().Equal(1, len(tempTrades))
 	})
 
@@ -407,17 +367,17 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 			TxDate:     "2023-05-11T08:44:00Z",
 		}
 
-		suite.tradeKeeper.SetStoredTrade(ctx, storedTrade)
-		suite.tradeKeeper.SetStoredTempTrade(ctx, storedTempTrade)
+		setStoredTrade(ctx, suite.tradeKeeper, storedTrade)
+		setStoredTempTrade(ctx, suite.tradeKeeper, storedTempTrade)
 
 		suite.tradeKeeper.CancelExpiredPendingTrades(ctx)
 
-		trades := suite.tradeKeeper.GetAllStoredTrade(ctx)
+		trades := getAllStoredTrade(ctx, suite.tradeKeeper)
 		suite.Require().Equal(1, len(trades))
 		suite.Require().Equal(types.StatusCanceled, trades[0].Status)
 		suite.Require().Equal(types.TradeIsCanceled, trades[0].Result)
 
-		tempTrades := suite.tradeKeeper.GetAllStoredTempTrade(ctx)
+		tempTrades := getAllStoredTempTrade(ctx, suite.tradeKeeper)
 		suite.Require().Equal(0, len(tempTrades))
 	})
 
@@ -426,18 +386,18 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 
 		// Set stored trades
 		for _, storedTrade := range storedTrades {
-			suite.tradeKeeper.SetStoredTrade(ctx, storedTrade)
+			setStoredTrade(ctx, suite.tradeKeeper, storedTrade)
 		}
 
 		// Set stored temp trades
 		for _, storedTempTrade := range storedTempTrades {
-			suite.tradeKeeper.SetStoredTempTrade(ctx, storedTempTrade)
+			setStoredTempTrade(ctx, suite.tradeKeeper, storedTempTrade)
 		}
 
 		suite.tradeKeeper.CancelExpiredPendingTrades(ctx)
 
 		// Total length
-		trades := suite.tradeKeeper.GetAllStoredTrade(ctx)
+		trades := getAllStoredTrade(ctx, suite.tradeKeeper)
 		suite.Require().Equal(25, len(trades))
 
 		// Cancelled trade length
@@ -445,7 +405,7 @@ func (suite *KeeperTestSuite) TestCancelExpiredPendingTrades() {
 		suite.Require().Equal(10, len(cancelledTrades))
 
 		// Pending trade length
-		tempTradeLength := len(suite.tradeKeeper.GetAllStoredTempTrade(ctx))
+		tempTradeLength := len(getAllStoredTempTrade(ctx, suite.tradeKeeper))
 		suite.Require().Equal(15, tempTradeLength)
 	})
 }

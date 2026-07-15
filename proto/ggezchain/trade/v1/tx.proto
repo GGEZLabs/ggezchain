@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package ggezchain.trade.v1;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "ggezchain/trade/v1/params.proto";
+import "gogoproto/gogo.proto";
+import "ggezchain/trade/v1/trade.proto";
+
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/trade/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+
+  // CreateTrade defines the CreateTrade RPC.
+  rpc CreateTrade(MsgCreateTrade) returns (MsgCreateTradeResponse);
+
+  // ProcessTrade defines the ProcessTrade RPC.
+  rpc ProcessTrade(MsgProcessTrade) returns (MsgProcessTradeResponse);
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "ggezchain/x/trade/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+// MsgCreateTrade defines the MsgCreateTrade message.
+message MsgCreateTrade {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string receiver_address = 2;
+  string trade_data = 3;
+  string banking_system_data = 4;
+  string coin_minting_price_json = 5;
+  string exchange_rate_json = 6;
+  string create_date = 7;
+}
+
+// MsgCreateTradeResponse defines the MsgCreateTradeResponse message.
+message MsgCreateTradeResponse {
+  uint64 trade_index = 1;
+  TradeStatus status = 2;
+}
+
+// MsgProcessTrade defines the MsgProcessTrade message.
+message MsgProcessTrade {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  ProcessType process_type = 2;
+  uint64 trade_index = 3;
+}
+
+// MsgProcessTradeResponse defines the MsgProcessTradeResponse message.
+message MsgProcessTradeResponse {
+  uint64 trade_index = 1;
+  TradeStatus status = 2;
+}

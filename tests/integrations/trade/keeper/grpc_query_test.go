@@ -30,10 +30,10 @@ func TestGRPCQueryTradeIndex(t *testing.T) {
 		{
 			"get trade index",
 			func() {
-				f.tradeKeeper.SetTradeIndex(ctx, types.TradeIndex{NextId: 1})
-				var found bool
-				tradeIndex, found = f.tradeKeeper.GetTradeIndex(ctx)
-				assert.Assert(t, found == true)
+				err := f.tradeKeeper.TradeIndex.Set(ctx, types.TradeIndex{NextId: 1})
+				assert.NilError(t, err)
+				tradeIndex, err = f.tradeKeeper.TradeIndex.Get(ctx)
+				assert.NilError(t, err)
 				assert.Assert(t, tradeIndex.String() != "")
 
 				req = &types.QueryGetTradeIndexRequest{}
@@ -53,7 +53,7 @@ func TestGRPCQueryTradeIndex(t *testing.T) {
 		t.Run(fmt.Sprintf("Case %s", testCase.msg), func(t *testing.T) {
 			testCase.malleate()
 
-			trade, err := queryClient.TradeIndex(gocontext.Background(), req)
+			trade, err := queryClient.GetTradeIndex(gocontext.Background(), req)
 
 			if testCase.expPass {
 				assert.NilError(t, err)
@@ -110,10 +110,10 @@ func TestGRPCQueryStoredTrade(t *testing.T) {
 		{
 			"store and get trade",
 			func() {
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 1})
-				var found bool
-				storedTrade, found = f.tradeKeeper.GetStoredTrade(ctx, 1)
-				assert.Assert(t, found == true)
+				err := f.tradeKeeper.StoredTrade.Set(ctx, 1, types.StoredTrade{TradeIndex: 1})
+				assert.NilError(t, err)
+				storedTrade, err = f.tradeKeeper.StoredTrade.Get(ctx, 1)
+				assert.NilError(t, err)
 				assert.Assert(t, storedTrade.String() != "")
 
 				req = &types.QueryGetStoredTradeRequest{TradeIndex: storedTrade.TradeIndex}
@@ -131,7 +131,7 @@ func TestGRPCQueryStoredTrade(t *testing.T) {
 		t.Run(fmt.Sprintf("Case %s", testCase.msg), func(t *testing.T) {
 			testCase.malleate()
 
-			trade, err := queryClient.StoredTrade(gocontext.Background(), req)
+			trade, err := queryClient.GetStoredTrade(gocontext.Background(), req)
 
 			if testCase.expPass {
 				assert.NilError(t, err)
@@ -176,12 +176,12 @@ func TestGRPCQueryAllStoredTrade(t *testing.T) {
 		{
 			"store and get all trades",
 			func() {
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 1})
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 2})
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 3})
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 4})
-				f.tradeKeeper.SetStoredTrade(ctx, types.StoredTrade{TradeIndex: 5})
-				storedTradeAll = f.tradeKeeper.GetAllStoredTrade(ctx)
+				assert.NilError(t, f.tradeKeeper.StoredTrade.Set(ctx, 1, types.StoredTrade{TradeIndex: 1}))
+				assert.NilError(t, f.tradeKeeper.StoredTrade.Set(ctx, 2, types.StoredTrade{TradeIndex: 2}))
+				assert.NilError(t, f.tradeKeeper.StoredTrade.Set(ctx, 3, types.StoredTrade{TradeIndex: 3}))
+				assert.NilError(t, f.tradeKeeper.StoredTrade.Set(ctx, 4, types.StoredTrade{TradeIndex: 4}))
+				assert.NilError(t, f.tradeKeeper.StoredTrade.Set(ctx, 5, types.StoredTrade{TradeIndex: 5}))
+				storedTradeAll = getAllStoredTrade(t, ctx, *f.tradeKeeper)
 				assert.Assert(t, len(storedTradeAll) == 5)
 
 				req = &types.QueryAllStoredTradeRequest{}
@@ -215,7 +215,7 @@ func TestGRPCQueryAllStoredTrade(t *testing.T) {
 		{
 			"get some of trades",
 			func() {
-				storedTradeAll = f.tradeKeeper.GetAllStoredTrade(ctx)
+				storedTradeAll = getAllStoredTrade(t, ctx, *f.tradeKeeper)
 				assert.Assert(t, len(storedTradeAll) == 5)
 
 				req = &types.QueryAllStoredTradeRequest{
@@ -244,7 +244,7 @@ func TestGRPCQueryAllStoredTrade(t *testing.T) {
 		t.Run(fmt.Sprintf("Case %s", testCase.msg), func(t *testing.T) {
 			testCase.malleate()
 
-			trades, err := queryClient.StoredTradeAll(gocontext.Background(), req)
+			trades, err := queryClient.ListStoredTrade(gocontext.Background(), req)
 
 			if testCase.expPass {
 				assert.NilError(t, err)
@@ -301,10 +301,10 @@ func TestGRPCQueryStoredTempTrade(t *testing.T) {
 		{
 			"store and get trade",
 			func() {
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 1})
-				var found bool
-				storedTempTrade, found = f.tradeKeeper.GetStoredTempTrade(ctx, 1)
-				assert.Assert(t, found == true)
+				err := f.tradeKeeper.StoredTempTrade.Set(ctx, 1, types.StoredTempTrade{TradeIndex: 1})
+				assert.NilError(t, err)
+				storedTempTrade, err = f.tradeKeeper.StoredTempTrade.Get(ctx, 1)
+				assert.NilError(t, err)
 				assert.Assert(t, storedTempTrade.String() != "")
 
 				req = &types.QueryGetStoredTempTradeRequest{TradeIndex: storedTempTrade.TradeIndex}
@@ -322,7 +322,7 @@ func TestGRPCQueryStoredTempTrade(t *testing.T) {
 		t.Run(fmt.Sprintf("Case %s", testCase.msg), func(t *testing.T) {
 			testCase.malleate()
 
-			trade, err := queryClient.StoredTempTrade(gocontext.Background(), req)
+			trade, err := queryClient.GetStoredTempTrade(gocontext.Background(), req)
 
 			if testCase.expPass {
 				assert.NilError(t, err)
@@ -367,12 +367,12 @@ func TestGRPCQueryAllStoredTempTrade(t *testing.T) {
 		{
 			"store and get all trades",
 			func() {
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 1})
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 2})
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 3})
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 4})
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 5})
-				storedTempTradeAll = f.tradeKeeper.GetAllStoredTempTrade(ctx)
+				assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(ctx, 1, types.StoredTempTrade{TradeIndex: 1}))
+				assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(ctx, 2, types.StoredTempTrade{TradeIndex: 2}))
+				assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(ctx, 3, types.StoredTempTrade{TradeIndex: 3}))
+				assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(ctx, 4, types.StoredTempTrade{TradeIndex: 4}))
+				assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(ctx, 5, types.StoredTempTrade{TradeIndex: 5}))
+				storedTempTradeAll = getAllStoredTempTrade(t, ctx, *f.tradeKeeper)
 				assert.Assert(t, len(storedTempTradeAll) == 5)
 
 				req = &types.QueryAllStoredTempTradeRequest{}
@@ -406,12 +406,12 @@ func TestGRPCQueryAllStoredTempTrade(t *testing.T) {
 		{
 			"get some of trades",
 			func() {
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 1})
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 2})
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 3})
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 4})
-				f.tradeKeeper.SetStoredTempTrade(ctx, types.StoredTempTrade{TradeIndex: 5})
-				storedTempTradeAll = f.tradeKeeper.GetAllStoredTempTrade(ctx)
+				assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(ctx, 1, types.StoredTempTrade{TradeIndex: 1}))
+				assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(ctx, 2, types.StoredTempTrade{TradeIndex: 2}))
+				assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(ctx, 3, types.StoredTempTrade{TradeIndex: 3}))
+				assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(ctx, 4, types.StoredTempTrade{TradeIndex: 4}))
+				assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(ctx, 5, types.StoredTempTrade{TradeIndex: 5}))
+				storedTempTradeAll = getAllStoredTempTrade(t, ctx, *f.tradeKeeper)
 				assert.Assert(t, len(storedTempTradeAll) == 5)
 
 				req = &types.QueryAllStoredTempTradeRequest{
@@ -440,7 +440,7 @@ func TestGRPCQueryAllStoredTempTrade(t *testing.T) {
 		t.Run(fmt.Sprintf("Case %s", testCase.msg), func(t *testing.T) {
 			testCase.malleate()
 
-			trades, err := queryClient.StoredTempTradeAll(gocontext.Background(), req)
+			trades, err := queryClient.ListStoredTempTrade(gocontext.Background(), req)
 
 			if testCase.expPass {
 				assert.NilError(t, err)

@@ -3,14 +3,13 @@ package keeper_test
 import (
 	"testing"
 
-	keepertest "github.com/GGEZLabs/ggezchain/v2/testutil/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestIsSuperAdmin(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
+	f := initFixture(t)
 	admin := sample.AccAddress()
 	alice := sample.AccAddress()
 
@@ -30,7 +29,7 @@ func TestIsSuperAdmin(t *testing.T) {
 			name:    "address does not match super admin",
 			address: alice,
 			fun: func() {
-				keeper.SetSuperAdmin(ctx, types.SuperAdmin{Admin: admin})
+				require.NoError(t, f.keeper.SuperAdmin.Set(f.ctx, types.SuperAdmin{Admin: admin}))
 			},
 			expectedOutput: false,
 		},
@@ -51,17 +50,17 @@ func TestIsSuperAdmin(t *testing.T) {
 	for _, tc := range testCases {
 		tc.fun()
 		t.Run(tc.name, func(t *testing.T) {
-			isAdmin := keeper.IsSuperAdmin(ctx, tc.address)
+			isAdmin := f.keeper.IsSuperAdmin(f.ctx, tc.address)
 			require.Equal(t, tc.expectedOutput, isAdmin)
 		})
 	}
 }
 
 func TestIsAdmin(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
+	f := initFixture(t)
 	admin := sample.AccAddress()
 	addr := sample.AccAddress()
-	keeper.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
+	require.NoError(t, f.keeper.AclAdmin.Set(f.ctx, admin, types.AclAdmin{Address: admin}))
 	testCases := []struct {
 		name           string
 		address        string
@@ -86,7 +85,7 @@ func TestIsAdmin(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			isAdmin := keeper.IsAdmin(ctx, tc.address)
+			isAdmin := f.keeper.IsAdmin(f.ctx, tc.address)
 			require.Equal(t, tc.expectedOutput, isAdmin)
 		})
 	}

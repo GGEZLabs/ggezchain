@@ -40,7 +40,7 @@ func initFixture(tb testing.TB) *fixture {
 	keys := storetypes.NewKVStoreKeys(
 		authtypes.StoreKey, types.StoreKey,
 	)
-	cdc := moduletestutil.MakeTestEncodingConfig(auth.AppModuleBasic{}, bank.AppModuleBasic{}, acl.AppModuleBasic{}).Codec
+	cdc := moduletestutil.MakeTestEncodingConfig(auth.AppModuleBasic{}, bank.AppModuleBasic{}, acl.AppModule{}).Codec
 
 	logger := log.NewTestLogger(tb)
 	cms := integration.CreateMultiStore(keys, logger)
@@ -53,12 +53,14 @@ func initFixture(tb testing.TB) *fixture {
 		types.ModuleName: {authtypes.Minter, authtypes.Burner},
 	}
 
+	addressCodec := addresscodec.NewBech32Codec("ggez")
+
 	accountKeeper := authkeeper.NewAccountKeeper(
 		cdc,
 		runtime.NewKVStoreService(keys[authtypes.StoreKey]),
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		addresscodec.NewBech32Codec("ggez"),
+		addressCodec,
 		sdk.Bech32MainPrefix,
 		authority.String(),
 	)
@@ -76,16 +78,16 @@ func initFixture(tb testing.TB) *fixture {
 	)
 
 	aclKeeper := keeper.NewKeeper(
-		cdc,
 		runtime.NewKVStoreService(keys[types.StoreKey]),
-		log.NewNopLogger(),
-		authority.String(),
+		cdc,
+		addressCodec,
+		authority,
 	)
 
 	router := baseapp.NewMsgServiceRouter()
 	router.SetInterfaceRegistry(cdc.InterfaceRegistry())
 
-	err := aclKeeper.SetParams(newCtx, types.DefaultParams())
+	err := aclKeeper.Params.Set(newCtx, types.DefaultParams())
 	assert.NilError(tb, err)
 
 	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil)
@@ -102,7 +104,7 @@ func initFixture(tb testing.TB) *fixture {
 
 	// Register MsgServer and QueryServer
 	types.RegisterMsgServer(router, msgSrvr)
-	types.RegisterQueryServer(integrationApp.QueryHelper(), aclKeeper)
+	types.RegisterQueryServer(integrationApp.QueryHelper(), keeper.NewQueryServerImpl(aclKeeper))
 
 	queryClient := types.NewQueryClient(integrationApp.QueryHelper())
 

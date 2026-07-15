@@ -8,70 +8,17 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+// GetSampleTradeDataJson returns a sample trade data JSON string for the given trade type.
+// It mirrors GetSampleTradeData below but marshaled to JSON, useful for message payloads.
 func GetSampleTradeDataJson(tradeType TradeType) string {
-	tradeValue := 100.50
-	tradeNetValue := 495.00
-	numberOfShares := 1000.0
-	sharePrice := 49.50
-	shareNetPrice := 500.00
-
-	var quantity *sdk.Coin
-	if tradeType == TradeTypeBuy || tradeType == TradeTypeSell {
-		quantity = &sdk.Coin{
-			Denom:  DefaultDenom,
-			Amount: math.NewInt(100000),
-		}
-	}
-
-	switch tradeType {
-	case TradeTypeSplit, TradeTypeReverseSplit:
-		tradeValue = 0
-		tradeNetValue = 0
-		sharePrice = 0
-		shareNetPrice = 0
-
-	case TradeTypeDividends, TradeTypeDividendsDeduction:
-		numberOfShares = 0
-		sharePrice = 0
-		shareNetPrice = 0
-	}
-
-	tradeData := TradeData{
-		TradeInfo: &TradeInfo{
-			AssetHolderId:       1,
-			AssetId:             1,
-			TradeType:           tradeType,
-			TradeValue:          tradeValue,
-			BaseCurrency:        "USD",
-			SettlementCurrency:  "USD",
-			ExchangeRate:        1,
-			Exchange:            "US",
-			FundName:            "TechFund",
-			Issuer:              "CompanyA",
-			NumberOfShares:      numberOfShares,
-			CoinMintingPriceUsd: 0.001,
-			Quantity:            quantity,
-			Segment:             "Technology",
-			SharePrice:          sharePrice,
-			Ticker:              "TECH",
-			TradeFee:            5.00,
-			ShareNetPrice:       shareNetPrice,
-			TradeNetValue:       tradeNetValue,
-		},
-		Brokerage: &Brokerage{
-			Name:    "XYZBrokerage",
-			Type:    "Online",
-			Country: "USA",
-		},
-	}
-
-	tradeDataBytes, err := json.Marshal(tradeData)
+	tradeDataBytes, err := json.Marshal(GetSampleTradeData(tradeType))
 	if err != nil {
 		panic(err)
 	}
 	return string(tradeDataBytes)
 }
 
+// GetSampleTradeData returns a sample TradeData for the given trade type.
 func GetSampleTradeData(tradeType TradeType) TradeData {
 	tradeValue := 100.50
 	tradeNetValue := 495.00
@@ -100,16 +47,16 @@ func GetSampleTradeData(tradeType TradeType) TradeData {
 		shareNetPrice = 0
 	}
 
-	tradeData := TradeData{
+	return TradeData{
 		TradeInfo: &TradeInfo{
-			AssetHolderId:       2,
-			AssetId:             789,
+			AssetHolderId:       1,
+			AssetId:             1,
 			TradeType:           tradeType,
 			TradeValue:          tradeValue,
 			BaseCurrency:        "USD",
 			SettlementCurrency:  "USD",
 			ExchangeRate:        1,
-			Exchange:            "NYSE",
+			Exchange:            "US",
 			FundName:            "TechFund",
 			Issuer:              "CompanyA",
 			NumberOfShares:      numberOfShares,
@@ -128,9 +75,9 @@ func GetSampleTradeData(tradeType TradeType) TradeData {
 			Country: "USA",
 		},
 	}
-	return tradeData
 }
 
+// GetSampleExchangeRateJson returns a sample exchange rate JSON payload.
 func GetSampleExchangeRateJson() string {
 	exchangeRate := []ExchangeRateJson{
 		{
@@ -150,6 +97,7 @@ func GetSampleExchangeRateJson() string {
 	return string(exchangeRateBytes)
 }
 
+// GetSampleCoinMintingPriceJson returns a sample coin minting price JSON payload.
 func GetSampleCoinMintingPriceJson() string {
 	coinMintingPrice := []CoinMintingPriceJson{
 		{
@@ -165,10 +113,14 @@ func GetSampleCoinMintingPriceJson() string {
 	return string(coinMintingPriceBytes)
 }
 
+// GetBaseStoredTrade returns the base sample StoredTrade shared by
+// GetSampleStoredTrade/GetSampleStoredTradeConfirmed/GetSampleStoredTradeRejected below.
+//
+// NOTE: unlike the old repo, StoredTrade.Amount is a non-nullable sdk.Coin.
 func GetBaseStoredTrade() StoredTrade {
 	return StoredTrade{
 		TradeType: TradeTypeBuy,
-		Amount: &sdk.Coin{
+		Amount: sdk.Coin{
 			Denom:  DefaultDenom,
 			Amount: math.NewInt(100000),
 		},
@@ -186,19 +138,25 @@ func GetBaseStoredTrade() StoredTrade {
 	}
 }
 
-// GetSampleMsgCreateTrade get sample create trade message
+// GetSampleMsgCreateTrade returns a sample MsgCreateTrade.
+//
+// NOTE: unlike the old repo there is no NewMsgCreateTrade constructor in the
+// new scaffold (message_create_trade.go was not ported; the equivalent
+// validation now lives inline in the keeper's CreateTrade handler), so this
+// builds the message struct literal directly.
 func GetSampleMsgCreateTrade() *MsgCreateTrade {
-	return NewMsgCreateTrade(
-		testutil.Alice,
-		testutil.Alice,
-		GetSampleTradeDataJson(TradeTypeBuy),
-		"{}",
-		GetSampleCoinMintingPriceJson(),
-		GetSampleExchangeRateJson(),
-	)
+	return &MsgCreateTrade{
+		Creator:              testutil.Alice,
+		ReceiverAddress:      testutil.Alice,
+		TradeData:            GetSampleTradeDataJson(TradeTypeBuy),
+		BankingSystemData:    "{}",
+		CoinMintingPriceJson: GetSampleCoinMintingPriceJson(),
+		ExchangeRateJson:     GetSampleExchangeRateJson(),
+	}
 }
 
-// GetMsgCreateTradeWithTypeAndAmount get sample create trade message specified with trade type and amount
+// GetMsgCreateTradeWithTypeAndAmount returns a sample MsgCreateTrade for a buy/sell trade
+// type with the given trade type and quantity amount.
 func GetMsgCreateTradeWithTypeAndAmount(tradeType TradeType, amount int64) *MsgCreateTrade {
 	tdStr := GetSampleTradeDataJson(TradeTypeBuy)
 	var td TradeData
@@ -224,8 +182,8 @@ func GetMsgCreateTradeWithTypeAndAmount(tradeType TradeType, amount int64) *MsgC
 	}
 }
 
-// GetSampleStoredTrade return sample stored trade according to GetSampleMsgCreateTrade function
-// used after create trade
+// GetSampleStoredTrade returns the sample StoredTrade expected right after
+// GetSampleMsgCreateTrade is created (status pending).
 func GetSampleStoredTrade(tradeIndex uint64) StoredTrade {
 	sampleStoredTrade := GetBaseStoredTrade()
 	sampleStoredTrade.TradeIndex = tradeIndex
@@ -235,7 +193,7 @@ func GetSampleStoredTrade(tradeIndex uint64) StoredTrade {
 	return sampleStoredTrade
 }
 
-// GetSampleStoredTradeConfirmed used after confirm trade
+// GetSampleStoredTradeConfirmed returns the sample StoredTrade expected after a confirm process.
 func GetSampleStoredTradeConfirmed(tradeIndex uint64) StoredTrade {
 	sampleStoredTrade := GetBaseStoredTrade()
 	sampleStoredTrade.TradeIndex = tradeIndex
@@ -246,7 +204,7 @@ func GetSampleStoredTradeConfirmed(tradeIndex uint64) StoredTrade {
 	return sampleStoredTrade
 }
 
-// GetSampleStoredTradeRejected used after reject trade
+// GetSampleStoredTradeRejected returns the sample StoredTrade expected after a reject process.
 func GetSampleStoredTradeRejected(tradeIndex uint64) StoredTrade {
 	sampleStoredTrade := GetBaseStoredTrade()
 	sampleStoredTrade.TradeIndex = tradeIndex

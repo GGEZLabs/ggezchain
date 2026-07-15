@@ -2,97 +2,84 @@ package keeper_test
 
 import (
 	"context"
+	"errors"
 	"strconv"
 	"testing"
 
-	keepertest "github.com/GGEZLabs/ggezchain/v2/testutil/keeper"
-	"github.com/GGEZLabs/ggezchain/v2/testutil/nullify"
+	"cosmossdk.io/collections"
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/stretchr/testify/require"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func createNAclAdmin(keeper keeper.Keeper, ctx context.Context, n int) []types.AclAdmin {
+func createNAclAdminItems(k keeper.Keeper, ctx context.Context, n int) []types.AclAdmin {
 	items := make([]types.AclAdmin, n)
 	for i := range items {
 		items[i].Address = strconv.Itoa(i)
-
-		keeper.SetAclAdmin(ctx, items[i])
+		_ = k.AclAdmin.Set(ctx, items[i].Address, items[i])
 	}
 	return items
 }
 
-func TestSetAclAdmins(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
+func TestAclAdminSet(t *testing.T) {
+	f := initFixture(t)
 	items := make([]types.AclAdmin, 10)
-	keeper.SetAclAdmins(ctx, items)
+	for i := range items {
+		items[i].Address = strconv.Itoa(i)
+		require.NoError(t, f.keeper.AclAdmin.Set(f.ctx, items[i].Address, items[i]))
+	}
 	for _, item := range items {
-		rst, found := keeper.GetAclAdmin(ctx,
-			item.Address,
-		)
-		require.True(t, found)
-		require.Equal(t,
-			nullify.Fill(&item),
-			nullify.Fill(&rst),
-		)
+		rst, err := f.keeper.AclAdmin.Get(f.ctx, item.Address)
+		require.NoError(t, err)
+		require.EqualExportedValues(t, item, rst)
 	}
 }
 
 func TestAclAdminGet(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
-	items := createNAclAdmin(keeper, ctx, 10)
+	f := initFixture(t)
+	items := createNAclAdminItems(f.keeper, f.ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetAclAdmin(ctx,
-			item.Address,
-		)
-		require.True(t, found)
-		require.Equal(t,
-			nullify.Fill(&item),
-			nullify.Fill(&rst),
-		)
+		rst, err := f.keeper.AclAdmin.Get(f.ctx, item.Address)
+		require.NoError(t, err)
+		require.EqualExportedValues(t, item, rst)
 	}
 }
 
 func TestAclAdminRemove(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
-	items := createNAclAdmin(keeper, ctx, 10)
+	f := initFixture(t)
+	items := createNAclAdminItems(f.keeper, f.ctx, 10)
 	for _, item := range items {
-		keeper.RemoveAclAdmin(ctx,
-			item.Address,
-		)
-		_, found := keeper.GetAclAdmin(ctx,
-			item.Address,
-		)
-		require.False(t, found)
+		require.NoError(t, f.keeper.AclAdmin.Remove(f.ctx, item.Address))
+		_, err := f.keeper.AclAdmin.Get(f.ctx, item.Address)
+		require.Error(t, err)
+		require.True(t, errors.Is(err, collections.ErrNotFound))
 	}
 }
 
 func TestRemoveAclAdmins(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
-	items := createNAclAdmin(keeper, ctx, 10)
+	f := initFixture(t)
+	items := createNAclAdminItems(f.keeper, f.ctx, 10)
 
 	var addresses []string
-
 	for _, item := range items {
 		addresses = append(addresses, item.Address)
 	}
 
-	keeper.RemoveAclAdmins(ctx, addresses)
+	for _, address := range addresses {
+		require.NoError(t, f.keeper.AclAdmin.Remove(f.ctx, address))
+	}
 
 	for i := range addresses {
-		_, found := keeper.GetAclAdmin(ctx, addresses[i])
-		require.False(t, found)
+		_, err := f.keeper.AclAdmin.Get(f.ctx, addresses[i])
+		require.Error(t, err)
+		require.True(t, errors.Is(err, collections.ErrNotFound))
 	}
 }
 
 func TestAclAdminGetAll(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
-	items := createNAclAdmin(keeper, ctx, 10)
-	require.ElementsMatch(t,
-		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllAclAdmin(ctx)),
-	)
+	f := initFixture(t)
+	items := createNAclAdminItems(f.keeper, f.ctx, 10)
+	all, err := f.keeper.GetAllAclAdmin(f.ctx)
+	require.NoError(t, err)
+	require.ElementsMatch(t, items, all)
 }

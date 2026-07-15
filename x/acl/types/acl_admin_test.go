@@ -145,7 +145,7 @@ func TestValidateAddresses(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := validateAddresses(tt.addresses)
+			err := ValidateAddresses(tt.addresses)
 			if tt.expErr {
 				require.Contains(t, err.Error(), tt.expErrMsg)
 				return
@@ -181,7 +181,7 @@ func TestHasDuplicateAddresses(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			hasDuplicate := hasDuplicateAddresses(tt.addresses)
+			hasDuplicate := HasDuplicateAddresses(tt.addresses)
 			require.Equal(t, tt.expectedOutput, hasDuplicate)
 		})
 	}

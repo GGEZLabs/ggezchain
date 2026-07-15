@@ -258,8 +258,8 @@ func validateAndExtractModuleNames(addAccessDefinition string) ([]string, error)
 	return modules, nil
 }
 
-// validateJSONFormat validate JSON format
-func validateJSONFormat(jsonStr string, fieldName string) error {
+// ValidateJSONFormat validate JSON format
+func ValidateJSONFormat(jsonStr string, fieldName string) error {
 	if jsonStr != "" {
 		if !json.Valid([]byte(jsonStr)) {
 			return sdkerrors.ErrInvalidRequest.Wrapf("invalid JSON format for field %s", fieldName)

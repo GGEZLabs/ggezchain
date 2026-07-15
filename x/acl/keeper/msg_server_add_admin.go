@@ -8,22 +8,29 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) AddAdmin(goCtx context.Context, msg *types.MsgAddAdmin) (*types.MsgAddAdminResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
+func (k msgServer) AddAdmin(ctx context.Context, msg *types.MsgAddAdmin) (*types.MsgAddAdminResponse, error) {
 	if !k.IsSuperAdmin(ctx, msg.Creator) {
 		return nil, types.ErrUnauthorized
 	}
 
-	err := types.ValidateAddAdmin(k.GetAllAclAdmin(ctx), msg.Admins)
+	currentAdmins, err := k.GetAllAclAdmin(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	aclAdmins := types.ConvertStringsToAclAdmins(msg.Admins)
-	k.SetAclAdmins(ctx, aclAdmins)
+	if err := types.ValidateAddAdmin(currentAdmins, msg.Admins); err != nil {
+		return nil, err
+	}
 
-	ctx.EventManager().EmitEvent(
+	aclAdmins := types.ConvertStringsToAclAdmins(msg.Admins)
+	for _, aclAdmin := range aclAdmins {
+		if err := k.AclAdmin.Set(ctx, aclAdmin.Address, aclAdmin); err != nil {
+			return nil, err
+		}
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	sdkCtx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeAddAdmin,
 			sdk.NewAttribute(types.AttributeKeyAdmins, strings.Join(msg.Admins, ",")),

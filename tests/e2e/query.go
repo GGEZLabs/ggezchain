@@ -293,7 +293,7 @@ func queryICAAccountAddress(endpoint, owner, connectionID string) (string, error
 func querySuperAdmin(endpoint string) (acltypes.QueryGetSuperAdminResponse, error) {
 	var res acltypes.QueryGetSuperAdminResponse
 
-	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/acl/super_admin", endpoint))
+	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/acl/v1/super_admin", endpoint))
 	if err != nil {
 		return res, err
 	}
@@ -307,7 +307,7 @@ func querySuperAdmin(endpoint string) (acltypes.QueryGetSuperAdminResponse, erro
 func queryAllAclAdmin(endpoint string) (acltypes.QueryAllAclAdminResponse, error) {
 	var res acltypes.QueryAllAclAdminResponse
 
-	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/acl/acl_admin", endpoint))
+	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/acl/v1/acl_admin", endpoint))
 	if err != nil {
 		return res, err
 	}
@@ -321,7 +321,7 @@ func queryAllAclAdmin(endpoint string) (acltypes.QueryAllAclAdminResponse, error
 func queryAclAdmin(endpoint, address string) (acltypes.QueryGetAclAdminResponse, error) {
 	var res acltypes.QueryGetAclAdminResponse
 
-	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/acl/acl_admin/%s", endpoint, address))
+	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/acl/v1/acl_admin/%s", endpoint, address))
 	if err != nil {
 		return res, err
 	}
@@ -335,7 +335,7 @@ func queryAclAdmin(endpoint, address string) (acltypes.QueryGetAclAdminResponse,
 func queryAllAclAuthority(endpoint string) (acltypes.QueryAllAclAuthorityResponse, error) {
 	var res acltypes.QueryAllAclAuthorityResponse
 
-	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/acl/acl_authority", endpoint))
+	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/acl/v1/acl_authority", endpoint))
 	if err != nil {
 		return res, err
 	}
@@ -349,7 +349,7 @@ func queryAllAclAuthority(endpoint string) (acltypes.QueryAllAclAuthorityRespons
 func queryAclAuthority(endpoint, address string) (acltypes.QueryGetAclAuthorityResponse, error) {
 	var res acltypes.QueryGetAclAuthorityResponse
 
-	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/acl/acl_authority/%s", endpoint, address))
+	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/acl/v1/acl_authority/%s", endpoint, address))
 	if err != nil {
 		return res, err
 	}
@@ -363,7 +363,7 @@ func queryAclAuthority(endpoint, address string) (acltypes.QueryGetAclAuthorityR
 func queryAllStoredTrade(endpoint string) (tradetypes.QueryAllStoredTradeResponse, error) {
 	var res tradetypes.QueryAllStoredTradeResponse
 
-	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/trade/stored_trade", endpoint))
+	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/trade/v1/stored_trade", endpoint))
 	if err != nil {
 		return res, err
 	}
@@ -377,7 +377,7 @@ func queryAllStoredTrade(endpoint string) (tradetypes.QueryAllStoredTradeRespons
 func queryStoredTrade(endpoint, tradeIndex string) (tradetypes.QueryGetStoredTradeResponse, error) {
 	var res tradetypes.QueryGetStoredTradeResponse
 
-	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/trade/stored_trade/%s", endpoint, tradeIndex))
+	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/trade/v1/stored_trade/%s", endpoint, tradeIndex))
 	if err != nil {
 		return res, err
 	}
@@ -391,7 +391,7 @@ func queryStoredTrade(endpoint, tradeIndex string) (tradetypes.QueryGetStoredTra
 func queryAllStoredTempTrade(endpoint string) (tradetypes.QueryAllStoredTempTradeResponse, error) {
 	var res tradetypes.QueryAllStoredTempTradeResponse
 
-	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/trade/stored_temp_trade", endpoint))
+	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/trade/v1/stored_temp_trade", endpoint))
 	if err != nil {
 		return res, err
 	}
@@ -405,7 +405,7 @@ func queryAllStoredTempTrade(endpoint string) (tradetypes.QueryAllStoredTempTrad
 func queryStoredTempTrade(endpoint, tradeIndex string) (tradetypes.QueryGetStoredTempTradeResponse, error) {
 	var res tradetypes.QueryGetStoredTempTradeResponse
 
-	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/trade/stored_temp_trade/%s", endpoint, tradeIndex))
+	body, err := httpGet(fmt.Sprintf("%s/GGEZLabs/ggezchain/trade/v1/stored_temp_trade/%s", endpoint, tradeIndex))
 	if err != nil {
 		return res, err
 	}

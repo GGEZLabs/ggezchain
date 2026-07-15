@@ -7,18 +7,19 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) UpdateSuperAdmin(goCtx context.Context, msg *types.MsgUpdateSuperAdmin) (*types.MsgUpdateSuperAdminResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
+func (k msgServer) UpdateSuperAdmin(ctx context.Context, msg *types.MsgUpdateSuperAdmin) (*types.MsgUpdateSuperAdminResponse, error) {
 	if !k.IsSuperAdmin(ctx, msg.Creator) {
 		return nil, types.ErrUnauthorized
 	}
 
-	k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: msg.NewSuperAdmin})
+	if err := k.SuperAdmin.Set(ctx, types.SuperAdmin{Admin: msg.NewSuperAdmin}); err != nil {
+		return nil, err
+	}
 
-	ctx.EventManager().EmitEvent(
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	sdkCtx.EventManager().EmitEvent(
 		sdk.NewEvent(
-			types.EventTypeInit,
+			types.EventTypeUpdateSuperAdmin,
 			sdk.NewAttribute(types.AttributeKeySuperAdmin, msg.NewSuperAdmin),
 		),
 	)

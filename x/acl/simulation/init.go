@@ -13,7 +13,7 @@ import (
 )
 
 func SimulateMsgInit(
-	ak types.AccountKeeper,
+	ak types.AuthKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
 	txGen client.TxConfig,
@@ -21,8 +21,7 @@ func SimulateMsgInit(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		_, found := k.GetSuperAdmin(ctx)
-		if found {
+		if _, err := k.SuperAdmin.Get(ctx); err == nil {
 			return simtypes.NoOpMsg(types.ModuleName, "MsgInit", "super admin already initialized"), nil, nil
 		}
 

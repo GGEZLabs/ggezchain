@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package ggezchain.trade.v1;
+
+import "amino/amino.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "ggezchain/trade/v1/params.proto";
+import "ggezchain/trade/v1/stored_temp_trade.proto";
+import "ggezchain/trade/v1/stored_trade.proto";
+import "ggezchain/trade/v1/trade_index.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/trade/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/v1/params";
+  }
+
+  // Queries a TradeIndex by index.
+  rpc GetTradeIndex(QueryGetTradeIndexRequest) returns (QueryGetTradeIndexResponse) {
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/v1/trade_index";
+  }
+
+  // ListStoredTrade Queries a list of StoredTrade items.
+  rpc GetStoredTrade(QueryGetStoredTradeRequest) returns (QueryGetStoredTradeResponse) {
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/v1/stored_trade/{trade_index}";
+  }
+
+  // ListStoredTrade defines the ListStoredTrade RPC.
+  rpc ListStoredTrade(QueryAllStoredTradeRequest) returns (QueryAllStoredTradeResponse) {
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/v1/stored_trade";
+  }
+
+  // ListStoredTempTrade Queries a list of StoredTempTrade items.
+  rpc GetStoredTempTrade(QueryGetStoredTempTradeRequest) returns (QueryGetStoredTempTradeResponse) {
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/v1/stored_temp_trade/{trade_index}";
+  }
+
+  // ListStoredTempTrade defines the ListStoredTempTrade RPC.
+  rpc ListStoredTempTrade(QueryAllStoredTempTradeRequest) returns (QueryAllStoredTempTradeResponse) {
+    option (google.api.http).get = "/GGEZLabs/ggezchain/trade/v1/stored_temp_trade";
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryGetTradeIndexRequest defines the QueryGetTradeIndexRequest message.
+message QueryGetTradeIndexRequest {}
+
+// QueryGetTradeIndexResponse defines the QueryGetTradeIndexResponse message.
+message QueryGetTradeIndexResponse {
+  TradeIndex trade_index = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryGetStoredTradeRequest defines the QueryGetStoredTradeRequest message.
+message QueryGetStoredTradeRequest {
+  uint64 trade_index = 1;
+}
+
+// QueryGetStoredTradeResponse defines the QueryGetStoredTradeResponse message.
+message QueryGetStoredTradeResponse {
+  StoredTrade stored_trade = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllStoredTradeRequest defines the QueryAllStoredTradeRequest message.
+message QueryAllStoredTradeRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllStoredTradeResponse defines the QueryAllStoredTradeResponse message.
+message QueryAllStoredTradeResponse {
+  repeated StoredTrade stored_trade = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetStoredTempTradeRequest defines the QueryGetStoredTempTradeRequest message.
+message QueryGetStoredTempTradeRequest {
+  uint64 trade_index = 1;
+}
+
+// QueryGetStoredTempTradeResponse defines the QueryGetStoredTempTradeResponse message.
+message QueryGetStoredTempTradeResponse {
+  StoredTempTrade stored_temp_trade = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllStoredTempTradeRequest defines the QueryAllStoredTempTradeRequest message.
+message QueryAllStoredTempTradeRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllStoredTempTradeResponse defines the QueryAllStoredTempTradeResponse message.
+message QueryAllStoredTempTradeResponse {
+  repeated StoredTempTrade stored_temp_trade = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
