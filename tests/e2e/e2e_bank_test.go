@@ -67,7 +67,8 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 				expectedAfterAliceUGGEZ1Balance := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(standardFees)
 				decremented := afterAliceUGGEZ1Balance.Sub(expectedAfterAliceUGGEZ1Balance).Amount.LT(math.NewInt(500))
 
-				incremented := beforeBobUGGEZ1Balance.Add(tokenAmount).IsEqual(afterBobUGGEZ1Balance)
+				bobExpectedBalance := beforeBobUGGEZ1Balance.Add(tokenAmount)
+				incremented := bobExpectedBalance.Equal(afterBobUGGEZ1Balance)
 
 				return decremented && incremented
 			},
@@ -100,8 +101,10 @@ func (s *IntegrationTestSuite) testBankTokenTransfer() {
 				expectedAfterAliceUGGEZ1Balance := beforeAliceUGGEZ1Balance.Sub(tokenAmount).Sub(tokenAmount).Sub(standardFees)
 				decremented := afterAliceUGGEZ1Balance.Sub(expectedAfterAliceUGGEZ1Balance).Amount.LT(math.NewInt(500))
 
-				incremented := beforeBobUGGEZ1Balance.Add(tokenAmount).IsEqual(afterBobUGGEZ1Balance) &&
-					beforeCharlieUGGEZ1Balance.Add(tokenAmount).IsEqual(afterCharlieUGGEZ1Balance)
+				bobExpectedBalance := beforeBobUGGEZ1Balance.Add(tokenAmount)
+				charlieExpectedBalance := beforeCharlieUGGEZ1Balance.Add(tokenAmount)
+				incremented := bobExpectedBalance.Equal(afterBobUGGEZ1Balance) &&
+					charlieExpectedBalance.Equal(afterCharlieUGGEZ1Balance)
 
 				return decremented && incremented
 			},

@@ -18,8 +18,8 @@ func (suite *KeeperTestSuite) TestProcessTradeConfirm() {
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.Require().Nil(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().NoError(err)
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: indexes[0],
 		Status:     types.StatusProcessed,
 	}, *processResponse)
@@ -33,8 +33,8 @@ func (suite *KeeperTestSuite) TestProcessTradeReject() {
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  indexes[0],
 	})
-	suite.Require().Nil(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().NoError(err)
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: indexes[0],
 		Status:     types.StatusRejected,
 	}, *processResponse)
@@ -64,28 +64,28 @@ func (suite *KeeperTestSuite) TestStoredTradeAfterConfirmTrade() {
 
 	trade, found := getStoredTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+	suite.Require().Equal(types.GetSampleStoredTrade(indexes[0]), trade)
 
 	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     tradetestutil.Bob,
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.Require().Nil(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().NoError(err)
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: indexes[0],
 		Status:     types.StatusProcessed,
 	}, *processResponse)
 
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	trade, found = getStoredTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.GetSampleStoredTradeConfirmed(indexes[0]), trade)
+	suite.Require().Equal(types.GetSampleStoredTradeConfirmed(indexes[0]), trade)
 }
 
 func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
@@ -97,7 +97,7 @@ func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
 
 	tempTrade, found := getStoredTempTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.StoredTempTrade{
+	suite.Require().Equal(types.StoredTempTrade{
 		TradeIndex: 1,
 		TxDate:     types.GetSampleStoredTrade(indexes[0]).TxDate,
 	}, tempTrade)
@@ -107,8 +107,8 @@ func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.Require().Nil(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().NoError(err)
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: indexes[0],
 		Status:     types.StatusProcessed,
 	}, *processResponse)
@@ -116,14 +116,14 @@ func (suite *KeeperTestSuite) TestTempTradeAfterConfirmTrade() {
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	// should remove temp trade after process
 	tempTrade, found = getStoredTempTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().False(found)
-	suite.Require().EqualValues(types.StoredTempTrade{
+	suite.Require().Equal(types.StoredTempTrade{
 		TradeIndex: 0,
 		TxDate:     "",
 	}, tempTrade)
@@ -135,15 +135,15 @@ func (suite *KeeperTestSuite) TestStoredTradeAfterRejectTrade() {
 
 	trade, found := getStoredTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+	suite.Require().Equal(types.GetSampleStoredTrade(indexes[0]), trade)
 
 	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     tradetestutil.Bob,
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  indexes[0],
 	})
-	suite.Require().Nil(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().NoError(err)
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: indexes[0],
 		Status:     types.StatusRejected,
 	}, *processResponse)
@@ -151,13 +151,13 @@ func (suite *KeeperTestSuite) TestStoredTradeAfterRejectTrade() {
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	trade, found = getStoredTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.GetSampleStoredTradeRejected(indexes[0]), trade)
+	suite.Require().Equal(types.GetSampleStoredTradeRejected(indexes[0]), trade)
 }
 
 func (suite *KeeperTestSuite) TestTempTradeAfterRejectTrade() {
@@ -169,8 +169,8 @@ func (suite *KeeperTestSuite) TestTempTradeAfterRejectTrade() {
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  indexes[0],
 	})
-	suite.Require().Nil(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().NoError(err)
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: indexes[0],
 		Status:     types.StatusRejected,
 	}, *processResponse)
@@ -178,14 +178,14 @@ func (suite *KeeperTestSuite) TestTempTradeAfterRejectTrade() {
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	tempTrade, found := getStoredTempTrade(suite.ctx, keeper, 1)
 
 	suite.Require().False(found)
-	suite.Require().EqualValues(types.StoredTempTrade{
+	suite.Require().Equal(types.StoredTempTrade{
 		TradeIndex: 0,
 		TxDate:     "",
 	}, tempTrade)
@@ -201,14 +201,14 @@ func (suite *KeeperTestSuite) TestProcessTwoTrade() {
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	tempTrades := getAllStoredTempTrade(suite.ctx, keeper)
 	trades := getAllStoredTrade(suite.ctx, keeper)
-	suite.Require().EqualValues(len(tempTrades), len(indexes))
-	suite.Require().EqualValues(len(trades), len(indexes))
+	suite.Require().Len(indexes, len(tempTrades))
+	suite.Require().Len(indexes, len(trades))
 
 	for _, tradeIndex := range indexes {
 		processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
@@ -216,8 +216,8 @@ func (suite *KeeperTestSuite) TestProcessTwoTrade() {
 			ProcessType: types.ProcessTypeConfirm,
 			TradeIndex:  tradeIndex,
 		})
-		suite.Require().Nil(err)
-		suite.Require().EqualValues(types.MsgProcessTradeResponse{
+		suite.Require().NoError(err)
+		suite.Require().Equal(types.MsgProcessTradeResponse{
 			TradeIndex: tradeIndex,
 			Status:     types.StatusProcessed,
 		}, *processResponse)
@@ -225,8 +225,8 @@ func (suite *KeeperTestSuite) TestProcessTwoTrade() {
 
 	tempTrades = getAllStoredTempTrade(suite.ctx, keeper)
 	trades = getAllStoredTrade(suite.ctx, keeper)
-	suite.Require().EqualValues(len(tempTrades), 0)
-	suite.Require().EqualValues(len(trades), len(indexes))
+	suite.Require().Empty(tempTrades)
+	suite.Require().Len(indexes, len(trades))
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeInsufficientFund() {
@@ -247,8 +247,8 @@ func (suite *KeeperTestSuite) TestProcessTradeInsufficientFund() {
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  createResponse.TradeIndex,
 	})
-	suite.Require().Nil(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().NoError(err)
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: createResponse.TradeIndex,
 		Status:     types.StatusProcessed,
 	}, *processResponse)
@@ -263,15 +263,15 @@ func (suite *KeeperTestSuite) TestProcessTradeInsufficientFund() {
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  createResponse.TradeIndex,
 	})
-	suite.Require().Nil(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().NoError(err)
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: createResponse.TradeIndex,
 		Status:     types.StatusFailed,
 	}, *processResponse)
 
 	trade, found := getStoredTrade(suite.ctx, keeper, 2)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.StatusFailed, trade.Status)
+	suite.Require().Equal(types.StatusFailed, trade.Status)
 }
 
 func (suite *KeeperTestSuite) TestProcessTradeAlreadyConfirmed() {
@@ -280,7 +280,7 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyConfirmed() {
 
 	trade, found := getStoredTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+	suite.Require().Equal(types.GetSampleStoredTrade(indexes[0]), trade)
 
 	suite.bankKeeper.EXPECT().MintCoins(suite.ctx, types.ModuleName, gomock.Any()).Return(nil).Times(1)
 	suite.bankKeeper.EXPECT().SendCoinsFromModuleToAccount(suite.ctx, types.ModuleName, gomock.Any(), gomock.Any()).Return(nil).Times(1)
@@ -290,21 +290,21 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyConfirmed() {
 		ProcessType: types.ProcessTypeConfirm,
 		TradeIndex:  indexes[0],
 	})
-	suite.Require().Nil(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().NoError(err)
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: indexes[0],
 		Status:     types.StatusProcessed,
 	}, *processResponse)
 
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	trade, found = getStoredTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.GetSampleStoredTradeConfirmed(indexes[0]), trade)
+	suite.Require().Equal(types.GetSampleStoredTradeConfirmed(indexes[0]), trade)
 
 	// process confirmed trade
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
@@ -321,28 +321,28 @@ func (suite *KeeperTestSuite) TestProcessTradeAlreadyRejected() {
 
 	trade, found := getStoredTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+	suite.Require().Equal(types.GetSampleStoredTrade(indexes[0]), trade)
 
 	processResponse, err := suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
 		Creator:     tradetestutil.Bob,
 		ProcessType: types.ProcessTypeReject,
 		TradeIndex:  indexes[0],
 	})
-	suite.Require().Nil(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().NoError(err)
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: indexes[0],
 		Status:     types.StatusRejected,
 	}, *processResponse)
 
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	trade, found = getStoredTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.GetSampleStoredTradeRejected(indexes[0]), trade)
+	suite.Require().Equal(types.GetSampleStoredTradeRejected(indexes[0]), trade)
 
 	// process rejected trade
 	_, err = suite.msgServer.ProcessTrade(suite.ctx, &types.MsgProcessTrade{
@@ -359,7 +359,7 @@ func (suite *KeeperTestSuite) TestProcessTradeCheckerIsNotMaker() {
 	msg := types.GetSampleMsgCreateTrade()
 	msg.Creator = tradetestutil.Trent
 	_, err := suite.msgServer.CreateTrade(suite.ctx, msg)
-	suite.Require().Nil(err)
+	suite.Require().NoError(err)
 
 	keeper := suite.tradeKeeper
 
@@ -372,13 +372,13 @@ func (suite *KeeperTestSuite) TestProcessTradeCheckerIsNotMaker() {
 
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: 2,
 	}, tradeIndex)
 
 	trade, found := getStoredTrade(suite.ctx, keeper, 1)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.StatusPending, trade.Status)
+	suite.Require().Equal(types.StatusPending, trade.Status)
 }
 
 func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeSplit() {
@@ -400,7 +400,7 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeSplit() {
 		TradeIndex:  createResponse.TradeIndex,
 	})
 	suite.Require().NoError(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: createResponse.TradeIndex,
 		Status:     types.StatusProcessed,
 	}, *processResponse)
@@ -424,7 +424,7 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeReverseSplit() 
 		TradeIndex:  createResponse.TradeIndex,
 	})
 	suite.Require().NoError(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: createResponse.TradeIndex,
 		Status:     types.StatusProcessed,
 	}, *processResponse)
@@ -448,7 +448,7 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeReinvestment() 
 		TradeIndex:  createResponse.TradeIndex,
 	})
 	suite.Require().NoError(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: createResponse.TradeIndex,
 		Status:     types.StatusProcessed,
 	}, *processResponse)
@@ -472,7 +472,7 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeDividends() {
 		TradeIndex:  createResponse.TradeIndex,
 	})
 	suite.Require().NoError(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: createResponse.TradeIndex,
 		Status:     types.StatusProcessed,
 	}, *processResponse)
@@ -496,7 +496,7 @@ func (suite *KeeperTestSuite) TestSupplyAfterProcessTradeWithTypeDividendsDeduct
 		TradeIndex:  createResponse.TradeIndex,
 	})
 	suite.Require().NoError(err)
-	suite.Require().EqualValues(types.MsgProcessTradeResponse{
+	suite.Require().Equal(types.MsgProcessTradeResponse{
 		TradeIndex: createResponse.TradeIndex,
 		Status:     types.StatusProcessed,
 	}, *processResponse)

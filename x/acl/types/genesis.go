@@ -9,10 +9,10 @@ import (
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		Params:    DefaultParams(),
-		AclAdmins: []AclAdmin{}, 
+		Params:         DefaultParams(),
+		AclAdmins:      []AclAdmin{},
 		AclAuthorities: []AclAuthority{},
-		SuperAdmin: nil,
+		SuperAdmin:     nil,
 	}
 }
 

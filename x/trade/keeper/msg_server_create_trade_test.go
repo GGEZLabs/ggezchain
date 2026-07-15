@@ -12,7 +12,7 @@ import (
 
 func (suite *KeeperTestSuite) TestCreateTrade() {
 	indexes := suite.createNTrades(1)
-	suite.Require().EqualValues(1, len(indexes))
+	suite.Require().Len(indexes, 1)
 	suite.Require().EqualValues(1, indexes[0])
 }
 
@@ -22,13 +22,13 @@ func (suite *KeeperTestSuite) TestIfTradeSaved() {
 
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	trade, found := getStoredTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), trade)
+	suite.Require().Equal(types.GetSampleStoredTrade(indexes[0]), trade)
 }
 
 func (suite *KeeperTestSuite) TestIfTempTradeSaved() {
@@ -37,13 +37,13 @@ func (suite *KeeperTestSuite) TestIfTempTradeSaved() {
 
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	tempTrade, found := getStoredTempTrade(suite.ctx, keeper, indexes[0])
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.StoredTempTrade{
+	suite.Require().Equal(types.StoredTempTrade{
 		TradeIndex: indexes[0],
 		TxDate:     types.GetSampleStoredTrade(indexes[0]).TxDate,
 	}, tempTrade)
@@ -55,13 +55,13 @@ func (suite *KeeperTestSuite) TestGetAllStoredTrade() {
 
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	allTrades := getAllStoredTrade(suite.ctx, keeper)
-	suite.Require().EqualValues(len(allTrades), len(indexes))
-	suite.Require().EqualValues(types.GetSampleStoredTrade(indexes[0]), allTrades[0])
+	suite.Require().Len(indexes, len(allTrades))
+	suite.Require().Equal(types.GetSampleStoredTrade(indexes[0]), allTrades[0])
 }
 
 func (suite *KeeperTestSuite) TestGetAllStoredTempTrade() {
@@ -70,12 +70,12 @@ func (suite *KeeperTestSuite) TestGetAllStoredTempTrade() {
 
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 
 	allTempTrades := getAllStoredTempTrade(suite.ctx, keeper)
-	suite.Require().EqualValues(types.StoredTempTrade{
+	suite.Require().Equal(types.StoredTempTrade{
 		TradeIndex: indexes[0],
 		TxDate:     types.GetSampleStoredTrade(indexes[0]).TxDate,
 	}, allTempTrades[0])
@@ -189,11 +189,11 @@ func (suite *KeeperTestSuite) TestCreateTrades() {
 	for _, tradeIndex := range indexes {
 		trade, found := getStoredTrade(suite.ctx, keeper, tradeIndex)
 		suite.Require().True(found)
-		suite.Require().EqualValues(types.GetSampleStoredTrade(tradeIndex), trade)
+		suite.Require().Equal(types.GetSampleStoredTrade(tradeIndex), trade)
 
 		tempTrade, found := getStoredTempTrade(suite.ctx, keeper, tradeIndex)
 		suite.Require().True(found)
-		suite.Require().EqualValues(types.StoredTempTrade{
+		suite.Require().Equal(types.StoredTempTrade{
 			TradeIndex: tradeIndex,
 			TxDate:     tempTrade.TxDate,
 		}, tempTrade)
@@ -202,7 +202,7 @@ func (suite *KeeperTestSuite) TestCreateTrades() {
 	// check get all trades and temp trades and next trade index
 	tradeIndex, found := getTradeIndex(suite.ctx, keeper)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.TradeIndex{
+	suite.Require().Equal(types.TradeIndex{
 		NextId: uint64(len(indexes) + 1),
 	}, tradeIndex)
 	allTrades := getAllStoredTrade(suite.ctx, keeper)
@@ -292,7 +292,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithValidCreateDate() {
 		CreateDate:           "2024-05-11T08:44:00Z",
 	})
 
-	suite.Require().Nil(err)
+	suite.Require().NoError(err)
 	suite.Require().Equal(&types.MsgCreateTradeResponse{
 		TradeIndex: uint64(1),
 		Status:     types.StatusPending,
@@ -300,7 +300,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithValidCreateDate() {
 
 	trade, found := getStoredTrade(suite.ctx, suite.tradeKeeper, 1)
 	suite.Require().True(found)
-	suite.Require().Equal(trade.CreateDate, "2024-05-11T08:44:00Z")
+	suite.Require().Equal("2024-05-11T08:44:00Z", trade.CreateDate)
 }
 
 func (suite *KeeperTestSuite) TestCreateTradeWithTypeSplit() {
@@ -322,7 +322,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeSplit() {
 
 	trade, found := getStoredTrade(suite.ctx, keeper, 1)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.StoredTrade{
+	suite.Require().Equal(types.StoredTrade{
 		TradeIndex:           1,
 		TradeType:            types.TradeTypeSplit,
 		Amount:               sdk.Coin{Amount: math.NewInt(0)},
@@ -393,7 +393,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeReverseSplit() {
 
 	trade, found := getStoredTrade(suite.ctx, keeper, 1)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.StoredTrade{
+	suite.Require().Equal(types.StoredTrade{
 		TradeIndex:           1,
 		TradeType:            types.TradeTypeReverseSplit,
 		Amount:               sdk.Coin{Amount: math.NewInt(0)},
@@ -464,7 +464,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeReinvestment() {
 
 	trade, found := getStoredTrade(suite.ctx, keeper, 1)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.StoredTrade{
+	suite.Require().Equal(types.StoredTrade{
 		TradeIndex:           1,
 		TradeType:            types.TradeTypeReinvestment,
 		Amount:               sdk.Coin{Amount: math.NewInt(0)},
@@ -535,7 +535,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeDividends() {
 
 	trade, found := getStoredTrade(suite.ctx, keeper, 1)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.StoredTrade{
+	suite.Require().Equal(types.StoredTrade{
 		TradeIndex:           1,
 		TradeType:            types.TradeTypeDividends,
 		Amount:               sdk.Coin{Amount: math.NewInt(0)},
@@ -605,7 +605,7 @@ func (suite *KeeperTestSuite) TestCreateTradeWithTypeDividendsDeduction() {
 
 	trade, found := getStoredTrade(suite.ctx, keeper, 1)
 	suite.Require().True(found)
-	suite.Require().EqualValues(types.StoredTrade{
+	suite.Require().Equal(types.StoredTrade{
 		TradeIndex:           1,
 		TradeType:            types.TradeTypeDividendsDeduction,
 		Amount:               sdk.Coin{Amount: math.NewInt(0)},

@@ -2,7 +2,6 @@ package keeper_test
 
 import (
 	"context"
-	"errors"
 	"strconv"
 	"testing"
 
@@ -38,7 +37,7 @@ func TestAclAuthorityRemove(t *testing.T) {
 		require.NoError(t, f.keeper.AclAuthority.Remove(f.ctx, item.Address))
 		_, err := f.keeper.AclAuthority.Get(f.ctx, item.Address)
 		require.Error(t, err)
-		require.True(t, errors.Is(err, collections.ErrNotFound))
+		require.ErrorIs(t, err, collections.ErrNotFound)
 	}
 }
 

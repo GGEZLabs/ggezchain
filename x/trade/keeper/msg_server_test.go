@@ -79,8 +79,8 @@ func (suite *KeeperTestSuite) setupTest() {
 		aclKeeper,
 	)
 
-	require.NoError(suite.T(), tradeKeeper.Params.Set(ctx, types.DefaultParams()))
-	require.NoError(suite.T(), tradeKeeper.TradeIndex.Set(ctx, types.TradeIndex{NextId: 1}))
+	suite.Require().NoError(tradeKeeper.Params.Set(ctx, types.DefaultParams()))
+	suite.Require().NoError(tradeKeeper.TradeIndex.Set(ctx, types.TradeIndex{NextId: 1}))
 
 	suite.ctx = ctx
 	suite.tradeKeeper = tradeKeeper

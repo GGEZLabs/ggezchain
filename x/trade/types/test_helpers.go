@@ -8,6 +8,11 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+const (
+	sampleCurrencyUSD   = "USD"
+	sampleZeroTimestamp = "0001-01-01T00:00:00Z"
+)
+
 // GetSampleTradeDataJson returns a sample trade data JSON string for the given trade type.
 // It mirrors GetSampleTradeData below but marshaled to JSON, useful for message payloads.
 func GetSampleTradeDataJson(tradeType TradeType) string {
@@ -53,8 +58,8 @@ func GetSampleTradeData(tradeType TradeType) TradeData {
 			AssetId:             1,
 			TradeType:           tradeType,
 			TradeValue:          tradeValue,
-			BaseCurrency:        "USD",
-			SettlementCurrency:  "USD",
+			BaseCurrency:        sampleCurrencyUSD,
+			SettlementCurrency:  sampleCurrencyUSD,
 			ExchangeRate:        1,
 			Exchange:            "US",
 			FundName:            "TechFund",
@@ -81,7 +86,7 @@ func GetSampleTradeData(tradeType TradeType) TradeData {
 func GetSampleExchangeRateJson() string {
 	exchangeRate := []ExchangeRateJson{
 		{
-			FromCurrency:    "USD",
+			FromCurrency:    sampleCurrencyUSD,
 			ToCurrency:      "EUR",
 			OriginalAmount:  1,
 			ConvertedAmount: 0.85,
@@ -101,7 +106,7 @@ func GetSampleExchangeRateJson() string {
 func GetSampleCoinMintingPriceJson() string {
 	coinMintingPrice := []CoinMintingPriceJson{
 		{
-			CurrencyCode: "USD",
+			CurrencyCode: sampleCurrencyUSD,
 			MintingPrice: 0.001,
 		},
 	}
@@ -131,10 +136,10 @@ func GetBaseStoredTrade() StoredTrade {
 		BankingSystemData:    "{}",
 		ExchangeRateJson:     GetSampleExchangeRateJson(),
 		CoinMintingPriceJson: GetSampleCoinMintingPriceJson(),
-		TxDate:               "0001-01-01T00:00:00Z",
-		CreateDate:           "0001-01-01T00:00:00Z",
-		ProcessDate:          "0001-01-01T00:00:00Z",
-		UpdateDate:           "0001-01-01T00:00:00Z",
+		TxDate:               sampleZeroTimestamp,
+		CreateDate:           sampleZeroTimestamp,
+		ProcessDate:          sampleZeroTimestamp,
+		UpdateDate:           sampleZeroTimestamp,
 	}
 }
 

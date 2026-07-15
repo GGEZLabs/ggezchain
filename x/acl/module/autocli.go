@@ -5,6 +5,11 @@ import (
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 )
 
+const (
+	adminsField      = "admins"
+	authAddressField = "auth_address"
+)
+
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.
 func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 	return &autocliv1.ModuleOptions{
@@ -18,7 +23,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod: "ListAclAdmin",
-					Use:       "admins",
+					Use:       adminsField,
 					Short:     "Query all admins",
 				},
 				{
@@ -69,25 +74,25 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "AddAdmin",
 					Use:            "add-admin [admins]",
 					Short:          "Add one or more admin. Only a super admin can perform this action.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins", Varargs: true}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: adminsField, Varargs: true}},
 				},
 				{
 					RpcMethod:      "DeleteAdmin",
 					Use:            "delete-admin [admins]",
 					Short:          "Delete one or more admin. Only a super admin can perform this action.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "admins", Varargs: true}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: adminsField, Varargs: true}},
 				},
 				{
 					RpcMethod:      "AddAuthority",
 					Use:            "add-authority [auth-address] [name] [access-definitions]",
 					Short:          "Add a new authority with specific access definition. Must have authority to do so.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "auth_address"}, {ProtoField: "name"}, {ProtoField: "access_definitions"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: authAddressField}, {ProtoField: "name"}, {ProtoField: "access_definitions"}},
 				},
 				{
 					RpcMethod:      "UpdateAuthority",
 					Use:            "update-authority [auth-address]",
 					Short:          "Modify the name or access definition of an existing authority. Must have authority to do so.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "auth_address"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: authAddressField}},
 					FlagOptions: map[string]*autocliv1.FlagOptions{
 						"new_name": {
 							Name:         "new-name",
@@ -141,7 +146,7 @@ ggezchaind tx acl update-authority ggezauthaddress... --clear-all-access-definit
 					RpcMethod:      "DeleteAuthority",
 					Use:            "delete-authority [auth-address]",
 					Short:          "Delete an existing authority. Must have authority to do so.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "auth_address"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: authAddressField}},
 				},
 			},
 		},

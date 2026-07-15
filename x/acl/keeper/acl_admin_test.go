@@ -2,7 +2,6 @@ package keeper_test
 
 import (
 	"context"
-	"errors"
 	"strconv"
 	"testing"
 
@@ -12,8 +11,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func createNAclAdminItems(k keeper.Keeper, ctx context.Context, n int) []types.AclAdmin {
-	items := make([]types.AclAdmin, n)
+func createNAclAdminItems(k keeper.Keeper, ctx context.Context) []types.AclAdmin {
+	items := make([]types.AclAdmin, 10)
 	for i := range items {
 		items[i].Address = strconv.Itoa(i)
 		_ = k.AclAdmin.Set(ctx, items[i].Address, items[i])
@@ -37,7 +36,7 @@ func TestAclAdminSet(t *testing.T) {
 
 func TestAclAdminGet(t *testing.T) {
 	f := initFixture(t)
-	items := createNAclAdminItems(f.keeper, f.ctx, 10)
+	items := createNAclAdminItems(f.keeper, f.ctx)
 	for _, item := range items {
 		rst, err := f.keeper.AclAdmin.Get(f.ctx, item.Address)
 		require.NoError(t, err)
@@ -47,18 +46,18 @@ func TestAclAdminGet(t *testing.T) {
 
 func TestAclAdminRemove(t *testing.T) {
 	f := initFixture(t)
-	items := createNAclAdminItems(f.keeper, f.ctx, 10)
+	items := createNAclAdminItems(f.keeper, f.ctx)
 	for _, item := range items {
 		require.NoError(t, f.keeper.AclAdmin.Remove(f.ctx, item.Address))
 		_, err := f.keeper.AclAdmin.Get(f.ctx, item.Address)
 		require.Error(t, err)
-		require.True(t, errors.Is(err, collections.ErrNotFound))
+		require.ErrorIs(t, err, collections.ErrNotFound)
 	}
 }
 
 func TestRemoveAclAdmins(t *testing.T) {
 	f := initFixture(t)
-	items := createNAclAdminItems(f.keeper, f.ctx, 10)
+	items := createNAclAdminItems(f.keeper, f.ctx)
 
 	var addresses []string
 	for _, item := range items {
@@ -72,13 +71,13 @@ func TestRemoveAclAdmins(t *testing.T) {
 	for i := range addresses {
 		_, err := f.keeper.AclAdmin.Get(f.ctx, addresses[i])
 		require.Error(t, err)
-		require.True(t, errors.Is(err, collections.ErrNotFound))
+		require.ErrorIs(t, err, collections.ErrNotFound)
 	}
 }
 
 func TestAclAdminGetAll(t *testing.T) {
 	f := initFixture(t)
-	items := createNAclAdminItems(f.keeper, f.ctx, 10)
+	items := createNAclAdminItems(f.keeper, f.ctx)
 	all, err := f.keeper.GetAllAclAdmin(f.ctx)
 	require.NoError(t, err)
 	require.ElementsMatch(t, items, all)

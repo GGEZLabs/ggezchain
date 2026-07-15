@@ -5,6 +5,8 @@ import (
 	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 )
 
+const tradeIndexField = "trade_index"
+
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.
 func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 	return &autocliv1.ModuleOptions{
@@ -30,7 +32,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "GetStoredTrade",
 					Use:            "stored-trade [trade-index]",
 					Short:          "Query a stored-trade by trade index",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_index"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: tradeIndexField}},
 				},
 				{
 					RpcMethod: "ListStoredTempTrade",
@@ -41,7 +43,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "GetStoredTempTrade",
 					Use:            "stored-temp-trade [trade-index]",
 					Short:          "Query a stored-temp-trade by trade index",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_index"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: tradeIndexField}},
 				},
 			},
 		},
@@ -76,7 +78,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "ProcessTrade",
 					Use:            "process-trade [trade-index] [process-type]",
 					Short:          "Process the StoredTrade. Must have authority to do so.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_index"}, {ProtoField: "process_type"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: tradeIndexField}, {ProtoField: "process_type"}},
 				},
 			},
 		},
