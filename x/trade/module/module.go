@@ -80,7 +80,16 @@ func (am AppModule) RegisterServices(registrar grpc.ServiceRegistrar) error {
 	types.RegisterMsgServer(registrar, keeper.NewMsgServerImpl(am.keeper))
 	types.RegisterQueryServer(registrar, keeper.NewQueryServerImpl(am.keeper))
 
-	return nil
+	cfg, ok := registrar.(module.Configurator)
+	if !ok {
+		return fmt.Errorf("unable to register migrations: registrar does not implement module.Configurator")
+	}
+
+	m := keeper.NewMigrator(am.keeper)
+	if err := cfg.RegisterMigration(types.ModuleName, 1, m.MigrateLegacyKeys); err != nil {
+		return err
+	}
+	return cfg.RegisterMigration(types.ModuleName, 2, m.MigrateLegacyKeys)
 }
 
 // DefaultGenesis returns a default GenesisState for the module, marshalled to json.RawMessage.
@@ -130,7 +139,7 @@ func (am AppModule) ExportGenesis(ctx sdk.Context, _ codec.JSONCodec) json.RawMe
 // ConsensusVersion is a sequence number for state-breaking change of the module.
 // It should be incremented on each consensus-breaking change introduced by the module.
 // To avoid wrong/empty versions, the initial version should be set to 1.
-func (AppModule) ConsensusVersion() uint64 { return 1 }
+func (AppModule) ConsensusVersion() uint64 { return 3 }
 
 // BeginBlock contains the logic that is automatically triggered at the beginning of each block.
 // The begin block implementation is optional.

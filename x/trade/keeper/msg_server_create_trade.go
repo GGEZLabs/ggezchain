@@ -51,7 +51,7 @@ func (k msgServer) CreateTrade(ctx context.Context, msg *types.MsgCreateTrade) (
 
 	tradeIndex, err := k.TradeIndex.Get(ctx)
 	if err != nil {
-		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "trade index not found")
+		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "trade index not found: %s", err)
 	}
 
 	currentDateTime := sdkCtx.BlockTime()
