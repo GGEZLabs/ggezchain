@@ -13,7 +13,7 @@ import (
 )
 
 func SimulateMsgDeleteAuthority(
-	ak types.AccountKeeper,
+	ak types.AuthKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
 	txGen client.TxConfig,
@@ -21,13 +21,18 @@ func SimulateMsgDeleteAuthority(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		aclAuthorities := k.GetAllAclAuthority(ctx)
+		aclAuthorities, err := k.GetAllAclAuthority(ctx)
+		if err != nil {
+			return simtypes.OperationMsg{}, nil, err
+		}
 
 		if len(aclAuthorities) == 0 {
 			return simtypes.NoOpMsg(types.ModuleName, "MsgDeleteAuthority", "no authorities"), nil, nil
 		}
 
-		k.SetAclAdmin(ctx, types.AclAdmin{Address: simAccount.Address.String()})
+		if err := k.AclAdmin.Set(ctx, simAccount.Address.String(), types.AclAdmin{Address: simAccount.Address.String()}); err != nil {
+			return simtypes.OperationMsg{}, nil, err
+		}
 		msg := &types.MsgDeleteAuthority{
 			Creator:     simAccount.Address.String(),
 			AuthAddress: aclAuthorities[r.Intn(len(aclAuthorities))].Address,

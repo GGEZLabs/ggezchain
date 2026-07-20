@@ -25,12 +25,12 @@ func (msg *MsgAddAdmin) ValidateBasic() error {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "at least one address should be provided")
 	}
 
-	err = validateAddresses(msg.Admins)
+	err = ValidateAddresses(msg.Admins)
 	if err != nil {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidAddress, "invalid address %s", err)
 	}
 
-	if hasDuplicateAddresses(msg.Admins) {
+	if HasDuplicateAddresses(msg.Admins) {
 		return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "duplicate address")
 	}
 

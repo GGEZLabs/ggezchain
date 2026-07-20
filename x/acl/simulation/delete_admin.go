@@ -13,7 +13,7 @@ import (
 )
 
 func SimulateMsgDeleteAdmin(
-	ak types.AccountKeeper,
+	ak types.AuthKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
 	txGen client.TxConfig,
@@ -22,7 +22,10 @@ func SimulateMsgDeleteAdmin(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 
-		aclAdmins := k.GetAllAclAdmin(ctx)
+		aclAdmins, err := k.GetAllAclAdmin(ctx)
+		if err != nil {
+			return simtypes.OperationMsg{}, nil, err
+		}
 
 		if len(aclAdmins) == 0 {
 			return simtypes.NoOpMsg(types.ModuleName, "MsgDeleteAdmin", "no admins"), nil, nil
@@ -32,7 +35,9 @@ func SimulateMsgDeleteAdmin(
 			return simtypes.NoOpMsg(types.ModuleName, "MsgDeleteAdmin", "at least one admin must remain"), nil, nil
 		}
 
-		k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: simAccount.Address.String()})
+		if err := k.SuperAdmin.Set(ctx, types.SuperAdmin{Admin: simAccount.Address.String()}); err != nil {
+			return simtypes.OperationMsg{}, nil, err
+		}
 		msg := &types.MsgDeleteAdmin{
 			Creator: simAccount.Address.String(),
 			Admins:  []string{aclAdmins[r.Intn(len(aclAdmins))].Address},

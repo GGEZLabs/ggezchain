@@ -6,17 +6,13 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// DefaultIndex is the default global index
-const DefaultIndex uint64 = 1
-
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		AclAuthorities: []AclAuthority{},
+		Params:         DefaultParams(),
 		AclAdmins:      []AclAdmin{},
+		AclAuthorities: []AclAuthority{},
 		SuperAdmin:     nil,
-		// this line is used by starport scaffolding # genesis/types/default
-		Params: DefaultParams(),
 	}
 }
 
@@ -48,7 +44,6 @@ func (gs GenesisState) Validate() error {
 	if err != nil {
 		return err
 	}
-	// this line is used by starport scaffolding # genesis/types/validate
 
 	return gs.Params.Validate()
 }
@@ -68,7 +63,7 @@ func (gs GenesisState) ValidateAclAuthority() error {
 		}
 
 		// Check for duplicated index in aclAuthority
-		index := string(AclAuthorityKey(authority.Address))
+		index := authority.Address
 		if _, ok := aclAuthorityIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for aclAuthority")
 		}
@@ -98,7 +93,7 @@ func (gs GenesisState) ValidateAclAdmin() error {
 		}
 
 		// Check for duplicated index in aclAdmin
-		index := string(AclAdminKey(elem.Address))
+		index := elem.Address
 		if _, ok := aclAdminIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for aclAdmin")
 		}

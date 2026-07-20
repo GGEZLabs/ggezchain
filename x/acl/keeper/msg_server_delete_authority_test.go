@@ -4,13 +4,15 @@ import (
 	"testing"
 
 	"github.com/GGEZLabs/ggezchain/v2/testutil/sample"
+	"github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgDeleteAuthority(t *testing.T) {
-	k, ms, ctx := setupMsgServer(t)
+	f := initFixture(t)
+	ms := keeper.NewMsgServerImpl(f.keeper)
+
 	superAdmin := sample.AccAddress()
 	admin := sample.AccAddress()
 	alice := sample.AccAddress()
@@ -25,11 +27,10 @@ func TestMsgDeleteAuthority(t *testing.T) {
 		Name:              "Bob",
 		AccessDefinitions: []*types.AccessDefinition{},
 	}
-	k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: superAdmin})
-	k.SetAclAuthority(ctx, aclAuthorityAlice)
-	k.SetAclAuthority(ctx, aclAuthorityBob)
-	k.SetAclAdmin(ctx, types.AclAdmin{Address: admin})
-	wctx := sdk.UnwrapSDKContext(ctx)
+	require.NoError(t, f.keeper.SuperAdmin.Set(f.ctx, types.SuperAdmin{Admin: superAdmin}))
+	require.NoError(t, f.keeper.AclAuthority.Set(f.ctx, aclAuthorityAlice.Address, aclAuthorityAlice))
+	require.NoError(t, f.keeper.AclAuthority.Set(f.ctx, aclAuthorityBob.Address, aclAuthorityBob))
+	require.NoError(t, f.keeper.AclAdmin.Set(f.ctx, admin, types.AclAdmin{Address: admin}))
 
 	testCases := []struct {
 		name      string
@@ -77,7 +78,7 @@ func TestMsgDeleteAuthority(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			_, err := ms.DeleteAuthority(wctx, tc.input)
+			_, err := ms.DeleteAuthority(f.ctx, tc.input)
 
 			if tc.expErr {
 				require.Error(t, err)

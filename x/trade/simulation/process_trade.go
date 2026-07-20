@@ -15,9 +15,8 @@ import (
 )
 
 func SimulateMsgProcessTrade(
-	ak types.AccountKeeper,
+	ak types.AuthKeeper,
 	bk types.BankKeeper,
-	aclk types.AclKeeper,
 	k keeper.Keeper,
 	txGen client.TxConfig,
 ) simtypes.Operation {
@@ -27,7 +26,7 @@ func SimulateMsgProcessTrade(
 		i := r.Int()
 
 		// Set authority before create trades
-		aclk.SetAclAuthority(ctx, acltypes.AclAuthority{
+		if err := k.AclKeeper().SetAclAuthority(ctx, acltypes.AclAuthority{
 			Address: simAccount.Address.String(),
 			Name:    strconv.Itoa(i),
 			AccessDefinitions: []*acltypes.AccessDefinition{
@@ -37,13 +36,18 @@ func SimulateMsgProcessTrade(
 					IsChecker: true,
 				},
 			},
-		})
+		}); err != nil {
+			return simtypes.OperationMsg{}, nil, err
+		}
+
 		var indexes []uint64
-		allStoredTrade := k.GetAllStoredTrade(ctx)
-		for _, storedTrade := range allStoredTrade {
+		if err := k.StoredTrade.Walk(ctx, nil, func(tradeIndex uint64, storedTrade types.StoredTrade) (stop bool, err error) {
 			if storedTrade.Status == types.StatusPending {
-				indexes = append(indexes, storedTrade.TradeIndex)
+				indexes = append(indexes, tradeIndex)
 			}
+			return false, nil
+		}); err != nil {
+			return simtypes.OperationMsg{}, nil, err
 		}
 
 		if len(indexes) == 0 {
@@ -51,7 +55,7 @@ func SimulateMsgProcessTrade(
 		}
 
 		tradeIndex := indexes[r.Intn(len(indexes))]
-		trade, _ := k.GetStoredTrade(ctx, tradeIndex)
+		trade, _ := k.StoredTrade.Get(ctx, tradeIndex)
 
 		if trade.Maker == simAccount.Address.String() {
 			return simtypes.NoOpMsg(types.ModuleName, "MsgProcessTrade", "checker must be different than maker"), nil, nil

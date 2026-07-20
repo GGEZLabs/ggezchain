@@ -53,8 +53,8 @@ func setup(withGenesis bool, invCheckPeriod uint) (*App, GenesisState) {
 	appOptions := make(simtestutil.AppOptionsMap, 0)
 	appOptions[server.FlagInvCheckPeriod] = invCheckPeriod
 
-	app := New(log.NewNopLogger(), db, nil, true, appOptions)
 	DefaultNodeHome = tmpDir
+	app := New(log.NewNopLogger(), db, nil, true, appOptions)
 	if withGenesis {
 		return app, app.DefaultGenesis()
 	}

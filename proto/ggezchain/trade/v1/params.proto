@@ -1,0 +1,13 @@
+syntax = "proto3";
+package ggezchain.trade.v1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/trade/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "ggezchain/x/trade/Params";
+  option (gogoproto.equal) = true;
+}

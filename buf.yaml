@@ -11,7 +11,6 @@ deps:
     - buf.build/cosmos/ics23
     - buf.build/googleapis/googleapis
     - buf.build/protocolbuffers/wellknowntypes
-    - buf.build/cosmwasm/wasmd
     - buf.build/cosmos/ibc
 lint:
     disallow_comment_ignores: true

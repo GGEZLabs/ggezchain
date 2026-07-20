@@ -60,8 +60,8 @@ func ConvertStringsToAclAdmins(addresses []string) []AclAdmin {
 	return admins
 }
 
-// validateAddresses validates whether any of the addresses not valid
-func validateAddresses(addresses []string) error {
+// ValidateAddresses validates whether any of the addresses not valid
+func ValidateAddresses(addresses []string) error {
 	for _, address := range addresses {
 		_, err := sdk.AccAddressFromBech32(address)
 		if err != nil {
@@ -71,8 +71,8 @@ func validateAddresses(addresses []string) error {
 	return nil
 }
 
-// hasDuplicateAddresses check if addresses list has a duplicate addresses
-func hasDuplicateAddresses(addresses []string) bool {
+// HasDuplicateAddresses check if addresses list has a duplicate addresses
+func HasDuplicateAddresses(addresses []string) bool {
 	addressesMap := make(map[string]bool)
 
 	for _, addr := range addresses {

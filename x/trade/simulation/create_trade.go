@@ -17,9 +17,8 @@ import (
 )
 
 func SimulateMsgCreateTrade(
-	ak types.AccountKeeper,
+	ak types.AuthKeeper,
 	bk types.BankKeeper,
-	aclk types.AclKeeper,
 	k keeper.Keeper,
 	txGen client.TxConfig,
 ) simtypes.Operation {
@@ -29,7 +28,7 @@ func SimulateMsgCreateTrade(
 		i := r.Int()
 
 		// Set authority before create trades
-		aclk.SetAclAuthority(ctx, acltypes.AclAuthority{
+		if err := k.AclKeeper().SetAclAuthority(ctx, acltypes.AclAuthority{
 			Address: simAccount.Address.String(),
 			Name:    strconv.Itoa(i),
 			AccessDefinitions: []*acltypes.AccessDefinition{
@@ -39,7 +38,9 @@ func SimulateMsgCreateTrade(
 					IsChecker: false,
 				},
 			},
-		})
+		}); err != nil {
+			return simtypes.OperationMsg{}, nil, err
+		}
 
 		randomDate := randomDate(r)
 		if isFutureDate(randomDate) {

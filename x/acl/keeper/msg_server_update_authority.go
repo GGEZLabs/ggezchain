@@ -2,28 +2,30 @@ package keeper
 
 import (
 	"context"
+	"errors"
 
+	"cosmossdk.io/collections"
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k msgServer) UpdateAuthority(goCtx context.Context, msg *types.MsgUpdateAuthority) (*types.MsgUpdateAuthorityResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
+func (k msgServer) UpdateAuthority(ctx context.Context, msg *types.MsgUpdateAuthority) (*types.MsgUpdateAuthorityResponse, error) {
 	if !k.IsAdmin(ctx, msg.Creator) && !k.IsSuperAdmin(ctx, msg.Creator) {
 		return nil, types.ErrUnauthorized
 	}
 
-	aclAuthority, found := k.GetAclAuthority(ctx, msg.AuthAddress)
-	if !found {
-		return nil, types.ErrAuthorityAddressDoesNotExist
+	aclAuthority, err := k.AclAuthority.Get(ctx, msg.AuthAddress)
+	if err != nil {
+		if errors.Is(err, collections.ErrNotFound) {
+			return nil, types.ErrAuthorityAddressDoesNotExist
+		}
+		return nil, err
 	}
 
 	if msg.NewName != "" {
 		aclAuthority = k.UpdateAclAuthorityName(aclAuthority, msg.NewName)
 	}
 
-	var err error
 	switch {
 	// If OverwriteAccessDefinitions passed ignore another flags
 	case msg.OverwriteAccessDefinitions != "":
@@ -68,10 +70,14 @@ func (k msgServer) UpdateAuthority(goCtx context.Context, msg *types.MsgUpdateAu
 			}
 		}
 	}
-	// Apply updated aclAuthority
-	k.SetAclAuthority(ctx, aclAuthority)
 
-	ctx.EventManager().EmitEvent(
+	// Apply updated aclAuthority
+	if err := k.AclAuthority.Set(ctx, aclAuthority.Address, aclAuthority); err != nil {
+		return nil, err
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	sdkCtx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeUpdateAuthority,
 			sdk.NewAttribute(types.AttributeKeyAuthorityAddress, aclAuthority.Address),

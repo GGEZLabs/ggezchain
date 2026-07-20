@@ -28,14 +28,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:           1,
 						TradeType:            types.TradeTypeBuy,
-						Amount:               &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:               sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd:  "0.01",
 						ReceiverAddress:      sample.AccAddress(),
 						Status:               types.StatusProcessed,
@@ -63,14 +63,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated storedTrade",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 1,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:           1,
 						TradeType:            types.TradeTypeBuy,
-						Amount:               &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:               sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd:  "0.01",
 						ReceiverAddress:      sample.AccAddress(),
 						Status:               types.StatusProcessed,
@@ -88,7 +88,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					{
 						TradeIndex:           1,
 						TradeType:            types.TradeTypeBuy,
-						Amount:               &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:               sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd:  "0.01",
 						ReceiverAddress:      sample.AccAddress(),
 						Status:               types.StatusProcessed,
@@ -111,7 +111,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated storedTempTrade",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 1,
 				},
 				StoredTempTrades: []types.StoredTempTrade{
@@ -121,7 +121,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						TradeIndex: 1,
-						TxDate:     "2023-05-11T08:44:00Z",
+						TxDate:     "2023-05-12T08:44:00Z",
 					},
 				},
 			},
@@ -131,7 +131,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid trade_index",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
@@ -146,7 +146,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid trade_type",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
@@ -162,14 +162,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid amount",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeBuy,
-						Amount:     &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(0)},
+						Amount:     sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(0)},
 					},
 				},
 			},
@@ -179,14 +179,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid denom",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeBuy,
-						Amount:     &sdk.Coin{Denom: "invalid_denom", Amount: math.NewInt(10)},
+						Amount:     sdk.Coin{Denom: "invalid_denom", Amount: math.NewInt(10)},
 					},
 				},
 			},
@@ -196,14 +196,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid receiver_address",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 						ReceiverAddress:     "invalid_address",
@@ -216,14 +216,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set amount with trade type split",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeSplit,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 					},
@@ -235,14 +235,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set receiver address with trade type split",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeSplit,
-						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						Amount:              sdk.Coin{Denom: "", Amount: math.NewInt(0)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
@@ -255,14 +255,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set amount with trade type reverse split",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeReverseSplit,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 					},
@@ -274,14 +274,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set receiver address with trade type reverse split",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeReverseSplit,
-						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						Amount:              sdk.Coin{Denom: "", Amount: math.NewInt(0)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
@@ -294,14 +294,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set amount with trade type reinvestment",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeReinvestment,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 					},
@@ -313,14 +313,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set receiver address with trade type reinvestment",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeReinvestment,
-						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						Amount:              sdk.Coin{Denom: "", Amount: math.NewInt(0)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
@@ -333,14 +333,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set amount with trade type dividends",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeDividends,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 					},
@@ -352,14 +352,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set receiver address with trade type dividends",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeDividends,
-						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						Amount:              sdk.Coin{Denom: "", Amount: math.NewInt(0)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
@@ -372,14 +372,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set amount with trade type dividends deduction",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeDividendsDeduction,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 					},
@@ -391,14 +391,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set receiver address with trade type dividends deduction",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeDividendsDeduction,
-						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						Amount:              sdk.Coin{Denom: "", Amount: math.NewInt(0)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
@@ -411,7 +411,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid price",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
@@ -419,7 +419,7 @@ func TestGenesisState_Validate(t *testing.T) {
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
 						ReceiverAddress:     sample.AccAddress(),
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0",
 					},
 				},
@@ -430,14 +430,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid status",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusNil,
@@ -450,14 +450,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid maker address",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusPending,
@@ -471,14 +471,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid checker address",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusRejected,
@@ -493,14 +493,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "set checker address with status pending",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusPending,
@@ -515,14 +515,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid create_date",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -538,14 +538,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid tx_date",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -562,14 +562,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid update_date",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -587,14 +587,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid process_date",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -613,14 +613,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid trade_data",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -640,14 +640,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid banking_system_data",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -668,14 +668,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid coin_minting_price_json",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:           1,
 						TradeType:            types.TradeTypeBuy,
-						Amount:               &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:               sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd:  "0.01",
 						ReceiverAddress:      sample.AccAddress(),
 						Status:               types.StatusProcessed,
@@ -697,14 +697,14 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid exchange_rate_json",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTrades: []types.StoredTrade{
 					{
 						TradeIndex:           1,
 						TradeType:            types.TradeTypeBuy,
-						Amount:               &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:               sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd:  "0.01",
 						ReceiverAddress:      sample.AccAddress(),
 						Status:               types.StatusProcessed,
@@ -727,7 +727,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid trade_index (stored temp trade)",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTempTrades: []types.StoredTempTrade{
@@ -742,7 +742,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicate trade_index (stored temp trade)",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTempTrades: []types.StoredTempTrade{
@@ -762,7 +762,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid create_date (stored temp trade)",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 2,
 				},
 				StoredTempTrades: []types.StoredTempTrade{
@@ -778,14 +778,13 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "invalid next_id",
 			genState: &types.GenesisState{
-				TradeIndex: types.TradeIndex{
+				TradeIndex: &types.TradeIndex{
 					NextId: 0,
 				},
 			},
 			expErr:    true,
 			expErrMsg: "next_id must be more than 0",
 		},
-		// this line is used by starport scaffolding # types/genesis/testcase
 	}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -815,7 +814,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:           1,
 						TradeType:            types.TradeTypeBuy,
-						Amount:               &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:               sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd:  "0.01",
 						ReceiverAddress:      sample.AccAddress(),
 						Status:               types.StatusProcessed,
@@ -841,7 +840,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:           1,
 						TradeType:            types.TradeTypeBuy,
-						Amount:               &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:               sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd:  "0.01",
 						ReceiverAddress:      sample.AccAddress(),
 						Status:               types.StatusProcessed,
@@ -859,7 +858,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:           1,
 						TradeType:            types.TradeTypeBuy,
-						Amount:               &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:               sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd:  "0.01",
 						ReceiverAddress:      sample.AccAddress(),
 						Status:               types.StatusPending,
@@ -910,7 +909,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeBuy,
-						Amount:     &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(0)},
+						Amount:     sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(0)},
 					},
 				},
 			},
@@ -924,7 +923,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex: 1,
 						TradeType:  types.TradeTypeBuy,
-						Amount:     &sdk.Coin{Denom: "invalid_denom", Amount: math.NewInt(10)},
+						Amount:     sdk.Coin{Denom: "invalid_denom", Amount: math.NewInt(10)},
 					},
 				},
 			},
@@ -938,7 +937,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 						ReceiverAddress:     "invalid_address",
@@ -955,7 +954,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeSplit,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 					},
@@ -971,7 +970,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeSplit,
-						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						Amount:              sdk.Coin{Denom: "", Amount: math.NewInt(0)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
@@ -988,7 +987,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeReverseSplit,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 					},
@@ -1004,7 +1003,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeReverseSplit,
-						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						Amount:              sdk.Coin{Denom: "", Amount: math.NewInt(0)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
@@ -1021,7 +1020,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeReinvestment,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 					},
@@ -1037,7 +1036,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeReinvestment,
-						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						Amount:              sdk.Coin{Denom: "", Amount: math.NewInt(0)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
@@ -1054,7 +1053,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeDividends,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 					},
@@ -1070,7 +1069,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeDividends,
-						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						Amount:              sdk.Coin{Denom: "", Amount: math.NewInt(0)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
@@ -1087,7 +1086,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeDividendsDeduction,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
 					},
@@ -1103,7 +1102,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeDividendsDeduction,
-						Amount:              &sdk.Coin{Denom: "", Amount: math.NewInt(0)},
+						Amount:              sdk.Coin{Denom: "", Amount: math.NewInt(0)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusPending,
@@ -1120,7 +1119,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0",
 					},
@@ -1136,7 +1135,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						ReceiverAddress:     sample.AccAddress(),
 						CoinMintingPriceUsd: "0.01",
 						Status:              types.StatusNil,
@@ -1153,7 +1152,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusPending,
@@ -1171,7 +1170,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusRejected,
@@ -1190,7 +1189,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusPending,
@@ -1209,7 +1208,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -1229,7 +1228,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -1250,7 +1249,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -1272,7 +1271,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -1295,7 +1294,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusRejected,
@@ -1319,7 +1318,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:          1,
 						TradeType:           types.TradeTypeBuy,
-						Amount:              &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:              sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd: "0.01",
 						ReceiverAddress:     sample.AccAddress(),
 						Status:              types.StatusProcessed,
@@ -1344,7 +1343,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:           1,
 						TradeType:            types.TradeTypeBuy,
-						Amount:               &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:               sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd:  "0.01",
 						ReceiverAddress:      sample.AccAddress(),
 						Status:               types.StatusProcessed,
@@ -1370,7 +1369,7 @@ func TestGenesisState_ValidateStoredTrade(t *testing.T) {
 					{
 						TradeIndex:           1,
 						TradeType:            types.TradeTypeBuy,
-						Amount:               &sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
+						Amount:               sdk.Coin{Denom: types.DefaultDenom, Amount: math.NewInt(100000)},
 						CoinMintingPriceUsd:  "0.01",
 						ReceiverAddress:      sample.AccAddress(),
 						Status:               types.StatusProcessed,
@@ -1487,7 +1486,7 @@ func TestDefaultGenesisState_ExpectedInitialNextId(t *testing.T) {
 	require.Equal(t,
 		&types.GenesisState{
 			StoredTrades:     []types.StoredTrade{},
-			TradeIndex:       types.TradeIndex{NextId: 1},
+			TradeIndex:       &types.TradeIndex{NextId: 1},
 			Params:           types.Params{},
 			StoredTempTrades: []types.StoredTempTrade{},
 		},

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG GO_VERSION="1.24"
+ARG GO_VERSION="1.25"
 ARG IMG_TAG="latest"
 ARG BUILD_TAGS="netgo,ledger,muslc"
 
@@ -8,7 +8,7 @@ ARG BUILD_TAGS="netgo,ledger,muslc"
 # Builder
 # --------------------------------------------------------
 
-FROM golang:${GO_VERSION}-alpine3.20 AS ggez-builder
+FROM golang:${GO_VERSION}-alpine3.21 AS ggez-builder
 WORKDIR /src/app/
 RUN apk add --no-cache \
     ca-certificates \
@@ -16,6 +16,8 @@ RUN apk add --no-cache \
     linux-headers \
     binutils-gold \
     git
+
+ENV GOTOOLCHAIN=auto
 
 # Download go dependencies
 COPY go.mod go.sum ./
