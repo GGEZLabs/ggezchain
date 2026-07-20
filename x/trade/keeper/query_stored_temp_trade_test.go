@@ -1,11 +1,11 @@
 package keeper_test
 
 import (
+	"context"
 	"strconv"
 	"testing"
 
-	keepertest "github.com/GGEZLabs/ggezchain/v2/testutil/keeper"
-	"github.com/GGEZLabs/ggezchain/v2/testutil/nullify"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"github.com/stretchr/testify/require"
@@ -13,12 +13,20 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
+func createNStoredTempTrade(keeper keeper.Keeper, ctx context.Context, n int) []types.StoredTempTrade {
+	items := make([]types.StoredTempTrade, n)
+	for i := range items {
+		items[i].TradeIndex = uint64(i)
+		items[i].TxDate = strconv.Itoa(i)
+		_ = keeper.StoredTempTrade.Set(ctx, items[i].TradeIndex, items[i])
+	}
+	return items
+}
 
 func TestStoredTempTradeQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.TradeKeeper(t)
-	msgs := createNStoredTempTrade(keeper, ctx, 2)
+	f := initFixture(t)
+	qs := keeper.NewQueryServerImpl(f.keeper)
+	msgs := createNStoredTempTrade(f.keeper, f.ctx, 2)
 	tests := []struct {
 		desc     string
 		request  *types.QueryGetStoredTempTradeRequest
@@ -53,23 +61,21 @@ func TestStoredTempTradeQuerySingle(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.StoredTempTrade(ctx, tc.request)
+			response, err := qs.GetStoredTempTrade(f.ctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
 				require.NoError(t, err)
-				require.Equal(t,
-					nullify.Fill(tc.response),
-					nullify.Fill(response),
-				)
+				require.EqualExportedValues(t, tc.response, response)
 			}
 		})
 	}
 }
 
 func TestStoredTempTradeQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.TradeKeeper(t)
-	msgs := createNStoredTempTrade(keeper, ctx, 5)
+	f := initFixture(t)
+	qs := keeper.NewQueryServerImpl(f.keeper)
+	msgs := createNStoredTempTrade(f.keeper, f.ctx, 5)
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllStoredTempTradeRequest {
 		return &types.QueryAllStoredTempTradeRequest{
@@ -84,40 +90,31 @@ func TestStoredTempTradeQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.StoredTempTradeAll(ctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := qs.ListStoredTempTrade(f.ctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.StoredTempTrade), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.StoredTempTrade),
-			)
+			require.Subset(t, msgs, resp.StoredTempTrade)
 		}
 	})
 	t.Run("ByKey", func(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.StoredTempTradeAll(ctx, request(next, 0, uint64(step), false))
+			resp, err := qs.ListStoredTempTrade(f.ctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.StoredTempTrade), step)
-			require.Subset(t,
-				nullify.Fill(msgs),
-				nullify.Fill(resp.StoredTempTrade),
-			)
+			require.Subset(t, msgs, resp.StoredTempTrade)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.StoredTempTradeAll(ctx, request(nil, 0, 0, true))
+		resp, err := qs.ListStoredTempTrade(f.ctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
-		require.ElementsMatch(t,
-			nullify.Fill(msgs),
-			nullify.Fill(resp.StoredTempTrade),
-		)
+		require.EqualExportedValues(t, msgs, resp.StoredTempTrade)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.StoredTempTradeAll(ctx, nil)
+		_, err := qs.ListStoredTempTrade(f.ctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

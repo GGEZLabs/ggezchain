@@ -177,8 +177,8 @@ func (s *IntegrationTestSuite) testAcl() {
 			res, err := queryAclAuthority(chainEndpoint, superAdmin.String())
 			s.Require().NoError(err)
 			s.Require().Equal("trade", res.AclAuthority.AccessDefinitions[0].Module)
-			s.Require().Equal(true, res.AclAuthority.AccessDefinitions[0].IsMaker)
-			s.Require().Equal(false, res.AclAuthority.AccessDefinitions[0].IsChecker)
+			s.Require().True(res.AclAuthority.AccessDefinitions[0].IsMaker)
+			s.Require().False(res.AclAuthority.AccessDefinitions[0].IsChecker)
 			return len(res.AclAuthority.AccessDefinitions) == 1
 		},
 		20*time.Second,

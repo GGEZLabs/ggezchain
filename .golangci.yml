@@ -18,7 +18,7 @@ linters:
     - goconst
     - gocritic
     - goheader
-    - gomodguard
+    - gomodguard_v2
     - goprintffuncname
     - govet
     - importas
@@ -64,6 +64,9 @@ linters:
       - linters:
           - staticcheck
         text: 'ST1005:'
+      - linters:
+          - goconst
+        path: _test\.go
     paths:
       - .*\.pb\.gw\.go$
       - third_party$

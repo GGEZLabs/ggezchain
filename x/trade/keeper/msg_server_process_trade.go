@@ -11,9 +11,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrade) (*types.MsgProcessTradeResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
-
+func (k msgServer) ProcessTrade(ctx context.Context, msg *types.MsgProcessTrade) (*types.MsgProcessTradeResponse, error) {
 	hasPermission, err := k.HasPermission(ctx, msg.Creator, types.TxTypeProcessTrade)
 	if err != nil {
 		return nil, err
@@ -23,17 +21,17 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 		return nil, types.ErrInvalidCheckerPermission
 	}
 
-	st, found := k.GetStoredTrade(ctx, msg.TradeIndex)
-	if !found {
+	st, err := k.StoredTrade.Get(ctx, msg.TradeIndex)
+	if err != nil {
 		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "trade with index %d not found", msg.TradeIndex)
 	}
 
-	err = msg.Validate(st.Status, st.Maker)
-	if err != nil {
+	if err := msg.Validate(st.Status, st.Maker); err != nil {
 		return nil, err
 	}
 
-	currentTime := ctx.BlockTime()
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+	currentTime := sdkCtx.BlockTime()
 	formattedDate := currentTime.Format(time.RFC3339)
 
 	st.Checker = msg.Creator
@@ -71,10 +69,14 @@ func (k msgServer) ProcessTrade(goCtx context.Context, msg *types.MsgProcessTrad
 	st.Status = finalStatus
 	st.Result = finalResult
 
-	k.SetStoredTrade(ctx, st)
-	k.RemoveStoredTempTrade(ctx, msg.TradeIndex)
+	if err := k.StoredTrade.Set(ctx, msg.TradeIndex, st); err != nil {
+		return nil, err
+	}
+	if err := k.StoredTempTrade.Remove(ctx, msg.TradeIndex); err != nil {
+		return nil, err
+	}
 
-	ctx.EventManager().EmitEvent(
+	sdkCtx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeProcessTrade,
 			sdk.NewAttribute(types.AttributeKeyTradeIndex, fmt.Sprintf("%d", msg.TradeIndex)),

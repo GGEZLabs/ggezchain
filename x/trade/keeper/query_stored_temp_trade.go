@@ -2,34 +2,28 @@ package keeper
 
 import (
 	"context"
+	"errors"
 
-	"cosmossdk.io/store/prefix"
+	"cosmossdk.io/collections"
 	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
-	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) StoredTempTradeAll(ctx context.Context, req *types.QueryAllStoredTempTradeRequest) (*types.QueryAllStoredTempTradeResponse, error) {
+func (q queryServer) ListStoredTempTrade(ctx context.Context, req *types.QueryAllStoredTempTradeRequest) (*types.QueryAllStoredTempTradeResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var storedTempTrades []types.StoredTempTrade
-
-	store := runtime.KVStoreAdapter(k.storeService.OpenKVStore(ctx))
-	storedTempTradeStore := prefix.NewStore(store, types.KeyPrefix(types.StoredTempTradeKeyPrefix))
-
-	pageRes, err := query.Paginate(storedTempTradeStore, req.Pagination, func(key []byte, value []byte) error {
-		var storedTempTrade types.StoredTempTrade
-		if err := k.cdc.Unmarshal(value, &storedTempTrade); err != nil {
-			return err
-		}
-
-		storedTempTrades = append(storedTempTrades, storedTempTrade)
-		return nil
-	})
+	storedTempTrades, pageRes, err := query.CollectionPaginate(
+		ctx,
+		q.k.StoredTempTrade,
+		req.Pagination,
+		func(_ uint64, value types.StoredTempTrade) (types.StoredTempTrade, error) {
+			return value, nil
+		},
+	)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -37,17 +31,18 @@ func (k Keeper) StoredTempTradeAll(ctx context.Context, req *types.QueryAllStore
 	return &types.QueryAllStoredTempTradeResponse{StoredTempTrade: storedTempTrades, Pagination: pageRes}, nil
 }
 
-func (k Keeper) StoredTempTrade(ctx context.Context, req *types.QueryGetStoredTempTradeRequest) (*types.QueryGetStoredTempTradeResponse, error) {
+func (q queryServer) GetStoredTempTrade(ctx context.Context, req *types.QueryGetStoredTempTradeRequest) (*types.QueryGetStoredTempTradeResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	val, found := k.GetStoredTempTrade(
-		ctx,
-		req.TradeIndex,
-	)
-	if !found {
-		return nil, status.Error(codes.NotFound, "not found")
+	val, err := q.k.StoredTempTrade.Get(ctx, req.TradeIndex)
+	if err != nil {
+		if errors.Is(err, collections.ErrNotFound) {
+			return nil, status.Error(codes.NotFound, "not found")
+		}
+
+		return nil, status.Error(codes.Internal, "internal error")
 	}
 
 	return &types.QueryGetStoredTempTradeResponse{StoredTempTrade: val}, nil

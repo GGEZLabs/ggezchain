@@ -4,14 +4,14 @@ import (
 	"testing"
 
 	"github.com/GGEZLabs/ggezchain/v2/testutil/sample"
+	"github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgUpdateSuperAdmin(t *testing.T) {
-	k, ms, ctx := setupMsgServer(t)
-	wctx := sdk.UnwrapSDKContext(ctx)
+	f := initFixture(t)
+	ms := keeper.NewMsgServerImpl(f.keeper)
 	superAdmin := sample.AccAddress()
 	testCases := []struct {
 		name      string
@@ -37,7 +37,7 @@ func TestMsgUpdateSuperAdmin(t *testing.T) {
 				NewSuperAdmin: sample.AccAddress(),
 			},
 			fun: func() {
-				k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: superAdmin})
+				require.NoError(t, f.keeper.SuperAdmin.Set(f.ctx, types.SuperAdmin{Admin: superAdmin}))
 			},
 			expErr:    true,
 			expErrMsg: "unauthorized account",
@@ -56,7 +56,7 @@ func TestMsgUpdateSuperAdmin(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			tc.fun()
-			_, err := ms.UpdateSuperAdmin(wctx, tc.input)
+			_, err := ms.UpdateSuperAdmin(f.ctx, tc.input)
 
 			if tc.expErr {
 				require.Error(t, err)

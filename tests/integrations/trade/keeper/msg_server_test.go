@@ -17,7 +17,7 @@ func TestCreateTrade(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*f.tradeKeeper)
 
 	// Set AclAuthority
-	setAclAuthority(f.ctx, f.aclKeeper)
+	setAclAuthority(t, f.ctx, f.aclKeeper)
 
 	testCases := []struct {
 		name      string
@@ -87,7 +87,7 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*f.tradeKeeper)
 
 	// Set AclAuthority
-	setAclAuthority(f.ctx, f.aclKeeper)
+	setAclAuthority(t, f.ctx, f.aclKeeper)
 
 	_, err := msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
@@ -122,27 +122,27 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 	)
 	assert.NilError(t, err)
 
-	allTrades := f.tradeKeeper.GetAllStoredTrade(f.ctx)
+	allTrades := getAllStoredTrade(t, f.ctx, *f.tradeKeeper)
 	assert.Equal(t, len(allTrades), 3)
 
-	allTempTrades := f.tradeKeeper.GetAllStoredTempTrade(f.ctx)
+	allTempTrades := getAllStoredTempTrade(t, f.ctx, *f.tradeKeeper)
 	assert.Equal(t, len(allTempTrades), 3)
 
 	// update create date
-	f.tradeKeeper.SetStoredTempTrade(f.ctx, types.StoredTempTrade{
+	assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(f.ctx, allTempTrades[0].TradeIndex, types.StoredTempTrade{
 		TradeIndex: allTempTrades[0].TradeIndex,
 		TxDate:     "2025-05-02T16:06:05Z",
-	})
+	}))
 
-	f.tradeKeeper.SetStoredTempTrade(f.ctx, types.StoredTempTrade{
+	assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(f.ctx, allTempTrades[1].TradeIndex, types.StoredTempTrade{
 		TradeIndex: allTempTrades[1].TradeIndex,
 		TxDate:     "2025-05-01T18:09:05Z",
-	})
+	}))
 
-	f.tradeKeeper.SetStoredTempTrade(f.ctx, types.StoredTempTrade{
+	assert.NilError(t, f.tradeKeeper.StoredTempTrade.Set(f.ctx, allTempTrades[2].TradeIndex, types.StoredTempTrade{
 		TradeIndex: allTempTrades[2].TradeIndex,
 		TxDate:     "2025-05-05T20:04:05Z",
-	})
+	}))
 
 	_, err = msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
 		testutil.Alice,
@@ -155,10 +155,10 @@ func TestCanceledTradeAfterCreateTrade(t *testing.T) {
 	)
 	assert.NilError(t, err)
 
-	allTrades = f.tradeKeeper.GetAllStoredTrade(f.ctx)
+	allTrades = getAllStoredTrade(t, f.ctx, *f.tradeKeeper)
 	assert.Equal(t, len(allTrades), 4)
 
-	allTempTrades = f.tradeKeeper.GetAllStoredTempTrade(f.ctx)
+	allTempTrades = getAllStoredTempTrade(t, f.ctx, *f.tradeKeeper)
 	assert.Equal(t, len(allTempTrades), 1)
 
 	assert.Equal(t, allTrades[0].Status, types.StatusCanceled)
@@ -173,7 +173,7 @@ func TestProcessTrade(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*f.tradeKeeper)
 
 	// Set AclAuthority
-	setAclAuthority(f.ctx, f.aclKeeper)
+	setAclAuthority(t, f.ctx, f.aclKeeper)
 
 	// Create trades
 	_, err := msgServer.CreateTrade(f.ctx, types.NewMsgCreateTrade(
@@ -277,7 +277,7 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*f.tradeKeeper)
 
 	// Set AclAuthority
-	setAclAuthority(f.ctx, f.aclKeeper)
+	setAclAuthority(t, f.ctx, f.aclKeeper)
 
 	// Trade 1
 	_, err := msgServer.CreateTrade(f.ctx, types.GetMsgCreateTradeWithTypeAndAmount(types.TradeTypeBuy, 500000000))
@@ -290,8 +290,8 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	})
 	assert.NilError(t, err)
 
-	trade, found := f.tradeKeeper.GetStoredTrade(f.ctx, 1)
-	assert.Assert(t, found == true)
+	trade, err := f.tradeKeeper.StoredTrade.Get(f.ctx, 1)
+	assert.NilError(t, err)
 	assert.Assert(t, trade.Status == types.StatusProcessed)
 
 	supply := f.bankKeeper.GetSupply(f.ctx, types.DefaultDenom)
@@ -315,8 +315,8 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	})
 	assert.NilError(t, err)
 
-	trade, found = f.tradeKeeper.GetStoredTrade(f.ctx, 2)
-	assert.Assert(t, found == true)
+	trade, err = f.tradeKeeper.StoredTrade.Get(f.ctx, 2)
+	assert.NilError(t, err)
 	assert.Assert(t, trade.Status == types.StatusRejected)
 
 	supply = f.bankKeeper.GetSupply(f.ctx, types.DefaultDenom)
@@ -339,8 +339,8 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	})
 	assert.NilError(t, err)
 
-	trade, found = f.tradeKeeper.GetStoredTrade(f.ctx, 3)
-	assert.Assert(t, found == true)
+	trade, err = f.tradeKeeper.StoredTrade.Get(f.ctx, 3)
+	assert.NilError(t, err)
 	assert.Assert(t, trade.Status == types.StatusFailed)
 
 	supply = f.bankKeeper.GetSupply(f.ctx, types.DefaultDenom)
@@ -363,8 +363,8 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	})
 	assert.NilError(t, err)
 
-	trade, found = f.tradeKeeper.GetStoredTrade(f.ctx, 4)
-	assert.Assert(t, found == true)
+	trade, err = f.tradeKeeper.StoredTrade.Get(f.ctx, 4)
+	assert.NilError(t, err)
 	assert.Assert(t, trade.Status == types.StatusProcessed)
 
 	supply = f.bankKeeper.GetSupply(f.ctx, types.DefaultDenom)
@@ -394,8 +394,8 @@ func TestSupplyAndBalancesAfterProcessTrade(t *testing.T) {
 	})
 	assert.NilError(t, err)
 
-	trade, found = f.tradeKeeper.GetStoredTrade(f.ctx, 5)
-	assert.Assert(t, found == true)
+	trade, err = f.tradeKeeper.StoredTrade.Get(f.ctx, 5)
+	assert.NilError(t, err)
 	assert.Assert(t, trade.Status == types.StatusProcessed)
 
 	supply = f.bankKeeper.GetSupply(f.ctx, types.DefaultDenom)

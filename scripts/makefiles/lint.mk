@@ -20,7 +20,7 @@ lint: lint-help
 lint-all:
 	@echo "--> Installing golangci-lint if not installed"
 	@if ! command -v golangci-lint >/dev/null 2>&1; then \
-		curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $$(go env GOPATH)/bin v2.3.1; \
+		curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $$(go env GOPATH)/bin v2.12.2; \
 	fi
 	@echo "--> Running linter"
 	@golangci-lint run --timeout=10m
@@ -29,7 +29,7 @@ lint-all:
 lint-format:
 	@echo "--> Installing golangci-lint if not installed"
 	@if ! command -v golangci-lint >/dev/null 2>&1; then \
-		curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $$(go env GOPATH)/bin v2.3.1; \
+		curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $$(go env GOPATH)/bin v2.12.2; \
 	fi
 	@echo "--> Running linter"
 	@golangci-lint run ./... --fix

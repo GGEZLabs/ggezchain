@@ -32,7 +32,7 @@ func (msg *MsgAddAuthority) ValidateBasic() error {
 		return ErrEmptyName
 	}
 
-	if err = validateJSONFormat(msg.AccessDefinitions, "access-definitions"); err != nil {
+	if err = ValidateJSONFormat(msg.AccessDefinitions, "access-definitions"); err != nil {
 		return err
 	}
 

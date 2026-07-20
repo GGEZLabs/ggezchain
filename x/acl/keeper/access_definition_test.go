@@ -3,14 +3,13 @@ package keeper_test
 import (
 	"testing"
 
-	keepertest "github.com/GGEZLabs/ggezchain/v2/testutil/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/testutil/sample"
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestUpdateAclAuthorityName(t *testing.T) {
-	keeper, _ := keepertest.AclKeeper(t)
+	f := initFixture(t)
 	addr := sample.AccAddress()
 	testCases := []struct {
 		name     string
@@ -58,14 +57,14 @@ func TestUpdateAclAuthorityName(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			aclAuthority := keeper.UpdateAclAuthorityName(tc.input, tc.newName)
+			aclAuthority := f.keeper.UpdateAclAuthorityName(tc.input, tc.newName)
 			require.Equal(t, tc.expected, aclAuthority.Name)
 		})
 	}
 }
 
 func TestOverwriteAccessDefinitionsList(t *testing.T) {
-	keeper, _ := keepertest.AclKeeper(t)
+	f := initFixture(t)
 	addr := sample.AccAddress()
 	testCases := []struct {
 		name                    string
@@ -134,7 +133,7 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			aclAuthority, err := keeper.OverwriteAccessDefinitionList(tc.inputAclAuthority, tc.accessDefinitionListStr)
+			aclAuthority, err := f.keeper.OverwriteAccessDefinitionList(tc.inputAclAuthority, tc.accessDefinitionListStr)
 			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)
@@ -148,7 +147,7 @@ func TestOverwriteAccessDefinitionsList(t *testing.T) {
 }
 
 func TestUpdateAccessDefinitions(t *testing.T) {
-	keeper, _ := keepertest.AclKeeper(t)
+	f := initFixture(t)
 	addr := sample.AccAddress()
 	testCases := []struct {
 		name                       string
@@ -212,7 +211,7 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			aclAuthority, err := keeper.UpdateAccessDefinition(tc.inputAclAuthority, tc.singleAccessDefinitionsStr)
+			aclAuthority, err := f.keeper.UpdateAccessDefinition(tc.inputAclAuthority, tc.singleAccessDefinitionsStr)
 			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)
@@ -225,7 +224,7 @@ func TestUpdateAccessDefinitions(t *testing.T) {
 }
 
 func TestAddAccessDefinitions(t *testing.T) {
-	keeper, _ := keepertest.AclKeeper(t)
+	f := initFixture(t)
 	addr := sample.AccAddress()
 	testCases := []struct {
 		name                     string
@@ -311,7 +310,7 @@ func TestAddAccessDefinitions(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			aclAuthority, err := keeper.AddAccessDefinitions(tc.inputAclAuthority, tc.accessDefinitionsListStr)
+			aclAuthority, err := f.keeper.AddAccessDefinitions(tc.inputAclAuthority, tc.accessDefinitionsListStr)
 			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)
@@ -325,7 +324,7 @@ func TestAddAccessDefinitions(t *testing.T) {
 }
 
 func TestDeleteAccessDefinitions(t *testing.T) {
-	keeper, _ := keepertest.AclKeeper(t)
+	f := initFixture(t)
 	addr := sample.AccAddress()
 	testCases := []struct {
 		name              string
@@ -395,7 +394,7 @@ func TestDeleteAccessDefinitions(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			aclAuthority, err := keeper.DeleteAccessDefinitions(tc.inputAclAuthority, tc.moduleNames)
+			aclAuthority, err := f.keeper.DeleteAccessDefinitions(tc.inputAclAuthority, tc.moduleNames)
 			if tc.expErr {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tc.expErrMsg)
@@ -409,7 +408,7 @@ func TestDeleteAccessDefinitions(t *testing.T) {
 }
 
 func TestClearAllAccessDefinitions(t *testing.T) {
-	keeper, _ := keepertest.AclKeeper(t)
+	f := initFixture(t)
 	addr := sample.AccAddress()
 	testCases := []struct {
 		name              string
@@ -452,7 +451,7 @@ func TestClearAllAccessDefinitions(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			aclAuthority := keeper.ClearAllAccessDefinitions(tc.inputAclAuthority)
+			aclAuthority := f.keeper.ClearAllAccessDefinitions(tc.inputAclAuthority)
 			require.Len(t, aclAuthority.AccessDefinitions, tc.expectedLen)
 		})
 	}

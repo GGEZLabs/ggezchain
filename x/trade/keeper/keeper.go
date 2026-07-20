@@ -3,58 +3,76 @@ package keeper
 import (
 	"fmt"
 
-	"cosmossdk.io/core/store"
-	"cosmossdk.io/log"
+	"cosmossdk.io/collections"
+	"cosmossdk.io/core/address"
+	corestore "cosmossdk.io/core/store"
 	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-type (
-	Keeper struct {
-		cdc          codec.BinaryCodec
-		storeService store.KVStoreService
-		logger       log.Logger
+type Keeper struct {
+	storeService corestore.KVStoreService
+	cdc          codec.Codec
+	addressCodec address.Codec
+	// Address capable of executing a MsgUpdateParams message.
+	// Typically, this should be the x/gov module account.
+	authority []byte
 
-		// the address capable of executing a MsgUpdateParams message. Typically, this
-		// should be the x/gov module account.
-		authority string
+	Schema collections.Schema
+	Params collections.Item[types.Params]
 
-		bankKeeper types.BankKeeper
-		aclKeeper  types.AclKeeper
-	}
-)
+	bankKeeper      types.BankKeeper
+	aclKeeper       types.AclKeeper
+	TradeIndex      collections.Item[types.TradeIndex]
+	StoredTrade     collections.Map[uint64, types.StoredTrade]
+	StoredTempTrade collections.Map[uint64, types.StoredTempTrade]
+}
 
 func NewKeeper(
-	cdc codec.BinaryCodec,
-	storeService store.KVStoreService,
-	logger log.Logger,
-	authority string,
+	storeService corestore.KVStoreService,
+	cdc codec.Codec,
+	addressCodec address.Codec,
+	authority []byte,
 
 	bankKeeper types.BankKeeper,
 	aclKeeper types.AclKeeper,
 ) Keeper {
-	if _, err := sdk.AccAddressFromBech32(authority); err != nil {
-		panic(fmt.Sprintf("invalid authority address: %s", authority))
+	if _, err := addressCodec.BytesToString(authority); err != nil {
+		panic(fmt.Sprintf("invalid authority address %s: %s", authority, err))
 	}
 
-	return Keeper{
-		cdc:          cdc,
+	sb := collections.NewSchemaBuilder(storeService)
+
+	k := Keeper{
 		storeService: storeService,
+		cdc:          cdc,
+		addressCodec: addressCodec,
 		authority:    authority,
-		logger:       logger,
 
 		bankKeeper: bankKeeper,
 		aclKeeper:  aclKeeper,
+		Params:     collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
+		TradeIndex: collections.NewItem(sb, types.TradeIndexKey, "tradeIndex", codec.CollValue[types.TradeIndex](cdc)), StoredTrade: collections.NewMap(sb, types.StoredTradeKey, "storedTrade", collections.Uint64Key, codec.CollValue[types.StoredTrade](cdc)), StoredTempTrade: collections.NewMap(sb, types.StoredTempTradeKey, "storedTempTrade", collections.Uint64Key, codec.CollValue[types.StoredTempTrade](cdc)),
 	}
+
+	schema, err := sb.Build()
+	if err != nil {
+		panic(err)
+	}
+	k.Schema = schema
+
+	return k
 }
 
 // GetAuthority returns the module's authority.
-func (k Keeper) GetAuthority() string {
+func (k Keeper) GetAuthority() []byte {
 	return k.authority
 }
 
-// Logger returns a module-specific logger.
-func (k Keeper) Logger() log.Logger {
-	return k.logger.With("module", fmt.Sprintf("x/%s", types.ModuleName))
+// AclKeeper exposes the injected AclKeeper for callers outside this package
+// (currently only x/trade's simulation operations, which need to seed a sim
+// account with trade permissions in x/acl's store before submitting a trade
+// message).
+func (k Keeper) AclKeeper() types.AclKeeper {
+	return k.aclKeeper
 }

@@ -13,37 +13,105 @@ import (
 	context "context"
 	reflect "reflect"
 
+	address "cosmossdk.io/core/address"
 	types "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	types0 "github.com/cosmos/cosmos-sdk/types"
 	gomock "go.uber.org/mock/gomock"
 )
 
-// MockAccountKeeper is a mock of AccountKeeper interface.
-type MockAccountKeeper struct {
+// MockAclKeeper is a mock of AclKeeper interface.
+type MockAclKeeper struct {
 	ctrl     *gomock.Controller
-	recorder *MockAccountKeeperMockRecorder
+	recorder *MockAclKeeperMockRecorder
 	isgomock struct{}
 }
 
-// MockAccountKeeperMockRecorder is the mock recorder for MockAccountKeeper.
-type MockAccountKeeperMockRecorder struct {
-	mock *MockAccountKeeper
+// MockAclKeeperMockRecorder is the mock recorder for MockAclKeeper.
+type MockAclKeeperMockRecorder struct {
+	mock *MockAclKeeper
 }
 
-// NewMockAccountKeeper creates a new mock instance.
-func NewMockAccountKeeper(ctrl *gomock.Controller) *MockAccountKeeper {
-	mock := &MockAccountKeeper{ctrl: ctrl}
-	mock.recorder = &MockAccountKeeperMockRecorder{mock}
+// NewMockAclKeeper creates a new mock instance.
+func NewMockAclKeeper(ctrl *gomock.Controller) *MockAclKeeper {
+	mock := &MockAclKeeper{ctrl: ctrl}
+	mock.recorder = &MockAclKeeperMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockAccountKeeper) EXPECT() *MockAccountKeeperMockRecorder {
+func (m *MockAclKeeper) EXPECT() *MockAclKeeperMockRecorder {
 	return m.recorder
 }
 
+// GetAclAuthority mocks base method.
+func (m *MockAclKeeper) GetAclAuthority(ctx context.Context, arg1 string) (types.AclAuthority, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAclAuthority", ctx, arg1)
+	ret0, _ := ret[0].(types.AclAuthority)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAclAuthority indicates an expected call of GetAclAuthority.
+func (mr *MockAclKeeperMockRecorder) GetAclAuthority(ctx, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAclAuthority", reflect.TypeOf((*MockAclKeeper)(nil).GetAclAuthority), ctx, arg1)
+}
+
+// SetAclAuthority mocks base method.
+func (m *MockAclKeeper) SetAclAuthority(ctx context.Context, aclAuthority types.AclAuthority) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetAclAuthority", ctx, aclAuthority)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SetAclAuthority indicates an expected call of SetAclAuthority.
+func (mr *MockAclKeeperMockRecorder) SetAclAuthority(ctx, aclAuthority any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetAclAuthority", reflect.TypeOf((*MockAclKeeper)(nil).SetAclAuthority), ctx, aclAuthority)
+}
+
+// MockAuthKeeper is a mock of AuthKeeper interface.
+type MockAuthKeeper struct {
+	ctrl     *gomock.Controller
+	recorder *MockAuthKeeperMockRecorder
+	isgomock struct{}
+}
+
+// MockAuthKeeperMockRecorder is the mock recorder for MockAuthKeeper.
+type MockAuthKeeperMockRecorder struct {
+	mock *MockAuthKeeper
+}
+
+// NewMockAuthKeeper creates a new mock instance.
+func NewMockAuthKeeper(ctrl *gomock.Controller) *MockAuthKeeper {
+	mock := &MockAuthKeeper{ctrl: ctrl}
+	mock.recorder = &MockAuthKeeperMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockAuthKeeper) EXPECT() *MockAuthKeeperMockRecorder {
+	return m.recorder
+}
+
+// AddressCodec mocks base method.
+func (m *MockAuthKeeper) AddressCodec() address.Codec {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddressCodec")
+	ret0, _ := ret[0].(address.Codec)
+	return ret0
+}
+
+// AddressCodec indicates an expected call of AddressCodec.
+func (mr *MockAuthKeeperMockRecorder) AddressCodec() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddressCodec", reflect.TypeOf((*MockAuthKeeper)(nil).AddressCodec))
+}
+
 // GetAccount mocks base method.
-func (m *MockAccountKeeper) GetAccount(arg0 context.Context, arg1 types0.AccAddress) types0.AccountI {
+func (m *MockAuthKeeper) GetAccount(arg0 context.Context, arg1 types0.AccAddress) types0.AccountI {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAccount", arg0, arg1)
 	ret0, _ := ret[0].(types0.AccountI)
@@ -51,9 +119,9 @@ func (m *MockAccountKeeper) GetAccount(arg0 context.Context, arg1 types0.AccAddr
 }
 
 // GetAccount indicates an expected call of GetAccount.
-func (mr *MockAccountKeeperMockRecorder) GetAccount(arg0, arg1 any) *gomock.Call {
+func (mr *MockAuthKeeperMockRecorder) GetAccount(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccount", reflect.TypeOf((*MockAccountKeeper)(nil).GetAccount), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccount", reflect.TypeOf((*MockAuthKeeper)(nil).GetAccount), arg0, arg1)
 }
 
 // MockBankKeeper is a mock of BankKeeper interface.
@@ -92,34 +160,6 @@ func (m *MockBankKeeper) BurnCoins(ctx context.Context, moduleName string, amt t
 func (mr *MockBankKeeperMockRecorder) BurnCoins(ctx, moduleName, amt any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BurnCoins", reflect.TypeOf((*MockBankKeeper)(nil).BurnCoins), ctx, moduleName, amt)
-}
-
-// GetBalance mocks base method.
-func (m *MockBankKeeper) GetBalance(ctx context.Context, addr types0.AccAddress, denom string) types0.Coin {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBalance", ctx, addr, denom)
-	ret0, _ := ret[0].(types0.Coin)
-	return ret0
-}
-
-// GetBalance indicates an expected call of GetBalance.
-func (mr *MockBankKeeperMockRecorder) GetBalance(ctx, addr, denom any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBalance", reflect.TypeOf((*MockBankKeeper)(nil).GetBalance), ctx, addr, denom)
-}
-
-// GetSupply mocks base method.
-func (m *MockBankKeeper) GetSupply(ctx context.Context, denom string) types0.Coin {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetSupply", ctx, denom)
-	ret0, _ := ret[0].(types0.Coin)
-	return ret0
-}
-
-// GetSupply indicates an expected call of GetSupply.
-func (mr *MockBankKeeperMockRecorder) GetSupply(ctx, denom any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSupply", reflect.TypeOf((*MockBankKeeper)(nil).GetSupply), ctx, denom)
 }
 
 // MintCoins mocks base method.
@@ -165,68 +205,17 @@ func (mr *MockBankKeeperMockRecorder) SendCoinsFromModuleToAccount(ctx, senderMo
 }
 
 // SpendableCoins mocks base method.
-func (m *MockBankKeeper) SpendableCoins(ctx context.Context, addr types0.AccAddress) types0.Coins {
+func (m *MockBankKeeper) SpendableCoins(arg0 context.Context, arg1 types0.AccAddress) types0.Coins {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SpendableCoins", ctx, addr)
+	ret := m.ctrl.Call(m, "SpendableCoins", arg0, arg1)
 	ret0, _ := ret[0].(types0.Coins)
 	return ret0
 }
 
 // SpendableCoins indicates an expected call of SpendableCoins.
-func (mr *MockBankKeeperMockRecorder) SpendableCoins(ctx, addr any) *gomock.Call {
+func (mr *MockBankKeeperMockRecorder) SpendableCoins(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SpendableCoins", reflect.TypeOf((*MockBankKeeper)(nil).SpendableCoins), ctx, addr)
-}
-
-// MockAclKeeper is a mock of AclKeeper interface.
-type MockAclKeeper struct {
-	ctrl     *gomock.Controller
-	recorder *MockAclKeeperMockRecorder
-	isgomock struct{}
-}
-
-// MockAclKeeperMockRecorder is the mock recorder for MockAclKeeper.
-type MockAclKeeperMockRecorder struct {
-	mock *MockAclKeeper
-}
-
-// NewMockAclKeeper creates a new mock instance.
-func NewMockAclKeeper(ctrl *gomock.Controller) *MockAclKeeper {
-	mock := &MockAclKeeper{ctrl: ctrl}
-	mock.recorder = &MockAclKeeperMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockAclKeeper) EXPECT() *MockAclKeeperMockRecorder {
-	return m.recorder
-}
-
-// GetAclAuthority mocks base method.
-func (m *MockAclKeeper) GetAclAuthority(ctx context.Context, address string) (types.AclAuthority, bool) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAclAuthority", ctx, address)
-	ret0, _ := ret[0].(types.AclAuthority)
-	ret1, _ := ret[1].(bool)
-	return ret0, ret1
-}
-
-// GetAclAuthority indicates an expected call of GetAclAuthority.
-func (mr *MockAclKeeperMockRecorder) GetAclAuthority(ctx, address any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAclAuthority", reflect.TypeOf((*MockAclKeeper)(nil).GetAclAuthority), ctx, address)
-}
-
-// SetAclAuthority mocks base method.
-func (m *MockAclKeeper) SetAclAuthority(ctx context.Context, aclAuthority types.AclAuthority) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetAclAuthority", ctx, aclAuthority)
-}
-
-// SetAclAuthority indicates an expected call of SetAclAuthority.
-func (mr *MockAclKeeperMockRecorder) SetAclAuthority(ctx, aclAuthority any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetAclAuthority", reflect.TypeOf((*MockAclKeeper)(nil).SetAclAuthority), ctx, aclAuthority)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SpendableCoins", reflect.TypeOf((*MockBankKeeper)(nil).SpendableCoins), arg0, arg1)
 }
 
 // MockParamSubspace is a mock of ParamSubspace interface.
