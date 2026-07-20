@@ -5,60 +5,51 @@ import (
 	"strconv"
 	"testing"
 
-	keepertest "github.com/GGEZLabs/ggezchain/v2/testutil/keeper"
-	"github.com/GGEZLabs/ggezchain/v2/testutil/nullify"
+	"cosmossdk.io/collections"
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/stretchr/testify/require"
 )
 
-// Prevent strconv unused error
-var _ = strconv.IntSize
-
-func createNAclAuthority(keeper keeper.Keeper, ctx context.Context, n int) []types.AclAuthority {
+func createNAclAuthorityItems(k keeper.Keeper, ctx context.Context, n int) []types.AclAuthority {
 	items := make([]types.AclAuthority, n)
 	for i := range items {
 		items[i].Address = strconv.Itoa(i)
-
-		keeper.SetAclAuthority(ctx, items[i])
+		_ = k.AclAuthority.Set(ctx, items[i].Address, items[i])
 	}
 	return items
 }
 
 func TestAclAuthorityGet(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
-	items := createNAclAuthority(keeper, ctx, 10)
+	f := initFixture(t)
+	items := createNAclAuthorityItems(f.keeper, f.ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetAclAuthority(ctx,
-			item.Address,
-		)
-		require.True(t, found)
-		require.Equal(t,
-			nullify.Fill(&item),
-			nullify.Fill(&rst),
-		)
+		rst, err := f.keeper.AclAuthority.Get(f.ctx, item.Address)
+		require.NoError(t, err)
+		require.EqualExportedValues(t, item, rst)
 	}
 }
 
 func TestAclAuthorityRemove(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
-	items := createNAclAuthority(keeper, ctx, 10)
+	f := initFixture(t)
+	items := createNAclAuthorityItems(f.keeper, f.ctx, 10)
 	for _, item := range items {
-		keeper.RemoveAclAuthority(ctx,
-			item.Address,
-		)
-		_, found := keeper.GetAclAuthority(ctx,
-			item.Address,
-		)
-		require.False(t, found)
+		require.NoError(t, f.keeper.AclAuthority.Remove(f.ctx, item.Address))
+		_, err := f.keeper.AclAuthority.Get(f.ctx, item.Address)
+		require.Error(t, err)
+		require.ErrorIs(t, err, collections.ErrNotFound)
 	}
 }
 
 func TestAclAuthorityGetAll(t *testing.T) {
-	keeper, ctx := keepertest.AclKeeper(t)
-	items := createNAclAuthority(keeper, ctx, 10)
-	require.ElementsMatch(t,
-		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllAclAuthority(ctx)),
-	)
+	f := initFixture(t)
+	items := createNAclAuthorityItems(f.keeper, f.ctx, 10)
+
+	var all []types.AclAuthority
+	err := f.keeper.AclAuthority.Walk(f.ctx, nil, func(_ string, val types.AclAuthority) (stop bool, err error) {
+		all = append(all, val)
+		return false, nil
+	})
+	require.NoError(t, err)
+	require.ElementsMatch(t, items, all)
 }

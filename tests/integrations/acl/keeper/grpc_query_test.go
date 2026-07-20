@@ -29,10 +29,10 @@ func TestGRPCQueryAclAdmin(t *testing.T) {
 		{
 			"get acl admin",
 			func() {
-				f.aclKeeper.SetAclAdmin(ctx, types.AclAdmin{Address: "address"})
-				var found bool
-				aclAdmin, found = f.aclKeeper.GetAclAdmin(ctx, "address")
-				assert.Assert(t, found == true)
+				err := f.aclKeeper.AclAdmin.Set(ctx, "address", types.AclAdmin{Address: "address"})
+				assert.NilError(t, err)
+				aclAdmin, err = f.aclKeeper.AclAdmin.Get(ctx, "address")
+				assert.NilError(t, err)
 				assert.Assert(t, aclAdmin.String() != "")
 
 				req = &types.QueryGetAclAdminRequest{Address: "address"}
@@ -52,7 +52,7 @@ func TestGRPCQueryAclAdmin(t *testing.T) {
 		t.Run(fmt.Sprintf("Case %s", testCase.msg), func(t *testing.T) {
 			testCase.malleate()
 
-			aclAdmin, err := queryClient.AclAdmin(gocontext.Background(), req)
+			aclAdmin, err := queryClient.GetAclAdmin(gocontext.Background(), req)
 
 			if testCase.expPass {
 				assert.NilError(t, err)
@@ -96,12 +96,14 @@ func TestGRPCQueryAllAclAdmin(t *testing.T) {
 		{
 			"get all acl admins",
 			func() {
-				f.aclKeeper.SetAclAdmin(ctx, types.AclAdmin{Address: "address1"})
-				f.aclKeeper.SetAclAdmin(ctx, types.AclAdmin{Address: "address2"})
-				f.aclKeeper.SetAclAdmin(ctx, types.AclAdmin{Address: "address3"})
-				f.aclKeeper.SetAclAdmin(ctx, types.AclAdmin{Address: "address4"})
+				assert.NilError(t, f.aclKeeper.AclAdmin.Set(ctx, "address1", types.AclAdmin{Address: "address1"}))
+				assert.NilError(t, f.aclKeeper.AclAdmin.Set(ctx, "address2", types.AclAdmin{Address: "address2"}))
+				assert.NilError(t, f.aclKeeper.AclAdmin.Set(ctx, "address3", types.AclAdmin{Address: "address3"}))
+				assert.NilError(t, f.aclKeeper.AclAdmin.Set(ctx, "address4", types.AclAdmin{Address: "address4"}))
 
-				aclAdminAll = f.aclKeeper.GetAllAclAdmin(ctx)
+				var err error
+				aclAdminAll, err = f.aclKeeper.GetAllAclAdmin(ctx)
+				assert.NilError(t, err)
 				assert.Assert(t, len(aclAdminAll) == 4)
 
 				req = &types.QueryAllAclAdminRequest{}
@@ -124,7 +126,9 @@ func TestGRPCQueryAllAclAdmin(t *testing.T) {
 		{
 			"get some of acl admins",
 			func() {
-				aclAdminAll = f.aclKeeper.GetAllAclAdmin(ctx)
+				var err error
+				aclAdminAll, err = f.aclKeeper.GetAllAclAdmin(ctx)
+				assert.NilError(t, err)
 				assert.Assert(t, len(aclAdminAll) == 4)
 
 				req = &types.QueryAllAclAdminRequest{
@@ -153,7 +157,7 @@ func TestGRPCQueryAllAclAdmin(t *testing.T) {
 		t.Run(fmt.Sprintf("Case %s", testCase.msg), func(t *testing.T) {
 			testCase.malleate()
 
-			aclAdmins, err := queryClient.AclAdminAll(gocontext.Background(), req)
+			aclAdmins, err := queryClient.ListAclAdmin(gocontext.Background(), req)
 
 			if testCase.expPass {
 				assert.NilError(t, err)
@@ -185,16 +189,16 @@ func TestGRPCQueryAclAuthority(t *testing.T) {
 		{
 			"get acl authority",
 			func() {
-				f.aclKeeper.SetAclAuthority(ctx, types.AclAuthority{
+				err := f.aclKeeper.SetAclAuthority(ctx, types.AclAuthority{
 					Address: "address",
 					Name:    "Alice",
 					AccessDefinitions: []*types.AccessDefinition{
 						{Module: "module", IsMaker: true, IsChecker: true},
 					},
 				})
-				var found bool
-				aclAdmin, found = f.aclKeeper.GetAclAuthority(ctx, "address")
-				assert.Assert(t, found == true)
+				assert.NilError(t, err)
+				aclAdmin, err = f.aclKeeper.GetAclAuthority(ctx, "address")
+				assert.NilError(t, err)
 				assert.Assert(t, aclAdmin.String() != "")
 
 				req = &types.QueryGetAclAuthorityRequest{Address: "address"}
@@ -218,7 +222,7 @@ func TestGRPCQueryAclAuthority(t *testing.T) {
 		t.Run(fmt.Sprintf("Case %s", testCase.msg), func(t *testing.T) {
 			testCase.malleate()
 
-			aclAdmin, err := queryClient.AclAuthority(gocontext.Background(), req)
+			aclAdmin, err := queryClient.GetAclAuthority(gocontext.Background(), req)
 
 			if testCase.expPass {
 				assert.NilError(t, err)
@@ -262,36 +266,38 @@ func TestGRPCQueryAllAclAuthority(t *testing.T) {
 		{
 			"get all acl authorities",
 			func() {
-				f.aclKeeper.SetAclAuthority(ctx, types.AclAuthority{
+				assert.NilError(t, f.aclKeeper.SetAclAuthority(ctx, types.AclAuthority{
 					Address: "address1",
 					Name:    "Name1",
 					AccessDefinitions: []*types.AccessDefinition{
 						{Module: "module1", IsMaker: true, IsChecker: false},
 					},
-				})
-				f.aclKeeper.SetAclAuthority(ctx, types.AclAuthority{
+				}))
+				assert.NilError(t, f.aclKeeper.SetAclAuthority(ctx, types.AclAuthority{
 					Address: "address2",
 					Name:    "Name2",
 					AccessDefinitions: []*types.AccessDefinition{
 						{Module: "module2", IsMaker: false, IsChecker: true},
 					},
-				})
-				f.aclKeeper.SetAclAuthority(ctx, types.AclAuthority{
+				}))
+				assert.NilError(t, f.aclKeeper.SetAclAuthority(ctx, types.AclAuthority{
 					Address: "address3",
 					Name:    "Name3",
 					AccessDefinitions: []*types.AccessDefinition{
 						{Module: "module3", IsMaker: true, IsChecker: false},
 					},
-				})
-				f.aclKeeper.SetAclAuthority(ctx, types.AclAuthority{
+				}))
+				assert.NilError(t, f.aclKeeper.SetAclAuthority(ctx, types.AclAuthority{
 					Address: "address4",
 					Name:    "Name4",
 					AccessDefinitions: []*types.AccessDefinition{
 						{Module: "module4", IsMaker: false, IsChecker: true},
 					},
-				})
+				}))
 
-				aclAuthorityAll = f.aclKeeper.GetAllAclAuthority(ctx)
+				var err error
+				aclAuthorityAll, err = f.aclKeeper.GetAllAclAuthority(ctx)
+				assert.NilError(t, err)
 				assert.Assert(t, len(aclAuthorityAll) == 4)
 
 				req = &types.QueryAllAclAuthorityRequest{}
@@ -314,7 +320,9 @@ func TestGRPCQueryAllAclAuthority(t *testing.T) {
 		{
 			"get some of acl authorities",
 			func() {
-				aclAuthorityAll = f.aclKeeper.GetAllAclAuthority(ctx)
+				var err error
+				aclAuthorityAll, err = f.aclKeeper.GetAllAclAuthority(ctx)
+				assert.NilError(t, err)
 				assert.Assert(t, len(aclAuthorityAll) == 4)
 
 				req = &types.QueryAllAclAuthorityRequest{
@@ -343,7 +351,7 @@ func TestGRPCQueryAllAclAuthority(t *testing.T) {
 		t.Run(fmt.Sprintf("Case %s", testCase.msg), func(t *testing.T) {
 			testCase.malleate()
 
-			aclAuthorities, err := queryClient.AclAuthorityAll(gocontext.Background(), req)
+			aclAuthorities, err := queryClient.ListAclAuthority(gocontext.Background(), req)
 
 			if testCase.expPass {
 				assert.NilError(t, err)

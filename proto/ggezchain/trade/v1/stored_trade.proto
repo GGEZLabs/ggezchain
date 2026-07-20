@@ -1,0 +1,29 @@
+syntax = "proto3";
+package ggezchain.trade.v1;
+
+import "cosmos/base/v1beta1/coin.proto";
+import "ggezchain/trade/v1/trade.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/trade/types";
+
+// StoredTrade defines the StoredTrade message.
+message StoredTrade {
+  uint64 trade_index = 1;
+  TradeType trade_type = 2;
+  cosmos.base.v1beta1.Coin amount = 3 [(gogoproto.nullable) = false];
+  string coin_minting_price_usd = 4;
+  string receiver_address = 5;
+  TradeStatus status = 6;
+  string maker = 7;
+  string checker = 8;
+  string tx_date = 9;
+  string create_date = 10;
+  string update_date = 11;
+  string process_date = 12;
+  string trade_data = 13;
+  string coin_minting_price_json = 14;
+  string exchange_rate_json = 15;
+  string banking_system_data = 16;
+  string result = 17;
+}

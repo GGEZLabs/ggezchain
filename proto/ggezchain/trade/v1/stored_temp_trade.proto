@@ -1,0 +1,10 @@
+syntax = "proto3";
+package ggezchain.trade.v1;
+
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/trade/types";
+
+// StoredTempTrade defines the StoredTempTrade message.
+message StoredTempTrade {
+  uint64 trade_index = 1;
+  string tx_date = 2;
+}

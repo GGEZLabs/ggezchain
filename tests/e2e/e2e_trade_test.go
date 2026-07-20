@@ -37,8 +37,8 @@ func (s *IntegrationTestSuite) testTrade() {
 			storedTempTrades, err := queryAllStoredTempTrade(chainEndpoint)
 			s.Require().NoError(err)
 
-			s.Require().Equal(storedTrade.StoredTrade.Status, tradetypes.StatusPending)
-			s.Require().Equal(storedTempTrade.StoredTempTrade.TradeIndex, uint64(1))
+			s.Require().Equal(tradetypes.StatusPending, storedTrade.StoredTrade.Status)
+			s.Require().Equal(uint64(1), storedTempTrade.StoredTempTrade.TradeIndex)
 			s.Require().Len(storedTempTrades.StoredTempTrade, 1)
 
 			return len(storedTrades.StoredTrade) == 1
@@ -58,7 +58,7 @@ func (s *IntegrationTestSuite) testTrade() {
 			storedTempTrades, err := queryAllStoredTempTrade(chainEndpoint)
 			s.Require().NoError(err)
 
-			s.Require().Equal(storedTrade.StoredTrade.Status, tradetypes.StatusProcessed)
+			s.Require().Equal(tradetypes.StatusProcessed, storedTrade.StoredTrade.Status)
 
 			ggzSupply, err := querySupplyOf(chainEndpoint, tradetypes.DefaultDenom)
 			s.Require().NoError(err)
@@ -96,8 +96,8 @@ func (s *IntegrationTestSuite) testTrade() {
 			storedTempTrades, err := queryAllStoredTempTrade(chainEndpoint)
 			s.Require().NoError(err)
 
-			s.Require().Equal(storedTrade.StoredTrade.Status, tradetypes.StatusPending)
-			s.Require().Equal(storedTempTrade.StoredTempTrade.TradeIndex, uint64(2))
+			s.Require().Equal(tradetypes.StatusPending, storedTrade.StoredTrade.Status)
+			s.Require().Equal(uint64(2), storedTempTrade.StoredTempTrade.TradeIndex)
 			s.Require().Len(storedTempTrades.StoredTempTrade, 1)
 
 			return len(storedTrades.StoredTrade) == 2
@@ -117,7 +117,7 @@ func (s *IntegrationTestSuite) testTrade() {
 			storedTempTrades, err := queryAllStoredTempTrade(chainEndpoint)
 			s.Require().NoError(err)
 
-			s.Require().Equal(storedTrade.StoredTrade.Status, tradetypes.StatusProcessed)
+			s.Require().Equal(tradetypes.StatusProcessed, storedTrade.StoredTrade.Status)
 			// Supply should not be changed
 			ggzSupply, err := querySupplyOf(chainEndpoint, tradetypes.DefaultDenom)
 			s.Require().NoError(err)

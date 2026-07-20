@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"context"
 	"testing"
 
 	"cosmossdk.io/core/appmodule"
@@ -46,7 +47,7 @@ func initFixture(tb testing.TB) *fixture {
 	keys := storetypes.NewKVStoreKeys(
 		authtypes.StoreKey, banktypes.StoreKey, acltypes.StoreKey, types.StoreKey,
 	)
-	cdc := moduletestutil.MakeTestEncodingConfig(auth.AppModuleBasic{}, bank.AppModuleBasic{}, trade.AppModuleBasic{}, acl.AppModuleBasic{}).Codec
+	cdc := moduletestutil.MakeTestEncodingConfig(auth.AppModuleBasic{}, bank.AppModuleBasic{}, trade.AppModule{}, acl.AppModule{}).Codec
 
 	logger := log.NewTestLogger(tb)
 	cms := integration.CreateMultiStore(keys, logger)
@@ -59,12 +60,14 @@ func initFixture(tb testing.TB) *fixture {
 		types.ModuleName: {authtypes.Minter, authtypes.Burner},
 	}
 
+	addressCodec := addresscodec.NewBech32Codec("ggez")
+
 	accountKeeper := authkeeper.NewAccountKeeper(
 		cdc,
 		runtime.NewKVStoreService(keys[authtypes.StoreKey]),
 		authtypes.ProtoBaseAccount,
 		maccPerms,
-		addresscodec.NewBech32Codec("ggez"),
+		addressCodec,
 		sdk.Bech32MainPrefix,
 		authority.String(),
 	)
@@ -82,26 +85,27 @@ func initFixture(tb testing.TB) *fixture {
 	)
 
 	aclKeeper := aclkeeper.NewKeeper(
-		cdc,
 		runtime.NewKVStoreService(keys[acltypes.StoreKey]),
-		log.NewNopLogger(),
-		authority.String(),
+		cdc,
+		addressCodec,
+		authority,
 	)
 
 	router := baseapp.NewMsgServiceRouter()
 	router.SetInterfaceRegistry(cdc.InterfaceRegistry())
 
 	tradeKeeper := keeper.NewKeeper(
-		cdc,
 		runtime.NewKVStoreService(keys[types.StoreKey]),
-		log.NewNopLogger(),
-		authority.String(),
+		cdc,
+		addressCodec,
+		authority,
 		bankKeeper,
 		aclKeeper,
 	)
 
-	tradeKeeper.SetTradeIndex(newCtx, types.TradeIndex{NextId: 1})
-	err := tradeKeeper.SetParams(newCtx, types.DefaultParams())
+	err := tradeKeeper.TradeIndex.Set(newCtx, types.TradeIndex{NextId: 1})
+	assert.NilError(tb, err)
+	err = tradeKeeper.Params.Set(newCtx, types.DefaultParams())
 	assert.NilError(tb, err)
 
 	authModule := auth.NewAppModule(cdc, accountKeeper, authsims.RandomGenesisAccounts, nil)
@@ -122,7 +126,7 @@ func initFixture(tb testing.TB) *fixture {
 
 	// Register MsgServer and QueryServer
 	types.RegisterMsgServer(router, msgSrvr)
-	types.RegisterQueryServer(integrationApp.QueryHelper(), tradeKeeper)
+	types.RegisterQueryServer(integrationApp.QueryHelper(), keeper.NewQueryServerImpl(tradeKeeper))
 
 	queryClient := types.NewQueryClient(integrationApp.QueryHelper())
 
@@ -135,9 +139,11 @@ func initFixture(tb testing.TB) *fixture {
 	}
 }
 
-func setAclAuthority(ctx sdk.Context, aclKeeper aclkeeper.Keeper) {
+func setAclAuthority(tb testing.TB, ctx sdk.Context, aclKeeper aclkeeper.Keeper) {
+	tb.Helper()
+
 	// Alice has maker permission in trade module
-	aclKeeper.SetAclAuthority(ctx, acltypes.AclAuthority{
+	err := aclKeeper.SetAclAuthority(ctx, acltypes.AclAuthority{
 		Address: testutil.Alice,
 		Name:    "Alice",
 		AccessDefinitions: []*acltypes.AccessDefinition{
@@ -148,9 +154,10 @@ func setAclAuthority(ctx sdk.Context, aclKeeper aclkeeper.Keeper) {
 			},
 		},
 	})
+	assert.NilError(tb, err)
 
 	// Bob has checker permission in trade module
-	aclKeeper.SetAclAuthority(ctx, acltypes.AclAuthority{
+	err = aclKeeper.SetAclAuthority(ctx, acltypes.AclAuthority{
 		Address: testutil.Bob,
 		Name:    "Bob",
 		AccessDefinitions: []*acltypes.AccessDefinition{
@@ -161,9 +168,10 @@ func setAclAuthority(ctx sdk.Context, aclKeeper aclkeeper.Keeper) {
 			},
 		},
 	})
+	assert.NilError(tb, err)
 
 	// Carol has maker permission in acl module (no permissions for trade module)
-	aclKeeper.SetAclAuthority(ctx, acltypes.AclAuthority{
+	err = aclKeeper.SetAclAuthority(ctx, acltypes.AclAuthority{
 		Address: testutil.Carol,
 		Name:    "Carol",
 		AccessDefinitions: []*acltypes.AccessDefinition{
@@ -174,9 +182,10 @@ func setAclAuthority(ctx sdk.Context, aclKeeper aclkeeper.Keeper) {
 			},
 		},
 	})
+	assert.NilError(tb, err)
 
 	// Trent has maker and checker permission in trade module
-	aclKeeper.SetAclAuthority(ctx, acltypes.AclAuthority{
+	err = aclKeeper.SetAclAuthority(ctx, acltypes.AclAuthority{
 		Address: testutil.Trent,
 		Name:    "Trent",
 		AccessDefinitions: []*acltypes.AccessDefinition{
@@ -187,4 +196,37 @@ func setAclAuthority(ctx sdk.Context, aclKeeper aclkeeper.Keeper) {
 			},
 		},
 	})
+	assert.NilError(tb, err)
+}
+
+// getAllStoredTrade walks the StoredTrade collection, mirroring the idiom used
+// by x/trade/keeper/genesis.go's ExportGenesis. The new collections-based
+// keeper does not expose a GetAllStoredTrade convenience method, so tests that
+// need every stored trade replicate the walk here.
+func getAllStoredTrade(tb testing.TB, ctx context.Context, k keeper.Keeper) []types.StoredTrade {
+	tb.Helper()
+
+	var list []types.StoredTrade
+	err := k.StoredTrade.Walk(ctx, nil, func(_ uint64, val types.StoredTrade) (stop bool, err error) {
+		list = append(list, val)
+		return false, nil
+	})
+	assert.NilError(tb, err)
+
+	return list
+}
+
+// getAllStoredTempTrade walks the StoredTempTrade collection; see
+// getAllStoredTrade above for why this is inlined rather than a keeper method.
+func getAllStoredTempTrade(tb testing.TB, ctx context.Context, k keeper.Keeper) []types.StoredTempTrade {
+	tb.Helper()
+
+	var list []types.StoredTempTrade
+	err := k.StoredTempTrade.Walk(ctx, nil, func(_ uint64, val types.StoredTempTrade) (stop bool, err error) {
+		list = append(list, val)
+		return false, nil
+	})
+	assert.NilError(tb, err)
+
+	return list
 }

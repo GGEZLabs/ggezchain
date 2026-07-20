@@ -38,11 +38,9 @@ import (
 	_ "cosmossdk.io/x/upgrade"    // import for side-effects
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-	aclmodulev1 "github.com/GGEZLabs/ggezchain/v2/api/ggezchain/acl/module"
-	trademodulev1 "github.com/GGEZLabs/ggezchain/v2/api/ggezchain/trade/module"
-	_ "github.com/GGEZLabs/ggezchain/v2/x/acl/module" // import for side-effects
+	_ "github.com/GGEZLabs/ggezchain/v2/x/acl/module"
 	aclmoduletypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
-	_ "github.com/GGEZLabs/ggezchain/v2/x/trade/module" // import for side-effects
+	_ "github.com/GGEZLabs/ggezchain/v2/x/trade/module"
 	trademoduletypes "github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	"github.com/cosmos/cosmos-sdk/runtime"
 	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
@@ -284,11 +282,11 @@ var (
 			},
 			{
 				Name:   aclmoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&aclmodulev1.Module{}),
+				Config: appconfig.WrapAny(&aclmoduletypes.Module{}),
 			},
 			{
 				Name:   trademoduletypes.ModuleName,
-				Config: appconfig.WrapAny(&trademodulev1.Module{}),
+				Config: appconfig.WrapAny(&trademoduletypes.Module{}),
 			},
 			{
 				Name:   paramstypes.ModuleName,

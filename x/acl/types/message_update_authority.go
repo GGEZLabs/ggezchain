@@ -49,7 +49,7 @@ func (msg *MsgUpdateAuthority) ValidateBasic() error {
 		if msg.ClearAllAccessDefinitions || msg.UpdateAccessDefinition != "" || msg.AddAccessDefinitions != "" || len(msg.DeleteAccessDefinitions) > 0 {
 			return errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "overwrite-access-definitions cannot be combined with other access definition flags")
 		}
-		return validateJSONFormat(msg.OverwriteAccessDefinitions, "overwrite-access-definitions")
+		return ValidateJSONFormat(msg.OverwriteAccessDefinitions, "overwrite-access-definitions")
 	}
 
 	// If ClearAllAccessDefinitions is true ignores other access definition flags
@@ -61,13 +61,13 @@ func (msg *MsgUpdateAuthority) ValidateBasic() error {
 	}
 
 	if msg.UpdateAccessDefinition != "" {
-		if err := validateJSONFormat(msg.UpdateAccessDefinition, "update-access-definition"); err != nil {
+		if err := ValidateJSONFormat(msg.UpdateAccessDefinition, "update-access-definition"); err != nil {
 			return err
 		}
 	}
 
 	if msg.AddAccessDefinitions != "" {
-		if err := validateJSONFormat(msg.AddAccessDefinitions, "add-access-definitions"); err != nil {
+		if err := ValidateJSONFormat(msg.AddAccessDefinitions, "add-access-definitions"); err != nil {
 			return err
 		}
 	}

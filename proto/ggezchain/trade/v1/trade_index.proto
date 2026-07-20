@@ -1,0 +1,9 @@
+syntax = "proto3";
+package ggezchain.trade.v1;
+
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/trade/types";
+
+// TradeIndex defines the TradeIndex message.
+message TradeIndex {
+  uint64 next_id = 1;
+}

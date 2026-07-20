@@ -16,20 +16,19 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		TradeIndex: TradeIndex{
+		Params: DefaultParams(),
+		TradeIndex: &TradeIndex{
 			NextId: DefaultIndex,
 		},
 		StoredTrades:     []StoredTrade{},
 		StoredTempTrades: []StoredTempTrade{},
-		// this line is used by starport scaffolding # genesis/types/default
-		Params: DefaultParams(),
 	}
 }
 
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-	if gs.TradeIndex.NextId <= 0 {
+	if gs.TradeIndex == nil || gs.TradeIndex.NextId <= 0 {
 		return fmt.Errorf("next_id must be more than 0")
 	}
 
@@ -43,13 +42,11 @@ func (gs GenesisState) Validate() error {
 		return err
 	}
 
-	// this line is used by starport scaffolding # genesis/types/validate
-
 	return gs.Params.Validate()
 }
 
 func (gs GenesisState) ValidateStoredTrade() error {
-	storedTradeIndexMap := make(map[string]struct{})
+	storedTradeIndexMap := make(map[uint64]struct{})
 
 	for _, elem := range gs.StoredTrades {
 		if elem.TradeIndex <= 0 {
@@ -57,11 +54,10 @@ func (gs GenesisState) ValidateStoredTrade() error {
 		}
 
 		// Check for duplicated index in storedTrade
-		index := string(StoredTradeKey(elem.TradeIndex))
-		if _, ok := storedTradeIndexMap[index]; ok {
+		if _, ok := storedTradeIndexMap[elem.TradeIndex]; ok {
 			return fmt.Errorf("duplicated index for storedTrade")
 		}
-		storedTradeIndexMap[index] = struct{}{}
+		storedTradeIndexMap[elem.TradeIndex] = struct{}{}
 
 		if !elem.TradeType.IsTypeValid() {
 			return fmt.Errorf("invalid trade_type, trade_index: %d", elem.TradeIndex)
@@ -69,7 +65,7 @@ func (gs GenesisState) ValidateStoredTrade() error {
 
 		if elem.TradeType == TradeTypeBuy ||
 			elem.TradeType == TradeTypeSell {
-			if !elem.Amount.IsValid() {
+			if elem.Amount.Amount.IsNil() || !elem.Amount.IsValid() {
 				return fmt.Errorf("invalid amount: %s, trade_index: %d", elem.Amount.String(), elem.TradeIndex)
 			}
 
@@ -87,7 +83,7 @@ func (gs GenesisState) ValidateStoredTrade() error {
 		} else {
 			// {"amount":"0","denom":""} Accepted
 			// {"amount":"1000","denom":"xxx"} Not Accepted
-			if elem.Amount != nil &&
+			if !elem.Amount.Amount.IsNil() &&
 				(elem.Amount.IsValid() &&
 					(!elem.Amount.Amount.IsZero() || elem.Amount.Denom != "")) {
 				return fmt.Errorf("amount must not be set for trade type: %s, trade_index: %d", elem.TradeType.String(), elem.TradeIndex)
@@ -170,7 +166,7 @@ func (gs GenesisState) ValidateStoredTrade() error {
 }
 
 func (gs GenesisState) ValidateStoredTempTrade() error {
-	storedTradeIndexMap := make(map[string]struct{}) // tradeIndex
+	storedTradeIndexMap := make(map[uint64]struct{}) // tradeIndex
 
 	for _, elem := range gs.StoredTempTrades {
 		if elem.TradeIndex <= 0 {
@@ -178,11 +174,10 @@ func (gs GenesisState) ValidateStoredTempTrade() error {
 		}
 
 		// Check for duplicated index in storedTempTrade
-		index := string(StoredTempTradeKey(elem.TradeIndex))
-		if _, ok := storedTradeIndexMap[index]; ok {
+		if _, ok := storedTradeIndexMap[elem.TradeIndex]; ok {
 			return fmt.Errorf("duplicated index for storedTempTrade")
 		}
-		storedTradeIndexMap[index] = struct{}{}
+		storedTradeIndexMap[elem.TradeIndex] = struct{}{}
 
 		_, err := time.Parse(time.RFC3339, elem.TxDate)
 		if err != nil {

@@ -4,14 +4,14 @@ import (
 	"testing"
 
 	"github.com/GGEZLabs/ggezchain/v2/testutil/sample"
+	"github.com/GGEZLabs/ggezchain/v2/x/acl/keeper"
 	"github.com/GGEZLabs/ggezchain/v2/x/acl/types"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMsgInit(t *testing.T) {
-	_, ms, ctx := setupMsgServer(t)
-	wctx := sdk.UnwrapSDKContext(ctx)
+	f := initFixture(t)
+	ms := keeper.NewMsgServerImpl(f.keeper)
 
 	testCases := []struct {
 		name      string
@@ -40,7 +40,7 @@ func TestMsgInit(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			_, err := ms.Init(wctx, tc.input)
+			_, err := ms.Init(f.ctx, tc.input)
 
 			if tc.expErr {
 				require.Error(t, err)

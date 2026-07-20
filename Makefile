@@ -115,7 +115,7 @@ build-image:
 	docker build -f Dockerfile -t ggezlabs/ggezchain .
 
 mocks:
-	@go install go.uber.org/mock/mockgen@v0.5.0
+	@go install go.uber.org/mock/mockgen@v0.6.0
 	sh ./scripts/mockgen.sh
 
 ########################################

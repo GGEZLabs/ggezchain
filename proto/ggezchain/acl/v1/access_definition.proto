@@ -1,0 +1,11 @@
+syntax = "proto3";
+package ggezchain.acl.v1;
+
+option go_package = "github.com/GGEZLabs/ggezchain/v2/x/acl/types";
+
+// AccessDefinition defines the AccessDefinition message.
+message AccessDefinition {
+  string module = 1;
+  bool is_maker = 2;
+  bool is_checker = 3;
+}

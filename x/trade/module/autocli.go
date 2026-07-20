@@ -2,14 +2,16 @@ package trade
 
 import (
 	autocliv1 "cosmossdk.io/api/cosmos/autocli/v1"
-	modulev1 "github.com/GGEZLabs/ggezchain/v2/api/ggezchain/trade"
+	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 )
+
+const tradeIndexField = "trade_index"
 
 // AutoCLIOptions implements the autocli.HasAutoCLIConfig interface.
 func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 	return &autocliv1.ModuleOptions{
 		Query: &autocliv1.ServiceCommandDescriptor{
-			Service: modulev1.Query_ServiceDesc.ServiceName,
+			Service: types.Query_serviceDesc.ServiceName,
 			RpcCommandOptions: []*autocliv1.RpcCommandOptions{
 				{
 					RpcMethod: "Params",
@@ -17,37 +19,36 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Short:     "Query the parameters of the module",
 				},
 				{
-					RpcMethod: "TradeIndex",
+					RpcMethod: "GetTradeIndex",
 					Use:       "trade-index",
 					Short:     "Query a trade-index",
 				},
 				{
-					RpcMethod: "StoredTradeAll",
+					RpcMethod: "ListStoredTrade",
 					Use:       "stored-trades",
 					Short:     "Query all stored-trades",
 				},
 				{
-					RpcMethod:      "StoredTrade",
+					RpcMethod:      "GetStoredTrade",
 					Use:            "stored-trade [trade-index]",
 					Short:          "Query a stored-trade by trade index",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_index"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: tradeIndexField}},
 				},
 				{
-					RpcMethod: "StoredTempTradeAll",
+					RpcMethod: "ListStoredTempTrade",
 					Use:       "stored-temp-trades",
 					Short:     "Query all stored-temp-trades",
 				},
 				{
-					RpcMethod:      "StoredTempTrade",
+					RpcMethod:      "GetStoredTempTrade",
 					Use:            "stored-temp-trade [trade-index]",
 					Short:          "Query a stored-temp-trade by trade index",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_index"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: tradeIndexField}},
 				},
-				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
 		Tx: &autocliv1.ServiceCommandDescriptor{
-			Service:              modulev1.Msg_ServiceDesc.ServiceName,
+			Service:              types.Msg_serviceDesc.ServiceName,
 			EnhanceCustomCommand: true, // only required if you want to use the custom command
 			RpcCommandOptions: []*autocliv1.RpcCommandOptions{
 				{
@@ -77,9 +78,8 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "ProcessTrade",
 					Use:            "process-trade [trade-index] [process-type]",
 					Short:          "Process the StoredTrade. Must have authority to do so.",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "trade_index"}, {ProtoField: "process_type"}},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: tradeIndexField}, {ProtoField: "process_type"}},
 				},
-				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},
 	}

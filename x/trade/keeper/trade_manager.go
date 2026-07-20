@@ -2,9 +2,11 @@ package keeper
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
+	"cosmossdk.io/collections"
 	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/GGEZLabs/ggezchain/v2/x/trade/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -12,10 +14,13 @@ import (
 
 // HasPermission checks if the given address has permission
 // for a specific msgType within this module based on ACL rules.
-func (k Keeper) HasPermission(ctx sdk.Context, address string, msgType int32) (bool, error) {
-	authority, found := k.aclKeeper.GetAclAuthority(ctx, address)
-	if !found {
-		return false, acltypes.ErrAuthorityAddressDoesNotExist.Wrapf("unauthorized account %s", address)
+func (k Keeper) HasPermission(ctx context.Context, address string, msgType int32) (bool, error) {
+	authority, err := k.aclKeeper.GetAclAuthority(ctx, address)
+	if err != nil {
+		if errors.Is(err, collections.ErrNotFound) {
+			return false, acltypes.ErrAuthorityAddressDoesNotExist.Wrapf("unauthorized account %s", address)
+		}
+		return false, err
 	}
 
 	for _, ad := range authority.AccessDefinitions {
@@ -45,13 +50,13 @@ func (k Keeper) HasPermission(ctx sdk.Context, address string, msgType int32) (b
 
 // MintOrBurnCoins processes a trade by minting coins for a 'buy' or burning coins for a 'sell',
 // handling transfers and rollbacks on failure.
-func (k Keeper) MintOrBurnCoins(ctx sdk.Context, storedTrade types.StoredTrade) (types.TradeStatus, error) {
+func (k Keeper) MintOrBurnCoins(ctx context.Context, storedTrade types.StoredTrade) (types.TradeStatus, error) {
 	receiverAddress, err := sdk.AccAddressFromBech32(storedTrade.ReceiverAddress)
 	if err != nil {
 		return types.StatusFailed, types.ErrInvalidReceiverAddress.Wrap(err.Error())
 	}
 
-	coins := sdk.NewCoins(*storedTrade.Amount)
+	coins := sdk.NewCoins(storedTrade.Amount)
 
 	switch storedTrade.TradeType {
 	case types.TradeTypeBuy:
@@ -96,17 +101,35 @@ func (k Keeper) MintOrBurnCoins(ctx sdk.Context, storedTrade types.StoredTrade) 
 // CancelExpiredPendingTrades automatically cancels pending trades older than 1 day.
 func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	allStoredTempTrade := k.GetAllStoredTempTrade(ctx)
-	var canceledIds []uint64
+	logger := ctx.Logger()
 
+	// Snapshot all pending temp trades first; mutating StoredTrade/StoredTempTrade
+	// while iterating them directly would mutate the collection out from under
+	// the walk, so collect the indexes and dates up front instead.
+	type tempTrade struct {
+		tradeIndex uint64
+		txDate     string
+	}
+	var allStoredTempTrade []tempTrade
+	err := k.StoredTempTrade.Walk(ctx, nil, func(tradeIndex uint64, storedTempTrade types.StoredTempTrade) (stop bool, err error) {
+		allStoredTempTrade = append(allStoredTempTrade, tempTrade{tradeIndex: tradeIndex, txDate: storedTempTrade.TxDate})
+		return false, nil
+	})
+	if err != nil {
+		logger.Error("an error occurred while canceling expired trades",
+			"error", err.Error(),
+			"module", types.ModuleName)
+		return
+	}
+
+	var canceledIds []uint64
 	currentDate := ctx.BlockTime()
 
-	for i := range allStoredTempTrade {
-		txDate := allStoredTempTrade[i].TxDate
-		formattedTxDate, err := time.Parse(time.RFC3339, txDate)
+	for _, tt := range allStoredTempTrade {
+		formattedTxDate, err := time.Parse(time.RFC3339, tt.txDate)
 		if err != nil {
-			k.logger.Error("an error occurred while canceling expired trades",
-				"trade_index", allStoredTempTrade[i].TradeIndex,
+			logger.Error("an error occurred while canceling expired trades",
+				"trade_index", tt.tradeIndex,
 				"error", err.Error(),
 				"module", types.ModuleName)
 			continue
@@ -115,15 +138,34 @@ func (k Keeper) CancelExpiredPendingTrades(goCtx context.Context) {
 		totalDays := int(differenceTime.Hours() / 24)
 
 		if totalDays >= 1 {
-			storedTrade, _ := k.GetStoredTrade(ctx, allStoredTempTrade[i].TradeIndex)
+			storedTrade, err := k.StoredTrade.Get(ctx, tt.tradeIndex)
+			if err != nil {
+				logger.Error("an error occurred while canceling expired trades",
+					"trade_index", tt.tradeIndex,
+					"error", err.Error(),
+					"module", types.ModuleName)
+				continue
+			}
 			storedTrade.Status = types.StatusCanceled
 			storedTrade.UpdateDate = currentDate.Format(time.RFC3339)
 			storedTrade.Result = types.TradeIsCanceled
 
-			k.SetStoredTrade(ctx, storedTrade)
-			k.RemoveStoredTempTrade(ctx, allStoredTempTrade[i].TradeIndex)
+			if err := k.StoredTrade.Set(ctx, tt.tradeIndex, storedTrade); err != nil {
+				logger.Error("an error occurred while canceling expired trades",
+					"trade_index", tt.tradeIndex,
+					"error", err.Error(),
+					"module", types.ModuleName)
+				continue
+			}
+			if err := k.StoredTempTrade.Remove(ctx, tt.tradeIndex); err != nil {
+				logger.Error("an error occurred while canceling expired trades",
+					"trade_index", tt.tradeIndex,
+					"error", err.Error(),
+					"module", types.ModuleName)
+				continue
+			}
 
-			canceledIds = append(canceledIds, allStoredTempTrade[i].TradeIndex)
+			canceledIds = append(canceledIds, tt.tradeIndex)
 		}
 	}
 

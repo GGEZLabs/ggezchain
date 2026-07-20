@@ -14,7 +14,7 @@ import (
 )
 
 func SimulateMsgAddAdmin(
-	ak types.AccountKeeper,
+	ak types.AuthKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
 	txGen client.TxConfig,
@@ -23,7 +23,9 @@ func SimulateMsgAddAdmin(
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
 
-		k.SetSuperAdmin(ctx, types.SuperAdmin{Admin: simAccount.Address.String()})
+		if err := k.SuperAdmin.Set(ctx, types.SuperAdmin{Admin: simAccount.Address.String()}); err != nil {
+			return simtypes.OperationMsg{}, nil, err
+		}
 
 		msg := &types.MsgAddAdmin{
 			Creator: simAccount.Address.String(),

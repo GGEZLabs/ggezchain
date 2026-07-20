@@ -203,11 +203,9 @@ func TestGenesisState_Validate(t *testing.T) {
 						Address: sample.AccAddress(),
 					},
 				},
-				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			expErr: false,
 		},
-		// this line is used by starport scaffolding # types/genesis/testcase
 	}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -292,23 +290,6 @@ func TestGenesisState_ValidateAclAuthority(t *testing.T) {
 			expErr:    true,
 			expErrMsg: "duplicate module 'module1' found in access definitions",
 		},
-		// {
-		// 	desc: "must have at least one role",
-		// 	genState: &types.GenesisState{
-		// 		AclAuthorities: []types.AclAuthority{
-		// 			{
-		// 				Address: sample.AccAddress(),
-		// 				Name:    "Alice",
-		// 				AccessDefinitions: []*types.AccessDefinition{
-		// 					{Module: "module1", IsMaker: false, IsChecker: false},
-		// 					{Module: "module2", IsMaker: false, IsChecker: true},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// 	expErr:    true,
-		// 	expErrMsg: "access definition for module 'module1' must be either maker or checker",
-		// },
 		{
 			desc: "valid aclAuthority",
 			genState: &types.GenesisState{
@@ -332,11 +313,9 @@ func TestGenesisState_ValidateAclAuthority(t *testing.T) {
 						},
 					},
 				},
-				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			expErr: false,
 		},
-		// this line is used by starport scaffolding # types/genesis/testcase
 	}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -400,11 +379,9 @@ func TestGenesisState_ValidateAclAdmin(t *testing.T) {
 						Address: sample.AccAddress(),
 					},
 				},
-				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			expErr: false,
 		},
-		// this line is used by starport scaffolding # types/genesis/testcase
 	}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
@@ -448,7 +425,6 @@ func TestGenesisState_ValidateSuperAdmin(t *testing.T) {
 			},
 			expErr: false,
 		},
-		// this line is used by starport scaffolding # types/genesis/testcase
 	}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
