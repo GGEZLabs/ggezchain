@@ -14,7 +14,7 @@ func TestGenesis(t *testing.T) {
 	td := types.GetSampleTradeDataJson(types.TradeTypeBuy)
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
-		TradeIndex: &types.TradeIndex{
+		TradeIndex: types.TradeIndex{
 			NextId: 3,
 		},
 		StoredTrades: []types.StoredTrade{
@@ -110,7 +110,7 @@ func TestInitGenesis_InvalidStateRejected(t *testing.T) {
 	// trade_index 0 is invalid per GenesisState.Validate().
 	invalidState := types.GenesisState{
 		Params:     types.DefaultParams(),
-		TradeIndex: &types.TradeIndex{NextId: 2},
+		TradeIndex: types.TradeIndex{NextId: 2},
 		StoredTrades: []types.StoredTrade{
 			{TradeIndex: 0},
 		},
