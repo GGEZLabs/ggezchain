@@ -19,7 +19,7 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	tradeGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
-		TradeIndex: &types.TradeIndex{
+		TradeIndex: types.TradeIndex{
 			NextId: uint64(simState.Rand.Intn(99) + 1),
 		},
 	}

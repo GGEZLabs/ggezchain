@@ -17,7 +17,7 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		Params: DefaultParams(),
-		TradeIndex: &TradeIndex{
+		TradeIndex: TradeIndex{
 			NextId: DefaultIndex,
 		},
 		StoredTrades:     []StoredTrade{},
@@ -28,7 +28,7 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-	if gs.TradeIndex == nil || gs.TradeIndex.NextId <= 0 {
+	if gs.TradeIndex == (TradeIndex{}) || gs.TradeIndex.NextId <= 0 {
 		return fmt.Errorf("next_id must be more than 0")
 	}
 

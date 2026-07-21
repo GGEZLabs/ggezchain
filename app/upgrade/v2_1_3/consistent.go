@@ -1,6 +1,6 @@
-package v2_1_2
+package v2_1_3
 
 const (
 	// UpgradeName is the shared upgrade plan name for mainnet
-	UpgradeName = "v2.1.2"
+	UpgradeName = "v2.1.3"
 )

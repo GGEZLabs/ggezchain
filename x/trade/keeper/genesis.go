@@ -14,10 +14,8 @@ func (k Keeper) InitGenesis(ctx context.Context, genState types.GenesisState) er
 		return err
 	}
 
-	if genState.TradeIndex != nil {
-		if err := k.TradeIndex.Set(ctx, *genState.TradeIndex); err != nil {
-			return err
-		}
+	if err := k.TradeIndex.Set(ctx, genState.TradeIndex); err != nil {
+		return err
 	}
 	for _, elem := range genState.StoredTrades {
 		if err := k.StoredTrade.Set(ctx, elem.TradeIndex, elem); err != nil {
@@ -48,7 +46,7 @@ func (k Keeper) ExportGenesis(ctx context.Context) (*types.GenesisState, error) 
 			return nil, err
 		}
 	} else {
-		genesis.TradeIndex = &tradeIndex
+		genesis.TradeIndex = tradeIndex
 	}
 	if err := k.StoredTrade.Walk(ctx, nil, func(_ uint64, val types.StoredTrade) (stop bool, err error) {
 		genesis.StoredTrades = append(genesis.StoredTrades, val)

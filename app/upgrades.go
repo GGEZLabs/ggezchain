@@ -8,7 +8,7 @@ import (
 	"github.com/GGEZLabs/ggezchain/v2/app/upgrade/v2_0_0"
 	"github.com/GGEZLabs/ggezchain/v2/app/upgrade/v2_1_0"
 	"github.com/GGEZLabs/ggezchain/v2/app/upgrade/v2_1_1"
-	"github.com/GGEZLabs/ggezchain/v2/app/upgrade/v2_1_2"
+	"github.com/GGEZLabs/ggezchain/v2/app/upgrade/v2_1_3"
 	acltypes "github.com/GGEZLabs/ggezchain/v2/x/acl/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	epochstypes "github.com/cosmos/cosmos-sdk/x/epochs/types"
@@ -32,8 +32,8 @@ func (app *App) setupUpgradeHandlers(configurator module.Configurator) {
 	)
 
 	app.UpgradeKeeper.SetUpgradeHandler(
-		v2_1_2.UpgradeName,
-		v2_1_2.CreateUpgradeHandler(app.ModuleManager, configurator),
+		v2_1_3.UpgradeName,
+		v2_1_3.CreateUpgradeHandler(app.ModuleManager, configurator),
 	)
 
 	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
