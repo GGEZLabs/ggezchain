@@ -18,7 +18,7 @@ message GenesisState {
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
   ];
-  TradeIndex trade_index = 2;
+  TradeIndex trade_index = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
   repeated StoredTrade stored_trades = 3 [(gogoproto.nullable) = false];
   repeated StoredTempTrade stored_temp_trades = 4 [(gogoproto.nullable) = false];
 }
